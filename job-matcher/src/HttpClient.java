@@ -71,7 +71,7 @@ public class HttpClient {
 				System.out.println(s);
 				sb.append(s);				
 			}
-			new HttpClient().send(sb.toString());
+			//new HttpClient().send(sb.toString());
 
 			// read any errors from the attempted command
 			System.out.println("Here is the standard error of the command (if any):\n");
@@ -92,9 +92,15 @@ public class HttpClient {
 	public static void testInvoke() {
 		try {
 			System.out.println("invoker start");
-			String cmd = "D:\\Program Files\\Notepad++Portable\\Notepad++Portable.exe";
-			cmd = "java -classpath C:\\ Hello Trieu";
-			int retval = invoke(cmd);
+			String cmd = "";
+			//cmd = "D:\\Program Files\\Notepad++Portable\\Notepad++Portable.exe";
+			
+			String linux_cmd = "java -classpath /opt/lampp/htdocs/k2/java-server/ -Xmx44M HttpdConcurrent -p 8080";
+			
+			cmd = "java -classpath D:/eclipse3.5/workspace/job-online-engine/job-matcher/bin HttpdConcurrent -p 9999";
+			
+			
+			int retval = invoke(linux_cmd);
 			System.out.println("invoker end: returned " + retval);
 		} catch (java.io.IOException e) {
 			System.out.println("IOException caught: " + e);

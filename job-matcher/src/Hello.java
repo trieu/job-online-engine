@@ -6,7 +6,7 @@ public class Hello {
 	
 	public void sayHi(String[] args) {
 		if(args.length>0){
-			System.out.println("Hi"+args[0]);
+			System.out.println("Hi  "+args[0]);
 		}
 		else {
 			System.out.println("Hi someone");

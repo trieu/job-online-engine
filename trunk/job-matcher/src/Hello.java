@@ -17,4 +17,5 @@ public class Hello {
 		Hello hello = new Hello();
 		hello.sayHi(args);
 	}
+
 }

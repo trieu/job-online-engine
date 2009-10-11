@@ -21,7 +21,7 @@ public class Httpd {
 
 	/** The default port number */
 
-	public static final int HTTP = 80;
+	public static final int HTTP = 8080;
 
 	/** The server socket used to connect from clients */
 

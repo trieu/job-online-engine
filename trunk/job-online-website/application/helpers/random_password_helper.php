@@ -35,3 +35,5 @@ if ( ! function_exists('get_random_password')) {
         return $password;
     }
 }
+
+?>

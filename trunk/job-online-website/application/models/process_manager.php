@@ -70,14 +70,7 @@ class process_manager extends data_manager {
      * @return	array
      */
     public function find_by_filter($filter = array()) {
-        $query = $this->db->get_where("Processes", $filter);
-        $list = array();
-        $idx = 0;
-        foreach ($query->result_array() as $data_row) {
-            $pro = new Process();
-            $list[$idx++] = $this->class_mapping($data_row, "Process", $pro);
-        }
-        return $list;
+       return $this->select_db_table($filter, "Processes", "Process");
     }
 
     public function delete($process) {

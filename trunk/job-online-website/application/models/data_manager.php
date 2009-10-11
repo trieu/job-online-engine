@@ -10,7 +10,7 @@ abstract class data_manager extends Model {
     protected $class_mapper;
 
     public function __construct() {
-        parent::Model();
+        parent::__construct();
         $this->class_mapper = new class_mapper();
     }
 
@@ -90,6 +90,24 @@ abstract class data_manager extends Model {
             return $this->class_mapper->dataRowMappingToObject($data_row, $object);
         }
         return NULL;
+    }
+
+    /**
+     * Overidable method for select table from database and mapping to array of object
+     *
+     * @access	protected
+     * @param	$filter, $table_name, $class_name
+     * @return	$list = array();
+     */
+    protected function select_db_table(array $filter, $table_name, $class_name) {
+        $query = $this->db->get_where($table_name, $filter);
+        $list = array();
+        $idx = 0;
+        foreach ($query->result_array() as $data_row) {
+            $pro = new $class_name();
+            $list[$idx++] = $this->class_mapping($data_row, $class_name, $pro);
+        }
+        return $list;
     }
 
 }

@@ -13,10 +13,10 @@
 /* General */
 
 /* Make the input widget with the focus bleedingly obvious. */
-input:focus, select:focus, textarea:focus {
-    background: black;
-    color: white;
-}
+/*
+input:focus, select:focus, textarea:focus {   background: black;   color: white;}
+*/
+input:focus, textarea:focus {   background: black;   color: white;}
 
 /* Highlight invalid form fields. */
 .invalid {

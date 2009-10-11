@@ -1,6 +1,6 @@
 <?php
 
-require_once "application/classes/Process.php";
+
 
 /**
  * Description of admin_panel
@@ -9,6 +9,8 @@ require_once "application/classes/Process.php";
  * @property class_mapper $class_mapper
  * @property CI_Loader $load
  * @property CI_DB_active_record $db
+ *
+ * @property field_manager $field_manager
  *
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
@@ -35,6 +37,7 @@ class admin_panel extends Controller {
         $this->load->model("process_manager");
         $data = $this->process_manager->get_dependency_instances();
         $data["action_uri"] = "admin/admin_panel/save_object/Process";
+        $this->load->helper("field_type");
         $this->load->view("form/form_view",$data);
     }
 
@@ -71,43 +74,45 @@ class admin_panel extends Controller {
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
         $this->load->view("global_view/data_grid",$data);
     }
-	
-	/**
+
+    /**
      * @Decorated
      */
     public function list_forms($id = "all") {
-        $this->load->model("process_manager");
+        $this->load->model("forms_manager");
         $this->load->library('table');
         $filter = array();
         if(is_numeric($id)) {
-            $filter = array("ProcessID"=>$id);
+            $filter = array("FormID"=>$id);
         }
-        $processses = $this->process_manager->find_by_filter($filter);
-        $data_table = $this->class_mapper->DataListToDataTable("Process",$processses);
+        $forms = $this->forms_manager->find_by_filter($filter);
 
-        $data["table_name"] = "Processes";
-        $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('ProcessID', 'GroupID', 'ProcessName');
+        $actions = anchor('admin/admin_panel/form_builder/[FormID]', 'Build form', array('title' => 'Build form'));
+        $data_table = $this->class_mapper->DataListToDataTable("Form",$forms, $actions);
+
+        $data["table_name"] = "Forms";
+        $data["data_table"] = $data_table;       
+        $data["data_table_heading"] = array('FormID', 'FormName',"Actions");
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
         $this->load->view("global_view/data_grid",$data);
     }
-	
-	/**
+
+    /**
      * @Decorated
      */
     public function list_fields($id = "all") {
-        $this->load->model("process_manager");
+        $this->load->model("field_manager");
         $this->load->library('table');
         $filter = array();
         if(is_numeric($id)) {
-            $filter = array("ProcessID"=>$id);
+            $filter = array("FieldID"=>$id);
         }
-        $processses = $this->process_manager->find_by_filter($filter);
-        $data_table = $this->class_mapper->DataListToDataTable("Process",$processses);
+        $fields = $this->field_manager->find_by_filter($filter);
+        $data_table = $this->class_mapper->DataListToDataTable("Field",$fields);
 
-        $data["table_name"] = "Processes";
+        $data["table_name"] = "Fields";
         $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('ProcessID', 'GroupID', 'ProcessName');
+        $data["data_table_heading"] = array('FieldID', '$ObjectID', 'FieldTypeID','FieldName','ValidationRules');
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
         $this->load->view("global_view/data_grid",$data);
     }
@@ -115,7 +120,7 @@ class admin_panel extends Controller {
     public function save_data_table_cell() {
         $editable_field_name = ($this->input->post("editable_field_name"));
         $tokens = explode("-", $editable_field_name);
-		
+
         $table = $tokens[0] ;
         $id = $tokens[1];
         $primary_key_field = Process::$PRIMARY_KEY_FIELDS;
@@ -128,16 +133,53 @@ class admin_panel extends Controller {
         );
         $this->db->where($primary_key_field, $id);
         $this->db->update($table, $data);
-        
+
         echo $this->input->post("editable_field_value");
     }
 
     /**
      * @Decorated
      */
-    public function form_builder() {
-        $data[""] = "";
+    public function form_builder($id) {
+        $this->load->model("forms_manager");
+        $data["form"] = $this->forms_manager->find_by_id($id);
+        $data["palette_content"] = $this->loadPaletteContent();
         $this->load->view("form/form_builder",$data);
+    }
+
+    public function saveObjectHTMLCache() {
+        $this->load->model("object_html_cache_manager");
+        $cache = new ObjectHTMLCache();
+        $cache->setObjectClass( $this->input->post("ObjectClass") );
+        $cache->setObjectPK( $this->input->post("ObjectPK") );
+        $cache->setCacheContent( $this->input->post("CacheContent") );
+        echo $this->object_html_cache_manager->save($cache);
+    }
+
+
+    public function loadPaletteContent() {
+        $palette_content = "";
+        $this->load->model("field_manager");
+        $this->load->model("fieldtypes_manager");
+
+        $data["fields"] = $this->field_manager->find_by_filter();
+
+        $fieldtypes = $this->fieldtypes_manager->find_by_filter();
+        $fieldtype = new FieldType();
+        $map = array();
+        foreach ($fieldtypes as $fieldtype) {
+            $map[$fieldtype->getFieldTypeID()] = $fieldtype->getFieldTypeName();
+        }
+        $data["fieldtypes"] = $map;
+        $palette_content = $this->load->view("admin/field_palette",$data,TRUE);
+        return $palette_content;
+    }
+
+    public function renderFieldUI($field_id) {
+        $this->load->model("field_manager");
+        $field = new Field();
+        $field = $this->field_manager->find_by_id($field_id);
+        echo $field->buildFieldUI();
     }
 
     /**

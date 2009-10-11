@@ -1,0 +1,463 @@
+/* FIXME: indent with tabs to save bandwidth */
+
+/* Top-level size and positioning */
+
+/* FIXME replicate background left-to-right but not tiled, etc. */
+.topBanner {
+    /* margin: 10px 2% 10px 2%; */
+    margin: 0;
+    padding: 0;
+}
+
+.topBanner img {
+    border: none;
+    display: block;
+    margin: 0 auto 0 auto;
+    padding: 0;
+}
+
+.leftBar {
+    float: left;
+    margin: 5px 0 10px 0;
+    padding: 0;
+    width: 20%;
+}
+
+.main {
+    float: right;
+    margin-left: 0;
+    margin: 15px 2% 20px 0;
+    padding: 0;
+    width: 75%;
+}
+
+.has-rightBar .main {
+    width: 60%;
+}
+
+.rightBar {
+    float: left;
+    margin: 15px 0 20px 0;
+    padding: 0;
+    width: 14%;
+}
+
+.bottomBanner {
+    clear: both;
+    margin: 0;
+    padding: 0;
+}
+
+/* General tags */
+
+body { 
+    background-color: white; 
+    color: black;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+a img { border: none; }
+
+pre {
+    white-space: pre;
+    font-family: monospace;
+}
+
+/* HR is only used to clear floats */
+hr { 
+    clear: both; 
+    visibility: hidden; 
+    height: 0; 
+    border: none; 
+    padding: 0; 
+    margin: 0; 
+}
+
+span.email {
+    font-style: italic;
+}
+
+ol li {
+    clear: both;
+    margin: 5px 0 0 5px;
+}
+
+/* Page elements */
+
+.leftBar h2 {
+    display: inline;
+}
+
+.leftBar div.control {
+    clear: both;
+    float: right;
+    margin: 3px 10px 3px auto;
+}
+
+.leftBar ul {
+    clear: both;
+}
+
+.leftBar .field .fieldLabel label {
+    white-space: nowrap;
+}
+
+.navigation form, .navigation input { 
+    margin: 0; 
+    padding: 0; 
+}
+
+.control {
+    clear: both;
+    float: right;
+    margin-right: 17px;
+}
+
+input[type="textfield"], textarea {
+    width: 100%;
+}
+
+.info div {
+    display: inline;
+    padding: 3px;
+}
+
+.navAuxBox h3 {
+    text-align: center;
+}
+
+fieldset {
+    border: none;
+}
+
+.item img {
+    border: none;
+    margin: 0 7px 3px 0;
+}
+
+table caption {
+    font-weight: bold;
+    margin: auto;
+}
+
+div.date {
+    display: inline;
+}
+
+/* Trees */
+
+.forest { margin: 0; padding: 0 0 0 20px; }
+
+.tree.node, .tree.leaf { list-style-position: outside; }
+
+/* ********************************************************************** */
+
+/* Forms */
+
+form * {
+    font-size: 100%;
+}
+
+.field {
+    clear: both;
+    /* min-width: 200px; */
+    /* margin: 3px; */
+}
+
+.field div.fieldLabel {
+    float: left;
+    font-weight: bold;
+    margin: 5px 0 5px 0;
+    width: 6em;
+}
+
+.field .fieldLabel label {
+    display: inline;
+    font-weight: bolder;
+    /* white-space: nowrap; */
+}
+
+.field div.fieldWidget {
+    display: inline;
+    float: right;
+    margin: 5px 20px 5px 0;
+    min-width: 100px;
+    width: 80%;
+}
+
+.field .fieldWidget .widget {
+    padding: 0;
+    width: 100%;
+}
+
+/* ********************************************************************** */
+
+/* Fallback items style */
+
+.item_list {    
+}
+
+.item { 
+    margin: 0 0 10px 0; 
+    padding: 0; 
+}
+
+.item .title, .item .owner, .item .date, 
+.item .description, .item .actions, .item .tags, .item .item_language_list,
+.item .pagePath {
+    padding: 5px;
+}
+
+.item .title h2, .item .title h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.item .owner {
+    clear: both;
+}
+
+.item .owner, .item .date, .item .tags, .item .item_language_list, .item .pagePath {
+    float: left; 
+    font-size: small;
+}
+
+.item .description {
+    clear: both;
+    padding-top: 10px;
+}
+
+.item .description p {
+    margin: 0 0 10px 0;
+    padding: 0;    
+}
+
+.item .details {
+    clear: both;
+}
+
+.item .actions {
+    clear: both;
+}
+
+.actions ul {
+    padding: 0;
+}
+.actions li { 
+    display: inline; 
+    list-style-type: none;
+    margin: 3px;
+    padding: 0; 
+}
+.actions form { display: inline; }
+
+.item_language_list ul, .item_language_list li {
+    display: inline;
+    padding: 5px;
+}
+
+.item p.readmore {
+    float: right;
+    font-style: italic;
+}
+
+/* FIXME redundant? */
+.leftBar .userLoginBox .control {
+    clear: both;
+}
+
+.leftBar .userLoginBox ul {
+    clear: both;
+}
+
+form p.logout {
+    padding-left: 0;
+    padding-right: 0;
+    text-align: center;
+}
+
+/* Short versions of items */
+
+.short { 
+    display: list-item; 
+    list-style-type: disc; 
+    list-style-position: outside; 
+    margin: 0 0 8px 20px;
+}
+
+.short .title, .short .date {
+    padding: 2px;
+}
+
+/* Tags */
+
+.tag { padding: 2px; display: inline; white-space: nowrap; }
+
+.tags ul, .tags li {
+    display: inline;
+    padding: 2px;
+}
+
+/* Comments */
+
+div.commentsBox {
+    clear: both;
+    display: block;
+}
+
+.comment_list .tree.node { 
+    list-style-type: none;
+    list-style-image: none;
+}
+
+.comment_list .tree.leaf { 
+    list-style-type: none;
+    list-style-image: none;
+}
+
+.commentsIndexBox .comment_list .short div {
+    display: inline;
+    padding: 1em;
+}
+
+/* Permissions and roles pages */
+
+.roles_edit .role {
+    text-align: left;
+    padding-left: 15px;
+}
+
+.roles_edit .module {
+    text-align: left;
+    font-style: italic;
+    font-weight: normal;
+    padding-top: 10px;
+}
+
+.roles_edit .role_permission {
+    padding-left: 15px;
+}
+
+/* Status module */
+
+.status dl dt, .status dl dd { 
+}
+    
+.status dl dt { 
+    float:left; clear:left; margin-right: 10px;
+    font-weight: bold; 
+}
+
+.status dl dd { margin-left: 250px; }
+
+/* Survey module */
+
+.surveyResponses {
+    margin: 10px auto 10px auto;
+    padding: 5px;
+    width: 50%;
+}
+
+img.surveyChart {
+    margin: 10px auto 10px auto;
+    padding: 10px;
+    display: block;
+}
+
+/* View stuff */
+
+.view { 
+    margin: 0 10px 10px 0; 
+    padding: 10px;  
+}
+
+.view .owner, .view .date, .view .tags, .view .size {
+    float: none;
+}
+
+/* Access bar. */
+
+.access ul {
+    display: inline;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.access li {
+    display: inline;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 0;
+}
+
+.access li.accessLanguage {
+    float: left;
+}
+
+.access li.accessInfo {
+    float: left;
+}
+
+.access li.layoutStyle {
+    display: inline;
+    float: right;
+}
+
+/* Forum menu bar. */
+
+.menuBar div {
+    clear: both;
+    display: inline;
+}
+
+.menuBar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.menuBar li {
+    display: inline;
+    margin: 10px;
+    padding: 0;
+}
+
+/* Some generic classes to simulate old HTML features. Also papers over
+ * some FCKeditor things. */
+
+.Center { 
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.Justify {
+    text-align: justify;
+}
+
+.Left {
+    float: left;
+    /* text-align: left; */
+}
+
+.Right {
+    float: right;
+    /* text-align: right; */
+}
+
+.Underline
+{
+    text-decoration: underline;
+}
+
+.Strong
+{
+    font-weight: bold;
+}
+
+.StrikeThrough
+{
+    text-decoration: line-through;
+}

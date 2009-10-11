@@ -1,0 +1,394 @@
+/* FIXME: indent with tabs to save bandwidth */
+
+/* Top-level size and positioning */
+
+.topBanner {
+   background: url(/_images/banner_bg.gif) repeat left top;
+}
+
+.rightBar {
+    border-left: 1px solid silver;
+}
+
+/* General */
+
+/* Make the input widget with the focus bleedingly obvious. */
+input:focus, select:focus, textarea:focus {
+    background: black;
+    color: white;
+}
+
+/* Highlight invalid form fields. */
+.invalid {
+    background: red;
+    color: white;
+}
+
+/* Special versions of general tags */
+
+a[rel=start]:before { content: "|< " }
+a[rel=prev]:before { content: "<< " }
+
+a[rel=next]:after { content: " >>" }
+a[rel=end]:after { content: " >|" }
+
+/* Page elements */
+
+.rightBar .box {
+    padding: 0 10px 10px 10px;
+    font-size: 80%;
+}
+
+.rightBar .box .title {
+    padding: 0;
+    margin: 0;
+}
+
+.rightBar .box .box {
+    padding: 0;
+    font-size: 100%;
+}
+
+/* Navigation */
+
+.navigation { 
+    color: white;
+    background: #25b7e0;
+}
+
+.navigation a:link { color: white; }
+.navigation a:visited { color: #FFEFDB; }
+.navigation a:hover { color: #FFD700; }
+.navigation a:active { color: #FFD700; }
+
+.navigation .tree .label {
+    padding: 3px;
+    margin: 0px;
+    border-color: #3ecffc #1893b2 #1893b2;
+    border-style: solid;
+    border-width: 1px 1px 1px 0px;
+}
+
+/* FIXME split these up. */
+.navigation .level_1 a:link { color: #4382ad; }
+.navigation .level_1 a:visited { color: #4382ad; } /* FIXME darken */
+.navigation .level_1 a:active { color: #FFD700; }
+.navigation .level_1 a:hover { color: #FFD700; }
+
+.navigation .forest.level_0 {
+    padding: 0;
+    border: none;
+}
+
+.navigation .forest.level_1 {
+    margin: 0;
+    border: none;
+    background: #def2fb;
+    color: #4382ad;
+}
+
+.navigation .forest.level_1 .forest {
+    padding: 0 0 0 12px;
+}
+
+.navigation .forest.level_1 .forest {
+    padding: 0 0 0 12px;
+    border: none;
+}
+
+.navigation .tree {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navigation .level_1 .tree {
+    margin: 0;
+}
+
+.navigation .level_1 .label {
+    background: none;
+    border: none;
+    padding: 2px;
+}
+
+.navigation .selected {
+    background: #99cdf4;
+}
+
+/* FIXME */
+.navigation .selected a:link { color: #1893b2; }
+.navigation .selected a:visited { color: #1893b2; }
+.navigation .selected a:hover { color: #1893b2; }
+.navigation .selected a:active { color: #1893b2; }
+
+/* Auxiliary navigation-like side boxes. */
+
+.navAuxBox .tree {
+    list-style-type: none;
+    padding: 0;
+}
+
+.navAuxBox {
+    margin: 5% 0px 5% 0px;
+    padding: 0;
+    background: #def2fb;
+    color: #4382ad;
+    border: solid;
+    border-width: 1px 1px 1px 0px;
+}
+
+.navAuxBox h3 {
+    margin: 0;
+    padding: 3px;
+    background: #25b7e0;
+    color: #ffffff;
+}
+
+.leftBar .userLoginBox {
+    margin: 5% 0px 5% 0px;
+    background: #def2fb;
+    border: solid;
+    border-width: 1px 1px 1px 0px;
+}
+
+.leftBar .userLoginBox .control {
+    float: right;
+    margin: 3px;
+}
+
+.main .userAddBox .selected {
+    background: #99cdf4;
+    border: solid 1px;
+    border-color: #3ecffc #1893b2 #1893b2 #3ecffc;
+    padding: 3px;
+}
+
+.main .userBio {
+    border: dotted #bebcbd 1px;
+    padding: 3px;
+}
+
+/* Info */
+
+.info { 
+    text-align: center; 
+    font-size: x-small; 
+    background-color: silver;
+    border-top: 1px solid #888888;
+    color: black;
+    padding: 1px 10px 2px 10px;
+}
+
+/* Bottom box */
+
+.networkImages {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.networkImages img {
+    margin-right: 10px;
+}
+
+.bottomBox { 
+    background-color: #5296bd;
+    border-top: 1px solid #888888;
+    clear: both;
+    color: white;
+    font-size: x-small; 
+    padding: 1px 10px 2px 10px;
+    text-align: center;
+}
+
+/* Date links */
+
+div.date a:link, div.date a:visited,
+div.date a:link, div.date a:visited {
+    /* color: black; */
+}
+
+div.date a:link, div.date a:visited {
+    /* text-decoration: none; */
+}
+
+div.date a:active, div.date a:hover {
+    /* text-decoration: underline; */
+}
+
+/* Fallback items style */
+
+.item { 
+    border: dotted #bebcbd 1px;
+    margin-bottom: 25px;
+}
+
+.item .title h2 {
+    color: #c80000;
+    padding: 10px 7px 7px 10px;
+}
+
+.item .title h3 {
+    color: #c80000;
+    padding: 7px 5px 5px 7px;
+}
+
+.item .description {
+    border-top: dotted #bebcbd 1px;
+}
+
+.item .details {
+    border-top: dotted #bebcbd 1px;
+}
+
+/* Short versions of items */
+
+.short { 
+    display: block; 
+    margin: 0 0 8px 20px;
+}
+
+.short .title, .short .date {
+    padding: 2px;
+}
+
+/* Static pages */
+
+.page .title h2 {
+    text-align: center;
+}
+    
+.page .description {
+    border-top-width: 0;
+    padding-top: 20px;
+    padding-bottom: 15px;
+}
+
+/* Date-navigation */
+
+.dateNavBox {
+    padding: 5px 0 10px 0;
+    text-align: center;
+}
+
+.dateNavBox h2 {
+    padding: 0;
+    margin: 0;
+}
+
+.dateNavBox a {
+    padding: 0px 5px;
+}
+
+/* List navigation */
+
+.listNavBox {
+    text-align: center;   
+}
+
+.listNavBox a {
+    padding: 0px 5px;
+}
+
+/* needed since images float */
+
+.entry .description { clear: both; }
+
+.entry .description p, 
+.entry .description div, 
+.entry .description h1, 
+.entry .description h2, 
+.entry .description h3, 
+.entry .description h4, 
+.entry .description h5, 
+.entry .description h6 
+ { clear: both; }
+
+/* Special box stuff  */
+
+.titleBox .box {
+    margin: 5px 0 0 5px;
+}
+
+.entriesShortBox .short {
+    margin: 0;
+}
+
+/* Survey module */
+
+ul.surveyConfig {
+    margin: 10px auto 10px auto;
+    padding: 5px;
+    width: 50%;
+    border-color: #888;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+}
+.surveyConfig li { 
+    margin: 10px auto 10px auto;
+    padding: 0;
+    list-style-type: none;
+}
+
+/* The widths here are weird, relative to the full navigation panel. */
+
+.surveyResponses {
+    border-color: #888;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    margin: 2px;
+    padding: 2px;
+    width: 80%;
+    margin: auto;
+}
+
+/* In the surveyQABox */
+
+.surveyQAResponses {
+    border-color: #888;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    margin: 10px auto;
+    padding: 2px;
+    width: 80%;
+}
+
+.surveyQAResponses li { 
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+/* Access box */
+
+.access {
+    background-color: silver;
+    border-top: 1px solid #888888;
+    border-bottom: 1px solid #888888;
+    color: black;
+    padding: 2px 10px 2px 10px;
+}
+
+/* Menu bar. */
+
+.menuBar {
+    background-color: silver;
+    border-top: 1px solid #888888;
+    border-bottom: 1px solid #888888;
+    color: black;
+    margin: 3px 0 10px 0;
+    padding: 2px 10px 2px 10px;
+    white-space: nowrap;
+}
+
+.menuBar h2 {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
+
+.menuBar h3 {
+    display: inline;
+    margin: 0;
+    padding: 0;
+}

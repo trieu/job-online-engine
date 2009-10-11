@@ -1,0 +1,140 @@
+@page {  }
+table { border-collapse:collapse; border-spacing:0; empty-cells:show }
+td, th { vertical-align:top; font-size:10pt;}
+h1, h2, h3, h4, h5, h6 { clear:both }
+ol, ul { margin:0; padding:0;}
+li { list-style: none; margin:0; padding:0;}
+li span.odfLiEnd { clear: both; line-height:0; width:0; height:0; margin:0; padding:0; }
+span.footnodeNumber { padding-right:1em; }
+* { margin:0; }
+.gr1 { padding-top:0.022in; padding-bottom:0.022in; padding-left:0.022in; padding-right:0.022in; }
+.P1 { text-align:left ! important; }
+.P2 { font-family:Vni-times; font-size:12pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.Default { font-family:Vni-times; font-size:12pt; }
+.ce1 { font-size:10pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:#ccffcc; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce10 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce11 { font-size:10pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:#ccffcc; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce12 { font-size:12pt; font-family:Times New Roman; background-color:transparent; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce13 { font-size:12pt; font-family:Times New Roman; border-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce14 { font-size:12pt; font-family:Times New Roman; background-color:transparent; border-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce15 { font-size:10pt; font-family:Times New Roman; background-color:#c0c0c0; border-width:0.0879cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce16 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce17 { font-size:12pt; font-family:Times New Roman; background-color:#ffff00; border-width:0.0879cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce18 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-style:none; border-right-style:none; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce19 { font-size:12pt; font-family:Times New Roman; background-color:#c0c0c0; border-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce2 { font-size:10pt; font-family:Times New Roman; background-color:transparent; border-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce20 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:#ffff00; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce21 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce22 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce23 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce24 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; background-color:transparent; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce25 { font-size:12pt; font-family:Times New Roman; background-color:#c0c0c0; border-width:0.0879cm; border-style:solid; border-color:#000000; color:#ff0000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce26 { font-size:12pt; font-family:Vni-times; border-bottom-style:none; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; }
+.ce27 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-style:none; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce28 { font-size:11pt; font-family:Times New Roman; background-color:#c0c0c0; border-width:0.0879cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce29 { font-size:12pt; font-family:Times New Roman; background-color:#ffff00; border-width:0.0879cm; border-style:solid; border-color:#000000; vertical-align:top; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce3 { font-size:12pt; font-family:Times New Roman; border-width:0.0879cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce30 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; vertical-align:top; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce31 { font-size:12pt; font-family:Times New Roman; background-color:#ffcc99; border-width:0.0879cm; border-style:solid; border-color:#000000; vertical-align:top; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce32 { font-size:12pt; font-family:Times New Roman; background-color:#c0c0c0; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce33 { font-size:12pt; font-family:Times New Roman; background-color:transparent; vertical-align:top; text-align:justify ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce34 { font-size:12pt; font-family:Times New Roman; background-color:#c0c0c0; border-width:0.0879cm; border-style:solid; border-color:#000000; vertical-align:top; text-align:justify ! important; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce35 { font-size:12pt; font-family:Times New Roman; background-color:#00ffff; border-width:0.0879cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce36 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce37 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; background-color:transparent; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce38 { font-size:12pt; font-family:Vni-times; border-style:none; }
+.ce39 { font-size:12pt; font-family:Times New Roman; background-color:#c0c0c0; border-width:0.0879cm; border-style:solid; border-color:#000000; vertical-align:top; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce4 { font-size:12pt; font-family:Times New Roman; background-color:#c0c0c0; border-width:0.0879cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce40 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce41 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce42 { font-size:12pt; font-family:Times New Roman; background-color:#99cc00; border-width:0.0879cm; border-style:solid; border-color:#000000; vertical-align:top; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce43 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce44 { font-size:12pt; font-family:Vni-times; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce45 { font-size:12pt; font-family:Vni-times; border-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce46 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-style:none; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce47 { font-size:12pt; font-family:Times New Roman; background-color:transparent; border-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce48 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce49 { font-size:12pt; font-family:Times New Roman; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce5 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce50 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce51 { font-size:12pt; font-family:Vni-times; color:#ff0000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce52 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce53 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce54 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce55 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce56 { font-size:12pt; font-family:Vni-times; color:#ff0000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce57 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; }
+.ce58 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; }
+.ce59 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce6 { font-size:12pt; font-family:Times New Roman; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce60 { font-size:12pt; font-family:Vni-times; border-bottom-style:none; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; }
+.ce61 { font-size:12pt; font-family:Vni-times; border-width:0.0879cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce62 { font-size:12pt; font-family:Times New Roman; border-width:0.0879cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce63 { font-size:12pt; font-family:Vni-times; border-bottom-style:none; border-left-style:none; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; }
+.ce64 { font-size:12pt; font-family:Vni-times; border-bottom-style:none; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce65 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; }
+.ce66 { font-size:12pt; font-family:Vni-times; border-bottom-style:none; border-left-style:none; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce67 { font-size:12pt; font-family:Times New Roman; background-color:transparent; border-width:0.0879cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce68 { font-size:12pt; font-family:Vni-times; background-color:transparent; }
+.ce69 { font-size:11pt; font-family:Times New Roman; background-color:transparent; border-width:0.0879cm; border-style:solid; border-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce7 { font-size:12pt; font-family:Vni-times; border-bottom-style:none; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; }
+.ce70 { font-size:12pt; font-family:Vni-times; background-color:transparent; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce71 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; background-color:transparent; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce72 { font-size:12pt; font-family:Vni-times; border-bottom-style:none; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce73 { font-size:12pt; font-family:Times New Roman; background-color:transparent; border-width:0.0879cm; border-style:solid; border-color:#000000; vertical-align:top; margin-left:0in; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce74 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; border-left-style:none; border-right-style:none; border-top-style:none; }
+.ce75 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; }
+.ce76 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-style:none; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; }
+.ce77 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; }
+.ce78 { font-size:12pt; font-family:Vni-times; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce79 { font-size:12pt; font-family:Vni-times; border-bottom-style:none; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; }
+.ce8 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce80 { font-size:12pt; font-family:Vni-times; border-bottom-style:none; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce81 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-style:none; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce82 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; background-color:transparent; border-left-style:none; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce83 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-style:none; border-right-style:none; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce84 { font-size:12pt; font-family:Times New Roman; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.ce85 { font-size:12pt; font-family:Vni-times; background-color:transparent; border-style:none; }
+.ce86 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; }
+.ce87 { font-size:12pt; font-family:Vni-times; border-bottom-style:none; background-color:transparent; border-left-style:none; border-right-style:none; border-top-width:0.0879cm; border-top-style:solid; border-top-color:#000000; }
+.ce88 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-style:none; border-right-style:none; border-top-style:none; }
+.ce89 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-style:none; border-top-style:none; }
+.ce9 { font-size:12pt; font-family:Times New Roman; border-bottom-style:none; border-left-width:0.0879cm; border-left-style:solid; border-left-color:#000000; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.ce90 { font-size:12pt; font-family:Vni-times; border-bottom-width:0.0879cm; border-bottom-style:solid; border-bottom-color:#000000; background-color:transparent; border-left-style:none; border-right-width:0.0879cm; border-right-style:solid; border-right-color:#000000; border-top-style:none; }
+.co1 { width:0.7547in; }
+.co10 { width:2.4783in; }
+.co11 { width:4.3311in; }
+.co12 { width:2.4362in; }
+.co13 { width:2.1709in; }
+.co14 { width:3.4311in; }
+.co15 { width:3.8339in; }
+.co16 { width:4.0138in; }
+.co17 { width:0.3492in; }
+.co18 { width:0.7547in; }
+.co19 { width:3.8445in; }
+.co2 { width:2.5945in; }
+.co20 { width:3.8654in; }
+.co21 { width:3.7917in; }
+.co22 { width:4.289in; }
+.co23 { width:4.2681in; }
+.co24 { width:0.9846in; }
+.co3 { width:3.7807in; }
+.co4 { width:2.2346in; }
+.co5 { width:3.7492in; }
+.co6 { width:3.3681in; }
+.co7 { width:2.4673in; }
+.co8 { width:2.2244in; }
+.co9 { width:3.5264in; }
+.ro1 { height:0.2118in; }
+.ro2 { height:0.2173in; }
+.ro3 { height:0.4146in; }
+.ro4 { height:0.611in; }
+.ro5 { height:0.2484in; }
+.ro6 { height:0.3854in; }
+.ro7 { height:0.4374in; }
+.T1 { color:#000000; font-size:8pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.T2 { color:#000000; font-size:8pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+.T3 { font-family:Vni-times; font-size:12pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:bold; }
+.T4 { font-family:Vni-times; font-size:12pt; font-style:normal; text-shadow:none; text-decoration:none ! important; font-weight:normal; }
+<!-- ODF styles with no properties representable as CSS -->
+.ta1 .ta10 .ta2 .ta3 .ta4 .ta5 .ta6 .ta7 .ta8 .ta9 { }

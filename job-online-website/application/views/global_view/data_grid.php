@@ -43,7 +43,11 @@ echo $this->table->generate($data_table);
                 r = (jQuery(this).find("div[class='editable_table_cell']").html());
                 c = 0;
             }
+            if(c >= arr.length-1){
+                return;
+            }
             var id = table_name+"-"+r+"-"+arr[c++];
+
             node = jQuery(this).find("div[class='editable_table_cell']");
             jQuery(node).attr("id",id);
             setEditableTableCell(node);          

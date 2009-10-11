@@ -41,10 +41,17 @@ $action_names  = array(
     ,"List all processes" => "admin/admin_panel/list_processes");
 renderGroupOfActions("manage_process","Manage Processes", $action_names);
 
-$action_names  = array("Create new Forms"=> "","Update Forms"=> "","List all Forms"=> "");
+$action_names  = array(
+       "Create new Forms"=> ""
+       ,"Update Forms"=> ""
+       ,"List all Forms"=> "admin/admin_panel/list_forms"
+       ,"Build form"=> "admin/admin_panel/form_builder");
 renderGroupOfActions("manage_form","Manage Forms", $action_names);
 
-$action_names  = array("Create new Fields"=> "", "Update Fields"=> "", "List all Fields"=> "");
+$action_names  = array(
+    "Create new Fields"=> ""
+    , "Update Fields"=> ""
+    , "List all Fields"=> "admin/admin_panel/list_fields");
 renderGroupOfActions("manage_fields","Manage Fields", $action_names);
 ?>
 

@@ -49,19 +49,29 @@ class class_mapper {
         return $object;
     }
 
-    public function classToArray($class_name, $obj) {
-        $property_values = array();
+    public function classToArray($class_name, $obj, $actions = "") {
+        $property_values = array();       
+
         try {
             $this->objectClass = new ReflectionClass($class_name);
             $methods = $this->objectClass->getMethods();
             $properties = $this->objectClass->getProperties();
             foreach ($properties as $property) {
-				if($property->isPrivate() || $property->isProtected()){
-					$getter = $this->objectClass->getMethod('get'.($property->getName()));
-					//ApplicationHook::log('get'.strtoupper($property->getName()));
-					$value = $getter->invoke($obj);
-					$property_values[$property->getName()] = $value;
-				}
+                if($property->isPrivate() || $property->isProtected()) {
+                    $getter = $this->objectClass->getMethod('get'.($property->getName()));
+                    //ApplicationHook::log('get'.strtoupper($property->getName()));
+                    $value = $getter->invoke($obj);
+                    $property_values[$property->getName()] = $value;
+
+                    $pattern_p = "[".$property->getName()."]";                    
+                    $pos = strpos($actions,$pattern_p );                    
+                    if($pos > 0) {
+                        $actions = str_replace($pattern_p, $value, $actions);                       
+                    }
+                }
+            }
+            if($actions != "") {
+                $property_values["Actions"] = $actions;
             }
         } catch (Exception $e) {
             echo $e->getTraceAsString();
@@ -69,11 +79,12 @@ class class_mapper {
         return $property_values;
     }
 
-    public function DataListToDataTable($class_name, $list) {
+    public function DataListToDataTable($class_name, $list, $actions = "") {
         $data_table = array();
         $idx = 0;
         foreach ($list as $obj) {
-            $data_table[$idx++] = $this->classToArray($class_name, $obj) ;
+            $row_data = $this->classToArray($class_name, $obj , $actions);
+            $data_table[$idx++] = $row_data;
         }
         return $data_table;
     }

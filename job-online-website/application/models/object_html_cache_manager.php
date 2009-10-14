@@ -19,7 +19,7 @@ class object_html_cache_manager extends data_manager {
         $query = $this->db->get_where("ObjectHTMLCaches", $filter);
         $arr = $query->result_array();
         if( count($arr) > 0 ) {
-            
+
             return $arr[0]["cacheID"] ;
         }
         else {
@@ -27,10 +27,23 @@ class object_html_cache_manager extends data_manager {
         }
     }
 
+    function get_saved_cache_html($objectClass,$objectPK) {
+        $filter = array("objectClass"=>$objectClass, "objectPK" => $objectPK);
+        $this->db->select("cacheContent");
+        $query = $this->db->get_where("ObjectHTMLCaches", $filter);
+        $arr = $query->result_array();
+        if( count($arr) > 0 ) {
+            return $arr[0]["cacheContent"] ;
+        }
+        else {
+            return "";
+        }
+    }
+
     public function save($html_cache) {
         $cacheID = $this->get_saved_cache_id($html_cache->getObjectClass(), $html_cache->getObjectPK());
         $data_array = $this->class_mapper->classToArray("ObjectHTMLCache", $html_cache);
-        if($cacheID > 0) {            
+        if($cacheID > 0) {
             $data_array["cacheID"] = $cacheID;
             return $this->update($data_array);
         }
@@ -52,7 +65,7 @@ class object_html_cache_manager extends data_manager {
         $id = $data_array[$key_field_name];
         unset($data_array[$key_field_name]);
         $this->db->where($key_field_name, $id);
-        $this->db->update('ObjectHTMLCaches', $data_array);        
+        $this->db->update('ObjectHTMLCaches', $data_array);
         if( $this->db->affected_rows() > 0 ) {
             return $id;
         }

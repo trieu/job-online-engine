@@ -1,4 +1,5 @@
 <?php
+require_once 'application/classes/Process.php';
 
 
 
@@ -44,12 +45,11 @@ class admin_panel extends Controller {
     /** @Decorated */
     public function save_object($object_name) {
         if($object_name == "Process") {
+            $this->load->model("process_manager");
             $pro = new Process();
             $pro->setProcessID($this->input->post("ProcessID"));
             $pro->setGroupID($this->input->post("GroupID"));
-            $pro->setProcessName($this->input->post("ProcessName"));
-
-            $this->load->model("process_manager");
+            $pro->setProcessName($this->input->post("ProcessName"));            
             $this->process_manager->save($pro);
         }
         $this->output->set_output("Save ".$object_name." successfully!");
@@ -66,11 +66,12 @@ class admin_panel extends Controller {
             $filter = array("ProcessID"=>$id);
         }
         $processses = $this->process_manager->find_by_filter($filter);
-        $data_table = $this->class_mapper->DataListToDataTable("Process",$processses);
+        $actions = anchor('admin/admin_panel/form_builder/', 'View Details', array('title' => 'View Details'));
+        $data_table = $this->class_mapper->DataListToDataTable("Process",$processses,$actions);
 
         $data["table_name"] = "Processes";
         $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('ProcessID', 'GroupID', 'ProcessName');
+        $data["data_table_heading"] = array('ProcessID', 'GroupID', 'ProcessName','Actions');
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
         $this->load->view("global_view/data_grid",$data);
     }
@@ -91,7 +92,7 @@ class admin_panel extends Controller {
         $data_table = $this->class_mapper->DataListToDataTable("Form",$forms, $actions);
 
         $data["table_name"] = "Forms";
-        $data["data_table"] = $data_table;       
+        $data["data_table"] = $data_table;
         $data["data_table_heading"] = array('FormID', 'FormName',"Actions");
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
         $this->load->view("global_view/data_grid",$data);
@@ -140,14 +141,51 @@ class admin_panel extends Controller {
     /**
      * @Decorated
      */
-    public function form_builder($id) {
+    public function form_builder($id = -1) {
+        if($id === -1) {
+            redirect(site_url("admin/admin_panel/list_forms"));
+        }
+
         $this->load->model("forms_manager");
+        $this->load->model("object_html_cache_manager");
         $data["form"] = $this->forms_manager->find_by_id($id);
+        $data["form_cache"] = $this->object_html_cache_manager->get_saved_cache_html(Form::$HTML_DOM_ID_PREFIX,$id);
         $data["palette_content"] = $this->loadPaletteContent();
         $this->load->view("form/form_builder",$data);
     }
 
-    public function saveObjectHTMLCache() {
+    public function saveFormBuilderResult() {
+        $Fields_Form_JSON = $this->input->post("Fields_Form_JSON");
+
+        ApplicationHook::logInfo($Fields_Form_JSON);
+
+        $Fields_Form_JSON = json_decode($Fields_Form_JSON);
+
+        $existed_record = 0;
+
+        foreach ($Fields_Form_JSON as $record) {
+            $this->db->select("COUNT(*)");
+            $this->db->from('Field_Form');
+            $this->db->where("FieldID", $record->FieldID );
+            $this->db->where("FormID", $record->FormID );
+            $c = $this->db->count_all_results();
+            $existed_record = $existed_record + $c;
+
+            if($c == 0) {
+                $this->db->insert("Field_Form", $record);
+            }
+            else {
+//                        ApplicationHook::logInfo($record->FieldID." FieldID already in table Field_Form");
+//                        ApplicationHook::logInfo($record->FormID." FormID already in table Field_Form");
+            }
+        }
+//        ApplicationHook::logError("existed_record ".$existed_record);
+//        ApplicationHook::logError("Fields_Form_JSON " . count($Fields_Form_JSON));
+        if($existed_record == count($Fields_Form_JSON)) {
+            echo -100;
+            return ;
+        }
+
         $this->load->model("object_html_cache_manager");
         $cache = new ObjectHTMLCache();
         $cache->setObjectClass( $this->input->post("ObjectClass") );

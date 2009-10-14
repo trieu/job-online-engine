@@ -1,3 +1,40 @@
+<style type="text/css" media="screen">
+    .editable_table_cell{
+        margin: 2px 4px;
+        padding:1px 2px;
+    }
+    .editable_table_cell input{
+        display:block;       
+    }
+    .editable_table_cell textarea{
+        display:block;       
+    }
+    table div[class=editable_table_cell]:hover {
+        background-color:#330099;
+        color:#FFFF00;
+        cursor:pointer;
+        text-decoration:none;        
+    }
+
+    .editable_table_cell a{
+        cursor:pointer;
+        text-decoration:none;
+    }
+
+    .editable_table_cell a:hover{
+        background-color:#330099;
+        color:#FFFF00;      
+        text-decoration:underline;
+    }
+
+    .editable_table_cell_hover {
+        background-color:#330099;
+        color:#FFFF00;
+        cursor:pointer;
+        text-decoration:none;
+    }
+</style>
+
 <?php
 $table_template = array (
     'table_open'          => '<table border="1" cellpadding="4" cellspacing="0" id="'.$table_name.'">',
@@ -65,6 +102,13 @@ echo $this->table->generate($data_table);
             id   : 'editable_field_name',
             name : 'editable_field_value'
         });
+
+        //Hack css:hover for IE
+        if(jQuery.browser["msie"]){            
+            jQuery(node).mouseover(function(){jQuery(this).addClass("editable_table_cell_hover");});
+            jQuery(node).mouseout(function(){jQuery(this).removeClass("editable_table_cell_hover");});
+        }
+
     }
 
     jQuery(document).ready(function() {

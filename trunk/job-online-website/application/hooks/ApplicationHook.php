@@ -139,7 +139,8 @@ class ApplicationHook {
     }
 
     /**
-     * Decorate the final view and response to client
+     * Decorate the final view and response to client.
+     * Each user group will be decorated by defferent theme template
      *
      */
     public function decoratePage() {
@@ -151,7 +152,16 @@ class ApplicationHook {
 
                     $this->setSiteLanguage();
                     $data = $this->processFinalViewData();
-                    echo trim( $this->CI->load->view("decorator/page_template",$data,TRUE) );
+                    
+                    if($this->isGroupUser()) {
+                        echo ( $this->CI->load->view("decorator/page_template",$data,TRUE) );
+                    }
+                    else if($this->isGroupAdmin() && $this->controllerName == "admin_panel") {
+                            echo ( $this->CI->load->view("decorator/admin_page_template",$data,TRUE) );
+                    }
+                    else {
+                        echo ( $this->CI->load->view("decorator/page_template",$data,TRUE) );
+                    }
                     return;
                 }
             }
@@ -207,22 +217,22 @@ class ApplicationHook {
     //TODO check is admin role here
         $is_login = $this->CI->redux_auth->logged_in();
         if($is_login) {
-            if($this->controllerName == "admin_panel" && TRUE) {
+            if($this->controllerName == "admin_panel" && $this->isGroupAdmin()) {
                 return trim( $this->CI->load->view("admin/left_menu_bar",NULL,TRUE) );
             }
-            else if($this->controllerName == "job_seeker" && $this->CI->redux_auth->profile()->group == "user") {
+            else if($this->controllerName == "job_seeker" && $this->isGroupUser()) {
                     return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
-           }
-//           else if($this->controllerName == "employer" && $this->CI->redux_auth->profile()->group == "user") {
-//                   return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
-//           }
-           else {
-                $data = array(
-                    'is_login' => TRUE
-                   ,'first_name' => $this->CI->redux_auth->profile()->first_name
-                );
-                return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
-            }
+                }
+                //           else if($this->controllerName == "employer" && $this->CI->redux_auth->profile()->group == "user") {
+                //                   return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
+                //           }
+                else {
+                    $data = array(
+                        'is_login' => TRUE
+                        ,'first_name' => $this->CI->redux_auth->profile()->first_name
+                    );
+                    return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
+                }
         }
         else {
         //FIXME
@@ -257,21 +267,44 @@ class ApplicationHook {
     }
 
     public static function logInfo($text) {
-        $ci = &get_instance();
-        $ci->load->library('FirePHP');
-        $ci->firephp->info("  ".$text);
+        if(ApplicationHook::isLogEnabled()) {
+            $ci = &get_instance();
+            $ci->load->library('FirePHP');
+            $ci->firephp->info("  ".$text);
+        }
     }
 
     public static function logError($text) {
-        $ci = &get_instance();
-        $ci->load->library('FirePHP');
-        $ci->firephp->error("  ".$text);
+        if(ApplicationHook::isLogEnabled()) {
+            $ci = &get_instance();
+            $ci->load->library('FirePHP');
+            $ci->firephp->error("  ".$text);
+        }
     }
 
     public static function log($text) {
+        if(ApplicationHook::isLogEnabled()) {
+            $ci = &get_instance();
+            $ci->load->library('FirePHP');
+            $ci->firephp->log("".$text);
+        }
+    }
+
+    public static function isLogEnabled() {
         $ci = &get_instance();
-        $ci->load->library('FirePHP');
-        $ci->firephp->log("".$text);
+        return  $ci->config->item('fire_php_log_enable');
+    }
+
+    protected function isGroupAdmin() {
+        return $this->CI->redux_auth->profile()->group === "admin";
+    }
+
+    protected function isGroupUser() {
+        return $this->CI->redux_auth->profile()->group === "user";
+    }
+
+    protected function isGroupOperator() {
+        return $this->CI->redux_auth->profile()->group === "operator";
     }
 }
 ?>

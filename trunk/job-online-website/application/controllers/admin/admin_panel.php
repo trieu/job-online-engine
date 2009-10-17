@@ -115,6 +115,7 @@ class admin_panel extends Controller {
         $data["data_table"] = $data_table;
         $data["data_table_heading"] = array('FieldID', '$ObjectID', 'FieldTypeID','FieldName','ValidationRules');
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
+        $data["description"] = $this->load->view("form/field_validation_guide","",TRUE);
         $this->load->view("global_view/data_grid",$data);
     }
 

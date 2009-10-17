@@ -60,6 +60,9 @@ $table_template = array (
 $this->table->set_template($table_template);
 $this->table->set_heading($data_table_heading);
 echo $this->table->generate($data_table);
+if( isset ($description)){
+    echo br(2).$description;
+}
 ?>
 
 

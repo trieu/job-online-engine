@@ -28,6 +28,7 @@ class ApplicationHook {
     public static $countMethodCall = 0;
     public static $CONTROLLERS_FOLDER_PATH = "";
     public static $controllers_map;
+    protected $is_logged_in = FALSE;
 
 
     private function initHook() {
@@ -100,7 +101,7 @@ class ApplicationHook {
                 $this->controllerMethod = "index";
                 $this->controllerRequest = "";
                 return  TRUE;
-            }
+        }        
         return FALSE;
     }
 
@@ -127,8 +128,9 @@ class ApplicationHook {
     public function checkRole() {
         if($this->isValidControllerRequest() ) {
             $reflection = $this->getReflectedController();
+            $this->is_logged_in = $this->CI->redux_auth->logged_in();
             if($reflection !=NULL ) {
-                if($reflection->hasAnnotation('Secured') && $this->CI->redux_auth->logged_in() == FALSE) {
+                if($reflection->hasAnnotation('Secured') && $this->is_logged_in  === FALSE) {
                     ApplicationHook::logInfo("-> CheckRole for ".$this->controllerName.".".$this->controllerMethod);
                     $annotation = $reflection->getAnnotation('Secured');
                     //TODO
@@ -146,6 +148,7 @@ class ApplicationHook {
     public function decoratePage() {
         if($this->isValidControllerRequest()) {
             $reflection =  $this->getReflectedController();
+            $this->is_logged_in = $this->CI->redux_auth->logged_in();
             if($reflection !=NULL ) {
                 if($reflection->hasAnnotation('Decorated')) {
                     ApplicationHook::logInfo("->Decorate page for ".$this->controllerName.".".$this->controllerMethod);
@@ -209,30 +212,29 @@ class ApplicationHook {
         return $data;
     }
 
-    protected function decorateHeader() {
-        return trim( $this->CI->load->view("decorator/header", '', TRUE) );
+    protected function decorateHeader() {       
+        $data["isGroupAdmin"] = $this->isGroupAdmin() === TRUE;
+        return trim( $this->CI->load->view("decorator/header", $data, TRUE) );
     }
 
-    protected function decorateLeftNavigation() {
-    //TODO check is admin role here
-        $is_login = $this->CI->redux_auth->logged_in();
-        if($is_login) {
+    protected function decorateLeftNavigation() {    
+        if($this->is_logged_in) {
             if($this->controllerName == "admin_panel" && $this->isGroupAdmin()) {
                 return trim( $this->CI->load->view("admin/left_menu_bar",NULL,TRUE) );
             }
             else if($this->controllerName == "job_seeker" && $this->isGroupUser()) {
                     return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
                 }
-                //           else if($this->controllerName == "employer" && $this->CI->redux_auth->profile()->group == "user") {
-                //                   return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
-                //           }
-                else {
-                    $data = array(
-                        'is_login' => TRUE
-                        ,'first_name' => $this->CI->redux_auth->profile()->first_name
-                    );
-                    return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
-                }
+//           else if($this->controllerName == "employer" && $this->CI->redux_auth->profile()->group == "user") {
+//                   return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
+//           }
+            else {
+                $data = array(
+                    'is_login' => TRUE
+                    ,'first_name' => $this->CI->redux_auth->profile()->first_name
+                );
+                return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
+            }
         }
         else {
         //FIXME
@@ -296,14 +298,23 @@ class ApplicationHook {
     }
 
     protected function isGroupAdmin() {
+        if($this->is_logged_in === FALSE){
+            return FALSE;
+        }
         return $this->CI->redux_auth->profile()->group === "admin";
     }
 
     protected function isGroupUser() {
+        if($this->is_logged_in === FALSE){
+            return FALSE;
+        }
         return $this->CI->redux_auth->profile()->group === "user";
     }
 
     protected function isGroupOperator() {
+        if($this->is_logged_in === FALSE){
+            return FALSE;
+        }
         return $this->CI->redux_auth->profile()->group === "operator";
     }
 }

@@ -12,7 +12,11 @@
     <?php echo anchor('employer/number_question/1', lang('employer')); ?>   |
     <?php echo anchor('home', lang('news_events')); ?>   |
     <?php echo anchor('home', lang('contact')); ?>   |
-    <?php echo anchor('admin/admin_panel', lang('admin_panel')); ?>
+    <?php 
+        if($isGroupAdmin){
+            echo anchor('admin/admin_panel', lang('admin_panel'));
+        }
+     ?>
 </div>
 <div class="box accessBox has-access">
     <div class="box access">

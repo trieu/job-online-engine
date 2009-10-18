@@ -8,6 +8,7 @@ require_once 'application/libraries/class_mapper.php';
  */
 abstract class data_manager extends Model {
     protected $class_mapper;
+    protected $table_name = NULL;
 
     public function __construct() {
         parent::__construct();
@@ -76,6 +77,22 @@ abstract class data_manager extends Model {
      * @return	object
      */
     abstract public function find_by_filter($filter = array());
+
+    /**
+     * method count total records in table
+     *
+     * @access	public
+     * @return	int
+     */
+    public function count_total(){
+        if($this->table_name != null){
+            return $this->db->count_all($this->table_name);
+        }
+        else {
+            ApplicationHook::logError("this->table_name is NULL!");
+            return 0;
+        }
+    }
 
     /**
      * Overidable method for mapping from database row into object

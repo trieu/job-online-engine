@@ -8,8 +8,10 @@ require_once 'application/classes/Field.php';
  */
 class field_manager extends data_manager {
 
+
     public function __construct() {
         parent::__construct();
+        $this->table_name = "Fields";
     }
 
     protected function insert($object) {
@@ -30,10 +32,13 @@ class field_manager extends data_manager {
     }
 
     public function find_by_filter($filter = array()) {
-        return $this->select_db_table($filter, "Fields", "Field");
+        return $this->select_db_table($filter, $this->table_name, "Field");
     }
 
     public function delete_by_id($id) {
+    }
+    public function count_total() {
+         return $this->db->count_all('Fields');
     }
 }
 ?>

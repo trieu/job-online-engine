@@ -11,12 +11,13 @@ class object_html_cache_manager extends data_manager {
 
     public function __construct() {
         parent::__construct();
+        $this->table_name = "ObjectHTMLCaches";
     }
 
     function get_saved_cache_id($objectClass,$objectPK) {
         $filter = array("objectClass"=>$objectClass, "objectPK" => $objectPK);
         $this->db->select("cacheID");
-        $query = $this->db->get_where("ObjectHTMLCaches", $filter);
+        $query = $this->db->get_where($this->table_name, $filter);
         $arr = $query->result_array();
         if( count($arr) > 0 ) {
 
@@ -30,7 +31,7 @@ class object_html_cache_manager extends data_manager {
     function get_saved_cache_html($objectClass,$objectPK) {
         $filter = array("objectClass"=>$objectClass, "objectPK" => $objectPK);
         $this->db->select("cacheContent");
-        $query = $this->db->get_where("ObjectHTMLCaches", $filter);
+        $query = $this->db->get_where($this->table_name, $filter);
         $arr = $query->result_array();
         if( count($arr) > 0 ) {
             return $arr[0]["cacheContent"] ;
@@ -53,7 +54,7 @@ class object_html_cache_manager extends data_manager {
     }
 
     protected function insert($data_array) {
-        $this->db->insert("ObjectHTMLCaches", $data_array);
+        $this->db->insert($this->table_name, $data_array);
         if( $this->db->affected_rows() > 0 ) {
             return $this->db->insert_id();
         }
@@ -65,7 +66,7 @@ class object_html_cache_manager extends data_manager {
         $id = $data_array[$key_field_name];
         unset($data_array[$key_field_name]);
         $this->db->where($key_field_name, $id);
-        $this->db->update('ObjectHTMLCaches', $data_array);
+        $this->db->update($this->table_name, $data_array);
         if( $this->db->affected_rows() > 0 ) {
             return $id;
         }
@@ -88,13 +89,15 @@ class object_html_cache_manager extends data_manager {
      * @return	array
      */
     public function find_by_filter($filter = array()) {
-        return $this->select_db_table($filter, "ObjectHTMLCaches", "ObjectHTMLCache");
+        return $this->select_db_table($filter, $this->table_name, "ObjectHTMLCache");
     }
 
     public function delete($process) {
     }
 
     public function delete_by_id($id) {
+    }
+    public function count_total() {
     }
 }
 ?>

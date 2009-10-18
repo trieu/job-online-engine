@@ -11,6 +11,7 @@ class fieldtypes_manager extends data_manager {
 
     public function __construct() {
         $__construct = parent::__construct();
+        $this->table_name = "FieldType";
     }
 
     protected function insert($object) {
@@ -29,6 +30,8 @@ class fieldtypes_manager extends data_manager {
     }
 
     public function delete_by_id($id) {
+    }
+    public function count_total() {
     }
 }
 ?>

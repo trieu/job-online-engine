@@ -5,10 +5,8 @@
  * @property CI_Input $input
  * @property CI_DB_active_record $db
  */
-class Process extends Model {
+class field_options_manager extends Model {
 
-    function Process() {
-       parent::Model();
-    }
+   
 }
 ?>

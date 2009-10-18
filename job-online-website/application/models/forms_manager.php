@@ -10,6 +10,7 @@ class forms_manager extends data_manager {
 
     public function __construct() {
         parent::__construct();
+        $this->table_name = "Forms";
     }
     protected function insert($object) {
     }
@@ -29,10 +30,12 @@ class forms_manager extends data_manager {
     }
 
     public function find_by_filter($filter = array()) {
-        return $this->select_db_table($filter, "Forms", "Form");
+        return $this->select_db_table($filter,  $this->table_name , "Form");
     }
 
     public function delete_by_id($id) {
+    }
+    public function count_total() {
     }
 }
 ?>

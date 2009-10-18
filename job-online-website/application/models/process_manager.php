@@ -10,10 +10,12 @@ class process_manager extends data_manager {
 
     public function __construct() {
         parent::__construct();
+        $this->table_name = "Processes";
     }
 
     public function get_dependency_instances() {
         $list = array();
+
         $this->db->select("id, name, description");
         $this->db->from("groups");
         $query = $this->db->get();
@@ -21,15 +23,23 @@ class process_manager extends data_manager {
         foreach ($query->result_array() as $row) {
             $groups[$row["id"]] = $row["name"]." - ".$row["description"];
         }
-
         $list["groups"] = $groups;
-
         return $list;
+    }
 
+    public function get_select_field_options($table_name) {
+        $list = array();
+        $this->db->select("id, name, description");
+        $this->db->from($table_name);
+        $query = $this->db->get();
+        foreach ($query->result_array() as $row) {
+            $list[$row["id"]] = $row["name"].", ".$row["description"];
+        }
+        return $list;
     }
 
     public function save($process) {
-        $data_array = $this->class_mapper->classToArray("Process", $process);
+        $data_array = $this->class_mapper->classToArray($this->table_name, $process);
         if($process->getProcessID() > 0) {
             $this->update($data_array);
         }
@@ -39,7 +49,7 @@ class process_manager extends data_manager {
     }
 
     protected function insert($data_array) {
-        $this->db->insert("Processes", $data_array);
+        $this->db->insert($this->table_name, $data_array);
     }
 
     protected function update($data_array) {
@@ -47,8 +57,9 @@ class process_manager extends data_manager {
         $id = $data_array[$key_field_name];
         unset($data_array[$key_field_name]);
         $this->db->where($key_field_name, $id);
-        $this->db->update('Processes', $data_array);
+        $this->db->update($this->table_name, $data_array);
     }
+
 
     /**
      * @access	public
@@ -56,7 +67,7 @@ class process_manager extends data_manager {
      * @return	Process
      */
     public function find_by_id($id) {
-        $query = $this->db->get_where("Processes", array('ProcessID' => $id));
+        $query = $this->db->get_where($this->table_name, array('ProcessID' => $id));
         foreach ($query->result_array() as $data_row) {
             $pro = new Process();
             return $pro = $this->class_mapping($data_row, "Process", $pro);
@@ -70,7 +81,7 @@ class process_manager extends data_manager {
      * @return	array
      */
     public function find_by_filter($filter = array()) {
-       return $this->select_db_table($filter, "Processes", "Process");
+       return $this->select_db_table($filter, $this->table_name, "Process");
     }
 
     public function delete($process) {

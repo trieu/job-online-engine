@@ -49,7 +49,7 @@ class admin_panel extends Controller {
             $pro = new Process();
             $pro->setProcessID($this->input->post("ProcessID"));
             $pro->setGroupID($this->input->post("GroupID"));
-            $pro->setProcessName($this->input->post("ProcessName"));            
+            $pro->setProcessName($this->input->post("ProcessName"));
             $this->process_manager->save($pro);
         }
         $this->output->set_output("Save ".$object_name." successfully!");
@@ -58,7 +58,7 @@ class admin_panel extends Controller {
     /**
      * @Decorated
      */
-    public function list_processes($id = "all") {
+    public function list_processes($id = "all",$start_index = 1) {
         $this->load->model("process_manager");
         $this->load->library('table');
         $filter = array();
@@ -72,7 +72,18 @@ class admin_panel extends Controller {
         $data["table_name"] = "Processes";
         $data["data_table"] = $data_table;
         $data["data_table_heading"] = array('ProcessID', 'GroupID', 'ProcessName','Actions');
+        $data["data_editable_fields"] = array('ProcessID'=>FALSE, 'GroupID'=>TRUE,'ProcessName'=>TRUE,'Actions'=>FALSE);
+
+        $GroupID_Opts =  array("type"=>"select","data"=> ($this->process_manager->get_select_field_options("groups")) );
+        $data["editable_type_fields"] = array('GroupID'=>$GroupID_Opts);
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
+
+        $pagination_config = array();
+        $pagination_config['base_url'] = site_url("admin/admin_panel/list_processes");
+        $pagination_config['total_rows'] = $this->process_manager->count_total();
+        $pagination_config['per_page'] = 2;
+        $data["pagination_config"] = $pagination_config;
+
         $this->load->view("global_view/data_grid",$data);
     }
 
@@ -94,6 +105,7 @@ class admin_panel extends Controller {
         $data["table_name"] = "Forms";
         $data["data_table"] = $data_table;
         $data["data_table_heading"] = array('FormID', 'FormName',"Actions");
+        $data["data_editable_fields"] = array('FormID'=>FALSE, 'FormName'=>TRUE,'Actions'=>FALSE);
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
         $this->load->view("global_view/data_grid",$data);
     }
@@ -109,11 +121,13 @@ class admin_panel extends Controller {
             $filter = array("FieldID"=>$id);
         }
         $fields = $this->field_manager->find_by_filter($filter);
-        $data_table = $this->class_mapper->DataListToDataTable("Field",$fields);
+        $actions = anchor('admin/fields/edit/[FieldID]', 'Edit Details', array('title' => 'Edit Details'));
+        $data_table = $this->class_mapper->DataListToDataTable("Field",$fields,$actions);
 
         $data["table_name"] = "Fields";
         $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('FieldID', '$ObjectID', 'FieldTypeID','FieldName','ValidationRules');
+        $data["data_table_heading"] = array('FieldID', 'ObjectID', 'FieldTypeID','FieldName','ValidationRules','Actions');
+        $data["data_editable_fields"] = array('FieldID'=>FALSE, 'ObjectID'=>TRUE, 'FieldTypeID'=>TRUE,'FieldName'=>TRUE,'ValidationRules'=>TRUE,'Actions'=>FALSE);
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
         $data["description"] = $this->load->view("form/field_validation_guide","",TRUE);
         $this->load->view("global_view/data_grid",$data);
@@ -176,12 +190,12 @@ class admin_panel extends Controller {
                 $this->db->insert("Field_Form", $record);
             }
             else {
-//                        ApplicationHook::logInfo($record->FieldID." FieldID already in table Field_Form");
-//                        ApplicationHook::logInfo($record->FormID." FormID already in table Field_Form");
+            //                        ApplicationHook::logInfo($record->FieldID." FieldID already in table Field_Form");
+            //                        ApplicationHook::logInfo($record->FormID." FormID already in table Field_Form");
             }
         }
-//        ApplicationHook::logError("existed_record ".$existed_record);
-//        ApplicationHook::logError("Fields_Form_JSON " . count($Fields_Form_JSON));
+        //        ApplicationHook::logError("existed_record ".$existed_record);
+        //        ApplicationHook::logError("Fields_Form_JSON " . count($Fields_Form_JSON));
         if($existed_record == count($Fields_Form_JSON)) {
             echo -100;
             return ;

@@ -10,7 +10,7 @@ class process_manager extends data_manager {
 
     public function __construct() {
         parent::__construct();
-        $this->table_name = "Processes";
+        $this->table_name = "processes";
     }
 
     public function get_dependency_instances() {

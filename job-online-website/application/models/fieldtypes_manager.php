@@ -11,7 +11,7 @@ class fieldtypes_manager extends data_manager {
 
     public function __construct() {
         $__construct = parent::__construct();
-        $this->table_name = "FieldType";
+        $this->table_name = "fieldtype";
     }
 
     protected function insert($object) {
@@ -26,12 +26,11 @@ class fieldtypes_manager extends data_manager {
     }
 
     public function find_by_filter($filter = array()) {
-        return $this->select_db_table($filter, "FieldType", "FieldType");
+        return $this->select_db_table($filter, $this->table_name, "FieldType");
     }
 
     public function delete_by_id($id) {
     }
-    public function count_total() {
-    }
+    
 }
 ?>

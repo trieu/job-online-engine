@@ -34,21 +34,57 @@
 | the active record class
 */
 
-$active_group = "default";
+$active_group = "windows";
 $active_record = TRUE;
 
-$db['default']['hostname'] = "localhost";
-$db['default']['username'] = "root";
-$db['default']['password'] = "";
-$db['default']['database'] = "job_management";
-$db['default']['dbdriver'] = "mysql";
-$db['default']['dbprefix'] = "";
-$db['default']['pconnect'] = TRUE;
-$db['default']['db_debug'] = TRUE;
-$db['default']['cache_on'] = FALSE;
-$db['default']['cachedir'] = "application/ci_db_cache";
-$db['default']['char_set'] = "utf8";
-$db['default']['dbcollat'] = "utf8_general_ci";
+/*
+ * Local windows
+ */
+$db['windows']['hostname'] = "localhost";
+$db['windows']['username'] = "root";
+$db['windows']['password'] = "";
+$db['windows']['database'] = "job_management";
+$db['windows']['dbdriver'] = "mysql";
+$db['windows']['dbprefix'] = "";
+$db['windows']['pconnect'] = TRUE;
+$db['windows']['db_debug'] = TRUE;
+$db['windows']['cache_on'] = FALSE;
+$db['windows']['cachedir'] = "application/ci_db_cache";
+$db['windows']['char_set'] = "utf8";
+$db['windows']['dbcollat'] = "utf8_general_ci";
+
+/*
+ * Summer hosting
+ */
+$db['summer_host']['hostname'] = "sql107.byetcluster.com";
+$db['summer_host']['username'] = "sum_1403815";
+$db['summer_host']['password'] = "bandethuong";
+$db['summer_host']['database'] = "sum_1403815_job_management";
+$db['summer_host']['dbdriver'] = "mysql";
+$db['summer_host']['dbprefix'] = "";
+$db['summer_host']['pconnect'] = TRUE;
+$db['summer_host']['db_debug'] = TRUE;
+$db['summer_host']['cache_on'] = FALSE;
+$db['summer_host']['cachedir'] = "application/ci_db_cache";
+$db['summer_host']['char_set'] = "utf8";
+$db['summer_host']['dbcollat'] = "utf8_general_ci";
+
+
+/*
+ * Local Linux
+ */
+$db['ubuntu']['hostname'] = "localhost";
+$db['ubuntu']['username'] = "root";
+$db['ubuntu']['password'] = "";
+$db['ubuntu']['database'] = "job_management";
+$db['ubuntu']['dbdriver'] = "mysql";
+$db['ubuntu']['dbprefix'] = "";
+$db['ubuntu']['pconnect'] = TRUE;
+$db['ubuntu']['db_debug'] = TRUE;
+$db['ubuntu']['cache_on'] = FALSE;
+$db['ubuntu']['cachedir'] = "application/ci_db_cache";
+$db['ubuntu']['char_set'] = "utf8";
+$db['ubuntu']['dbcollat'] = "utf8_general_ci";
 
 
 /* End of file database.php */

@@ -11,7 +11,7 @@ class field_manager extends data_manager {
 
     public function __construct() {
         parent::__construct();
-        $this->table_name = "Fields";
+        $this->table_name = "fields";
     }
 
     protected function insert($object) {
@@ -37,8 +37,6 @@ class field_manager extends data_manager {
 
     public function delete_by_id($id) {
     }
-    public function count_total() {
-         return $this->db->count_all('Fields');
-    }
+   
 }
 ?>

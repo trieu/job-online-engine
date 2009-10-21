@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import joe.io.network.HttpClientManager;
 
 
 
@@ -70,11 +71,22 @@ public class Handler {
 			String rqName = st.nextToken();
 			String rqHttpVer = st.nextToken();
 			
-			//if( rqName.endsWith("test") )
+			if( rqName.equals("/start") )
 			{
 				System.out.println(rqCode);
 				System.out.println(rqName);
-				os.print("OK, I got your command!");
+				os.print("OK, I got your command, now call START!");
+                                HttpClientManager.startTimer();
+				os.flush();
+				clntSock.close();
+			//	return;
+			}
+                        if( rqName.equals("/stop") )
+			{
+				System.out.println(rqCode);
+				System.out.println(rqName);
+				os.print("OK, I got your command, now call STOP!");
+                                HttpClientManager.stopTimer();
 				os.flush();
 				clntSock.close();
 			//	return;

@@ -69,7 +69,7 @@ class admin_panel extends Controller {
         $actions = anchor('admin/admin_panel/form_builder/', 'View Details', array('title' => 'View Details'));
         $data_table = $this->class_mapper->DataListToDataTable("Process",$processses,$actions);
 
-        $data["table_name"] = "Processes";
+        $data["table_name"] = "processes";
         $data["data_table"] = $data_table;
         $data["data_table_heading"] = array('ProcessID', 'GroupID', 'ProcessName','Actions');
         $data["data_editable_fields"] = array('ProcessID'=>FALSE, 'GroupID'=>TRUE,'ProcessName'=>TRUE,'Actions'=>FALSE);
@@ -102,7 +102,7 @@ class admin_panel extends Controller {
         $actions = anchor('admin/admin_panel/form_builder/[FormID]', 'Build form', array('title' => 'Build form'));
         $data_table = $this->class_mapper->DataListToDataTable("Form",$forms, $actions);
 
-        $data["table_name"] = "Forms";
+        $data["table_name"] = "forms";
         $data["data_table"] = $data_table;
         $data["data_table_heading"] = array('FormID', 'FormName',"Actions");
         $data["data_editable_fields"] = array('FormID'=>FALSE, 'FormName'=>TRUE,'Actions'=>FALSE);
@@ -124,7 +124,7 @@ class admin_panel extends Controller {
         $actions = anchor('admin/fields/edit/[FieldID]', 'Edit Details', array('title' => 'Edit Details'));
         $data_table = $this->class_mapper->DataListToDataTable("Field",$fields,$actions);
 
-        $data["table_name"] = "Fields";
+        $data["table_name"] = "fields";
         $data["data_table"] = $data_table;
         $data["data_table_heading"] = array('FieldID', 'ObjectID', 'FieldTypeID','FieldName','ValidationRules','Actions');
         $data["data_editable_fields"] = array('FieldID'=>FALSE, 'ObjectID'=>TRUE, 'FieldTypeID'=>TRUE,'FieldName'=>TRUE,'ValidationRules'=>TRUE,'Actions'=>FALSE);
@@ -180,7 +180,7 @@ class admin_panel extends Controller {
 
         foreach ($Fields_Form_JSON as $record) {
             $this->db->select("COUNT(*)");
-            $this->db->from('Field_Form');
+            $this->db->from('field_form');
             $this->db->where("FieldID", $record->FieldID );
             $this->db->where("FormID", $record->FormID );
             $c = $this->db->count_all_results();

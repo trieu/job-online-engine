@@ -11,7 +11,7 @@ class object_html_cache_manager extends data_manager {
 
     public function __construct() {
         parent::__construct();
-        $this->table_name = "ObjectHTMLCaches";
+        $this->table_name = "objecthtmlcaches";
     }
 
     function get_saved_cache_id($objectClass,$objectPK) {
@@ -97,7 +97,6 @@ class object_html_cache_manager extends data_manager {
 
     public function delete_by_id($id) {
     }
-    public function count_total() {
-    }
+   
 }
 ?>

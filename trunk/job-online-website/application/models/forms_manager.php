@@ -10,7 +10,7 @@ class forms_manager extends data_manager {
 
     public function __construct() {
         parent::__construct();
-        $this->table_name = "Forms";
+        $this->table_name = "forms";
     }
     protected function insert($object) {
     }
@@ -35,7 +35,6 @@ class forms_manager extends data_manager {
 
     public function delete_by_id($id) {
     }
-    public function count_total() {
-    }
+   
 }
 ?>

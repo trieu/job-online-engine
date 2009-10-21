@@ -5,11 +5,11 @@
     <tbody>
         <tr>
             <td>Email</td>
-            <td><?php echo form_input('email', set_value('email')); ?></td>
+            <td><?php echo form_input('email', set_value('email','trieu@drdvietnam.com')); ?></td>
         </tr>
         <tr>
             <td>Password</td>
-            <td><?php echo form_password('password'); ?></td>
+            <td><?php echo form_password('password','123456'); ?></td>
         </tr>
         <tr>
             <td colspan="2"><?php echo form_submit('submit', 'Login'); ?></td>

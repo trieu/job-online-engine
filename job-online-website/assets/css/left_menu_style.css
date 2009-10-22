@@ -1,0 +1,33 @@
+.group_action {
+    width: 200px;
+    border: 1px solid #ccc;
+    padding: 0px;
+    margin: 0px;
+}
+.group_action h3 {
+    height: 30px;
+    font-weight: normal;
+    background-color: #555;
+    color: #fff;
+    padding: 3px 0px 0px 3px;
+    margin: 0px;
+
+}
+.group_action h3 a{
+    color:white!important;
+}
+.group_action ul, .group_action ul li {
+    padding: 3px;
+    margin: 0px;
+    list-style: none;
+}
+.group_action ul li {
+    height: 30px;
+    vertical-align: middle;
+}
+.group_action ul li a {
+    display: block;
+    border-bottom: 1px dashed #eee;
+    text-decoration: none;
+    font-weight: bold;
+}

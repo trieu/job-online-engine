@@ -1,4 +1,4 @@
-<style>
+<style type="text/css" media="screen">
     .group_action {
         width: 200px;
         border: 1px solid #ccc;

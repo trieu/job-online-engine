@@ -10,65 +10,12 @@
         <title><?php echo $page_title; ?></title>
         <base href="<?= base_url()?>" />
 
-        <link type="text/css" rel="stylesheet" href="<?= base_url() ?>assets/css/style-general.css"/>
-        <link type="text/css" rel="stylesheet" href="<?= base_url() ?>assets/css/hope-general.css"/>
-        <link type="text/css" rel="stylesheet" href="<?= base_url() ?>assets/css/smoothness/jquery-ui-1.7.2.custom.css"/>
-        <style type="text/css" media="screen">
-            #container
-            {
-                width: 98%;
-                margin: 10px auto;
-                background-color: #fff;
-                color: #333;               
-                line-height: 130%;
-            }
-
-            #top
-            {
-                padding: .5em;
-                background-color: white;
-                border-bottom: 1px solid gray;
-            }
-
-            #top h1
-            {
-                padding: 0;
-                margin: 0;
-            }
-
-            #leftnav
-            {
-                float: left;
-                width: 160px;
-                margin: 0;
-                padding: 1em;
-            }
-
-            #content
-            {
-                margin-left: 230px;
-                border-left: 1px solid gray;
-                padding: 1em;
-                max-width: 36em;
-            }
-
-            #footer
-            {
-                clear: both;
-                margin: 0;
-                padding: .5em;
-                color: #333;
-                background-color: #ddd;
-                border-top: 1px solid gray;
-            }
-
-            #leftnav p { margin: 0 0 1em 0; }
-            #content h2 { margin: 0 0 .5em 0; }
-            .response_time {
-                font-weight:normal;
-                font-size:small;
-            }
-        </style>
+        <link type="text/css" media="screen" rel="stylesheet" href="<?= base_url() ?>assets/css/style-general.css"/>
+        <link type="text/css" media="screen" rel="stylesheet" href="<?= base_url() ?>assets/css/hope-general.css"/>
+        <link type="text/css" media="screen" rel="stylesheet" href="<?= base_url() ?>assets/css/left_menu_style.css"/>
+        <link type="text/css" media="screen" rel="stylesheet" href="<?= base_url() ?>assets/css/smoothness/jquery-ui-1.7.2.custom.css"/>
+        <link type="text/css" media="screen" rel="stylesheet" href="<?= base_url() ?>assets/css/main_decorator.css"/>           
+        
         <!--
         <script type="text/javascript" charset="utf-8" src="http://www.google.com/jsapi"></script>
         -->
@@ -121,7 +68,7 @@
             <div id="footer">
                 <span class="response_time_span">
                     <?= $page_respone_time ?>
-                    <input id="session_id" type="hidden" name="" value=" <?=$session_id?>" />
+                    <input id="session_id" type="hidden" name="session_id" value="<?=$session_id?>" />
                 </span>
             </div>
         </div>

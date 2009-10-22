@@ -93,7 +93,7 @@ if(isset ($pagination_config)) {
     function initEditableTableCell(){
         var arr = [];
         jQuery("#"+ table_name +" th").each(function(){
-            arr.push(jQuery(this).html().trim());
+            arr.push(jQuery.trim(jQuery(this).html()));
         });
         var r, c = 0, node = null;
         var f = function(i){
@@ -122,7 +122,7 @@ if(isset ($pagination_config)) {
 
 
     function setEditableTableCell(node, edit_type){
-        var field_value = jQuery(node).html().trim();
+        var field_value =  jQuery.trim(jQuery(node).html());
         var tip = field_value;
         if(tip == ""){
             tip = "Click to edit ...";
@@ -188,7 +188,7 @@ if(isset ($pagination_config)) {
 
     jQuery(document).ready(function() {
         initEditableTableCell();
-        initTooltipForEditableFields();
+        //initTooltipForEditableFields();
         initPagination();
     });
 
@@ -206,7 +206,7 @@ if(isset ($pagination_config)) {
     }
     function setPaginationLink(){
         jQuery("#grid_pagination a").each(function(){
-            var text = jQuery(this).html().trim();
+            var text = jQuery.trim(jQuery(this).html());
             jQuery(this).attr("href", "javascript:void("+text+")");
             if(text == "Next"){
                 jQuery(this).attr("href", "javascript:alert('next')");

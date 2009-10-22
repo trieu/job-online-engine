@@ -20,15 +20,13 @@ class admin_panel extends Controller {
         parent::Controller();
     }
 
-
     /**
      * @Decorated
      */
     public function index() {
-        $data = "Admin panel";
+        $data = "Admin panel for administrator!";
         $this->output->set_output($data);
     //    $this->load->view("admin/left_menu_bar",NULL);
-
     }
 
     /**

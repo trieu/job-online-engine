@@ -20,8 +20,20 @@
      <?php echo anchor('welcome/activate', 'Activate'); ?>
      <?php echo anchor('welcome/register', 'Register'); ?>
  <?php } else { ?>
-<div><p>Welcome <?php echo $first_name ?>,</p></div>
+
 <div>
-         <?php echo anchor('welcome/logout', 'Logout'); ?>
+    <p>
+ <?php
+ if(LANGUAGE_INDEX_PAGE == "tiengviet.php"){
+    echo "Chào mừng ".$first_name;
+ }
+ else {
+    echo "Welcome ".$first_name;
+ }
+ ?>,
+    </p>
+</div>
+<div>
+    <?php echo anchor('welcome/logout', 'Logout'); ?>
 </div>
 <?php } ?>

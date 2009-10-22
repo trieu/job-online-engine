@@ -1,7 +1,7 @@
-<style type="text/css">
+<style type="text/css" media="screen">
     .draggable { width: 100%; height: 50px; padding: 0.5em; float: left; margin: 5px 5px 5px 0;cursor:move;background-color:lavender }
     #draggable { width: 60px; height: 50px; padding: 0.5em; float: left; margin: 5px 5px 5px 0;cursor:move;background-color:gray }
-    #droppable { width: 150px; height: 150px; padding: 0.5em; float: left; margin: 10px; }
+    #droppable { width: 700px; height: 500px; padding: 0.5em; float: left; margin: 10px; background-color:lavender!important; border:1px solid #FCEFA1;}
     #droppable div {
         margin: 5px 0px;
     }
@@ -10,7 +10,7 @@
     }
 </style>
 
-<div style="visibility: hidden; position: absolute; left: 0px; top: 250px; z-index: 20; width: 180px;" id="basessm">
+<div style="visibility: hidden; position: absolute; left: 0px; top: 250px; z-index: 20; width: 180px;display:none" id="basessm">
     <div onmouseout="" onmouseover="" style="position: absolute; left: 0px; top: 100pt; z-index: 20; visibility: visible;" id="thessm">
         <?= $palette_content ?>
     </div>
@@ -19,12 +19,14 @@
 <div>
     <input type="button" value="Save" onclick="save_object_form()" />
     <input type="button" value="Cancel" onclick="" />
+    <input type="button" value="Reset" onclick="reset_build_the_form()" style="margin-left:7px;" />
 </div>
 
-<div id="droppable" class="ui-state-highlight" style="width:500px;height:500px;">
-
+<div id="droppable" class="" >
     <?= html_entity_decode($form_cache) ?>
-
+</div>
+<div style="float:right; width:186px;" >
+    <?= $palette_content ?>    
 </div>
 
 <div id="generic_dialog" title="Dialog Title" style="display:none" ></div>
@@ -46,20 +48,43 @@
 
         var uri = "<?= site_url("admin/admin_panel/saveFormBuilderResult") ?>";
         jQuery.post(uri, data,
-        function(id){
-            var html = "";
-            if(id > 0){
-                html = "Build form successfully!";
+            function(id){
+                var html = "";
+                if(id > 0){
+                    html = "Build form successfully!";
+                }
+                else  if(id == -100){
+                    html = "You have not changed form, so nothing to update!";
+                }
+                else{
+                    html = "Build form fail!";
+                }
+                show_dialog(html);
             }
-            else  if(id == -100){
-                html = "You have not changed form, so nothing to update!";
+        );
+    }
+
+    function reset_build_the_form(){
+        var data = {};        
+        data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
+        data["ObjectPK"] = <?= $form->getFormID(); ?>;      
+
+        var uri = "<?= site_url("admin/admin_panel/reset_build_the_form") ?>";
+        jQuery.post(uri, data,
+            function(id){
+                var html = "";
+                if(id > 0){
+                    html = "Reset form successfully!";
+                    FormBuilderScript.data_fields = [];
+                    jQuery("#droppable *").remove();
+                    jQuery("#droppable").html("");
+                }               
+                else{
+                    html = "Build form fail!";
+                }
+                show_dialog(html);
             }
-            else{
-                html = "Build form fail!";
-            }
-            show_dialog(html);
-        }
-    );
+        );
     }
 
     function show_dialog(content){
@@ -114,7 +139,7 @@
     }
 
     jQuery(document).ready(function() {
-        initPalette();
+        //initPalette();
         initDragAndDrop();
     });
 </script>

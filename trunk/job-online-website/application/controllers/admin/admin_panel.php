@@ -24,7 +24,7 @@ class admin_panel extends Controller {
      * @Decorated
      */
     public function index() {
-        $data = "Admin panel for administrator!";
+        $data = "Admin panel for administrator! (Thông tin hướng dẫn quản lý website việc làm)";
         $this->output->set_output($data);
     //    $this->load->view("admin/left_menu_bar",NULL);
     }
@@ -32,23 +32,67 @@ class admin_panel extends Controller {
     /**
      * @Decorated
      */
-    public function add_new_process() {
+    public function process_details($id = -1) {
         $this->load->model("process_manager");
         $data = $this->process_manager->get_dependency_instances();
         $data["action_uri"] = "admin/admin_panel/save_object/Process";
+        $data["id"] = $id;
         $this->load->helper("field_type");
-        $this->load->view("form/form_view",$data);
+        $this->load->view("admin/process_details",$data);
     }
 
-    /** @Decorated */
+    /**
+     * @Decorated
+     */
+    public function form_details($id = -1) {
+        $this->load->model("process_manager");
+        $data = $this->process_manager->get_dependency_instances();
+        $data["action_uri"] = "admin/admin_panel/save_object/Form";
+        $data["id"] = $id;
+        $this->load->helper("field_type");
+        $this->load->view("admin/form_details",$data);
+    }
+
+    /**
+     * @Decorated
+     */
+    public function field_details($id = -1) {
+        $this->load->model("process_manager");
+        $data = $this->process_manager->get_dependency_instances();
+        $data["action_uri"] = "admin/admin_panel/save_object/Field";
+        $data["id"] = $id;
+        $this->load->helper("field_type");
+        $this->load->view("admin/field_details",$data);
+    }
+
+
+    /**
+     * @Decorated
+     */
     public function save_object($object_name) {
         if($object_name == "Process") {
             $this->load->model("process_manager");
-            $pro = new Process();
-            $pro->setProcessID($this->input->post("ProcessID"));
-            $pro->setGroupID($this->input->post("GroupID"));
-            $pro->setProcessName($this->input->post("ProcessName"));
-            $this->process_manager->save($pro);
+            $obj = new Process();
+            $obj->setProcessID($this->input->post("ProcessID"));
+            $obj->setGroupID($this->input->post("GroupID"));
+            $obj->setProcessName($this->input->post("ProcessName"));
+            $this->process_manager->save($obj);
+        }
+        else if($object_name == "Form") {
+            $this->load->model("forms_manager");
+            $obj = new Form();
+            $obj->setProcessID($this->input->post("ProcessID"));
+            $obj->setGroupID($this->input->post("GroupID"));
+            $obj->setProcessName($this->input->post("ProcessName"));
+            $this->process_manager->save($obj);
+        }
+        else if($object_name == "Field") {
+            $this->load->model("field_manager");
+            $obj = new Field();
+            $obj->setProcessID($this->input->post("ProcessID"));
+            $obj->setGroupID($this->input->post("GroupID"));
+            $obj->setProcessName($this->input->post("ProcessName"));
+            $this->process_manager->save($obj);
         }
         $this->output->set_output("Save ".$object_name." successfully!");
     }
@@ -64,7 +108,7 @@ class admin_panel extends Controller {
             $filter = array("ProcessID"=>$id);
         }
         $processses = $this->process_manager->find_by_filter($filter);
-        $actions = anchor('admin/admin_panel/form_builder/', 'View Details', array('title' => 'View Details'));
+        $actions = anchor('admin/admin_panel/process_details/[ProcessID]', 'View Details', array('title' => 'View Details'));
         $data_table = $this->class_mapper->DataListToDataTable("Process",$processses,$actions);
 
         $data["table_name"] = "processes";
@@ -88,7 +132,7 @@ class admin_panel extends Controller {
     /**
      * @Decorated
      */
-    public function list_forms($id = "all") {
+    public function list_forms($id = "all", $build_form = false) {
         $this->load->model("forms_manager");
         $this->load->library('table');
         $filter = array();
@@ -97,7 +141,10 @@ class admin_panel extends Controller {
         }
         $forms = $this->forms_manager->find_by_filter($filter);
 
-        $actions = anchor('admin/admin_panel/form_builder/[FormID]', 'Build form', array('title' => 'Build form'));
+        $actions = anchor('admin/admin_panel/form_details/[FormID]', 'View Details', array('title' => 'View Details'));
+        if($build_form){
+            $actions = anchor('admin/admin_panel/form_builder/[FormID]', 'Build form', array('title' => 'Build form'));
+        }
         $data_table = $this->class_mapper->DataListToDataTable("Form",$forms, $actions);
 
         $data["table_name"] = "forms";
@@ -156,7 +203,7 @@ class admin_panel extends Controller {
      */
     public function form_builder($id = -1) {
         if($id === -1) {
-            redirect(site_url("admin/admin_panel/list_forms"));
+            redirect(site_url("admin/admin_panel/list_forms/all/true"));
         }
 
         $this->load->model("forms_manager");
@@ -165,6 +212,19 @@ class admin_panel extends Controller {
         $data["form_cache"] = $this->object_html_cache_manager->get_saved_cache_html(Form::$HTML_DOM_ID_PREFIX,$id);
         $data["palette_content"] = $this->loadPaletteContent();
         $this->load->view("form/form_builder",$data);
+    }
+
+    public function reset_build_the_form() {     
+        $this->load->model("forms_manager");
+        $this->load->model("object_html_cache_manager");
+
+        $this->db->delete("field_form", array("FormID" => $this->input->post("ObjectPK") ));
+        
+        $cache = new ObjectHTMLCache();
+        $cache->setObjectClass( $this->input->post("ObjectClass") );
+        $cache->setObjectPK( $this->input->post("ObjectPK") );
+        $cache->setCacheContent("");
+        echo $this->object_html_cache_manager->save($cache);
     }
 
     public function saveFormBuilderResult() {

@@ -39,7 +39,7 @@ class process_manager extends data_manager {
     }
 
     public function save($process) {
-        $data_array = $this->class_mapper->classToArray($this->table_name, $process);
+        $data_array = $this->class_mapper->classToArray("Process", $process);
         if($process->getProcessID() > 0) {
             $this->update($data_array);
         }

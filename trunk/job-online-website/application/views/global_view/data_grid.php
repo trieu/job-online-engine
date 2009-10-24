@@ -34,7 +34,7 @@
         text-decoration:none;
     }
 </style>
-<script language="JavaScript" src="<?= base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
+
 <script language="JavaScript" src="<?= base_url()?>assets/js/jquery.pagination/jquery.pagination.js"></script>
 <link type="text/css" rel="stylesheet" media="screen" href="<?= base_url()?>assets/js/jquery.pagination/style.css"/>
 <script language="JavaScript" src="<?= base_url()?>assets/js/jquery/jquery.jeditable.js"></script>
@@ -146,7 +146,6 @@ if(isset ($pagination_config)) {
             });           
         }
         else {
-
             var select_data = jQuery.extend(true, {}, edit_type["data"]);
             select_data["selected"] = field_value;
             tip = field_value + " = " + select_data[select_data["selected"]] + ". Click to edít!";

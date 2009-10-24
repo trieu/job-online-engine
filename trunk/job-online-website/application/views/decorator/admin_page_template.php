@@ -30,10 +30,6 @@
                 <h2>Administration Panel for Job Online</h2>
                 <div style="font-weight:bold; margin: 10px 0px;">
                     <?php echo anchor('', lang('home_page')); ?>   |
-                    <?php echo anchor('job_seeker/number_question/1', lang('job_seeker')); ?>   |
-                    <?php echo anchor('employer/number_question/1', lang('employer')); ?>   |
-                    <?php echo anchor('home', lang('news_events')); ?>   |
-                    <?php echo anchor('home', lang('contact')); ?>   |
                     <?php echo anchor('admin/admin_panel', lang('admin_panel')); ?>
                 </div>
                 <div class="box accessBox has-access">

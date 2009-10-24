@@ -1,6 +1,6 @@
 
 <b>Field list</b>
-<div class="" style="display:block; width:200px; height:600px;overflow:scroll">
+<div class="" style="display:block; width:200px; height:600px;overflow:scroll; margin-bottom:25px;">
     <?php
         $field = new Field();
         foreach ($fields as $field ) :

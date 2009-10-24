@@ -228,14 +228,12 @@ class admin_panel extends Controller {
     }
 
     public function saveFormBuilderResult() {
+
+        $is_html_cache_changed = $this->input->post("is_html_cache_changed");
         $Fields_Form_JSON = $this->input->post("Fields_Form_JSON");
-
-        ApplicationHook::logInfo($Fields_Form_JSON);
-
         $Fields_Form_JSON = json_decode($Fields_Form_JSON);
 
         $existed_record = 0;
-
         foreach ($Fields_Form_JSON as $record) {
             $this->db->select("COUNT(*)");
             $this->db->from('field_form');
@@ -254,11 +252,10 @@ class admin_panel extends Controller {
         }
         //        ApplicationHook::logError("existed_record ".$existed_record);
         //        ApplicationHook::logError("Fields_Form_JSON " . count($Fields_Form_JSON));
-        if($existed_record == count($Fields_Form_JSON)) {
+        if(($existed_record == count($Fields_Form_JSON)) && $is_html_cache_changed == "false") {           
             echo -100;
             return ;
         }
-
         $this->load->model("object_html_cache_manager");
         $cache = new ObjectHTMLCache();
         $cache->setObjectClass( $this->input->post("ObjectClass") );

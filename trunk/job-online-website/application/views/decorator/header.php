@@ -5,13 +5,17 @@
         <embed src="<?= base_url() ?>assets/images/banner.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" height="64" width="880">
     </object>
 </div>    
-<h1>DRD Job Online</h1>
-<div style="font-weight:bold; margin: 10px 0px;">
+<h1>Job Online</h1>
+<div style="font-weight:bold; margin: 10px 0px;" class="menu_bar">
     <?php echo anchor('', lang('home_page')); ?>   |
-    <?php echo anchor('job_seeker/number_question/1', lang('job_seeker')); ?>   |
-    <?php echo anchor('employer/number_question/1', lang('employer')); ?>   |
+    <?php echo anchor('job_seeker/number_question/1', lang('job_seeker'), array("title"=>lang('job_seeker_a_title'))); ?>   |
+    <?php echo anchor('employer/number_question/1', lang('employer'), array("title"=>lang('employer_a_title'))); ?>   |
+
+    <span style="display:none;">
     <?php echo anchor('home', lang('news_events')); ?>   |
     <?php echo anchor('home', lang('contact')); ?>   |
+    </span>
+    
     <?php 
         if($isGroupAdmin){
             echo anchor('admin/admin_panel', lang('admin_panel'));
@@ -39,3 +43,24 @@
         <hr/>
     </div>
 </div>
+
+<script type="text/javascript" language="JavaScript">
+      function initTooltip(){
+        jQuery("div[class='menu_bar'] a").bt({
+            shrinkToFit: true,
+            cssStyles: {
+                fontFamily: '"Lucida Grande",Helvetica,Arial,Verdana,sans-serif',
+                fontSize: '12px',
+                padding: '10px 14px'
+            }
+        });
+    }
+
+    jQuery(document).ready(function() {
+        //IE not work
+        if(!jQuery.browser["msie"]){
+             initTooltip();
+        }
+    });
+</script>
+

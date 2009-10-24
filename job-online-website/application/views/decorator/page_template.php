@@ -22,6 +22,7 @@
 
         <script language="JavaScript" type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>
         <script language="JavaScript" type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
+        <script language="JavaScript" type="text/javascript" src="<?= base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
         <script type="text/javascript" charset="utf-8" >
             // Load jQuery
             // google.load("jquery", "1");

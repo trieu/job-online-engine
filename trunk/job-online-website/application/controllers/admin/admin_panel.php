@@ -22,6 +22,7 @@ class admin_panel extends Controller {
 
     /**
      * @Decorated
+     * @Secured(role = "Administrator")
      */
     public function index() {
         $data = "Admin panel for administrator! (Thông tin hướng dẫn quản lý website việc làm)";
@@ -31,43 +32,59 @@ class admin_panel extends Controller {
 
     /**
      * @Decorated
+     * @Secured(role = "Administrator")
      */
     public function process_details($id = -1) {
+        $this->load->helper("field_type");
         $this->load->model("process_manager");
         $data = $this->process_manager->get_dependency_instances();
         $data["action_uri"] = "admin/admin_panel/save_object/Process";
         $data["id"] = $id;
-        $this->load->helper("field_type");
+        if($id > 0){
+            $data["obj_details"] = $this->process_manager->find_by_id($id);
+        }
+
+        $join_filter = array("form_process" => "form_process.FormID = forms.FormID AND form_process.ProcessID = ".$id);
+        $data["related_views"] = $this->render_list_forms_view("all",FALSE, FALSE,$join_filter);
+
         $this->load->view("admin/process_details",$data);
     }
 
     /**
      * @Decorated
+     * @Secured(role = "Administrator")
      */
     public function form_details($id = -1) {
-        $this->load->model("process_manager");
-        $data = $this->process_manager->get_dependency_instances();
+        $this->load->helper("field_type");
+        $this->load->model("forms_manager");
+        $data = $this->forms_manager->get_dependency_instances();
         $data["action_uri"] = "admin/admin_panel/save_object/Form";
         $data["id"] = $id;
-        $this->load->helper("field_type");
+        if($id > 0){
+            $data["obj_details"] = $this->forms_manager->find_by_id($id);
+            $data["related_objects"] = $this->forms_manager->get_related_objects($id);
+        }
         $this->load->view("admin/form_details",$data);
     }
 
     /**
      * @Decorated
+     * @Secured(role = "Administrator")
      */
     public function field_details($id = -1) {
-        $this->load->model("process_manager");
-        $data = $this->process_manager->get_dependency_instances();
+        $this->load->helper("field_type");
+        $this->load->model("field_manager");
+        $data = $this->field_manager->get_dependency_instances();
         $data["action_uri"] = "admin/admin_panel/save_object/Field";
         $data["id"] = $id;
-        $this->load->helper("field_type");
+        
         $this->load->view("admin/field_details",$data);
     }
 
 
     /**
      * @Decorated
+     * @Secured(role = "Administrator")
      */
     public function save_object($object_name) {
         if($object_name == "Process") {
@@ -79,26 +96,27 @@ class admin_panel extends Controller {
             $this->process_manager->save($obj);
         }
         else if($object_name == "Form") {
-            $this->load->model("forms_manager");
-            $obj = new Form();
-            $obj->setProcessID($this->input->post("ProcessID"));
-            $obj->setGroupID($this->input->post("GroupID"));
-            $obj->setProcessName($this->input->post("ProcessName"));
-            $this->process_manager->save($obj);
-        }
+                $this->load->model("forms_manager");
+                $obj = new Form();
+                $obj->setProcessID($this->input->post("ProcessID"));
+                $obj->setGroupID($this->input->post("GroupID"));
+                $obj->setProcessName($this->input->post("ProcessName"));
+                $this->process_manager->save($obj);
+            }
         else if($object_name == "Field") {
-            $this->load->model("field_manager");
-            $obj = new Field();
-            $obj->setProcessID($this->input->post("ProcessID"));
-            $obj->setGroupID($this->input->post("GroupID"));
-            $obj->setProcessName($this->input->post("ProcessName"));
-            $this->process_manager->save($obj);
-        }
+                $this->load->model("field_manager");
+                $obj = new Field();
+                $obj->setProcessID($this->input->post("ProcessID"));
+                $obj->setGroupID($this->input->post("GroupID"));
+                $obj->setProcessName($this->input->post("ProcessName"));
+                $this->process_manager->save($obj);
+            }
         $this->output->set_output("Save ".$object_name." successfully!");
     }
 
     /**
      * @Decorated
+     * @Secured(role = "Administrator")
      */
     public function list_processes($id = "all",$start_index = 1) {
         $this->load->model("process_manager");
@@ -131,20 +149,33 @@ class admin_panel extends Controller {
 
     /**
      * @Decorated
+     * @Secured(role = "Administrator")
      */
     public function list_forms($id = "all", $build_form = false) {
+        $this->render_list_forms_view($id, $build_form, TRUE);
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function list_fields($id = "all") {
+        $this->render_list_fields_view($id, TRUE);
+    }
+
+    protected function render_list_forms_view($id, $build_form, $show_in_page, $join_filter = array()) {
         $this->load->model("forms_manager");
         $this->load->library('table');
         $filter = array();
         if(is_numeric($id)) {
             $filter = array("FormID"=>$id);
         }
-        $forms = $this->forms_manager->find_by_filter($filter);
+        $forms = $this->forms_manager->find_by_filter($filter, $join_filter);
 
         $actions = anchor('admin/admin_panel/form_details/[FormID]', 'View Details', array('title' => 'View Details'));
-        if($build_form){
-            $actions = anchor('admin/admin_panel/form_builder/[FormID]', 'Build form', array('title' => 'Build form'));
-        }
+        
+        $actions = $actions ." | ".anchor('admin/admin_panel/form_builder/[FormID]', 'Build form', array('title' => 'Build form'));
+        
         $data_table = $this->class_mapper->DataListToDataTable("Form",$forms, $actions);
 
         $data["table_name"] = "forms";
@@ -152,13 +183,17 @@ class admin_panel extends Controller {
         $data["data_table_heading"] = array('FormID', 'FormName',"Actions");
         $data["data_editable_fields"] = array('FormID'=>FALSE, 'FormName'=>TRUE,'Actions'=>FALSE);
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
-        $this->load->view("global_view/data_grid",$data);
+
+        if($show_in_page) {
+            $this->load->view("global_view/data_grid",$data);
+            return "";
+        }
+        else {
+            return $this->load->view("global_view/data_grid",$data, TRUE);
+        }
     }
 
-    /**
-     * @Decorated
-     */
-    public function list_fields($id = "all") {
+    protected function render_list_fields_view($id, $show_in_page) {
         $this->load->model("field_manager");
         $this->load->library('table');
         $filter = array();
@@ -166,7 +201,7 @@ class admin_panel extends Controller {
             $filter = array("FieldID"=>$id);
         }
         $fields = $this->field_manager->find_by_filter($filter);
-        $actions = anchor('admin/fields/edit/[FieldID]', 'Edit Details', array('title' => 'Edit Details'));
+        $actions = anchor('admin/fields/edit/[FieldID]', 'View Details', array('title' => 'View Details'));
         $data_table = $this->class_mapper->DataListToDataTable("Field",$fields,$actions);
 
         $data["table_name"] = "fields";
@@ -175,9 +210,23 @@ class admin_panel extends Controller {
         $data["data_editable_fields"] = array('FieldID'=>FALSE, 'ObjectID'=>TRUE, 'FieldTypeID'=>TRUE,'FieldName'=>TRUE,'ValidationRules'=>TRUE,'Actions'=>FALSE);
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
         $data["description"] = $this->load->view("form/field_validation_guide","",TRUE);
-        $this->load->view("global_view/data_grid",$data);
+
+        if($show_in_page) {
+            $this->load->view("global_view/data_grid",$data);
+            return "";
+        }
+        else {
+            return $this->load->view("global_view/data_grid",$data, TRUE);
+        }
     }
 
+
+
+
+    /**
+     * @AjaxAction
+     * @Secured(role = "Administrator")
+     */
     public function save_data_table_cell() {
         $editable_field_name = ($this->input->post("editable_field_name"));
         $tokens = explode("-", $editable_field_name);
@@ -200,6 +249,7 @@ class admin_panel extends Controller {
 
     /**
      * @Decorated
+     * @Secured(role = "Administrator")
      */
     public function form_builder($id = -1) {
         if($id === -1) {
@@ -214,12 +264,16 @@ class admin_panel extends Controller {
         $this->load->view("form/form_builder",$data);
     }
 
-    public function reset_build_the_form() {     
+    /**
+     * @AjaxAction
+     * @Secured(role = "Administrator")
+     */
+    public function reset_build_the_form() {
         $this->load->model("forms_manager");
         $this->load->model("object_html_cache_manager");
 
         $this->db->delete("field_form", array("FormID" => $this->input->post("ObjectPK") ));
-        
+
         $cache = new ObjectHTMLCache();
         $cache->setObjectClass( $this->input->post("ObjectClass") );
         $cache->setObjectPK( $this->input->post("ObjectPK") );
@@ -227,6 +281,10 @@ class admin_panel extends Controller {
         echo $this->object_html_cache_manager->save($cache);
     }
 
+    /**
+     * @AjaxAction
+     * @Secured(role = "Administrator")
+     */
     public function saveFormBuilderResult() {
 
         $is_html_cache_changed = $this->input->post("is_html_cache_changed");
@@ -252,7 +310,7 @@ class admin_panel extends Controller {
         }
         //        ApplicationHook::logError("existed_record ".$existed_record);
         //        ApplicationHook::logError("Fields_Form_JSON " . count($Fields_Form_JSON));
-        if(($existed_record == count($Fields_Form_JSON)) && $is_html_cache_changed == "false") {           
+        if(($existed_record == count($Fields_Form_JSON)) && $is_html_cache_changed == "false") {
             echo -100;
             return ;
         }
@@ -283,6 +341,10 @@ class admin_panel extends Controller {
         return $palette_content;
     }
 
+    /**
+     * @AjaxAction
+     * @Secured(role = "Administrator")
+     */
     public function renderFieldUI($field_id) {
         $this->load->model("field_manager");
         $field = new Field();

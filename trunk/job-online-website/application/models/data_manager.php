@@ -73,10 +73,19 @@ abstract class data_manager extends Model {
      * abstract method find a existed object by the filter array
      *
      * @access	public
-     * @param	filter
+     * @param	filter, join_filter
      * @return	object
      */
-    abstract public function find_by_filter($filter = array());
+    abstract public function find_by_filter($filter = array(),$join_filter = array());
+
+    /**
+     * abstract method get dependant objects (mostly for foreign key fields)
+     *
+     * @access	public
+     * @param
+     * @return	array of object
+     */
+    abstract public function get_dependency_instances();
 
     /**
      * method count total records in table
@@ -110,14 +119,21 @@ abstract class data_manager extends Model {
     }
 
     /**
-     * Overidable method for select table from database and mapping to array of object
+     * Overidable method and helper for select table from database and mapping to array of object
      *
      * @access	protected
      * @param	$filter, $table_name, $class_name
      * @return	$list = array();
      */
-    protected function select_db_table(array $filter, $table_name, $class_name) {
-        $query = $this->db->get_where($table_name, $filter);
+    protected function select_db_table(array $filter, $table_name, $class_name, array $join_filter = array()) {
+        $this->db->select("$table_name.*");
+        $this->db->from($table_name);
+        $this->db->where($filter);
+        foreach ($join_filter as $join_table => $join_condition) {
+            $this->db->join($join_table, $join_condition);
+        }
+        
+        $query = $this->db->get();
         $list = array();
         $idx = 0;
         foreach ($query->result_array() as $data_row) {

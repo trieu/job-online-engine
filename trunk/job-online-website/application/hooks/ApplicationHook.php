@@ -2,6 +2,7 @@
 
 require_once 'annotations/annotations.php';
 require_once 'annotations/Secured.php';
+require_once 'annotations/AjaxAction.php';
 require_once 'annotations/Decorated.php';
 require_once 'application/models/data_manager.php';
 
@@ -114,7 +115,7 @@ class ApplicationHook {
             try {
                 $this->reflectedController = new ReflectionAnnotatedMethod($this->controllerName,$this->controllerMethod);
             } catch (ReflectionException $e) {
-                ApplicationHook::logError($this->controllerName.".".$this->controllerMethod." is NOT reflected!");
+                ApplicationHook::logError($e->getTraceAsString());
                 return NULL;
             }
         }

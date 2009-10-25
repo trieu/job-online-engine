@@ -1,6 +1,8 @@
 <style type="text/css">
     label {
         margin-right:5px;
+        display:block;
+        font-weight:bold;
     }
     fieldset div {
         margin-top:15px;
@@ -38,6 +40,7 @@ echo form_fieldset_close();
     jQuery(document).ready(function(){
         if(id > 0){
             jQuery("#FieldID").val(id);
+            jQuery("#FieldID").attr("readonly", "readonly");
         }
         else {
             jQuery("#FieldID").parent().hide();            

@@ -154,7 +154,7 @@ if(isset ($pagination_config)) {
                 type      : edit_type["type"],
                 data  : select_data,
                 callback : function(value, settings) {
-                    window.location.reload();
+                   window.location.reload();
                 },
                 cancel    : 'Cancel',
                 submit    : 'Save',

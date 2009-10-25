@@ -1,8 +1,4 @@
 <?php
-/* 
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 require_once(dirname(__FILE__).'/annotations.php');
 /**
  * Description of Secured
@@ -11,7 +7,11 @@ require_once(dirname(__FILE__).'/annotations.php');
  * @Target("method")
  */
 class Secured extends Annotation {
-    public $role;
+    const ROLE_USER = "User";
+    const ROLE_ADMIN = "Administrator";
+    const ROLE_OPERATOR = "Operator";
+
+    public $role = Secured::ROLE_USER;
     public $level;
 }
 ?>

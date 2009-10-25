@@ -15,7 +15,6 @@ class process_manager extends data_manager {
 
     public function get_dependency_instances() {
         $list = array();
-
         $this->db->select("id, name, description");
         $this->db->from("groups");
         $query = $this->db->get();
@@ -80,7 +79,7 @@ class process_manager extends data_manager {
      * @param	id
      * @return	array
      */
-    public function find_by_filter($filter = array()) {
+    public function find_by_filter($filter = array(), $join_filter = array()) {
        return $this->select_db_table($filter, $this->table_name, "Process");
     }
 

@@ -18,7 +18,7 @@ class field_value_manager extends data_manager {
     }
     public function find_by_id($id) {
     }
-    public function find_by_filter($filter) {
+    public function find_by_filter($filter, $join_filter = array()) {
     }
     protected function insert($object) {
     }

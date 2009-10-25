@@ -8,7 +8,7 @@ renderGroupOfActions("manage_process","Manage Processes", $action_names);
 $action_names  = array(
        "Create new Forms"=> "admin/admin_panel/form_details"
        ,"List all Forms"=> "admin/admin_panel/list_forms"
-       ,"Build form"=> "admin/admin_panel/form_builder");
+       );
 renderGroupOfActions("manage_form","Manage Forms", $action_names);
 
 $action_names  = array(

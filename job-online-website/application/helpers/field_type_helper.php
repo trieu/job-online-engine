@@ -2,7 +2,7 @@
 
 
 if ( ! function_exists('renderSelectField') ) {
-    function renderSelectField($input_name,$input_id = "" ,array $data_list = array(), $label_name = "" ) {
+    function renderSelectField($input_name,$input_id = "" ,array $data_list = array(), $label_name = "",array $selected_list = array(),$selectBoxExtAttr = "" ) {
         $html = "";
         
         if($label_name == "") {
@@ -19,9 +19,9 @@ if ( ! function_exists('renderSelectField') ) {
         );
         $html = $html . form_label($label_name, $input_id, $attributes);
 
-        $extAttr = 'id="'.$input_id.'" onChange="alert(jQuery(this).val());"';
+        $selectBoxExtAttr = $selectBoxExtAttr . 'id="'.$input_id.'"';
 
-        $html = $html . form_dropdown($input_name, $data_list,"",$extAttr);
+        $html = $html . form_dropdown($input_name, $data_list, $selected_list, $selectBoxExtAttr);
         $html = $html . "</div>";
         return $html;
     }

@@ -15,6 +15,11 @@ $action_names  = array(
     "Create new Fields"=> "admin/admin_panel/field_details"
     , "List all Fields"=> "admin/admin_panel/list_fields");
 renderGroupOfActions("manage_fields","Manage Fields", $action_names);
+
+$action_names  = array(
+    "Create Class"=> "admin/admin_panel/field_details"
+    , "List all Object Classes"=> "admin/admin_panel/list_fields");
+renderGroupOfActions("manage_object_classes","Manage Object Classes", $action_names);
 ?>
 
 <?php  function renderGroupOfActions($group_id, $group_name, $action_names) { ?>

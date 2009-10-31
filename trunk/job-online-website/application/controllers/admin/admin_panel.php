@@ -76,8 +76,7 @@ class admin_panel extends Controller {
         $this->load->model("field_manager");
         $data = $this->field_manager->get_dependency_instances();
         $data["action_uri"] = "admin/admin_panel/save_object/Field";
-        $data["id"] = $id;
-        
+        $data["id"] = $id;       
         $this->load->view("admin/field_details",$data);
     }
 
@@ -96,21 +95,17 @@ class admin_panel extends Controller {
             $this->process_manager->save($obj);
         }
         else if($object_name == "Form") {
-                $this->load->model("forms_manager");
-                $obj = new Form();
-                $obj->setProcessID($this->input->post("ProcessID"));
-                $obj->setGroupID($this->input->post("GroupID"));
-                $obj->setProcessName($this->input->post("ProcessName"));
-                $this->process_manager->save($obj);
-            }
+            $this->load->model("forms_manager");
+            $form = new Form();
+            $form->setFormID($this->input->post("FormID"));
+            $form->setFormName($this->input->post("FormName"));
+            $this->forms_manager->save($form);
+        }
         else if($object_name == "Field") {
-                $this->load->model("field_manager");
-                $obj = new Field();
-                $obj->setProcessID($this->input->post("ProcessID"));
-                $obj->setGroupID($this->input->post("GroupID"));
-                $obj->setProcessName($this->input->post("ProcessName"));
-                $this->process_manager->save($obj);
-            }
+            $this->load->model("field_manager");
+            $field = new Field();
+            $this->field_manager->save($field);
+        }
         $this->output->set_output("Save ".$object_name." successfully!");
     }
 

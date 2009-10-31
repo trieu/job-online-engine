@@ -46,7 +46,7 @@ if ( ! function_exists('renderInputField') ) {
         $html = $html . form_label($label_name, $input_id, $attributes);
 
         $data = array(
-            'name'        => $label_name,
+            'name'        => $input_name,
             'id'          => $input_id,
             'value'       => $input_value,
             'maxlength'   => '100',

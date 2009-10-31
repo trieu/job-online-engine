@@ -45,3 +45,17 @@
     font-weight:normal;
     font-size:small;
 }
+
+
+.focusable_text{
+    color: #000000;
+}
+
+.focusable_text:hover {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    background:#FFFF99 none repeat scroll 0 0;
+    text-decoration:none;
+    width:auto;
+}

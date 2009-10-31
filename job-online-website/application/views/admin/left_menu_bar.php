@@ -25,11 +25,11 @@ renderGroupOfActions("manage_object_classes","Manage Object Classes", $action_na
 <?php  function renderGroupOfActions($group_id, $group_name, $action_names) { ?>
 <div class="group_action">
     <h3 onclick="jQuery('#<?= $group_id ?>').slideToggle('slow');">
-        <a href="javascript:void(0) "><?= $group_name ?></a>
+        <a href="javascript:void(0)"><?= $group_name ?></a>
     </h3>
     <ul id="<?= $group_id ?>">
             <?php foreach ($action_names as $action_name => $action_uri) {
-                echo '<li><a href="'.site_url($action_uri).'">'.$action_name.'</a></li>';
+                echo '<li class="focusable_text"><a href="'.site_url($action_uri).'">'.$action_name.'</a></li>';
             }?>
     </ul>
 </div>

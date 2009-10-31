@@ -45,22 +45,7 @@
 </div>
 
 <script type="text/javascript" language="JavaScript">
-      function initTooltip(){
-        jQuery("div[class='menu_bar'] a").bt({
-            shrinkToFit: true,
-            cssStyles: {
-                fontFamily: '"Lucida Grande",Helvetica,Arial,Verdana,sans-serif',
-                fontSize: '12px',
-                padding: '10px 14px'
-            }
-        });
-    }
-
-    jQuery(document).ready(function() {
-        //IE not work
-        if(!jQuery.browser["msie"]){
-             initTooltip();
-        }
-    });
+    function initTooltip(){jQuery("div[class='menu_bar'] a").bt({shrinkToFit:true,cssStyles:{fontFamily:'"Lucida Grande",Helvetica,Arial,Verdana,sans-serif',fontSize:'12px',padding:'10px 14px'}});}
+    jQuery(document).ready(function(){if(!jQuery.browser["msie"]){initTooltip();}});
 </script>
 

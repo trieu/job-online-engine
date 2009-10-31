@@ -1,8 +1,11 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="content-language" content="en" >
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="content-language" content="en" />
+        <meta http-equiv="expires" content="<?php echo(ApplicationHook::getExpireTime(1))?>" />
+        
         <?php foreach($meta_tags as $name => $content) { ?>
         <meta name="<?php echo $name;?>" content="<?php echo $content;?>" />
         <?php } ?>
@@ -20,9 +23,9 @@
         <script type="text/javascript" charset="utf-8" src="http://www.google.com/jsapi"></script>
         -->
 
-        <script language="JavaScript" type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>
-        <script language="JavaScript" type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
-        <script language="JavaScript" type="text/javascript" src="<?= base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
+        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
+        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
         <script type="text/javascript" charset="utf-8" >
             // Load jQuery
             // google.load("jquery", "1");

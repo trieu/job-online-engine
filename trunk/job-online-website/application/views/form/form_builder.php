@@ -19,49 +19,34 @@
         color: yellow!important;
         background-color: black!important;
     }
-
     .table_dnd tr.myHoverClass td {
-        background-color: silver;
+        background:#FFFF99 none repeat scroll 0 0;
     }
-
     .table_dnd td.dragHandle {
 
     }
-
     .table_dnd td.showDragHandle {
         background-image: url(images/updown2.gif);
         background-repeat: no-repeat;
         background-position: center center;
         cursor: move;
     }
-
     .tDnD_whileDrag {
         background-color: #eee;
     }
-
     .table_dnd tr.alt td {
         background-color: #ecf6fc;
     }
-
     .table_dnd tr:hover {
 
     }
-
-
 </style>
-
-<div style="visibility: hidden; position: absolute; left: 0px; top: 250px; z-index: 20; width: 180px;display:none" id="basessm">
-    <div onmouseout="" onmouseover="" style="position: absolute; left: 0px; top: 100pt; z-index: 20; visibility: visible;" id="thessm">
-        <?= $palette_content ?>
-    </div>
-</div>
 
 <div>
     <input type="button" value="Save" onclick="save_object_form()" />
     <input type="button" value="Cancel" onclick="" />
     <input type="button" value="Reset" onclick="reset_build_the_form()" style="margin-left:7px;" />
 </div>
-
 <div id="droppable" >
     <?= html_entity_decode($form_cache) ?>
 </div>
@@ -70,12 +55,11 @@
 </div>
 
 <div id="generic_dialog" title="Dialog Title" style="display:none" ></div>
-
 <textarea id="save_form_dialog" name="" rows="4" cols="20" style="display:none" >
 </textarea>
 
-<script type="text/JavaScript" language="JavaScript" src="<?= base_url()?>assets/js/jquery/jquery.json.js"></script>
-<script type="text/JavaScript" language="JavaScript" src="<?= base_url()?>assets/js/jquery.tablednd/jquery.tablednd.js"></script>
+<script type="text/JavaScript" src="<?= base_url()?>assets/js/jquery/jquery.json.js"></script>
+<script type="text/JavaScript" src="<?= base_url()?>assets/js/jquery.tablednd/jquery.tablednd.js"></script>
 <script type="text/javascript">
     var dialog = false;
 
@@ -143,7 +127,7 @@
             jQuery(dialog).html("<div>"+content+"</div>");
         }
         else {
-            jQuery(dialog).dialog( 'open' );          
+            jQuery(dialog).dialog( 'open' );
             jQuery(dialog).html("<div>"+content+"</div>");
         }        
     }

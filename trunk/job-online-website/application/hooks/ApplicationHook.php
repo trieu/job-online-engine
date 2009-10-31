@@ -102,7 +102,7 @@ class ApplicationHook {
                 $this->controllerMethod = "index";
                 $this->controllerRequest = "";
                 return  TRUE;
-        }        
+            }
         return FALSE;
     }
 
@@ -141,6 +141,17 @@ class ApplicationHook {
         }
     }
 
+    public static function getExpireTime($num_days = 1) {
+        $offset = 60 * 60 * 24 * $num_days;
+        return gmdate("D, d M Y H:i:s", time() + $offset) . " GMT";
+    }
+
+    public function setPageHeaderCached($num_days = 1) {
+        Header("Cache-Control: must-revalidate");
+        $ExpStr = "Expires: " . self::getExpireTime($num_days);
+        Header($ExpStr);
+    }
+
     /**
      * Decorate the final view and response to client.
      * Each user group will be decorated by defferent theme template
@@ -152,20 +163,21 @@ class ApplicationHook {
             $this->is_logged_in = $this->CI->redux_auth->logged_in();
             if($reflection !=NULL ) {
                 if($reflection->hasAnnotation('Decorated')) {
+                    $this->setPageHeaderCached();
                     ApplicationHook::logInfo("->Decorate page for ".$this->controllerName.".".$this->controllerMethod);
-
                     $this->setSiteLanguage();
                     $data = $this->processFinalViewData();
-                    
+
                     if($this->isGroupUser()) {
                         echo ( $this->CI->load->view("decorator/page_template",$data,TRUE) );
                     }
                     else if($this->isGroupAdmin() && $this->controllerName == "admin_panel") {
                             echo ( $this->CI->load->view("decorator/admin_page_template",$data,TRUE) );
-                    }
-                    else {
-                        echo ( $this->CI->load->view("decorator/page_template",$data,TRUE) );
-                    }
+                        }
+                        else {
+                            echo ( $this->CI->load->view("decorator/page_template",$data,TRUE) );
+                        }
+
                     return;
                 }
             }
@@ -199,12 +211,15 @@ class ApplicationHook {
      */
     protected function processFinalViewData() {
         $this->CI->load->library('session');
+
+        $page_content = $this->decoratePageContent();       
+        
         $data = array(
             'page_title' => $this->CI->page_decorator->getPageTitle(),
             'meta_tags' => $this->CI->page_decorator->getPageMetaTags(),
             'page_header' => $this->decorateHeader(),
             'left_navigation' => $this->decorateLeftNavigation(),
-            'page_content' => $this->decoratePageContent(),
+            'page_content' => $page_content,
             'page_footer' => $this->decorateFooter()
         );
         $data['controller'] = $this->controllerName."/".$this->controllerMethod;
@@ -213,12 +228,25 @@ class ApplicationHook {
         return $data;
     }
 
-    protected function decorateHeader() {       
+    public static function get_tag( $tag, $xml ) {
+        $tag = preg_quote($tag);
+        preg_match_all("{<".$tag."[^>]*>(.*?)</".$tag.">}",  $xml,  $matches,PREG_PATTERN_ORDER);
+        self::log(count($matches));
+        foreach ($matches as $t) {
+            
+            self::logInfo(($t));
+        }
+        return $matches[1];
+    }
+
+
+
+    protected function decorateHeader() {
         $data["isGroupAdmin"] = $this->isGroupAdmin() === TRUE;
         return trim( $this->CI->load->view("decorator/header", $data, TRUE) );
     }
 
-    protected function decorateLeftNavigation() {    
+    protected function decorateLeftNavigation() {
         if($this->is_logged_in) {
             if($this->controllerName == "admin_panel" && $this->isGroupAdmin()) {
                 return trim( $this->CI->load->view("admin/left_menu_bar",NULL,TRUE) );
@@ -226,16 +254,16 @@ class ApplicationHook {
             else if($this->controllerName == "job_seeker" && $this->isGroupUser()) {
                     return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
                 }
-//           else if($this->controllerName == "employer" && $this->CI->redux_auth->profile()->group == "user") {
-//                   return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
-//           }
-            else {
-                $data = array(
-                    'is_login' => TRUE
-                    ,'first_name' => $this->CI->redux_auth->profile()->first_name
-                );
-                return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
-            }
+                //           else if($this->controllerName == "employer" && $this->CI->redux_auth->profile()->group == "user") {
+                //                   return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
+                //           }
+                else {
+                    $data = array(
+                        'is_login' => TRUE
+                        ,'first_name' => $this->CI->redux_auth->profile()->first_name
+                    );
+                    return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
+                }
         }
         else {
         //FIXME
@@ -266,7 +294,7 @@ class ApplicationHook {
     protected function endAndGetResponseTime() {
         $this->CI->benchmark->mark('code_end');
         $diff_time = 1000 * $this->CI->benchmark->elapsed_time('code_start', 'code_end');
-        return "<br><b>Rendering time: ".$diff_time." miliseconds</b><br>";
+        return "<br/><b>Rendering time: ".$diff_time." miliseconds</b><br/>";
     }
 
     public static function logInfo($text) {
@@ -299,21 +327,21 @@ class ApplicationHook {
     }
 
     protected function isGroupAdmin() {
-        if($this->is_logged_in === FALSE){
+        if($this->is_logged_in === FALSE) {
             return FALSE;
         }
         return $this->CI->redux_auth->profile()->group === "admin";
     }
 
     protected function isGroupUser() {
-        if($this->is_logged_in === FALSE){
+        if($this->is_logged_in === FALSE) {
             return FALSE;
         }
         return $this->CI->redux_auth->profile()->group === "user";
     }
 
     protected function isGroupOperator() {
-        if($this->is_logged_in === FALSE){
+        if($this->is_logged_in === FALSE) {
             return FALSE;
         }
         return $this->CI->redux_auth->profile()->group === "operator";

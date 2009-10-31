@@ -12,8 +12,7 @@ class forms_manager extends data_manager {
         parent::__construct();
         $this->table_name = "forms";
     }
-    protected function insert($object) {
-    }
+
     public function delete($object) {
     }
     public function find_by_id($id) {
@@ -25,8 +24,23 @@ class forms_manager extends data_manager {
         return NULL;
     }
     public function save($object) {
+        $data_array = $this->class_mapper->classToArray("Form", $object);
+        if($object->getFormID() > 0) {
+            $this->update($data_array);
+        }
+        else {
+            $this->insert($data_array);
+        }
     }
-    protected function update($object) {
+    protected function insert($data_array) {
+        $this->db->insert($this->table_name, $data_array);
+    }
+    protected function update($data_array) {
+        $key_field_name = "FormID";
+        $id = $data_array[$key_field_name];
+        unset($data_array[$key_field_name]);
+        $this->db->where($key_field_name, $id);
+        $this->db->update($this->table_name, $data_array);
     }
 
     public function find_by_filter($filter = array(), $join_filter = array()) {

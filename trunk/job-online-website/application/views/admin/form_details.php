@@ -47,6 +47,11 @@ echo renderInputField("FormID");
     ?>
 </div>
 
+<div>
+	<b>Processes</b>
+	<input type="text" id="tokenize" name="ProcessID" />
+</div>
+
 <?php
 echo renderInputField("FormName","FormName",$obj->getFormName(),"Form Name");
 ?>
@@ -74,6 +79,9 @@ echo form_fieldset_close();
 	}
 ?>
 
+
+
+
 <script type="text/javascript">
     var id = <?=  $id ?>;
 
@@ -97,4 +105,12 @@ echo form_fieldset_close();
             window.location = "<?= site_url('admin/admin_panel/form_builder/'.$id)?>";
         }
     }
+	
+	jQuery("#tokenize").tokenInput("/job-online-website/index.php/admin/process_controller/getProcessesAsJson", {
+            hintText: "Type in the name of process",
+            noResultsText: "No results",
+            searchingText: "Searching...",
+			method: "POST" 			
+        });
+
 </script>

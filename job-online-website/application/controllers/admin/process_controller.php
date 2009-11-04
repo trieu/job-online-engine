@@ -1,5 +1,5 @@
 <?php
-require_once 'application/classes/Process.php';
+require_once 'admin_panel.php';
 
 
 
@@ -95,6 +95,22 @@ class process_controller extends admin_panel {
         $obj->setProcessName($this->input->post("ProcessName"));
         $this->process_manager->save($obj);
         $this->output->set_output("Save successfully!");
+    }
+	
+	public function getProcessesAsJson() {
+	
+		ApplicationHook::log($this->input->post("q"));
+        $this->load->model("process_manager");
+        $processses = $this->process_manager->find_by_filter();
+		
+		$arr = array();
+		foreach ($processses as $p) {
+			$obj = new StdClass;
+			$obj->id = $p->getProcessID();
+			$obj->name = $p->getProcessName();
+			array_push($arr, $obj);
+		}
+		echo json_encode($arr);
     }
 
 }

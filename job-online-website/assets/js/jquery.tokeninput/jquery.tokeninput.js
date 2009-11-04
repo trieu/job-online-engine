@@ -555,7 +555,10 @@ $.TokenList = function (input, settings) {
             };
             
             if(settings.method == "POST") {
-			    $.post(settings.url + queryStringDelimiter + settings.queryParam + "=" + query, {}, callback, settings.contentType);
+				var params = {};
+				params[settings.queryParam+''] = query;
+			    $.post(settings.url, params , callback, settings.contentType);
+				
 		    } else {
 		        $.get(settings.url + queryStringDelimiter + settings.queryParam + "=" + query, {}, callback, settings.contentType);
 		    }

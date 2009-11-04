@@ -35,9 +35,9 @@
     }
 </style>
 
-<script language="JavaScript" src="<?= base_url()?>assets/js/jquery.pagination/jquery.pagination.js"></script>
+<script type="text/javascript" src="<?= base_url()?>assets/js/jquery.pagination/jquery.pagination.js"></script>
 <link type="text/css" rel="stylesheet" media="screen" href="<?= base_url()?>assets/js/jquery.pagination/style.css"/>
-<script language="JavaScript" src="<?= base_url()?>assets/js/jquery/jquery.jeditable.js"></script>
+<script type="text/javascript"  src="<?= base_url()?>assets/js/jquery/jquery.jeditable.js"></script>
 
 <?php
 $table_template = array (
@@ -64,15 +64,18 @@ $table_template = array (
 $this->table->set_template($table_template);
 $this->table->set_heading($data_table_heading);
 echo $this->table->generate($data_table);
-echo("<div id='grid_pagination' class='pagination' align='center'></div>");
+?>
 
+<div id='grid_pagination' class='pagination' style="text-align:center"></div>
+
+<?php
 if( isset ($description)) {
     echo br().$description;
 }
 ?>
 
 
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript" >
 
     var table_name = "<?= $table_name ?>";
     var data_editable_fields = null;
@@ -137,6 +140,7 @@ if(isset ($pagination_config)) {
         if(edit_type == null) {
             jQuery(node).editable("<?php echo site_url($edit_in_place_uri); ?>", {
                 type      : 'textarea',
+                rows      : 2,
                 cancel    : 'Cancel',
                 submit    : 'Save',
                 indicator : "<span style='color:red;font-weight:bold;'>Saving...</span>",
@@ -154,7 +158,7 @@ if(isset ($pagination_config)) {
                 type      : edit_type["type"],
                 data  : select_data,
                 callback : function(value, settings) {
-                   window.location.reload();
+                    window.location.reload();
                 },
                 cancel    : 'Cancel',
                 submit    : 'Save',

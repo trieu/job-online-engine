@@ -1,6 +1,4 @@
 <?php
-require_once 'application/classes/Process.php';
-
 
 
 /**
@@ -60,7 +58,7 @@ class admin_panel extends Controller {
         $data = $this->forms_manager->get_dependency_instances();
         $data["action_uri"] = "admin/admin_panel/save_object/Form";
         $data["id"] = $id;
-        if($id > 0){
+        if($id > 0) {
             $data["obj_details"] = $this->forms_manager->find_by_id($id);
             $data["related_objects"] = $this->forms_manager->get_related_objects($id);
         }
@@ -113,6 +111,14 @@ class admin_panel extends Controller {
      * @Decorated
      * @Secured(role = "Administrator")
      */
+    public function manage_user($id = "all", $start_index = 1) {
+
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
     public function list_processes($id = "all",$start_index = 1) {
         $this->load->model("process_manager");
         $this->load->library('table');
@@ -126,8 +132,8 @@ class admin_panel extends Controller {
 
         $data["table_name"] = "processes";
         $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('ProcessID', 'GroupID', 'ProcessName','Actions');
-        $data["data_editable_fields"] = array('ProcessID'=>FALSE, 'GroupID'=>TRUE,'ProcessName'=>TRUE,'Actions'=>FALSE);
+        $data["data_table_heading"] = array('ProcessID', 'Managed Object Class', 'ProcessName','Actions');
+        $data["data_editable_fields"] = array('ProcessName'=>TRUE);
 
         $GroupID_Opts =  array("type"=>"select","data"=> ($this->process_manager->get_select_field_options("groups")) );
         $data["editable_type_fields"] = array('GroupID'=>$GroupID_Opts);

@@ -14,7 +14,7 @@
         border:medium solid!important;
     }
 </style>
-<sp
+
 <?php
 $obj = new Form();
 $selected_processIDs = array();
@@ -42,7 +42,7 @@ echo renderInputField("FormID");
     </div>
     <?php
     echo "<span style='margin:0px!important;'>".ul($selected_processes)."</span>";
-    $selectBoxExtAttr = "id='ProcessID' size='4 multiple='multiple'";
+    $selectBoxExtAttr = "id='ProcessID' size='4' multiple='multiple'";
     echo form_dropdown("ProcessID", $processes, $selected_processIDs, $selectBoxExtAttr);
     ?>
 </div>
@@ -63,8 +63,18 @@ echo form_fieldset_close();
 ?>
 
 
+<?php	
+	addScriptFile("js/jquery.tokeninput/jquery.tokeninput.js");
+	addCssFile("js/jquery.tokeninput/token-input.css");
+	if($id <= 0 ){
+		setPageTitle("Create New Form");
+	}
+	else {
+		setPageTitle("Edit Form ".$obj->getFormName());
+	}
+?>
 
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
     var id = <?=  $id ?>;
 
     jQuery(document).ready(function(){

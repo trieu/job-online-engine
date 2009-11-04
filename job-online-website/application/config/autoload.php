@@ -51,7 +51,7 @@ $autoload['libraries'] = array('database', 'session', 'redux_auth', 'form_valida
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url', 'form', 'html','language');
+$autoload['helper'] = array('url', 'form', 'html','language','page_decorator');
 
 
 /*

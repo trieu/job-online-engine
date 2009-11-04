@@ -169,13 +169,13 @@ class ApplicationHook {
                     $data = $this->processFinalViewData();
 
                     if($this->isGroupUser()) {
-                        echo ( $this->CI->load->view("decorator/page_template",$data,TRUE) );
+                        echo ( $this->CI->load->view("decorator/page_template", $data, TRUE) );
                     }
                     else if($this->isGroupAdmin() && $this->controllerName == "admin_panel") {
-                            echo ( $this->CI->load->view("decorator/admin_page_template",$data,TRUE) );
+                            echo ( $this->CI->load->view("decorator/admin_page_template", $data, TRUE) );
                         }
                         else {
-                            echo ( $this->CI->load->view("decorator/page_template",$data,TRUE) );
+                            echo ( $this->CI->load->view("decorator/page_template", $data, TRUE) );
                         }
 
                     return;
@@ -214,9 +214,8 @@ class ApplicationHook {
 
         $page_content = $this->decoratePageContent();       
         
-        $data = array(
-            'page_title' => $this->CI->page_decorator->getPageTitle(),
-            'meta_tags' => $this->CI->page_decorator->getPageMetaTags(),
+        $data = array(            
+			'page_decorator' => $this->CI->page_decorator,
             'page_header' => $this->decorateHeader(),
             'left_navigation' => $this->decorateLeftNavigation(),
             'page_content' => $page_content,

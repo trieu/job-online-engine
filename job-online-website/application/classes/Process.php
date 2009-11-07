@@ -5,9 +5,9 @@ class Process {
     public static $DATABASE_TABLE = "Processes";
     public static $RELATIONS = array("Processes.GroupID => groups.id | groups.name");
 
-    private $ProcessID = -1;
-    private $GroupID = -1;
+    private $ProcessID = -1;    
     private $ProcessName = "";
+    private $Description = "";
    
 
     public function __construct() {
@@ -22,14 +22,6 @@ class Process {
         $this->ProcessID = $ProcessID;
     }
 
-    public function getGroupID() {
-        return $this->GroupID;
-    }
-
-    public function setGroupID($GroupID) {
-        $this->GroupID = $GroupID;
-    }
-
     public function getProcessName() {
         return $this->ProcessName;
     }
@@ -37,6 +29,14 @@ class Process {
     public function setProcessName($ProcessName) {
         $this->ProcessName = $ProcessName;
     }
+    public function getDescription() {
+        return $this->Description;
+    }
+
+    public function setDescription($Description) {
+        $this->Description = $Description;
+    }
+
 
 }
 ?>

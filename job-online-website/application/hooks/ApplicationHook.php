@@ -30,6 +30,7 @@ class ApplicationHook {
     public static $CONTROLLERS_FOLDER_PATH = "";
     public static $controllers_map;
     protected $is_logged_in = FALSE;
+     protected $is_in_admin_domain = FALSE;
 
 
     private function initHook() {
@@ -75,6 +76,11 @@ class ApplicationHook {
             if($routeTokensSize >= 2) {
                 $c = 0;
                 while(is_dir(ApplicationHook::$CONTROLLERS_FOLDER_PATH.$routeTokens[$c])) {
+                    if($routeTokens[$c] == "admin"){
+                       $this->is_in_admin_domain = TRUE;
+                       $c++;
+                       break;
+                    }
                     $c++;
                 }
                 $this->controllerName = $routeTokens[$c];
@@ -218,11 +224,9 @@ class ApplicationHook {
      */
     protected function processFinalViewData() {
         $this->CI->load->library('session');
-
-        $page_content = $this->decoratePageContent();       
-        
+        $page_content = $this->decoratePageContent();        
         $data = array(            
-			'page_decorator' => $this->CI->page_decorator,
+            'page_decorator' => $this->CI->page_decorator,
             'page_header' => $this->decorateHeader(),
             'left_navigation' => $this->decorateLeftNavigation(),
             'page_content' => $page_content,
@@ -253,27 +257,24 @@ class ApplicationHook {
     }
 
     protected function decorateLeftNavigation() {
-        if($this->is_logged_in) {
-            if($this->controllerName == "admin_panel" && $this->isGroupAdmin()) {
+        if($this->is_logged_in) {           
+            if( $this->is_in_admin_domain && $this->isGroupAdmin()) {
                 return trim( $this->CI->load->view("admin/left_menu_bar",NULL,TRUE) );
             }
-            else if($this->controllerName == "job_seeker" && $this->isGroupUser()) {
+            else if($this->isGroupUser()) {
                     return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
+            }
+            else {
+                $first_name = "";
+                if( $this->CI->redux_auth->profile() ){
+                    $first_name = $this->CI->redux_auth->profile()->first_name;
                 }
-                //           else if($this->controllerName == "employer" && $this->CI->redux_auth->profile()->group == "user") {
-                //                   return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
-                //           }
-                else {
-                    $first_name = "";
-                    if( $this->CI->redux_auth->profile() ){
-                        $first_name = $this->CI->redux_auth->profile()->first_name;
-                    }
-                    $data = array(
-                        'is_login' => TRUE
-                        ,'first_name' => $first_name
-                    );
-                    return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
-                }
+                $data = array(
+                    'is_login' => TRUE
+                    ,'first_name' => $first_name
+                );
+                return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
+            }
         }
         else {
         //FIXME

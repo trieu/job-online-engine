@@ -1,6 +1,5 @@
 <?php
-require_once 'application/classes/Process.php';
-
+require_once 'admin_panel.php';
 
 
 /**
@@ -19,16 +18,7 @@ class objectclass_controller extends admin_panel {
     public function __construct() {
         parent::__construct();
     }
-
-    /**
-     * @Decorated
-     * @Secured(role = "Administrator")
-     */
-    public function index() {
-        $data = "Admin panel for administrator! (Thông tin hướng dẫn quản lý website việc làm)";
-        $this->output->set_output($data);
-    //    $this->load->view("admin/left_menu_bar",NULL);
-    }
+   
 
     /**
      * @Decorated

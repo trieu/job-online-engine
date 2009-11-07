@@ -1,19 +1,20 @@
 
 <?php
 $action_names  = array(
-    "Create new process" => "admin/admin_panel/process_details"
-    ,"List all processes" => "admin/admin_panel/list_processes");
+    "Create new process" => "admin/process_controller/process_details"
+    ,"List all processes" => "admin/process_controller/list_processes"
+);
 renderGroupOfActions("manage_process","Manage Processes", $action_names);
 
 $action_names  = array(
-       "Create new Forms"=> "admin/admin_panel/form_details"
-       ,"List all Forms"=> "admin/admin_panel/list_forms"
-       );
+   "Create new Forms"=> "admin/form_controller/form_details"
+   ,"List all Forms"=> "admin/form_controller/list_forms"
+);
 renderGroupOfActions("manage_form","Manage Forms", $action_names);
 
 $action_names  = array(
-    "Create new Fields"=> "admin/admin_panel/field_details"
-    , "List all Fields"=> "admin/admin_panel/list_fields");
+    "Create new Fields"=> "admin/field_controller/field_details"
+    , "List all Fields"=> "admin/field_controller/list_fields");
 renderGroupOfActions("manage_fields","Manage Fields", $action_names);
 
 $action_names  = array(

@@ -15,10 +15,9 @@
 
 <?php
 $obj = new Process();
-$selected_groupID = array();
+
 if(isset($obj_details)) {
-    $obj = $obj_details;
-    $selected_groupID =  array($obj->getGroupID());
+    $obj = $obj_details;   
 }
 
 
@@ -26,13 +25,13 @@ $attributes = array('id' => 'process_info', 'class' => 'input_info');
 echo form_fieldset('Process Information', $attributes);
 echo form_open(site_url($action_uri), '');
 
-echo renderInputField("ProcessID");
+echo renderInputField("ProcessID","ProcessID",$obj->getProcessID()."","ProcessID");
 echo renderInputField("ProcessName","ProcessName",$obj->getProcessName(),"Process Name");
 ?>
 
 <div>
     <label for="Description">Description:</label>
-    <textarea id ="Description" name="Description" rows="4" cols="50"></textarea>
+    <textarea id ="Description" name="Description" rows="4" cols="50"><?= $obj->getDescription() ?></textarea>
 </div>
 
 <?php

@@ -48,7 +48,7 @@ echo form_fieldset_close();
 <?php } ?>
 
 
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript" >
     var id = <?=  $id ?>;
 
     jQuery(document).ready(function(){

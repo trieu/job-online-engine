@@ -133,7 +133,9 @@ public class FormLoginDemo {
             HttpEntity entity = response.getEntity();
             if (entity != null) {
                 //System.out.println(EntityUtils.toString(entity));                
-                parser.parseHTMLStream(EntityUtils.toByteArray(entity));
+                String data = parser.parseHTMLStream(EntityUtils.toByteArray(entity));
+                System.out.println(data);
+
                 entity.consumeContent();
             }
         } catch (Exception ex) {

@@ -43,7 +43,5 @@
 $route['default_controller'] = "home";
 $route['scaffolding_trigger'] = "";
 
-$route['admin'] = "admin_panel";
-
 /* End of file routes.php */
 /* Location: ./system/application/config/routes.php */

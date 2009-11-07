@@ -44,10 +44,10 @@ public class ParseUserAccountTest {
     
 
 
-    private static final String TEST_URI = "file:///F:/test_joe_data/TblStudentListAction.aspx.html";
-   // private static final String TEST_URI = "http://drdvn.com/admin/Default.aspx";
+    //private static final String TEST_URI = "file:///F:/test_joe_data/TblStudentListAction.aspx.html";
+    private static final String TEST_URI = "http://drdvn.com/admin/Default.aspx";
 
-    public void parseHTMLStream(byte[] bytes) throws Exception {
+    public String parseHTMLStream(byte[] bytes) throws Exception {
         InputStream is = new ByteArrayInputStream(bytes);
          // Disable most Cobra logging.
         Logger.getLogger("org.lobobrowser").setLevel(Level.WARNING);
@@ -56,6 +56,7 @@ public class ParseUserAccountTest {
         // as opposed to Cobra's HTML DOM implementation.
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
+        StringBuilder data = new StringBuilder("");
 
         try {
             Reader reader = new InputStreamReader(is, "UTF-8");
@@ -69,8 +70,14 @@ public class ParseUserAccountTest {
 
             NodeList nodeList = (NodeList) xpath.evaluate("html//table[@id='ctl00_ContentPlaceHolder1_StudentList']//tr", document, XPathConstants.NODESET);
             int length = nodeList.getLength();
+            boolean is_valid_row = true;
+           
+            StringBuilder data_row = null;
             System.out.println("# Row: " + length);
             for(int i = 0; i < length; i++) {
+                data_row = new StringBuilder();
+                is_valid_row = true;
+                
                 Element element = (Element) nodeList.item(i);
                 NodeList td_list = element.getElementsByTagName("td");
                 int td_list_length = td_list.getLength();
@@ -83,15 +90,24 @@ public class ParseUserAccountTest {
                         }
                         else
                         {
-                            String text = ((Element) td_list.item(j)).getTextContent();
-                           
-                            System.out.println(j +" : "+text.trim());
-                            
+                            String text = ((Element) td_list.item(j)).getTextContent().trim();
+                            if(text.contains("Chưa được sử dụng")){
+                                is_valid_row = false;
+                                data_row = null;
+                            }
+                            if(is_valid_row){
+                                data_row.append(text).append("\t");
+                            }
                         }
                     }
-                    System.out.println("#");
+                    if(is_valid_row){
+                        if(data_row.length()>10){
+                            data.append(data_row.toString()).append("\n");
+                        }
+                    }                    
                 }
             }
+
 
             String path_viewstate = "//*[@id='__VIEWSTATE']";
             Node node_viewstate = (Node) xpath.evaluate(path_viewstate, document, XPathConstants.NODE);
@@ -107,7 +123,7 @@ public class ParseUserAccountTest {
         } finally {
             is.close();
         }
-       // System.out.println("\n\n"+ new String(bytes));
+        return data.toString();
     }
 
     public static void main(String[] args) throws Exception {
@@ -153,22 +169,43 @@ public class ParseUserAccountTest {
             int startRow = 3, startCol = 2;
             System.out.println(rowNum);
             StringBuilder data = new StringBuilder();
+            StringBuilder data_row = null;
+            boolean is_valid_row = true;
+
             for (int i = 0; i < rowNum;) {
 //                Element element = (Element) nodeList.item(i);
 //                System.out.println("## Anchor # " + i + ": " + element.getTextContent());
                 String path = "/html/body/table/tbody/tr/td/table/tbody/tr[7]/td/form/table/tbody/tr/td[3]/div/div/table/tbody/tr[" + startRow + "]/td[" + startCol + "]";
                              ///html/body/table/tbody/tr/td/table/tbody/tr[7]/td/form/table/tbody/tr/td[3]/div/div/table/tbody/tr[3]/td[2]
                 Node node_td = (Node) xpath.evaluate(path, document, XPathConstants.NODE);
+                
+                is_valid_row = true;
                 if (node_td != null) {
-                    data.append(node_td.getTextContent()).append("$");
+                    if(startCol == 2){
+                        data_row = new StringBuilder();
+                    }
+                    if(node_td.getTextContent().contains("Chưa được sử dụng")){
+                        is_valid_row = false;
+                        startCol = 2;
+                        startRow++;
+                        i++;
+                    }
+                    if(data_row != null){
+                        data_row.append(node_td.getTextContent()).append("$");
+                    }
                 }
-
-                startCol++;
-                if (startCol > 6) {
-                    data.append("\n");
-                    startCol = 2;
-                    startRow++;
-                    i++;
+                if(is_valid_row) {
+                    startCol++;
+                    if (startCol > 6) {
+                        if(data_row != null) {
+                            data.append(data_row.toString());
+                            data.append("\n");
+                        }
+                        startCol = 2;
+                        startRow++;
+                        i++;
+                        data_row = null;
+                    }
                 }
             }
             System.out.println(data.toString());

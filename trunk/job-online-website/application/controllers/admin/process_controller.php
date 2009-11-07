@@ -1,8 +1,6 @@
 <?php
 require_once 'admin_panel.php';
 
-
-
 /**
  * Description of admin_panel
  *
@@ -20,16 +18,7 @@ class process_controller extends admin_panel {
         parent::__construct();
     }
 
-    /**
-     * @Decorated
-     * @Secured(role = "Administrator")
-     */
-    public function index() {
-        $data = "Admin panel for administrator! (Thông tin hướng dẫn quản lý website việc làm dành cho admin)";
-        $this->output->set_output($data);
-    //    $this->load->view("admin/left_menu_bar",NULL);
-    }
-
+   
     /**
      * @Decorated
      * @Secured(role = "Administrator")
@@ -40,7 +29,7 @@ class process_controller extends admin_panel {
         $data = $this->process_manager->get_dependency_instances();
         $data["action_uri"] = "admin/process_controller/save";
         $data["id"] = $id;
-        if($id > 0){
+        if($id > 0) {
             $data["obj_details"] = $this->process_manager->find_by_id($id);
         }
 
@@ -49,7 +38,7 @@ class process_controller extends admin_panel {
 
         $this->load->view("admin/process_details",$data);
     }
-    
+
     /**
      * @Decorated
      * @Secured(role = "Administrator")
@@ -62,7 +51,7 @@ class process_controller extends admin_panel {
             $filter = array("ProcessID"=>$id);
         }
         $processses = $this->process_manager->find_by_filter($filter);
-        $actions = anchor('admin/admin_panel/process_details/[ProcessID]', 'View Details', array('title' => 'View Details'));
+        $actions = anchor('admin/process_controller/process_details/[ProcessID]', 'View Details', array('title' => 'View Details'));
         $data_table = $this->class_mapper->DataListToDataTable("Process",$processses,$actions);
 
         $data["table_name"] = "processes";
@@ -75,7 +64,7 @@ class process_controller extends admin_panel {
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
 
         $pagination_config = array();
-        $pagination_config['base_url'] = site_url("admin/admin_panel/list_processes");
+        $pagination_config['base_url'] = site_url("admin/process_controller/list_processes");
         $pagination_config['total_rows'] = $this->process_manager->count_total();
         $pagination_config['per_page'] = 2;
         $data["pagination_config"] = $pagination_config;
@@ -83,34 +72,35 @@ class process_controller extends admin_panel {
         $this->load->view("global_view/data_grid",$data);
     }
 
-     /**
+    /**
      * @Decorated
      * @Secured(role = "Administrator")
      */
     public function save() {
+        $id = $this->input->post("ProcessID");
+      
         $this->load->model("process_manager");
         $obj = new Process();
-        $obj->setProcessID($this->input->post("ProcessID"));
-        $obj->setGroupID($this->input->post("GroupID"));
+        $obj->setProcessID($id);
         $obj->setProcessName($this->input->post("ProcessName"));
+        $obj->setDescription($this->input->post("Description"));
         $this->process_manager->save($obj);
         $this->output->set_output("Save successfully!");
+       
     }
-	
-	public function getProcessesAsJson() {
-	
-		ApplicationHook::log($this->input->post("q"));
+
+    public function getProcessesAsJson() {
+        ApplicationHook::log($this->input->post("q"));
         $this->load->model("process_manager");
         $processses = $this->process_manager->find_by_filter();
-		
-		$arr = array();
-		foreach ($processses as $p) {
-			$obj = new StdClass;
-			$obj->id = $p->getProcessID();
-			$obj->name = $p->getProcessName();
-			array_push($arr, $obj);
-		}
-		echo json_encode($arr);
+        $arr = array();
+        foreach ($processses as $p) {
+            $obj = new StdClass;
+            $obj->id = $p->getProcessID();
+            $obj->name = $p->getProcessName();
+            array_push($arr, $obj);
+        }
+        echo json_encode($arr);
     }
 
 }

@@ -4,7 +4,7 @@ class Form {
     public static $HTML_DOM_ID_PREFIX = "form_";
     private $FormID;
     private $FormName;
-
+    private $Description = "";
 
     public function __construct() {
         ;
@@ -25,7 +25,13 @@ class Form {
     public function setFormName($FormName) {
         $this->FormName = $FormName;
     }
+    public function getDescription() {
+        return $this->Description;
+    }
 
+    public function setDescription($Description) {
+        $this->Description = $Description;
+    }
 
 }
 ?>

@@ -20,16 +20,7 @@ class object_controller extends admin_panel {
         parent::__construct();
     }
 
-    /**
-     * @Decorated
-     * @Secured(role = "Administrator")
-     */
-    public function index() {
-        $data = "Admin panel for administrator! (Thông tin hướng dẫn quản lý website việc làm)";
-        $this->output->set_output($data);
-    //    $this->load->view("admin/left_menu_bar",NULL);
-    }
-
+   
     /**
      * @Decorated
      * @Secured(role = "Administrator")

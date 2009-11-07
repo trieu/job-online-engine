@@ -94,6 +94,7 @@ class ApplicationHook {
                     $this->controllerName = $routeTokens[0];
                     $this->controllerMethod = "index";
                     $this->controllerRequest = $tokens[1];
+                    $this->shouldGoToAdminPanel($this->controllerName);
                     return  TRUE;
                 }
         }
@@ -104,6 +105,12 @@ class ApplicationHook {
                 return  TRUE;
             }
         return FALSE;
+    }
+
+    protected function shouldGoToAdminPanel($controllerClassName) {
+        if($controllerClassName == "admin"){
+            redirect("admin/admin_panel");
+        }
     }
 
     /**
@@ -257,9 +264,13 @@ class ApplicationHook {
                 //                   return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
                 //           }
                 else {
+                    $first_name = "";
+                    if( $this->CI->redux_auth->profile() ){
+                        $first_name = $this->CI->redux_auth->profile()->first_name;
+                    }
                     $data = array(
                         'is_login' => TRUE
-                        ,'first_name' => $this->CI->redux_auth->profile()->first_name
+                        ,'first_name' => $first_name
                     );
                     return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
                 }
@@ -326,21 +337,30 @@ class ApplicationHook {
     }
 
     protected function isGroupAdmin() {
-        if($this->is_logged_in === FALSE) {
+        if($this->is_logged_in == FALSE) {
+            return FALSE;
+        }
+        else if( ! $this->CI->redux_auth->profile() ){
             return FALSE;
         }
         return $this->CI->redux_auth->profile()->group === "admin";
     }
 
     protected function isGroupUser() {
-        if($this->is_logged_in === FALSE) {
+        if($this->is_logged_in == FALSE) {
+            return FALSE;
+        }
+        else if( ! $this->CI->redux_auth->profile() ){
             return FALSE;
         }
         return $this->CI->redux_auth->profile()->group === "user";
     }
 
     protected function isGroupOperator() {
-        if($this->is_logged_in === FALSE) {
+        if($this->is_logged_in == FALSE) {
+            return FALSE;
+        }
+        else if( ! $this->CI->redux_auth->profile() ){
             return FALSE;
         }
         return $this->CI->redux_auth->profile()->group === "operator";

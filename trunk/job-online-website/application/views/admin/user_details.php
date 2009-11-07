@@ -27,15 +27,9 @@ echo form_fieldset('Process Information', $attributes);
 echo form_open(site_url($action_uri), '');
 
 echo renderInputField("ProcessID");
+echo renderSelectField("GroupID", "groups", $groups, "Group Owner",$selected_groupID);
 echo renderInputField("ProcessName","ProcessName",$obj->getProcessName(),"Process Name");
-?>
 
-<div>
-    <label for="Description">Description:</label>
-    <textarea id ="Description" name="Description" rows="4" cols="50"></textarea>
-</div>
-
-<?php
 echo form_submit('mysubmit', 'Submit');
 echo form_button("cancel", "Cancel", 'onclick="history.back();"');
 

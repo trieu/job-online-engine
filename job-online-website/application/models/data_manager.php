@@ -43,6 +43,15 @@ abstract class data_manager extends Model {
     abstract protected function update($object);
 
     /**
+     * abstract method update specific field in a existed object
+     *
+     * @access	public
+     * @param	object
+     * @return	Id of object
+     */
+    abstract public function updateByField($id, $editable_field_name, $editable_field_value);
+
+    /**
      * abstract method delete a existed object
      *
      * @access	public
@@ -125,7 +134,7 @@ abstract class data_manager extends Model {
      * @param	$filter, $table_name, $class_name
      * @return	$list = array();
      */
-    protected function select_db_table(array $filter, $table_name, $class_name, array $join_filter = array()) {
+    protected final function select_db_helper(array $filter, $table_name, $class_name, array $join_filter = array()) {
         $this->db->select("$table_name.*");
         $this->db->from($table_name);
         $this->db->where($filter);

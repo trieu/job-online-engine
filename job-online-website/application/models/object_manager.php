@@ -37,5 +37,7 @@ class object_manager extends data_manager {
         $list["groups"] = $groups;
         return $list;
     }
+    public function updateByField($id,$editable_field_name,$editable_field_value) {
+    }
 }
 ?>

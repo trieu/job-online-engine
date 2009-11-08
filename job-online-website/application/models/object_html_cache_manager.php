@@ -89,7 +89,7 @@ class object_html_cache_manager extends data_manager {
      * @return	array
      */
     public function find_by_filter($filter = array(), $join_filter = array()) {
-        return $this->select_db_table($filter, $this->table_name, "ObjectHTMLCache");
+        return $this->select_db_helper($filter, $this->table_name, "ObjectHTMLCache");
     }
 
     public function delete($process) {
@@ -111,5 +111,7 @@ class object_html_cache_manager extends data_manager {
         return $list;
     }
 
+    public function updateByField($id,$editable_field_name,$editable_field_value) {
+    }
 }
 ?>

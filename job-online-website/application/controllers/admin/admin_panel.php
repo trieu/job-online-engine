@@ -46,16 +46,15 @@ class admin_panel extends Controller {
         }
         $forms = $this->forms_manager->find_by_filter($filter, $join_filter);
 
-        $actions = anchor('admin/admin_panel/form_details/[FormID]', 'View Details', array('title' => 'View Details'));
-        
-        $actions = $actions ." | ".anchor('admin/admin_panel/form_builder/[FormID]', 'Build form', array('title' => 'Build form'));
+        $actions = anchor('admin/form_controller/form_details/[FormID]', 'View Details', array('title' => 'View Details'));        
+        $actions = $actions ." | ".anchor('admin/form_controller/form_builder/[FormID]', 'Build form', array('title' => 'Build form'));
         
         $data_table = $this->class_mapper->DataListToDataTable("Form",$forms, $actions);
 
         $data["table_name"] = "forms";
         $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('FormID', 'FormName',"Actions");
-        $data["data_editable_fields"] = array('FormID'=>FALSE, 'FormName'=>TRUE,'Actions'=>FALSE);
+        $data["data_table_heading"] = array('FormID', 'FormName','Description',"Actions");
+        $data["data_editable_fields"] = array('FormName'=>TRUE,'Description'=>TRUE);
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
 
         if($show_in_page) {
@@ -101,43 +100,31 @@ class admin_panel extends Controller {
      * @Secured(role = "Administrator")
      */
     public function save_data_table_cell() {
-        $editable_field_name = ($this->input->post("editable_field_name"));
-        $tokens = explode("-", $editable_field_name);
-
-        $table = $tokens[0] ;
-        $id = $tokens[1];
-        $primary_key_field = Process::$PRIMARY_KEY_FIELDS;
-        if($primary_key_field == $tokens[2] ) {
-            return $this->input->post("editable_field_value");
-        }
-
-        $data = array(
-            $tokens[2] => $this->input->post("editable_field_value")
-        );
-        $this->db->where($primary_key_field, $id);
-        $this->db->update($table, $data);
-
         echo $this->input->post("editable_field_value");
+        //TODO
+
+//        $editable_field_name = ($this->input->post("editable_field_name"));
+//        $tokens = explode("-", $editable_field_name);
+//
+//        $table = $tokens[0] ;
+//        $id = $tokens[1];
+//        $primary_key_field = Process::$PRIMARY_KEY_FIELDS;
+//        if($primary_key_field == $tokens[2] ) {
+//            return $this->input->post("editable_field_value");
+//        }
+//
+//        $data = array(
+//            $tokens[2] => $this->input->post("editable_field_value")
+//        );
+//        $this->db->where($primary_key_field, $id);
+//        $this->db->update($table, $data);
+//
+//        echo $this->input->post("editable_field_value");
     }
 
 
 
-    /**
-     * @AjaxAction
-     * @Secured(role = "Administrator")
-     */
-    public function reset_build_the_form() {
-        $this->load->model("forms_manager");
-        $this->load->model("object_html_cache_manager");
 
-        $this->db->delete("field_form", array("FormID" => $this->input->post("ObjectPK") ));
-
-        $cache = new ObjectHTMLCache();
-        $cache->setObjectClass( $this->input->post("ObjectClass") );
-        $cache->setObjectPK( $this->input->post("ObjectPK") );
-        $cache->setCacheContent("");
-        echo $this->object_html_cache_manager->save($cache);
-    }
 
   
 

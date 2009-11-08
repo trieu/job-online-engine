@@ -8,7 +8,6 @@ require_once 'application/classes/Field.php';
  */
 class field_manager extends data_manager {
 
-
     public function __construct() {
         parent::__construct();
         $this->table_name = "fields";
@@ -32,7 +31,7 @@ class field_manager extends data_manager {
     }
 
     public function find_by_filter($filter = array(), $join_filter = array()) {
-        return $this->select_db_table($filter, $this->table_name, "Field");
+        return $this->select_db_helper($filter, $this->table_name, "Field");
     }
 
     public function delete_by_id($id) {
@@ -49,6 +48,8 @@ class field_manager extends data_manager {
         }
         $list["groups"] = $groups;
         return $list;
+    }
+    public function updateByField($id,$editable_field_name,$editable_field_value) {
     }
 }
 ?>

@@ -2,7 +2,7 @@
 
 class Form {
     public static $HTML_DOM_ID_PREFIX = "form_";
-    private $FormID;
+    private $FormID = -1;
     private $FormName;
     private $Description = "";
 

@@ -26,7 +26,7 @@ class fieldtypes_manager extends data_manager {
     }
 
     public function find_by_filter($filter = array(), $join_filter = array()) {
-        return $this->select_db_table($filter, $this->table_name, "FieldType");
+        return $this->select_db_helper($filter, $this->table_name, "FieldType");
     }
 
     public function delete_by_id($id) {
@@ -45,5 +45,7 @@ class fieldtypes_manager extends data_manager {
         return $list;
     }
 
+    public function updateByField($id,$editable_field_name,$editable_field_value) {
+    }
 }
 ?>

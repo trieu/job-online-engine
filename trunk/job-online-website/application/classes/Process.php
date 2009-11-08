@@ -3,7 +3,7 @@
 class Process {
     public static $PRIMARY_KEY_FIELDS = "ProcessID";
     public static $DATABASE_TABLE = "Processes";
-    public static $RELATIONS = array("Processes.GroupID => groups.id | groups.name");
+    public static $RELATIONS = array();
 
     private $ProcessID = -1;    
     private $ProcessName = "";

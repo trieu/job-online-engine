@@ -18,6 +18,7 @@ class forms_manager extends data_manager {
     public function find_by_id($id) {
         $filter = array($this->table_name.".FormID" => $id);
         $list = $this->find_by_filter($filter);
+        //ApplicationHook::log($list[0]->getFormName());
         if(count($list) == 1) {
             return $list[0];
         }
@@ -34,6 +35,10 @@ class forms_manager extends data_manager {
     }
     protected function insert($data_array) {
         $this->db->insert($this->table_name, $data_array);
+        if($this->db->affected_rows()>0){
+            return $this->db->insert_id();
+        }
+        return -1;
     }
     protected function update($data_array) {
         $key_field_name = "FormID";
@@ -41,10 +46,14 @@ class forms_manager extends data_manager {
         unset($data_array[$key_field_name]);
         $this->db->where($key_field_name, $id);
         $this->db->update($this->table_name, $data_array);
+        if($this->db->affected_rows()>0){
+            return $id;
+        }
+        return -1;
     }
 
     public function find_by_filter($filter = array(), $join_filter = array()) {
-        return $this->select_db_table($filter,  $this->table_name , "Form",$join_filter);
+        return $this->select_db_helper($filter,  $this->table_name , "Form",$join_filter);
     }
 
     public function delete_by_id($id) {
@@ -73,9 +82,11 @@ class forms_manager extends data_manager {
         foreach ($query->result_array() as $row) {
             $processes[$row["ProcessID"]] = $row["ProcessName"];
         }
-        ApplicationHook::logInfo($this->db->last_query());
+        //ApplicationHook::logInfo($this->db->last_query());
         $list["processes"] = $processes;
         return $list;
+    }
+    public function updateByField($id,$editable_field_name,$editable_field_value) {
     }
 }
 ?>

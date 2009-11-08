@@ -56,8 +56,8 @@ class process_controller extends admin_panel {
 
         $data["table_name"] = "processes";
         $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('ProcessID', 'Managed Object Class', 'ProcessName','Actions');
-        $data["data_editable_fields"] = array('ProcessName'=>TRUE);
+        $data["data_table_heading"] = array('ProcessID','ProcessName', 'Description','Actions');
+        $data["data_editable_fields"] = array('ProcessName'=>TRUE,'Description'=>TRUE);
 
         $GroupID_Opts =  array("type"=>"select","data"=> ($this->process_manager->get_select_field_options("groups")) );
         $data["editable_type_fields"] = array('GroupID'=>$GroupID_Opts);

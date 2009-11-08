@@ -19,10 +19,12 @@ ul.token-input-list li {
 }
 
 ul.token-input-list li input {
-    border: 0;
-    width: 350px;
+    border: 1px blue solid;    
+    width: 90%;
+    height: 22px;
     padding: 3px 8px;
     font-weight:bold;
+    margin:10px 10px 3px 10px;
 }
 
 li.token-input-token {
@@ -60,6 +62,7 @@ li.token-input-selected-token span {
 }
 
 div.token-input-dropdown {
+    margin-top: 0px!important;
     position: absolute;
     width: 400px;
     background-color: #fff;

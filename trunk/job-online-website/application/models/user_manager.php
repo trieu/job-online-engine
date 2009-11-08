@@ -6,11 +6,11 @@ require_once 'application/classes/Process.php';
  * @property CI_Loader $load
  * @property CI_DB_active_record $db
  */
-class process_manager extends data_manager {
+class user_manager extends data_manager {
 
     public function __construct() {
         parent::__construct();
-        $this->table_name = "processes";
+        $this->table_name = "user";
     }
 
     public function get_dependency_instances() {
@@ -80,7 +80,7 @@ class process_manager extends data_manager {
      * @return	array
      */
     public function find_by_filter($filter = array(), $join_filter = array()) {
-       return $this->select_db_table($filter, $this->table_name, "Process");
+       return $this->select_db_helper($filter, $this->table_name, "Process");
     }
 
     public function delete($process) {
@@ -89,6 +89,8 @@ class process_manager extends data_manager {
     public function delete_by_id($id) {
     }
 
+    public function updateByField($id,$editable_field_name,$editable_field_value) {
+    }
 }
 
 

@@ -80,7 +80,7 @@ class process_manager extends data_manager {
      * @return	array
      */
     public function find_by_filter($filter = array(), $join_filter = array()) {
-       return $this->select_db_table($filter, $this->table_name, "Process");
+       return $this->select_db_helper($filter, $this->table_name, "Process");
     }
 
     public function delete($process) {
@@ -89,6 +89,8 @@ class process_manager extends data_manager {
     public function delete_by_id($id) {
     }
 
+    public function updateByField($id,$editable_field_name,$editable_field_value) {
+    }
 }
 
 

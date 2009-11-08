@@ -44,7 +44,7 @@
 
 <div>
     <input type="button" value="Save" onclick="save_object_form()" />
-    <input type="button" value="Cancel" onclick="" />
+    <input type="button" value="Cancel" onclick="history.back()" />
     <input type="button" value="Reset" onclick="reset_build_the_form()" style="margin-left:7px;" />
 </div>
 <div id="droppable" >
@@ -72,7 +72,7 @@
         data["CacheContent"] =  jQuery("#droppable").html();
         data["is_html_cache_changed"] = is_html_cache_changed;
 
-        var uri = "<?= site_url("admin/admin_panel/saveFormBuilderResult") ?>";
+        var uri = "<?= site_url("admin/form_controller/saveFormBuilderResult") ?>";
         var callback =  function(id){
             var html = "";
             if(id > 0){
@@ -95,7 +95,7 @@
         data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
         data["ObjectPK"] = <?= $form->getFormID(); ?>;      
 
-        var uri = "<?= site_url("admin/admin_panel/reset_build_the_form") ?>";
+        var uri = "<?= site_url("admin/form_controller/reset_build_the_form") ?>";
 
         var callback =  function(id){
             var html = "";

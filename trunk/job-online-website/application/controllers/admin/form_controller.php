@@ -16,6 +16,7 @@ require_once 'admin_panel.php';
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
 class form_controller extends admin_panel {
+    
     public function __construct() {
         parent::__construct();
     }   
@@ -27,11 +28,11 @@ class form_controller extends admin_panel {
     public function form_details($id = -1) {
         $this->load->helper("field_type");
         $this->load->model("forms_manager");
-        $data = $this->forms_manager->get_dependency_instances();
-        $data["action_uri"] = "admin/admin_panel/save_object/Form";
+        $data = array();
+        $data["action_uri"] = "admin/form_controller/save";
         $data["id"] = $id;
         if($id > 0) {
-            $data["obj_details"] = $this->forms_manager->find_by_id($id);
+            $data["obj_details"] = $this->forms_manager->find_by_id($id);            
             $data["related_objects"] = $this->forms_manager->get_related_objects($id);
         }
         $this->load->view("admin/form_details",$data);
@@ -53,8 +54,8 @@ class form_controller extends admin_panel {
         $form = new Form();
         $form->setFormID($this->input->post("FormID"));
         $form->setFormName($this->input->post("FormName"));
+        $form->setDescription($this->input->post("Description"));
         $this->forms_manager->save($form);
-
         $this->output->set_output("Save  successfully!");
     }
 
@@ -64,7 +65,7 @@ class form_controller extends admin_panel {
      */
     public function form_builder($id = -1) {
         if($id === -1) {
-            redirect(site_url("admin/admin_panel/list_forms/all/true"));
+            redirect(site_url("admin/form_controller/list_forms/all/true"));
         }
 
         $this->load->model("forms_manager");
@@ -113,6 +114,22 @@ class form_controller extends admin_panel {
         $cache->setObjectClass( $this->input->post("ObjectClass") );
         $cache->setObjectPK( $this->input->post("ObjectPK") );
         $cache->setCacheContent( $this->input->post("CacheContent") );
+        echo $this->object_html_cache_manager->save($cache);
+    }
+
+        /**
+     * @AjaxAction
+     * @Secured(role = "Administrator")
+     */
+    public function reset_build_the_form() {
+        $this->load->model("forms_manager");
+        $this->load->model("object_html_cache_manager");
+        $this->db->delete("field_form", array("FormID" => $this->input->post("ObjectPK") ));
+        
+        $cache = new ObjectHTMLCache();
+        $cache->setObjectClass( $this->input->post("ObjectClass") );
+        $cache->setObjectPK( $this->input->post("ObjectPK") );
+        $cache->setCacheContent("");
         echo $this->object_html_cache_manager->save($cache);
     }
 

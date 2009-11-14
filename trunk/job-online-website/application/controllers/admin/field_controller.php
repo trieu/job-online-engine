@@ -33,7 +33,7 @@ class field_controller extends admin_panel {
         $data["id"] = $id;
         $this->load->view("admin/field_details",$data);
     }
-    
+
     /**
      * @Decorated
      * @Secured(role = "Administrator")
@@ -41,14 +41,15 @@ class field_controller extends admin_panel {
     public function list_fields($id = "all") {
         $this->render_list_fields_view($id, TRUE);
     }
- /**
+    
+    /**
      * @Decorated
      * @Secured(role = "Administrator")
      */
     public function save() {
         $this->load->model("field_manager");
         $field = new Field();
-        $this->field_manager->save($field);       
+        $this->field_manager->save($field);
         $this->output->set_output("Save successfully!");
     }
 }

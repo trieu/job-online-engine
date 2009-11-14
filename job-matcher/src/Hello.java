@@ -9,7 +9,7 @@ public class Hello {
 			System.out.println("Hi  "+args[0]);
 		}
 		else {
-			System.out.println("Hi someone");
+			System.out.println("Hi ");
 		}
 	}
 	

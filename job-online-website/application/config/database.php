@@ -34,7 +34,7 @@
 | the active record class
 */
 
-$active_group = "windows";
+$active_group = "ubuntu";
 $active_record = TRUE;
 
 /*
@@ -43,7 +43,7 @@ $active_record = TRUE;
 $db['windows']['hostname'] = "localhost";
 $db['windows']['username'] = "root";
 $db['windows']['password'] = "";
-$db['windows']['database'] = "job_management2";
+$db['windows']['database'] = "job_management";
 $db['windows']['dbdriver'] = "mysql";
 $db['windows']['dbprefix'] = "";
 $db['windows']['pconnect'] = TRUE;

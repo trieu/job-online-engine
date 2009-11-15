@@ -29,8 +29,12 @@ class field_controller extends admin_panel {
         $this->load->helper("field_type");
         $this->load->model("field_manager");
         $data = $this->field_manager->get_dependency_instances();
-        $data["action_uri"] = "admin/admin_panel/save_object/Field";
+        $data["action_uri"] = "admin/field_controller/save";
         $data["id"] = $id;
+         if($id > 0) {
+            $data["obj_details"] = $this->field_manager->find_by_id($id);
+            $data["related_objects"] = array();
+        }
         $this->load->view("admin/field_details",$data);
     }
 
@@ -48,7 +52,13 @@ class field_controller extends admin_panel {
      */
     public function save() {
         $this->load->model("field_manager");
+        
         $field = new Field();
+        $field->setFieldID( $this->input->post("FieldID") );
+        $field->setFieldTypeID( $this->input->post("FieldTypeID") );
+        $field->setFieldName( $this->input->post("FieldName") );
+        $field->setValidationRules( $this->input->post("ValidationRules") );
+        
         $this->field_manager->save($field);
         $this->output->set_output("Save successfully!");
     }

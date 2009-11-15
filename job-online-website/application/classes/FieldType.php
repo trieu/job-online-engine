@@ -10,8 +10,8 @@ class FieldType {
     public static $DATE_CHOOSER = 5;
     public static $CHECK_BOX = 6;
 
-    private $FieldTypeID;
-    private $FieldTypeName;
+    private $FieldTypeID = -1;
+    private $FieldTypeName = "";
 
     public function __construct() {
         ;
@@ -33,6 +33,22 @@ class FieldType {
         $this->FieldTypeName = $FieldTypeName;
     }
 
+    public static function getAvailableFieldType() {
+        $field_types = array();
+        $field_types[FieldType::$TEXT_BOX] = "Text Box";
+        $field_types[FieldType::$SELECT_BOX] = "Select Box";
+        $field_types[FieldType::$MULTI_SELECT_BOX] = "Multi Select Box";
+        $field_types[FieldType::$CHECK_BOX] = "Check Box";
+        $field_types[FieldType::$RADIO_BUTTON] = "Radio Button";
+        $field_types[FieldType::$DATE_CHOOSER] = "Date Chooser";
+      
+        return $field_types;      
+    }
+
+     public static function getDefinedTypeName($type_id){
+        $field_types = self::getAvailableFieldType();
+        return $field_types[$type_id];
+     }
 
 }
 ?>

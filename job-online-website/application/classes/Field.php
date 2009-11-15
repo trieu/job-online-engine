@@ -4,8 +4,7 @@ require_once 'FieldType.php';
 class Field {
 
     public static $HTML_DOM_ID_PREFIX = "field_";
-    private $FieldID;
-    private $ObjectID;
+    private $FieldID;    
     private $FieldTypeID;
     private $FieldName;
     private $ValidationRules;
@@ -21,14 +20,6 @@ class Field {
 
     public function setFieldID($FieldID) {
         $this->FieldID = $FieldID;
-    }
-
-    public function getObjectID() {
-        return $this->ObjectID;
-    }
-
-    public function setObjectID($ObjectID) {
-        $this->ObjectID = $ObjectID;
     }
 
     public function getFieldTypeID() {

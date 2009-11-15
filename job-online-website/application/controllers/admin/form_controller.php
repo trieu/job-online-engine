@@ -16,10 +16,10 @@ require_once 'admin_panel.php';
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
 class form_controller extends admin_panel {
-    
+
     public function __construct() {
         parent::__construct();
-    }   
+    }
 
     /**
      * @Decorated
@@ -32,7 +32,7 @@ class form_controller extends admin_panel {
         $data["action_uri"] = "admin/form_controller/save";
         $data["id"] = $id;
         if($id > 0) {
-            $data["obj_details"] = $this->forms_manager->find_by_id($id);            
+            $data["obj_details"] = $this->forms_manager->find_by_id($id);
             $data["related_objects"] = $this->forms_manager->get_related_objects($id);
         }
         $this->load->view("admin/form_details",$data);
@@ -76,6 +76,14 @@ class form_controller extends admin_panel {
         $this->load->view("form/form_builder",$data);
     }
 
+    public function loadPaletteContent() {
+        $palette_content = "";
+        $this->load->model("field_manager");
+        $data["fields"] = $this->field_manager->find_by_filter();
+        $palette_content = $this->load->view("admin/field_palette",$data,TRUE);
+        return $palette_content;
+    }
+
     /**
      * @AjaxAction
      * @Secured(role = "Administrator")
@@ -96,11 +104,11 @@ class form_controller extends admin_panel {
             $existed_record = $existed_record + $c;
 
             if($c == 0) {
-                $this->db->insert("Field_Form", $record);
+                $this->db->insert("field_form", $record);
             }
             else {
-            //ApplicationHook::logInfo($record->FieldID." FieldID already in table Field_Form");
-            //ApplicationHook::logInfo($record->FormID." FormID already in table Field_Form");
+                //ApplicationHook::logInfo($record->FieldID." FieldID already in table Field_Form");
+                //ApplicationHook::logInfo($record->FormID." FormID already in table Field_Form");
             }
         }
         //ApplicationHook::logError("existed_record ".$existed_record);
@@ -117,7 +125,7 @@ class form_controller extends admin_panel {
         echo $this->object_html_cache_manager->save($cache);
     }
 
-        /**
+    /**
      * @AjaxAction
      * @Secured(role = "Administrator")
      */
@@ -125,7 +133,7 @@ class form_controller extends admin_panel {
         $this->load->model("forms_manager");
         $this->load->model("object_html_cache_manager");
         $this->db->delete("field_form", array("FormID" => $this->input->post("ObjectPK") ));
-        
+
         $cache = new ObjectHTMLCache();
         $cache->setObjectClass( $this->input->post("ObjectClass") );
         $cache->setObjectPK( $this->input->post("ObjectPK") );

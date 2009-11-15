@@ -74,12 +74,12 @@ class admin_panel extends Controller {
             $filter = array("FieldID"=>$id);
         }
         $fields = $this->field_manager->find_by_filter($filter);
-        $actions = anchor('admin/fields/edit/[FieldID]', 'View Details', array('title' => 'View Details'));
+        $actions = anchor('admin/field_controller/field_details/[FieldID]', 'View Details', array('title' => 'View Details'));
         $data_table = $this->class_mapper->DataListToDataTable("Field",$fields,$actions);
 
         $data["table_name"] = "fields";
         $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('FieldID', 'ObjectID', 'FieldTypeID','FieldName','ValidationRules','Actions');
+        $data["data_table_heading"] = array('FieldID', 'FieldTypeID','FieldName','ValidationRules','Actions');
         $data["data_editable_fields"] = array('FieldID'=>FALSE, 'ObjectID'=>TRUE, 'FieldTypeID'=>TRUE,'FieldName'=>TRUE,'ValidationRules'=>TRUE,'Actions'=>FALSE);
         $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
         $data["description"] = $this->load->view("form/field_validation_guide","",TRUE);
@@ -123,37 +123,12 @@ class admin_panel extends Controller {
     }
 
 
-
-
-
-  
-
-
-    public function loadPaletteContent() {
-        $palette_content = "";
-        $this->load->model("field_manager");
-        $this->load->model("fieldtypes_manager");
-
-        $data["fields"] = $this->field_manager->find_by_filter();
-
-        $fieldtypes = $this->fieldtypes_manager->find_by_filter();
-        $fieldtype = new FieldType();
-        $map = array();
-        foreach ($fieldtypes as $fieldtype) {
-            $map[$fieldtype->getFieldTypeID()] = $fieldtype->getFieldTypeName();
-        }
-        $data["fieldtypes"] = $map;
-        $palette_content = $this->load->view("admin/field_palette",$data,TRUE);
-        return $palette_content;
-    }
-
     /**
      * @AjaxAction
      * @Secured(role = "Administrator")
      */
     public function renderFieldUI($field_id) {
-        $this->load->model("field_manager");
-        $field = new Field();
+        $this->load->model("field_manager");        
         $field = $this->field_manager->find_by_id($field_id);
         echo $field->buildFieldUI();
     }

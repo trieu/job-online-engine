@@ -44,7 +44,7 @@ $attributes = array('id' => 'form_info', 'class' => 'input_info');
 echo form_fieldset('Form Information', $attributes);
 echo form_open(site_url($action_uri), '');
 
-echo renderInputField("FormID","FormID",$obj->getFormID()."","FromID");
+echo renderInputField("FormID","FormID",$obj->getFormID());
 echo renderInputField("FormName","FormName",$obj->getFormName(),"Form Name");
 
 ?>
@@ -146,10 +146,10 @@ echo form_fieldset_close();
     jQuery(document).ready(function(){
         if(id > 0){
             jQuery("#FormID").val(id);
-            jQuery("#FormID").attr("readonly", "readonly");
-            jQuery("#FormID").hide();
+            jQuery("#FormID").attr("readonly", "readonly");            
         }
         else {
+            jQuery("#FormID").hide();
             jQuery("#FormID").parent().hide();
         }
     });

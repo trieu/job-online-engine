@@ -15,15 +15,19 @@
 
 <?php
 
+$obj = new Field();
+if(isset($obj_details)) {
+    $obj = $obj_details;
+}
+
 $attributes = array('id' => 'field_info', 'class' => 'input_info');
 echo form_fieldset('Field Information', $attributes);
 echo form_open(site_url($action_uri), '');
 
-echo renderInputField("FieldID");
-echo renderInputField("ObjectID");
-echo renderSelectField("FieldTypeID", "fieldtypes", $groups, "Field Type");
-echo renderInputField("FieldName");
-echo renderInputField("ValidationRules");
+echo renderInputField("FieldID","FieldID",$obj->getFieldID());
+echo renderSelectField("FieldTypeID", "FieldTypeID", $field_types, "Field Type");
+echo renderInputField("FieldName","FieldName",$obj->getFieldName());
+echo renderInputField("ValidationRules","ValidationRules",$obj->getValidationRules());
 echo form_submit('mysubmit', 'Submit');
 echo form_button("cancel", "Cancel", 'onclick="history.back();"');
 
@@ -41,6 +45,7 @@ echo form_fieldset_close();
         if(id > 0){
             jQuery("#FieldID").val(id);
             jQuery("#FieldID").attr("readonly", "readonly");
+            jQuery("#FieldTypeID option[value='<?= $obj->getFieldTypeID() ?>']").attr("selected", "selected");
         }
         else {
             jQuery("#FieldID").parent().hide();            

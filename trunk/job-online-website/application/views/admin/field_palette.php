@@ -17,7 +17,7 @@
                     ?>
                 </a>
             </div>
-            <?php echo $fieldtypes[$field->getFieldTypeID()] ?>
+            <?php echo FieldType::getDefinedTypeName($field->getFieldTypeID()); ?>
         </div>
     <?php endforeach ?>
 </div>

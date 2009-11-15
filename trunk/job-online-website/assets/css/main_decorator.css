@@ -20,7 +20,7 @@
 #leftnav
 {
     float: left;
-    width: 160px;
+    width: 202px;
     margin: 0;
     padding: 1em;
 }
@@ -28,7 +28,8 @@
 {
     margin-left: 230px;
     border-left: 1px solid gray;
-    padding: 1em;    
+    padding: 1em;
+    min-height: 300px;
 }
 #footer
 {

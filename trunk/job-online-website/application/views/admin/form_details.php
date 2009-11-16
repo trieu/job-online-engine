@@ -57,8 +57,7 @@ echo renderInputField("FormName","FormName",$obj->getFormName(),"Form Name");
 <input type="hidden" name=""/>
 
 <div id="data_suggestion_container">
-    <?php
-    $selected_processes = array();
+    <?php    
     $template = '<li class="token-input-token" ><p class="token-[id]">[name]</p><span class="token-input-delete-token">x</span></li>';
     $tokens = "";
     if(count($selected_processes)>0) {

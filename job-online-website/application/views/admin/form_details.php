@@ -42,7 +42,7 @@ else {
 
 $attributes = array('id' => 'form_info', 'class' => 'input_info');
 echo form_fieldset('Form Information', $attributes);
-echo form_open(site_url($action_uri), '');
+echo form_open(site_url($action_uri), 'id="form_details"');
 
 echo renderInputField("FormID","FormID",$obj->getFormID());
 echo renderInputField("FormName","FormName",$obj->getFormName(),"Form Name");
@@ -58,7 +58,7 @@ echo renderInputField("FormName","FormName",$obj->getFormName(),"Form Name");
 
 <div id="data_suggestion_container">
     <?php
-    $selected_processes = array("12" => "test3","32" => "test4");
+    $selected_processes = array();
     $template = '<li class="token-input-token" ><p class="token-[id]">[name]</p><span class="token-input-delete-token">x</span></li>';
     $tokens = "";
     if(count($selected_processes)>0) {
@@ -70,7 +70,7 @@ echo renderInputField("FormName","FormName",$obj->getFormName(),"Form Name");
     }   
     ?>
     <b>The form in process:</b>
-    <input type="text" id="data_suggestion" name="ProcessID" />
+    <input type="text" id="data_suggestion" name="ProcessIDs" />
 </div>
 
 <div style="margin-top:32px">
@@ -152,6 +152,13 @@ echo form_fieldset_close();
             jQuery("#FormID").hide();
             jQuery("#FormID").parent().hide();
         }
+        jQuery("#form_details").submit(function(){
+            var ids = "";
+            jQuery("#data_suggestion_container p[class^='token-']").each(function(){
+                ids += (jQuery(this).attr("class").replace("token-","") + "&");
+            });
+            jQuery("#form_details input[name='ProcessIDs']").val(ids);
+        });
     });
 
     function showProcessList(){

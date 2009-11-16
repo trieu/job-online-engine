@@ -55,6 +55,13 @@ class form_controller extends admin_panel {
         $form->setFormID($this->input->post("FormID"));
         $form->setFormName($this->input->post("FormName"));
         $form->setDescription($this->input->post("Description"));
+
+        $ProcessIDs = explode("&", $this->input->post("ProcessIDs") );
+
+        foreach ($ProcessIDs as $p_id) {
+            ApplicationHook::log($p_id);
+        }        
+        
         $this->forms_manager->save($form);
         $this->output->set_output("Save  successfully!");
     }

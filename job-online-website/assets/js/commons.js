@@ -119,7 +119,7 @@ Modalbox.contentSelector = function(selector){
 
 Modalbox.hide = function(){
     if(Modalbox.popup != false){
-        Liferay.Popup.close(Modalbox.popup);
+       jQuery(Modalbox.popup).dialog('close');
         Modalbox.popup = false;
         jQuery("div[class='ui-dialog generic-dialog has-title ui-draggable ui-resizable']").remove();
         jQuery("div[class='ui-dialog-overlay']").remove();

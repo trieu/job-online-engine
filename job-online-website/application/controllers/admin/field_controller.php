@@ -62,5 +62,12 @@ class field_controller extends admin_panel {
         $this->field_manager->save($field);
         $this->output->set_output("Save successfully!");
     }
+
+    public function addFieldOption() {
+        $fieldID = $this->input->post("FieldID");
+        $optionName = $this->input->post("OptionName");
+
+        ApplicationHook::logInfo($fieldID. " - ". $optionName);
+    }
 }
 ?>

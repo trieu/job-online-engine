@@ -15,6 +15,7 @@ class forms_manager extends data_manager {
 
     public function delete($object) {
     }
+    
     public function find_by_id($id) {
         $filter = array($this->table_name.".FormID" => $id);
         $list = $this->find_by_filter($filter);
@@ -24,15 +25,32 @@ class forms_manager extends data_manager {
         }
         return NULL;
     }
-    public function save($object) {
+
+    public function save($object ) {
         $data_array = $this->class_mapper->classToArray("Form", $object);
+
+        $id = -1;
         if($object->getFormID() > 0) {
             $this->update($data_array);
+            $id = $object->getFormID();
         }
         else {
-            $this->insert($data_array);
+            $id = $this->insert($data_array);
         }
+
+        $this->db->trans_start();
+        $this->db->delete("form_process", array("FormID"=>$id));
+        ApplicationHook::logError(count($object->getProcessIDs()));
+        foreach ($object->getProcessIDs() as $pid ) {
+            if($id > 0 && $pid > 0){
+                ApplicationHook::logInfo($id . "-" . $pid );
+                $this->db->insert("form_process", array("FormID"=>$id,"ProcessID"=>$pid) );
+            }
+        }
+        $this->db->trans_complete();
+
     }
+
     protected function insert($data_array) {
         $this->db->insert($this->table_name, $data_array);
         if($this->db->affected_rows()>0){
@@ -40,6 +58,7 @@ class forms_manager extends data_manager {
         }
         return -1;
     }
+
     protected function update($data_array) {
         $key_field_name = "FormID";
         $id = $data_array[$key_field_name];

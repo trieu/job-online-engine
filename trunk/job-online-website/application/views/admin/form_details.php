@@ -86,10 +86,6 @@ echo form_close();
 echo form_fieldset_close();
 ?>
 
-
-
-
-
 <style type="text/css">
     #container_ui_box .selected_element {
         background:#FFFF99 none repeat scroll 0 0;
@@ -152,6 +148,7 @@ echo form_fieldset_close();
             jQuery("#FormID").hide();
             jQuery("#FormID").parent().hide();
         }
+
         jQuery("#form_details").submit(function(){
             var ids = "";
             jQuery("#data_suggestion_container p[class^='token-']").each(function(){
@@ -159,6 +156,7 @@ echo form_fieldset_close();
             });
             jQuery("#form_details input[name='ProcessIDs']").val(ids);
         });
+
     });
 
     function showProcessList(){

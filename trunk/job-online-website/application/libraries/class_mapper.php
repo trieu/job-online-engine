@@ -50,15 +50,28 @@ class class_mapper {
     }
 
     public function classToArray($class_name, $obj, $actions = "") {
-        $property_values = array();       
-
+        $property_values = array();
         try {
             $this->objectClass = new ReflectionClass($class_name);
             $methods = $this->objectClass->getMethods();
             $properties = $this->objectClass->getProperties();
             foreach ($properties as $property) {
-                if($property->isPrivate() || $property->isProtected()) {
-                    $getter = $this->objectClass->getMethod('get'.($property->getName()));
+                 $is_db_field = TRUE;
+
+                $reflectedProperty = new ReflectionAnnotatedProperty($class_name, $property->getName());
+                try {
+                    if($reflectedProperty != NULL){
+                      if($reflectedProperty->hasAnnotation('EntityField')){
+                          $annotation = $reflectedProperty->getAnnotation('EntityField');
+                          $is_db_field = ($annotation->is_db_field == TRUE);
+                      }
+                    }
+                }
+                catch (Exception $exc) {}
+
+
+                if( ($property->isPrivate() || $property->isProtected()) && $is_db_field) {
+                    $getter = $this->objectClass->getMethod( 'get'.$property->getName() );
                     //ApplicationHook::log('get'.strtoupper($property->getName()));
                     $value = $getter->invoke($obj);
                     $property_values[$property->getName()] = $value;

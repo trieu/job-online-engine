@@ -254,7 +254,7 @@ $.TokenList = function (input, settings) {
         li_data = settings.prePopulate;
         if(li_data && li_data.length) {
             for(var i in li_data) {
-                var this_token = $("<li><p>"+li_data[i].name+"</p> </li>")
+                var this_token = $("<li><p class='token-"+ i +"'>"+li_data[i].name+"</p> </li>")
                     .addClass(settings.classes.token)
                     .insertBefore(input_token);
 
@@ -311,7 +311,7 @@ $.TokenList = function (input, settings) {
 
     // Inner function to a token to the list
     function insert_token(id, value) {
-      var this_token = $("<li><p>"+ value +"</p> </li>")
+      var this_token = $("<li><p class='token-"+ id +"'>"+ value +"</p> </li>")
       .addClass(settings.classes.token)
       .insertBefore(input_token);
 

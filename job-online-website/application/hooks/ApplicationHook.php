@@ -4,6 +4,7 @@ require_once 'annotations/annotations.php';
 require_once 'annotations/Secured.php';
 require_once 'annotations/AjaxAction.php';
 require_once 'annotations/Decorated.php';
+require_once 'annotations/EntityField.php';
 require_once 'application/models/data_manager.php';
 
 /**

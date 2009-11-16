@@ -11,7 +11,7 @@ require_once 'admin_panel.php';
  * @property CI_Loader $load
  * @property CI_DB_active_record $db
  *
- * @property field_manager $field_manager
+ * @property forms_manager $forms_manager
  *
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
@@ -45,6 +45,7 @@ class form_controller extends admin_panel {
     public function list_forms($id = "all", $build_form = false) {
         $this->render_list_forms_view($id, $build_form, TRUE);
     }
+    
     /**
      * @Decorated
      * @Secured(role = "Administrator")
@@ -55,12 +56,12 @@ class form_controller extends admin_panel {
         $form->setFormID($this->input->post("FormID"));
         $form->setFormName($this->input->post("FormName"));
         $form->setDescription($this->input->post("Description"));
-
+        
         $ProcessIDs = explode("&", $this->input->post("ProcessIDs") );
-
         foreach ($ProcessIDs as $p_id) {
             ApplicationHook::log($p_id);
-        }        
+            $form->addProcessID($p_id);
+        }
         
         $this->forms_manager->save($form);
         $this->output->set_output("Save  successfully!");

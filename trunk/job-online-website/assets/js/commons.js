@@ -5,7 +5,7 @@
 var Modalbox = {};
 Modalbox.popup = false;
 Modalbox.defaultOptions = {};
-Modalbox.currentBoxSeletor = "div:visible[class='ui-dialog generic-dialog has-title ui-draggable ui-resizable']";
+Modalbox.currentBoxSeletor = "div:visible[class='ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable ui-resizable']";
 Modalbox.defaultBoxHTML = '<div title="Dialog Title" style="display:none" ><div class="loading-animation"></div></div>';
 
 Modalbox.show = function(content_id,options){
@@ -43,8 +43,8 @@ Modalbox.hideLoading = function() {
 
 Modalbox.updateContent = function(content_id){
     if(Modalbox.popup != false){
-        jQuery(".ui-dialog-content *").remove();
-        jQuery(".ui-dialog-content").html("");
+        jQuery(Modalbox.popup).find("*").remove();
+        jQuery(Modalbox.popup).html("");
         var content = "";
         try{
             if(content_id[0] == "#"){
@@ -113,16 +113,14 @@ Modalbox.updateHeightWidth = function(h,w){
 
 Modalbox.contentSelector = function(selector){
     if(Modalbox.popup != false){
-        return jQuery(".ui-dialog-content "+selector);
+        return jQuery(Modalbox.popup).find(selector);
     }
 }
 
 Modalbox.hide = function(){
     if(Modalbox.popup != false){
        jQuery(Modalbox.popup).dialog('close');
-        Modalbox.popup = false;
-        jQuery("div[class='ui-dialog generic-dialog has-title ui-draggable ui-resizable']").remove();
-        jQuery("div[class='ui-dialog-overlay']").remove();
+        Modalbox.popup = false;       
     }
 }
 

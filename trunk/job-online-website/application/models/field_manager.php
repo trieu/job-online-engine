@@ -30,12 +30,19 @@ class field_manager extends data_manager {
 
     public function save($object) {
         $data_array = $this->class_mapper->classToArray("Field", $object);
+
+        $id = -1;
         if($object->getFieldID() > 0) {
             $this->update($data_array);
+            $id = $object->getFieldID();
         }
         else {
-            $this->insert($data_array);
+            $id = $this->insert($data_array);
         }
+
+        $this->db->trans_start();
+      
+        $this->db->trans_complete();
     }
 
     protected function insert($data_array) {

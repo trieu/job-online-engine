@@ -4,10 +4,31 @@ require_once 'FieldType.php';
 class Field {
 
     public static $HTML_DOM_ID_PREFIX = "field_";
-    private $FieldID;    
+
+   /**
+    * @EntityField( is_primary_key=TRUE )
+    */
+    private $FieldID;
+
+   /**
+    * @EntityField
+    */
     private $FieldTypeID;
+
+   /**
+    * @EntityField
+    */
     private $FieldName;
+
+   /**
+    * @EntityField
+    */
     private $ValidationRules;
+
+   /**
+    * @EntityField(is_db_field=FALSE)
+    */
+    private $FieldOptions = array();
 
 
     public function __construct() {
@@ -45,7 +66,15 @@ class Field {
     public function setValidationRules($ValidationRules) {
         $this->ValidationRules = $ValidationRules;
     }
+    public function getFieldOptions() {
+        return $this->FieldOptions;
+    }
 
+    public function setFieldOptions($FieldOptions) {
+        $this->FieldOptions = $FieldOptions;
+    }
+
+    
 
     public function buildFieldUI() {
         $CI = &get_instance();

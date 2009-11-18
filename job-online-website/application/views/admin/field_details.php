@@ -16,6 +16,7 @@
 <?php
 require_once "macros.php";
 addScriptFile("js/commons.js");
+addScriptFile("js/jquery/jquery.json.js");
 
 $obj = new Field();
 if(isset($obj_details)) {
@@ -24,13 +25,20 @@ if(isset($obj_details)) {
 
 $attributes = array('id' => 'field_info', 'class' => 'input_info');
 echo form_fieldset('Field Information', $attributes);
-echo form_open(site_url($action_uri), '');
+echo form_open(site_url($action_uri), 'id="field_details_form"');
 
 echo renderInputField("FieldID","FieldID",$obj->getFieldID());
 echo renderSelectField("FieldTypeID", "FieldTypeID", $field_types, "Field Type");
 ?>
 
-<a href="javascript:addFieldOptions();" title="Add Field Options">Add Field Options</a>
+<a href="javascript:callAddFieldOptionBox();" title="Add Field Options">Add Field Options</a>
+
+<div>
+    <input type="hidden" id="field_option_data" name="field_option_data" value="" />
+    <ul id="field_option_data_ul">
+        <li></li>
+    </ul>
+</div>
 
 <?php
 echo renderInputField("FieldName","FieldName",$obj->getFieldName());
@@ -43,24 +51,54 @@ echo form_fieldset_close();
 
 ?>
 
-<span id="add_field_options_box" style="display:none;">
-    <span>
-        <form method="POST" action="<? site_url('field_controller/addFieldOption') ?>" accept="UTF-8">
-            <textarea name="OptionName" style="width:100%;height:190px;"></textarea>
-            <input type="hidden" name="FieldID" value="<?=  $id ?>" />
-            <input type="submit" value="OK" />
-            <input type="button" value="Cancel" onclick="Modalbox.hide()"/>
+
+
+<div id="add_field_options_box" style="display:none;">    
+    <div >
+        <form id="add_field_option_form" method="post" action="<? site_url('field_controller/addFieldOption') ?>" accept-charset="UTF-8">
+            <textarea name="OptionName" style="width:100%;height:190px;" cols="40" rows="3"></textarea>
+            <div class="confirmation" style="font-weight:bold; font-size:16; margin:5px; display:none;">
+                Added successfully, add more ?
+            </div>
+            <input type="button" value="OK"  />
+            <input type="button" value="Cancel" onclick="Modalbox.hide()" />
         </form>
-    </span>
-</span>
+    </div>
+</div>
 
 
 <script type="text/javascript" language="JavaScript">
-    function addFieldOptions(){
+    function callAddFieldOptionBox(){
         Modalbox.show("#add_field_options_box",{width:500,height:300,title:'Add Field Options'});
+        Modalbox.contentSelector("textarea[name='OptionName']").show();
+        Modalbox.contentSelector("div[class='confirmation']").hide();
+        Modalbox.contentSelector("input[value='OK']").click(
+            function(){
+                addFieldOptionData();               
+            }
+        );
     }
 
-    var id = <?=  $id ?>;
+    var field_option_data = [];
+    var isAddMore = false;
+    function addFieldOptionData(){
+        if(isAddMore){
+            Modalbox.contentSelector("textarea[name='OptionName']").show();
+            Modalbox.contentSelector("div[class='confirmation']").hide();
+            isAddMore = false;
+        }
+        else {
+            var OptionName = Modalbox.contentSelector("textarea[name='OptionName']").val();
+            var FieldID = <?= $id ?>;
+            field_option_data.push([FieldID,OptionName]);
+            jQuery("#field_option_data_ul").append("<li>"+ OptionName + "</li>")
+            Modalbox.contentSelector("textarea[name='OptionName']").hide();
+            Modalbox.contentSelector("div[class='confirmation']").show();
+            isAddMore = true;
+        }
+    }
+
+    var id = <?= $id ?>;
 
     jQuery(document).ready(function(){
         if(id > 0){
@@ -72,5 +110,8 @@ echo form_fieldset_close();
             jQuery("#FieldID").parent().hide();            
         }
         jQuery("#ObjectID").parent().hide();
+        jQuery("#field_details_form").submit(function(){
+             jQuery("#field_option_data").val(jQuery.toJSON(field_option_data));
+        });
     });
 </script>

@@ -3,7 +3,7 @@
 	 * Addendum PHP Reflection Annotations
 	 * http://code.google.com/p/addendum/
 	 *
-	 * Copyright (C) 2006 Jan "johno Suchal <johno@jsmf.net>
+	 * Copyright (C) 2006-2009 Jan "johno Suchal <johno@jsmf.net>
 	
 	 * This library is free software; you can redistribute it and/or
 	 * modify it under the terms of the GNU Lesser General Public
@@ -190,6 +190,8 @@
 			$this->add(new AnnotationStringMatcher);
 			$this->add(new AnnotationNumberMatcher);
 			$this->add(new AnnotationArrayMatcher);
+			$this->add(new AnnotationStaticConstantMatcher);
+			$this->add(new NestedAnnotationMatcher);
 		}
 	}
 
@@ -332,4 +334,26 @@
 			return $matches[1];
 		}
 	}
+
+	class AnnotationStaticConstantMatcher extends RegexMatcher {
+		public function __construct() {
+			parent::__construct('(\w+::\w+)');
+		}
+
+		protected function process($matches) {
+			$name = $matches[1];
+			if(!defined($name)) {
+				trigger_error("Constant '$name' used in annotation was not defined.");
+				return false;
+			}
+			return constant($name);
+		}		
+	}
+
+	class NestedAnnotationMatcher extends AnnotationMatcher {
+		protected function process($result) {
+			$builder = new AnnotationsBuilder;
+			return $builder->instantiateAnnotation($result[1], $result[2]);
+		}
+	}	
 ?>

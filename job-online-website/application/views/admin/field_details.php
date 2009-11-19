@@ -31,11 +31,9 @@ echo renderInputField("FieldID","FieldID",$obj->getFieldID());
 echo renderSelectField("FieldTypeID", "FieldTypeID", $field_types, "Field Type");
 ?>
 
-<a href="javascript:callAddFieldOptionBox();" title="Add Field Options">Add Field Options</a>
-
 <div>
     <input type="hidden" id="field_option_data" name="field_option_data" value="" />
-    <ul id="field_option_data_ul">
+    <ul id="field_option_data_ul" style="display:none;">
         <li></li>
     </ul>
 </div>
@@ -68,7 +66,7 @@ echo form_fieldset_close();
 
 
 <script type="text/javascript" language="JavaScript">
-    function callAddFieldOptionBox(){
+    function callAddFieldOptionBox(){       
         Modalbox.show("#add_field_options_box",{width:500,height:300,title:'Add Field Options'});
         Modalbox.contentSelector("textarea[name='OptionName']").show();
         Modalbox.contentSelector("div[class='confirmation']").hide();
@@ -76,7 +74,24 @@ echo form_fieldset_close();
             function(){
                 addFieldOptionData();               
             }
-        );
+        );        
+    }
+
+    function FieldType_Handler(){
+        jQuery("#FieldTypeID").change(function(){
+            var isSelectableField = jQuery(this).val() == <?= FieldType::$SELECT_BOX ?>;
+            isSelectableField = isSelectableField || jQuery(this).val() == <?= FieldType::$MULTI_SELECT_BOX ?>;
+            isSelectableField = isSelectableField || jQuery(this).val() == <?= FieldType::$CHECK_BOX ?>;
+            isSelectableField = isSelectableField || jQuery(this).val() == <?= FieldType::$RADIO_BUTTON ?>;
+            
+            if(isSelectableField){
+                callAddFieldOptionBox();
+                 jQuery("#field_option_data_ul").show();
+            }
+            else {
+                 jQuery("#field_option_data_ul").hide();
+            }
+        });
     }
 
     var field_option_data = [];
@@ -89,6 +104,7 @@ echo form_fieldset_close();
         }
         else {
             var OptionName = Modalbox.contentSelector("textarea[name='OptionName']").val();
+            Modalbox.contentSelector("textarea[name='OptionName']").val("");
             var FieldID = <?= $id ?>;
             field_option_data.push([FieldID,OptionName]);
             jQuery("#field_option_data_ul").append("<li>"+ OptionName + "</li>")
@@ -113,5 +129,17 @@ echo form_fieldset_close();
         jQuery("#field_details_form").submit(function(){
              jQuery("#field_option_data").val(jQuery.toJSON(field_option_data));
         });
+        FieldType_Handler();
     });
 </script>
+
+<?php
+$map_data = array_map(
+    create_function('$x', 'return $x * 2;'),
+    array(1, 2, 3, 4, 5)
+  );
+print_r($map_data);
+
+$reduced_data = array_reduce($map_data, create_function('$x, $y', 'return $x + $y;'));
+print $reduced_data;
+?>

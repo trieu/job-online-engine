@@ -39,11 +39,9 @@ class forms_manager extends data_manager {
         }
 
         $this->db->trans_start();
-        $this->db->delete("form_process", array("FormID"=>$id));
-        ApplicationHook::logError(count($object->getProcessIDs()));
+        $this->db->delete("form_process", array("FormID"=>$id));       
         foreach ($object->getProcessIDs() as $pid ) {
-            if($id > 0 && $pid > 0){
-                ApplicationHook::logInfo($id . "-" . $pid );
+            if($id > 0 && $pid > 0){                
                 $this->db->insert("form_process", array("FormID"=>$id,"ProcessID"=>$pid) );
             }
         }

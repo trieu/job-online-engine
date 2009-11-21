@@ -71,6 +71,7 @@ class Field {
     }
 
     public function setFieldOptions($FieldOptions) {
+        
         $this->FieldOptions = $FieldOptions;
     }
 

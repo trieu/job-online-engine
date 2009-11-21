@@ -44,9 +44,22 @@ class FieldType {
         $field_types[FieldType::$MULTI_SELECT_BOX] = "Multi Select Box";
         $field_types[FieldType::$CHECK_BOX] = "Check Box";
         $field_types[FieldType::$RADIO_BUTTON] = "Radio Button";
-        
-      
+              
         return $field_types;      
+    }
+
+    /**
+     *  Checj whether the FieldType in selectable group
+     *
+     * @param Integer $FieldTypeID
+     * @return Boolean
+     */
+    public static function isSelectableType($type_id) {
+        $isTrue = $type_id == FieldType::$SELECT_BOX;
+        $isTrue = $isTrue || ($type_id == FieldType::$MULTI_SELECT_BOX );
+        $isTrue = $isTrue || ($type_id == FieldType::$CHECK_BOX );
+        $isTrue = $isTrue || ($type_id == FieldType::$RADIO_BUTTON );
+        return $isTrue;
     }
 
      public static function getDefinedTypeName($type_id){

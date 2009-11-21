@@ -19,8 +19,15 @@ class field_options_manager extends data_manager {
     }
 
 
-    public function save($object) {
-
+    public function save($data_array) {
+        $id = -1;
+        if($data_array->FieldOptionID > 0) {
+            $id = $this->update($data_array);
+        }
+        else {
+            $id = $this->insert($data_array);
+        }
+        return $id;
     }
 
     public function find_by_id($id) {
@@ -46,11 +53,10 @@ class field_options_manager extends data_manager {
         return -1;
     }
 
-    protected function update($object) {
-        $key_field_name = "FieldOptionID";
-        $id = $data_array[$key_field_name];
-        unset($data_array[$key_field_name]);
-        $this->db->where($key_field_name, $id);
+    protected function update($data_array) {        
+        $id = $data_array->FieldOptionID;
+        unset($data_array->FieldOptionID);
+        $this->db->where("FieldOptionID", $id);
         $this->db->update($this->table_name, $data_array);
         if($this->db->affected_rows()>0) {
             return $id;
@@ -59,6 +65,8 @@ class field_options_manager extends data_manager {
     }
 
     public function delete_by_id($id) {
+        $key_field_name = "FieldOptionID";
+        $this->db->delete($this->table_name, array($key_field_name => $id));
     }
 
     public function updateByField($id,$editable_field_name,$editable_field_value) {

@@ -12,6 +12,7 @@ class field_manager extends data_manager {
     public function __construct() {
         parent::__construct();
         $this->table_name = "fields";
+       
     }
 
 
@@ -23,7 +24,12 @@ class field_manager extends data_manager {
         $filter = array("FieldID" => $id);
         $list = $this->find_by_filter($filter);
         if(sizeof($list) == 1) {
-            return $list[0];
+            $obj = $list[0];
+            if(FieldType::isSelectableType($obj->getFieldTypeID())){
+                $field_options = $this->db->get_where("fieldoptions", $filter)->result_array();
+                $obj->setFieldOptions($field_options);
+            }
+            return $obj;
         }
         return NULL;
     }
@@ -34,15 +40,11 @@ class field_manager extends data_manager {
         $id = -1;
         if($object->getFieldID() > 0) {
             $this->update($data_array);
-            $id = $object->getFieldID();
+            $id = $object->getFieldID();            
         }
         else {
             $id = $this->insert($data_array);
-        }
-
-        $this->db->trans_start();
-      
-        $this->db->trans_complete();
+        } 
     }
 
     protected function insert($data_array) {
@@ -70,7 +72,8 @@ class field_manager extends data_manager {
     }
 
     public function delete_by_id($id) {
-        
+        $key_field_name = "FieldID";
+        $this->db->delete($this->table_name, array($key_field_name => $id));
     }
 
     public function get_dependency_instances() {

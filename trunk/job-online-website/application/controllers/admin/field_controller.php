@@ -2,7 +2,6 @@
 require_once 'admin_panel.php';
 
 
-
 /**
  * Description of admin_panel
  *
@@ -20,7 +19,6 @@ class field_controller extends admin_panel {
         parent::__construct();
     }
 
-
     /**
      * @Decorated
      * @Secured(role = "Administrator")
@@ -31,7 +29,7 @@ class field_controller extends admin_panel {
         $data = $this->field_manager->get_dependency_instances();
         $data["action_uri"] = "admin/field_controller/save";
         $data["id"] = $id;
-         if($id > 0) {
+        if($id > 0) {
             $data["obj_details"] = $this->field_manager->find_by_id($id);
             $data["related_objects"] = array();
         }
@@ -45,22 +43,30 @@ class field_controller extends admin_panel {
     public function list_fields($id = "all") {
         $this->render_list_fields_view($id, TRUE);
     }
-    
+
     /**
      * @Decorated
      * @Secured(role = "Administrator")
      */
     public function save() {
         $this->load->model("field_manager");
-        
+
         $field = new Field();
         $field->setFieldID( $this->input->post("FieldID") );
         $field->setFieldTypeID( $this->input->post("FieldTypeID") );
         $field->setFieldName( $this->input->post("FieldName") );
         $field->setValidationRules( $this->input->post("ValidationRules") );
         $field->setFieldOptions( json_decode($this->input->post("field_option_data")) );
-        
+
         $this->field_manager->save($field);
+        
+        if(FieldType::isSelectableType($field->getFieldTypeID())) {
+            $this->load->model("field_options_manager");
+            foreach ($field->getFieldOptions() as $arr) {
+                $this->field_options_manager->save($arr);
+            }
+        }
+
         $this->output->set_output("Save successfully!");
     }
 

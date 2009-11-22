@@ -34,7 +34,7 @@
 | the active record class
 */
 
-$active_group = "windows";
+$active_group = "ubuntu";
 $active_record = TRUE;
 
 /*

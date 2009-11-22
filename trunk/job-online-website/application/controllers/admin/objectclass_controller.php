@@ -24,7 +24,7 @@ class objectclass_controller extends admin_panel {
      * @Decorated
      * @Secured(role = "Administrator")
      */
-    public function process_details($id = -1) {
+    public function details($id = -1) {
         $this->load->helper("field_type");
         $this->load->model("process_manager");
         $data = $this->process_manager->get_dependency_instances();
@@ -44,7 +44,7 @@ class objectclass_controller extends admin_panel {
      * @Decorated
      * @Secured(role = "Administrator")
      */
-    public function list_processes($id = "all",$start_index = 1) {
+    public function list_objectclasses($id = "all",$start_index = 1) {
         $this->load->model("process_manager");
         $this->load->library('table');
         $filter = array();

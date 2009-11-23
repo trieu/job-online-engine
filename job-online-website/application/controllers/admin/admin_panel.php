@@ -16,6 +16,7 @@
 class admin_panel extends Controller {
     public function __construct() {
         parent::Controller();
+        $this->load->helper("field_type");
     }
 
     /**

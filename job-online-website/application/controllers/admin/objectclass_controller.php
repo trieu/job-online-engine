@@ -18,14 +18,13 @@ class objectclass_controller extends admin_panel {
     public function __construct() {
         parent::__construct();
     }
-   
+
 
     /**
      * @Decorated
      * @Secured(role = "Administrator")
      */
     public function show_details($id = -1) {
-        $this->load->helper("field_type");
         $this->load->model("objectclass_manager");
         $data = $this->objectclass_manager->get_dependency_instances();
         $data["action_uri"] = "admin/objectclass_controller/save";
@@ -33,10 +32,7 @@ class objectclass_controller extends admin_panel {
         if($id > 0) {
             $data["obj_details"] = $this->objectclass_manager->find_by_id($id);
         }
-
-        
         $data["related_views"] = "";
-
         $this->load->view("admin/objectclass_details",$data);
     }
 
@@ -47,20 +43,21 @@ class objectclass_controller extends admin_panel {
     public function show($id = "all",$start_index = 1) {
         $this->load->model("objectclass_manager");
         $this->load->library('table');
+        
         $filter = array();
         if(is_numeric($id)) {
             $filter = array("ObjectClassID"=>$id);
         }
         $classes = $this->objectclass_manager->find_by_filter($filter);
         $actions = anchor('admin/objectclass_controller/show_details/[ObjectClassID]', 'View Details', array('title' => 'View Details'));
-        $actions = $actions ." | ".anchor('admin/objectclass_controller/create_object/[ObjectClassID]', 'Create a object', array('title' => 'Create a object'));
+        $actions .= " | ";
+        $actions .= anchor('admin/object_controller/show_details', 'Create a object', array('title' => 'Create a object'));
         $data_table = $this->class_mapper->DataListToDataTable("ObjectClass",$classes,$actions);
 
         $data["table_name"] = "classes";
         $data["data_table"] = $data_table;
         $data["data_table_heading"] = array('ObjectClassID', 'ObjectClassName', 'Descripttion','Actions');
         $data["data_editable_fields"] = array('ProcessName'=>TRUE);
-        
 
         $pagination_config = array();
         $pagination_config['base_url'] = site_url("admin/objectclass_controller/show");
@@ -86,17 +83,17 @@ class objectclass_controller extends admin_panel {
         $this->output->set_output("Save successfully!");
     }
 
-        /**
+    /**
      * @Decorated
      * @Secured(role = "Administrator")
      */
-    public function create_object($classID) {
+    public function create_object($classID ) {
         $this->load->model("objectclass_manager");
         if($classID > 0) {
             $object_class = $this->objectclass_manager->find_by_id($classID);
             $this->output->set_output("Create a object successfully for " . $object_class->getObjectClassName());
         }
-        
+
     }
 
 }

@@ -70,7 +70,7 @@ echo $this->table->generate($data_table);
 
 <?php
 if( isset ($description)) {
-    echo br().$description;
+   echo br().$description;
 }
 ?>
 

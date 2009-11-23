@@ -15,7 +15,7 @@ class objectclass_manager extends data_manager {
 
     public function get_dependency_instances() {
         $list = array();
-      
+
         return $list;
     }
 
@@ -60,7 +60,7 @@ class objectclass_manager extends data_manager {
      * @return	array
      */
     public function find_by_filter($filter = array(), $join_filter = array()) {
-       return $this->select_db_helper($filter, $this->table_name, "ObjectClass");
+        return $this->select_db_helper($filter, $this->table_name, "ObjectClass");
     }
 
     public function delete($process) {
@@ -71,6 +71,8 @@ class objectclass_manager extends data_manager {
 
     public function updateByField($id,$editable_field_name,$editable_field_value) {
     }
+
+   
 }
 
 

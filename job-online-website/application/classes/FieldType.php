@@ -5,7 +5,7 @@
 class FieldType {
     public static $TEXT_BOX = 1;
     public static $TEXT_AREA = 2;
-    public static $DATE_CHOOSER = 3;
+    public static $DATE_PICKER = 3;
 
     public static $SELECT_BOX = 4;
     public static $MULTI_SELECT_BOX = 5;
@@ -39,7 +39,7 @@ class FieldType {
         $field_types = array();
         $field_types[FieldType::$TEXT_BOX] = "Text Box";
         $field_types[FieldType::$TEXT_AREA] = "Text Area";
-        $field_types[FieldType::$DATE_CHOOSER] = "Date Chooser";
+        $field_types[FieldType::$DATE_PICKER] = "Date Picker";
         $field_types[FieldType::$SELECT_BOX] = "Select Box";
         $field_types[FieldType::$MULTI_SELECT_BOX] = "Multi Select Box";
         $field_types[FieldType::$CHECK_BOX] = "Check Box";

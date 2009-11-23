@@ -24,49 +24,46 @@ class objectclass_controller extends admin_panel {
      * @Decorated
      * @Secured(role = "Administrator")
      */
-    public function details($id = -1) {
+    public function show_details($id = -1) {
         $this->load->helper("field_type");
-        $this->load->model("process_manager");
-        $data = $this->process_manager->get_dependency_instances();
-        $data["action_uri"] = "admin/admin_panel/save_object/Process";
+        $this->load->model("objectclass_manager");
+        $data = $this->objectclass_manager->get_dependency_instances();
+        $data["action_uri"] = "admin/objectclass_controller/save";
         $data["id"] = $id;
         if($id > 0) {
-            $data["obj_details"] = $this->process_manager->find_by_id($id);
+            $data["obj_details"] = $this->objectclass_manager->find_by_id($id);
         }
 
-        $join_filter = array("form_process" => "form_process.FormID = forms.FormID AND form_process.ProcessID = ".$id);
-        $data["related_views"] = $this->render_list_forms_view("all",FALSE, FALSE,$join_filter);
+        
+        $data["related_views"] = "";
 
-        $this->load->view("admin/process_details",$data);
+        $this->load->view("admin/objectclass_details",$data);
     }
 
     /**
      * @Decorated
      * @Secured(role = "Administrator")
      */
-    public function list_objectclasses($id = "all",$start_index = 1) {
-        $this->load->model("process_manager");
+    public function show($id = "all",$start_index = 1) {
+        $this->load->model("objectclass_manager");
         $this->load->library('table');
         $filter = array();
         if(is_numeric($id)) {
-            $filter = array("ProcessID"=>$id);
+            $filter = array("ObjectClassID"=>$id);
         }
-        $processses = $this->process_manager->find_by_filter($filter);
-        $actions = anchor('admin/admin_panel/process_details/[ProcessID]', 'View Details', array('title' => 'View Details'));
-        $data_table = $this->class_mapper->DataListToDataTable("Process",$processses,$actions);
+        $classes = $this->objectclass_manager->find_by_filter($filter);
+        $actions = anchor('admin/objectclass_controller/show_details/[ObjectClassID]', 'View Details', array('title' => 'View Details'));
+        $data_table = $this->class_mapper->DataListToDataTable("ObjectClass",$classes,$actions);
 
-        $data["table_name"] = "processes";
+        $data["table_name"] = "classes";
         $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('ProcessID', 'Managed Object Class', 'ProcessName','Actions');
+        $data["data_table_heading"] = array('ObjectClassID', 'ObjectClassName', 'Descripttion','Actions');
         $data["data_editable_fields"] = array('ProcessName'=>TRUE);
-
-        $GroupID_Opts =  array("type"=>"select","data"=> ($this->process_manager->get_select_field_options("groups")) );
-        $data["editable_type_fields"] = array('GroupID'=>$GroupID_Opts);
-        $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
+        
 
         $pagination_config = array();
-        $pagination_config['base_url'] = site_url("admin/admin_panel/list_processes");
-        $pagination_config['total_rows'] = $this->process_manager->count_total();
+        $pagination_config['base_url'] = site_url("admin/objectclass_controller/show");
+        $pagination_config['total_rows'] = $this->objectclass_manager->count_total();
         $pagination_config['per_page'] = 2;
         $data["pagination_config"] = $pagination_config;
 
@@ -78,11 +75,13 @@ class objectclass_controller extends admin_panel {
      * @Secured(role = "Administrator")
      */
     public function save() {
-        $this->load->model("forms_manager");
-        $form = new Form();
-        $form->setFormID($this->input->post("FormID"));
-        $form->setFormName($this->input->post("FormName"));
-        $this->forms_manager->save($form);
+        $this->load->model("objectclass_manager");
+        $obj = new ObjectClass();
+        $obj->setObjectClassID($this->input->post("ObjectClassID"));
+        $obj->setObjectClassName($this->input->post("ObjectClassName"));
+        $obj->setDescription($this->input->post("Description"));
+
+        $this->objectclass_manager->save($obj);
         $this->output->set_output("Save successfully!");
     }
 

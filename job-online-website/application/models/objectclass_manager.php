@@ -44,7 +44,7 @@ class objectclass_manager extends data_manager {
     /**
      * @access	public
      * @param	id
-     * @return	Process
+     * @return	ObjectClass
      */
     public function find_by_id($id) {
         $query = $this->db->get_where($this->table_name, array('ObjectClassID' => $id));

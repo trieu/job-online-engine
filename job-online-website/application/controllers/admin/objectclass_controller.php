@@ -10,7 +10,7 @@ require_once 'admin_panel.php';
  * @property CI_Loader $load
  * @property CI_DB_active_record $db
  *
- * @property field_manager $field_manager
+ * @property objectclass_manager $objectclass_manager
  *
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
@@ -53,6 +53,7 @@ class objectclass_controller extends admin_panel {
         }
         $classes = $this->objectclass_manager->find_by_filter($filter);
         $actions = anchor('admin/objectclass_controller/show_details/[ObjectClassID]', 'View Details', array('title' => 'View Details'));
+        $actions = $actions ." | ".anchor('admin/objectclass_controller/create_object/[ObjectClassID]', 'Create a object', array('title' => 'Create a object'));
         $data_table = $this->class_mapper->DataListToDataTable("ObjectClass",$classes,$actions);
 
         $data["table_name"] = "classes";
@@ -83,6 +84,19 @@ class objectclass_controller extends admin_panel {
 
         $this->objectclass_manager->save($obj);
         $this->output->set_output("Save successfully!");
+    }
+
+        /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function create_object($classID) {
+        $this->load->model("objectclass_manager");
+        if($classID > 0) {
+            $object_class = $this->objectclass_manager->find_by_id($classID);
+            $this->output->set_output("Create a object successfully for " . $object_class->getObjectClassName());
+        }
+        
     }
 
 }

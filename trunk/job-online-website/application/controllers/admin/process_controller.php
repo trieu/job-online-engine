@@ -23,8 +23,7 @@ class process_controller extends admin_panel {
      * @Decorated
      * @Secured(role = "Administrator")
      */
-    public function process_details($id = -1) {
-        $this->load->helper("field_type");
+    public function process_details($id = -1) {        
         $this->load->model("process_manager");
         $data = $this->process_manager->get_dependency_instances();
         $data["action_uri"] = "admin/process_controller/save";

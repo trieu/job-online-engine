@@ -40,7 +40,7 @@ $attributes = array('id' => 'ObjectClass_info', 'class' => 'input_info');
 echo form_fieldset('Object Class Information', $attributes);
 echo form_open(site_url($action_uri), 'id="ObjectClass_details"');
 
-echo renderInputField("ObjectClassID","ObjectClassID",$obj->getObjectClassID());
+echo renderInputField("ObjectClassID","ObjectClassID",$obj->getObjectClassID(),"ObjectClassID");
 echo renderInputField("ObjectClassName","ObjectClassName",$obj->getObjectClassName(),"Object Class Name");
 
 ?>
@@ -78,7 +78,5 @@ echo form_fieldset_close();
          
         });
     });
-    
-
 
 </script>

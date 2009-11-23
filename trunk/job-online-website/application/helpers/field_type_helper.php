@@ -4,7 +4,7 @@
 if ( ! function_exists('renderSelectField') ) {
     function renderSelectField($input_name,$input_id = "" ,array $data_list = array(), $label_name = "",array $selected_list = array(),$selectBoxExtAttr = "" ) {
         $html = "";
-        
+
         if($label_name == "") {
             $label_name = $input_name;
         }
@@ -58,5 +58,52 @@ if ( ! function_exists('renderInputField') ) {
         return $html;
     }
 }
+
+
+if ( ! function_exists('renderTextArea') ) {
+    function renderTextArea($field_name, $field_value = "", $field_label = "" ) {
+        $html = "";
+
+        if($field_label == "") {
+            $field_label = $field_name;
+        }
+
+        $CI =& get_instance();
+       
+        $data = array(
+            'field_name' => $field_name ,
+            'field_value' => $field_value ,
+            'field_label' => $field_label
+        );
+
+        $html = $CI->load->view('form/field_type_templates/TextArea.php', $data, true);
+
+        return $html;
+    }
+}
+
+if ( ! function_exists('renderSelectBox') ) {
+    function renderSelectBox($field_name, $option_list = array(), $field_label = "", $isMultiple = false ) {
+        $html = "";
+
+        if($field_label == "") {
+            $field_label = $field_name;
+        }
+
+        $CI =& get_instance();
+
+        $data = array(
+            'field_name' => $field_name ,
+            'option_list' => $option_list ,
+            'field_label' => $field_label ,
+            'isMultiple' => $isMultiple
+        );
+
+        $html = $CI->load->view('form/field_type_templates/SelectBox.php', $data, true);
+
+        return $html;
+    }
+}
+
 
 ?>

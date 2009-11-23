@@ -18,8 +18,8 @@ $action_names  = array(
 renderGroupOfActions("manage_fields","Manage Fields", $action_names);
 
 $action_names  = array(
-    "Create Class"=> "admin/admin_panel/field_details"
-    , "List all Object Classes"=> "admin/admin_panel/list_fields");
+    "Create Class"=> "admin/objectclass_controller/show_details"
+    , "List all Object Classes"=> "admin/objectclass_controller/show");
 renderGroupOfActions("manage_object_classes","Manage Object Classes", $action_names);
 ?>
 

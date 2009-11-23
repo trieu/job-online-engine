@@ -15,31 +15,13 @@ class objectclass_manager extends data_manager {
 
     public function get_dependency_instances() {
         $list = array();
-        $this->db->select("id, name, description");
-        $this->db->from("groups");
-        $query = $this->db->get();
-        $groups = array();
-        foreach ($query->result_array() as $row) {
-            $groups[$row["id"]] = $row["name"]." - ".$row["description"];
-        }
-        $list["groups"] = $groups;
+      
         return $list;
     }
 
-    public function get_select_field_options($table_name) {
-        $list = array();
-        $this->db->select("id, name, description");
-        $this->db->from($table_name);
-        $query = $this->db->get();
-        foreach ($query->result_array() as $row) {
-            $list[$row["id"]] = $row["name"].", ".$row["description"];
-        }
-        return $list;
-    }
-
-    public function save($process) {
-        $data_array = $this->class_mapper->classToArray("Process", $process);
-        if($process->getProcessID() > 0) {
+    public function save($obj) {
+        $data_array = $this->class_mapper->classToArray("ObjectClass", $obj);
+        if($obj->getObjectClassID() > 0) {
             $this->update($data_array);
         }
         else {
@@ -52,13 +34,12 @@ class objectclass_manager extends data_manager {
     }
 
     protected function update($data_array) {
-        $key_field_name = "ProcessID";
+        $key_field_name = "ObjectClassID";
         $id = $data_array[$key_field_name];
         unset($data_array[$key_field_name]);
         $this->db->where($key_field_name, $id);
         $this->db->update($this->table_name, $data_array);
     }
-
 
     /**
      * @access	public
@@ -66,13 +47,12 @@ class objectclass_manager extends data_manager {
      * @return	Process
      */
     public function find_by_id($id) {
-        $query = $this->db->get_where($this->table_name, array('ProcessID' => $id));
+        $query = $this->db->get_where($this->table_name, array('ObjectClassID' => $id));
         foreach ($query->result_array() as $data_row) {
-            $pro = new Process();
-            return $pro = $this->class_mapping($data_row, "Process", $pro);
+            $pro = new ObjectClass();
+            return $pro = $this->class_mapping($data_row, "ObjectClass", $pro);
         }
     }
-
 
     /**
      * @access	public
@@ -80,7 +60,7 @@ class objectclass_manager extends data_manager {
      * @return	array
      */
     public function find_by_filter($filter = array(), $join_filter = array()) {
-       return $this->select_db_helper($filter, $this->table_name, "Process");
+       return $this->select_db_helper($filter, $this->table_name, "ObjectClass");
     }
 
     public function delete($process) {

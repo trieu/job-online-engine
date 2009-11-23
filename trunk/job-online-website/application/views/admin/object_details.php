@@ -45,6 +45,11 @@ echo renderInputField("ObjectID","ObjectID",$obj->getObjectClassID(),"ObjectID")
 echo renderTextArea("dk", "valie", "dk label");
 
 echo renderSelectBox("sl", array("1"=>"One", "2" => "Two"), " select box", TRUE);
+
+echo renderCheckBoxs("test cb", "choose ?", array("1"=>"One", "2" => "Two"));
+echo renderRadioButtons("test cb", "choose ?", array("1"=>"One", "2" => "Two"));
+
+echo renderDatepicker("field_1234", "Date:");
 ?>
 
 

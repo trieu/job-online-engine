@@ -105,5 +105,57 @@ if ( ! function_exists('renderSelectBox') ) {
     }
 }
 
+if ( ! function_exists('renderCheckBoxs') ) {
+    function renderCheckBoxs($field_name, $description, $option_list = array()) {
+        $html = "";
+
+        $CI =& get_instance();
+        $CI->load->helper("random_password");
+
+        $data = array(
+            'field_name' => $field_name ,
+            'option_list' => $option_list ,
+            'description' => $description             
+        );
+
+        $html = $CI->load->view('form/field_type_templates/CheckBox.php', $data, true);
+
+        return $html;
+    }
+}
+
+if ( ! function_exists('renderRadioButtons') ) {
+    function renderRadioButtons($field_name, $description, $option_list = array()) {
+        $html = "";
+
+        $CI =& get_instance();
+        $CI->load->helper("random_password");
+
+        $data = array(
+            'field_name' => $field_name ,
+            'option_list' => $option_list ,
+            'description' => $description
+        );
+
+        $html = $CI->load->view('form/field_type_templates/RadioButton.php', $data, true);
+        return $html;
+    }
+}
+
+if ( ! function_exists('renderDatepicker') ) {
+    function renderDatepicker($field_name, $field_label) {
+        $html = "";
+
+        $CI =& get_instance();
+
+        $data = array(
+            'field_name' => $field_name ,           
+            'field_label' => $field_label
+        );
+
+        $html = $CI->load->view('form/field_type_templates/Datepicker.php', $data, true);
+        return $html;
+    }
+}
 
 ?>

@@ -1,3 +1,8 @@
+<?php
+addScriptFile("js/jquery.fancybox/jquery.fancybox.min.js");
+addCssFile("js/jquery.fancybox/jquery.fancybox.css");
+?>
+
 <style type="text/css" media="screen">
     .draggable { width: 100%; height: 50px; padding: 0.5em; float: left; margin: 5px 5px 5px 0;cursor:move;background-color:lavender }
     #draggable { width: 60px; height: 50px; padding: 0.5em; float: left; margin: 5px 5px 5px 0;cursor:move;background-color:gray }
@@ -68,7 +73,8 @@
         var data = {};
         data["Fields_Form_JSON"] = jQuery.toJSON(FormBuilderScript.data_fields);        
         data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
-        data["ObjectPK"] = <?= $form->getFormID(); ?>;
+        data["ObjectPK"] = <?= $form->getFormID();
+?>;
         data["CacheContent"] =  jQuery("#droppable").html();
         data["is_html_cache_changed"] = is_html_cache_changed;
 
@@ -93,7 +99,8 @@
     function reset_build_the_form(){
         var data = {};        
         data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
-        data["ObjectPK"] = <?= $form->getFormID(); ?>;      
+        data["ObjectPK"] = <?= $form->getFormID();
+?>;      
 
         var uri = "<?= site_url("admin/form_controller/reset_build_the_form") ?>";
 
@@ -174,7 +181,8 @@
 
             var record = {};
             record["FieldID"] = new Number(id);
-            record["FormID"] = <?= $form->getFormID(); ?>;
+            record["FormID"] = <?= $form->getFormID();
+?>;
             FormBuilderScript.data_fields.push(record);
         };
         jQuery.get(uri,{}, callback );

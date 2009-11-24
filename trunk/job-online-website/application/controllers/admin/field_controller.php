@@ -20,7 +20,7 @@ class field_controller extends admin_panel {
     }
 
     /**
-     * @Decorated
+     * @AjaxAction
      * @Secured(role = "Administrator")
      */
     public function field_details($id = -1) {
@@ -36,6 +36,7 @@ class field_controller extends admin_panel {
         $this->load->view("admin/field_details",$data);
     }
 
+
     /**
      * @Decorated
      * @Secured(role = "Administrator")
@@ -45,7 +46,7 @@ class field_controller extends admin_panel {
     }
 
     /**
-     * @Decorated
+     * @AjaxAction
      * @Secured(role = "Administrator")
      */
     public function save() {
@@ -59,7 +60,7 @@ class field_controller extends admin_panel {
         $field->setFieldOptions( json_decode($this->input->post("field_option_data")) );
 
         $this->field_manager->save($field);
-        
+
         if(FieldType::isSelectableType($field->getFieldTypeID())) {
             $this->load->model("field_options_manager");
             foreach ($field->getFieldOptions() as $arr) {

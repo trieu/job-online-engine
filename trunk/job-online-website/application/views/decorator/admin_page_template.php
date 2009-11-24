@@ -34,7 +34,9 @@
     <body onload="">
         <div id="container">
             <div id="top">
-                <h2>Administration Panel for Job Online</h2>
+
+                <h2><?= lang('admin_page_heading') ?></h2>
+                
                 <div style="font-weight:bold; margin: 10px 0px;">
                     <?php echo anchor('', lang('home_page')); ?>   |
                     <?php echo anchor('admin/admin_panel', lang('admin_panel')); ?>

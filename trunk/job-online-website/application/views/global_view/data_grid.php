@@ -35,11 +35,13 @@
     }
 </style>
 
-<script type="text/javascript" src="<?= base_url()?>assets/js/jquery.pagination/jquery.pagination.js"></script>
-<link type="text/css" rel="stylesheet" media="screen" href="<?= base_url()?>assets/js/jquery.pagination/style.css"/>
-<script type="text/javascript"  src="<?= base_url()?>assets/js/jquery/jquery.jeditable.js"></script>
-
 <?php
+addScriptFile("js/jquery.pagination/jquery.pagination.js");
+addCssFile("js/jquery.pagination/style.css");
+addScriptFile("js/jquery/jquery.jeditable.js");
+addScriptFile("js/jquery.fancybox/jquery.fancybox.min.js");
+addCssFile("js/jquery.fancybox/jquery.fancybox.css");
+
 $table_template = array (
     'table_open'          => '<table border="1" cellpadding="4" cellspacing="0" id="'.$table_name.'">',
 
@@ -189,10 +191,22 @@ if(isset ($pagination_config)) {
         });
     }
 
+    function initFancyBoxLinks(){
+        jQuery("a.use_fancybox").fancybox(
+            {
+                'hideOnContentClick': false , 'hideOnOverlayClick':false,
+                'enableEscapeButton':true,
+                'zoomSpeedIn': 300, 'zoomSpeedOut': 300,
+                'overlayShow': true , 'frameWidth': 800, 'frameHeight': 530
+            }
+        );
+    }
+
     jQuery(document).ready(function() {
         initEditableTableCell();
         //initTooltipForEditableFields();
         initPagination();
+        initFancyBoxLinks();
     });
 
 

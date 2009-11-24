@@ -1,6 +1,8 @@
 <?php
 addScriptFile("js/jquery.fancybox/jquery.fancybox.min.js");
 addCssFile("js/jquery.fancybox/jquery.fancybox.css");
+addScriptFile("js/jquery.tablednd/jquery.tablednd.js");
+addScriptFile("js/jquery/jquery.json.js");
 ?>
 
 <style type="text/css" media="screen">
@@ -63,8 +65,6 @@ addCssFile("js/jquery.fancybox/jquery.fancybox.css");
 <textarea id="save_form_dialog" name="" rows="4" cols="20" style="display:none" >
 </textarea>
 
-<script type="text/JavaScript" src="<?= base_url()?>assets/js/jquery/jquery.json.js"></script>
-<script type="text/JavaScript" src="<?= base_url()?>assets/js/jquery.tablednd/jquery.tablednd.js"></script>
 <script type="text/javascript">
     var dialog = false;
 
@@ -73,8 +73,7 @@ addCssFile("js/jquery.fancybox/jquery.fancybox.css");
         var data = {};
         data["Fields_Form_JSON"] = jQuery.toJSON(FormBuilderScript.data_fields);        
         data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
-        data["ObjectPK"] = <?= $form->getFormID();
-?>;
+        data["ObjectPK"] = <?= $form->getFormID();?>;
         data["CacheContent"] =  jQuery("#droppable").html();
         data["is_html_cache_changed"] = is_html_cache_changed;
 
@@ -99,8 +98,7 @@ addCssFile("js/jquery.fancybox/jquery.fancybox.css");
     function reset_build_the_form(){
         var data = {};        
         data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
-        data["ObjectPK"] = <?= $form->getFormID();
-?>;      
+        data["ObjectPK"] = <?= $form->getFormID(); ?>;
 
         var uri = "<?= site_url("admin/form_controller/reset_build_the_form") ?>";
 
@@ -155,7 +153,7 @@ addCssFile("js/jquery.fancybox/jquery.fancybox.css");
         var uri = "<?= site_url("admin/admin_panel/renderFieldUI") ?>/" + id;
 
         var callback = function(html){
-            html = "<tr><td>"+html+"</td><td>#</td></tr>";
+            html = "<tr><td>"+html+"</td></tr>";
             if(jQuery("#droppable table").length == 0){
                 jQuery("#droppable").html("<table cellspacing='0' cellpadding='2' class='table_dnd'></table>");
                 jQuery("#droppable table").append(html);               
@@ -181,8 +179,7 @@ addCssFile("js/jquery.fancybox/jquery.fancybox.css");
 
             var record = {};
             record["FieldID"] = new Number(id);
-            record["FormID"] = <?= $form->getFormID();
-?>;
+            record["FormID"] = <?= $form->getFormID() ?>;
             FormBuilderScript.data_fields.push(record);
         };
         jQuery.get(uri,{}, callback );

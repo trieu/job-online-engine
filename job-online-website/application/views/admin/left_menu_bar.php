@@ -12,9 +12,8 @@ $action_names  = array(
 );
 renderGroupOfActions("manage_form","Manage Forms", $action_names);
 
-$action_names  = array(
-    "Create new Fields"=> "admin/field_controller/field_details"
-    , "List all Fields"=> "admin/field_controller/list_fields");
+$action_names  = array(   
+    "List all Fields"=> "admin/field_controller/list_fields");
 renderGroupOfActions("manage_fields","Manage Fields", $action_names);
 
 $action_names  = array(

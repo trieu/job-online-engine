@@ -75,7 +75,7 @@ class admin_panel extends Controller {
             $filter = array("FieldID"=>$id);
         }
         $fields = $this->field_manager->find_by_filter($filter);
-        $actions = anchor('admin/field_controller/field_details/[FieldID]', 'View Details', array('title' => 'View Details'));
+        $actions = anchor('admin/field_controller/field_details/[FieldID]', 'View Details', array('title' => 'Field Details','class'=>'iframe use_fancybox'));
         $data_table = $this->class_mapper->DataListToDataTable("Field",$fields,$actions);
 
         $data["table_name"] = "fields";
@@ -97,7 +97,7 @@ class admin_panel extends Controller {
 
 
     /**
-     * @AjaxAction
+     * 
      * @Secured(role = "Administrator")
      */
     public function save_data_table_cell() {
@@ -125,7 +125,6 @@ class admin_panel extends Controller {
 
 
     /**
-     * @AjaxAction
      * @Secured(role = "Administrator")
      */
     public function renderFieldUI($field_id) {

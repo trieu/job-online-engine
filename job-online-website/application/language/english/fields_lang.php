@@ -4,6 +4,7 @@
 $lang['home_page_heading'] = "DRD Information Planning";
 $lang['admin_page_heading'] = "Administration Panel";
 
+
 $lang['home_page'] = "Homepage";
 
 $lang['job_seeker'] = "Job Seeker";

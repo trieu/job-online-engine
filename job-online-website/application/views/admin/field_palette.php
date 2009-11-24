@@ -1,4 +1,6 @@
+
 <b>Field list</b>
+<a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details") ?>">Create a field</a>
 <div class="" style="display:block; width:200px; height:600px;overflow:scroll; margin-bottom:25px;">
     <?php
         $field = new Field();
@@ -18,6 +20,20 @@
                 </a>
             </div>
             <?php echo FieldType::getDefinedTypeName($field->getFieldTypeID()); ?>
+            <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details/".$field->getFieldID()) ?>">Edit</a>
         </div>
     <?php endforeach ?>
 </div>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+       jQuery("a.use_fancybox").fancybox(
+            {
+                'hideOnContentClick': false , 'hideOnOverlayClick':false,
+                'enableEscapeButton':true,
+                'zoomSpeedIn': 300, 'zoomSpeedOut': 300,
+                'overlayShow': true , 'frameWidth': 800, 'frameHeight': 400
+            }
+        );
+    });
+</script>

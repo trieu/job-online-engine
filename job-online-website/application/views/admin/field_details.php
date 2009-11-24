@@ -57,7 +57,7 @@ echo renderSelectField("FieldTypeID", "FieldTypeID", $field_types, "Field Type")
 echo renderInputField("FieldName","FieldName",$obj->getFieldName());
 echo renderInputField("ValidationRules","ValidationRules",$obj->getValidationRules());
 echo form_submit('mysubmit', 'Submit');
-echo form_button("cancel", "Cancel", 'onclick="history.back();"');
+echo form_button("cancel", "Cancel", 'onclick="parent.jQuery.fn.fancybox.close();"');
 
 echo form_close();
 echo form_fieldset_close();
@@ -74,7 +74,7 @@ echo form_fieldset_close();
                 Added successfully, add more ?
             </div>
             <input type="button" value="OK"  />
-            <input type="button" value="Cancel" onclick="Modalbox.hide()" />
+            <input type="button" value="Cancel" onclick="Modalbox.hide();" />
         </form>
     </div>
 </div>
@@ -180,12 +180,12 @@ echo form_fieldset_close();
 </script>
 
 <?php
-$map_data = array_map(
-    create_function('$x', 'return $x * 2;'),
-    array(1, 2, 3, 4, 5)
-  );
-print_r($map_data);
-
-$reduced_data = array_reduce($map_data, create_function('$x, $y', 'return $x + $y;'));
-print $reduced_data;
+//$map_data = array_map(
+//    create_function('$x', 'return $x * 2;'),
+//    array(1, 2, 3, 4, 5)
+//  );
+//print_r($map_data);
+//
+//$reduced_data = array_reduce($map_data, create_function('$x, $y', 'return $x + $y;'));
+//print $reduced_data;
 ?>

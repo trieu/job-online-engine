@@ -190,11 +190,21 @@ class ApplicationHook {
                     }
                     else if($this->isGroupAdmin() && $this->controllerName == "admin_panel") {
                             echo ( $this->CI->load->view("decorator/admin_page_template", $data, TRUE) );
-                        }
-                        else {
-                            echo ( $this->CI->load->view("decorator/page_template", $data, TRUE) );
-                        }
+                    }
+                    else {
+                        echo ( $this->CI->load->view("decorator/page_template", $data, TRUE) );
+                    }
 
+                    return;
+                }
+                else if($reflection->hasAnnotation('AjaxAction')){
+                    $this->setPageHeaderCached();
+                    $this->setSiteLanguage();
+                    $data = array(
+                        'page_decorator' => $this->CI->page_decorator,
+                        'page_content' => trim($this->CI->output->get_output())
+                    );
+                    echo $this->CI->load->view("decorator/ajax_page_template", $data, TRUE);
                     return;
                 }
             }

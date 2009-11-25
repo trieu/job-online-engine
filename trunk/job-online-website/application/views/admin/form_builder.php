@@ -1,7 +1,8 @@
 <style type="text/css" media="screen">
     .resizable {       
         background-color: lavender;
-        margin: 5px;
+        margin: 4px;
+        height:30px;
     }
     #form_builder_container {
         border:1px solid #DDDDDD;
@@ -14,20 +15,18 @@
 </style>
 <div id="form_builder_container" >
     <div class="resizable">
-        Resizable1
-        <div class="handle">#</div>
+        Resizable1        
     </div>
     <div class="resizable">
         Resizable2
-        <div class="handle">#</div>
+      
     </div>
     <div class="resizable">
         Resizable3
-        <div class="handle">#</div>
+       
     </div>
     <div class="resizable">
-        Resizable4
-        <div class="handle">#</div>
+        Resizable4       
     </div>
 </div>
 <script type="text/javascript">

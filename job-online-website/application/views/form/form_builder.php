@@ -116,7 +116,6 @@ addScriptFile("js/jquery/jquery.json.js");
             show_dialog(html);
         };
         jQuery.post(uri, data, callback );
-
     }
 
     function show_dialog(content){

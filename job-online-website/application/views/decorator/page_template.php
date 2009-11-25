@@ -1,5 +1,4 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -19,46 +18,24 @@
         <link type="text/css" media="screen" rel="stylesheet" href="<?= base_url() ?>assets/css/smoothness/jquery-ui-1.7.2.custom.css"/>
         <link type="text/css" media="screen" rel="stylesheet" href="<?= base_url() ?>assets/css/main_decorator.css"/>
 		
-		<?php foreach($page_decorator->getCssFiles() as $id => $file) { ?>
-		<link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url()."assets/".$file; ?>"/>
+        <?php foreach($page_decorator->getCssFiles() as $id => $file) { ?>
+            <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url()."assets/".$file; ?>"/>
         <?php } ?>
 
-        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
-        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
-		
-		<?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
-		<script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
-        <?php } ?>
-		
-        <script type="text/javascript" charset="utf-8" >    
-            var LanguageChooser = {};
-            LanguageChooser.setLanguageBySession = function(){
-                var lang_code = jQuery("head meta[http-equiv='content-language']").attr("content");
-            }
-        </script>
-
-        <?php if($controller == "job_seeker/number_question") { ?>
-        <link rel="stylesheet" href="<?= base_url()?>assets/css/js.css" type="text/css" />
-        <?php } ?>
-
-        <?php if($controller == "employer/number_question") {?>
-        <link rel="stylesheet" href="<?= base_url()?>assets/css/emp.css" type="text/css" />
-        <?php } ?>
-
+        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>    
     </head>
-    <body onload="">
-        <div id="container">
-            <div id="top">
+    <body>
+        <div id="page_container">
+            <div id="page_top">
                 <?= $page_header ?>
             </div>
-            <div id="leftnav">
+            <div id="page_leftnav">
                 <?= $left_navigation ?>
             </div>
-            <div id="content">
+            <div id="page_content">
                 <?= $page_content ?>
             </div>
-            <div id="footer">
+            <div id="page_footer">
                 <?= $page_footer ?>
             </div>
             <div>
@@ -66,5 +43,10 @@
                 <input id="session_id" type="hidden" name="session_id" value="<?=$session_id?>" />
             </div>
         </div>
+        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
+        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
+	<?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
+            <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
+        <?php } ?>
     </body>
 </html>

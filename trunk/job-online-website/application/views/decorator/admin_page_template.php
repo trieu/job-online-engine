@@ -24,16 +24,10 @@
         <?php } ?>
 
         <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
-
-        <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
-        <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
-        <?php } ?>
-
     </head>
     <body onload="">
-        <div id="container">
-            <div id="top">
+        <div id="page_container">
+            <div id="page_top">
 
                 <h2><?= lang('admin_page_heading') ?></h2>
                 
@@ -64,18 +58,23 @@
                 </div>
 
             </div>
-            <div id="leftnav">
+            <div id="page_leftnav">
                 <?= $left_navigation ?>
             </div>
-            <div id="content">
+            <div id="page_content">
                 <?= $page_content ?>
             </div>
-            <div id="footer">
+            <div id="page_footer">
                 <span class="response_time_span">
                     <?= $page_respone_time ?>
                     <input id="session_id" type="hidden" name="session_id" value="<?=$session_id?>" />
                 </span>
             </div>
         </div>
+        
+        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
+        <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
+        <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
+        <?php } ?>
     </body>
 </html>

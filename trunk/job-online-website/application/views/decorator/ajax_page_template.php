@@ -17,14 +17,15 @@
         <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url()."assets/".$file; ?>"/>
         <?php } ?>
 
-        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>      
+    </head>
+    <body>
+        <div>
+            <?= $page_content ?>
+        </div>
         <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
-
         <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
         <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
         <?php } ?>
-    </head>
-    <body>
-       <?= $page_content ?>           
     </body>
 </html>

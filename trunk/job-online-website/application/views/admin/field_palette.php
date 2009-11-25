@@ -1,4 +1,5 @@
 
+
 <div  style="display:block; width:100%; border:1px solid silver;">
     <b>Field list</b>
     <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details") ?>">Create a field</a>

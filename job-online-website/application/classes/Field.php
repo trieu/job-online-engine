@@ -30,6 +30,11 @@ class Field {
      */
     private $FieldOptions = array();
 
+    /**
+     * @EntityField(is_db_field=FALSE)
+     */
+    private $FormIDs = array();
+
 
     public function __construct() {
         ;
@@ -83,6 +88,20 @@ class Field {
         $this->FieldOptions = $FieldOptions;
     }
 
+    public function getFormIDs() {
+        return $this->FormIDs;
+    }
+
+    public function setFormIDs($FormIDs) {
+        $this->FormIDs = $FormIDs;
+    }
+
+    public function addToForm($FormID) {       
+        array_push($this->FormIDs, (int)$FormID );
+    }
+
+
+
 
     public function buildFieldUI() {
         $CI = &get_instance();
@@ -109,7 +128,7 @@ class Field {
         else if($this->getFieldTypeID() == FieldType::$DATE_PICKER) {
             return renderDatepicker($id, $this->getFieldName());
         }
-        return "<b>Undefined field</b>";
+        return "<div>Undefined field</div>";
     }
 }
 ?>

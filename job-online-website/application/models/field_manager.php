@@ -12,7 +12,7 @@ class field_manager extends data_manager {
     public function __construct() {
         parent::__construct();
         $this->table_name = "fields";
-       
+
     }
 
 
@@ -25,7 +25,7 @@ class field_manager extends data_manager {
         $list = $this->find_by_filter($filter);
         if(sizeof($list) == 1) {
             $obj = $list[0];
-            if(FieldType::isSelectableType($obj->getFieldTypeID())){
+            if(FieldType::isSelectableType($obj->getFieldTypeID())) {
                 $field_options = $this->db->get_where("fieldoptions", $filter)->result_array();
                 $obj->setFieldOptions($field_options);
             }
@@ -40,11 +40,24 @@ class field_manager extends data_manager {
         $id = -1;
         if($object->getFieldID() > 0) {
             $this->update($data_array);
-            $id = $object->getFieldID();            
+            $id = $object->getFieldID();
         }
         else {
             $id = $this->insert($data_array);
-        } 
+        }
+
+        $FormIDs = $object->getFormIDs();
+        if( count($FormIDs) == 1 ) {
+            $record = new stdClass();
+            $record->FieldID = $id;
+            $record->FormID = $FormIDs[0];
+            $this->db->select("COUNT(*)")->from('field_form');
+            $this->db->where("FieldID", $record->FieldID );
+            $this->db->where("FormID", $record->FormID );
+            if($this->db->count_all_results() == 0) {
+                $this->db->insert("field_form", $record);
+            }
+        }
     }
 
     protected function insert($data_array) {

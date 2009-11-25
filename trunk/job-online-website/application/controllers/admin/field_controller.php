@@ -23,14 +23,15 @@ class field_controller extends admin_panel {
      * @AjaxAction
      * @Secured(role = "Administrator")
      */
-    public function field_details($id = -1) {
+    public function field_details($fieldID = -1, $formID = -1) {
         $this->load->helper("field_type");
         $this->load->model("field_manager");
         $data = $this->field_manager->get_dependency_instances();
         $data["action_uri"] = "admin/field_controller/save";
-        $data["id"] = $id;
-        if($id > 0) {
-            $data["obj_details"] = $this->field_manager->find_by_id($id);
+        $data["id"] = $fieldID;
+        $data["FormID"] = $formID;
+        if($fieldID > 0) {
+            $data["obj_details"] = $this->field_manager->find_by_id($fieldID);
             $data["related_objects"] = array();
         }
         $this->load->view("admin/field_details",$data);
@@ -57,7 +58,8 @@ class field_controller extends admin_panel {
         $field->setFieldTypeID( $this->input->post("FieldTypeID") );
         $field->setFieldName( $this->input->post("FieldName") );
         $field->setValidationRules( $this->input->post("ValidationRules") );
-        $field->setFieldOptions( json_decode($this->input->post("field_option_data")) );
+        $field->setFieldOptions( json_decode( $this->input->post("field_option_data") ) );
+        $field->addToForm( $this->input->post("FormID") );
 
         $this->field_manager->save($field);
 

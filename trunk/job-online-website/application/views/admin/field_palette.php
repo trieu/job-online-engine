@@ -2,7 +2,7 @@
 
 <div  style="display:block; width:100%; border:1px solid silver;">
     <b>Field list</b>
-    <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details") ?>">Create a field</a>
+    <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details/-1/".$FormID) ?>">Create a field</a>
     <div style="display:block; height:600px;overflow:scroll; margin-bottom:25px;">
         <?php
             $field = new Field();

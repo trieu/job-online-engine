@@ -216,6 +216,9 @@ addScriptFile("js/jquery/jquery.json.js");
 
     jQuery(document).ready(function() {        
         initDragAndDrop();
-        makeSortableTable();  
+        makeSortableTable();
+       
+
     });
 </script>
+<br/>

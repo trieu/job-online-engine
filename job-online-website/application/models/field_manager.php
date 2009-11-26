@@ -58,6 +58,7 @@ class field_manager extends data_manager {
                 $this->db->insert("field_form", $record);
             }
         }
+        return $id;
     }
 
     protected function insert($data_array) {
@@ -81,7 +82,7 @@ class field_manager extends data_manager {
     }
 
     public function find_by_filter($filter = array(), $join_filter = array()) {
-        return $this->select_db_helper($filter, $this->table_name, "Field");
+        return $this->select_db_helper($filter, $this->table_name, "Field" , $join_filter);
     }
 
     public function delete_by_id($id) {

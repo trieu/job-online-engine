@@ -87,66 +87,34 @@ class form_controller extends admin_panel {
     public function loadPaletteContent($formID = -1) {
         $palette_content = "";
         $this->load->model("field_manager");
-        $data["fields"] = $this->field_manager->find_by_filter();
+        $join_filter = array("field_form"=>"field_form.FieldID = fields.FieldID AND field_form.FormID = ".$formID);
+        $data["fields"] = $this->field_manager->find_by_filter(array(),$join_filter);
         $data["FormID"] = $formID;
         $palette_content = $this->load->view("admin/field_palette",$data,TRUE);
         return $palette_content;
     }
 
-    /**
-     * @AjaxAction
+    /** 
      * @Secured(role = "Administrator")
      */
-    public function saveFormBuilderResult() {
-
-        $is_html_cache_changed = $this->input->post("is_html_cache_changed");
-        $Fields_Form_JSON = $this->input->post("Fields_Form_JSON");
-        $Fields_Form_JSON = json_decode($Fields_Form_JSON);
-
-        $existed_record = 0;
-        foreach ($Fields_Form_JSON as $record) {
-            $this->db->select("COUNT(*)");
-            $this->db->from('field_form');
-            $this->db->where("FieldID", $record->FieldID );
-            $this->db->where("FormID", $record->FormID );
-            $c = $this->db->count_all_results();
-            $existed_record = $existed_record + $c;
-
-            if($c == 0) {
-                $this->db->insert("field_form", $record);
-            }
-            else {
-                //ApplicationHook::logInfo($record->FieldID." FieldID already in table Field_Form");
-                //ApplicationHook::logInfo($record->FormID." FormID already in table Field_Form");
-            }
-        }
-        //ApplicationHook::logError("existed_record ".$existed_record);
-        //ApplicationHook::logError("Fields_Form_JSON " . count($Fields_Form_JSON));
-        if(($existed_record == count($Fields_Form_JSON)) && $is_html_cache_changed == "false") {
-            echo -100;
-            return ;
-        }
+    public function saveFormBuilderResult() {      
         $this->load->model("object_html_cache_manager");
         $cache = new ObjectHTMLCache();
         $cache->setObjectClass( $this->input->post("ObjectClass") );
         $cache->setObjectPK( $this->input->post("ObjectPK") );
         $cache->setCacheContent( $this->input->post("CacheContent") );
+        $cache->setJavascriptContent( $this->input->post("JavascriptContent") );
         echo $this->object_html_cache_manager->save($cache);
     }
 
     /**
-     * @AjaxAction
      * @Secured(role = "Administrator")
      */
-    public function reset_build_the_form() {
-        $this->load->model("forms_manager");
+    public function reset_build_the_form() {        
         $this->load->model("object_html_cache_manager");
-        $this->db->delete("field_form", array("FormID" => $this->input->post("ObjectPK") ));
-
         $cache = new ObjectHTMLCache();
         $cache->setObjectClass( $this->input->post("ObjectClass") );
-        $cache->setObjectPK( $this->input->post("ObjectPK") );
-        $cache->setCacheContent("");
+        $cache->setObjectPK( $this->input->post("ObjectPK") );        
         echo $this->object_html_cache_manager->save($cache);
     }
 

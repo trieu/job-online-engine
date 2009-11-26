@@ -124,14 +124,6 @@ class admin_panel extends Controller {
     }
 
 
-    /**
-     * @Secured(role = "Administrator")
-     */
-    public function renderFieldUI($field_id) {
-        $this->load->model("field_manager");        
-        $field = $this->field_manager->find_by_id($field_id);
-        echo $field->buildFieldUI();
-    }
 
    
 

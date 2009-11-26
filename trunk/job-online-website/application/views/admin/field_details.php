@@ -36,7 +36,7 @@ echo form_open(site_url($action_uri), 'id="field_details_form"');
 echo renderInputField("FieldID","FieldID",$obj->getFieldID());
 echo renderSelectField("FieldTypeID", "FieldTypeID", $field_types, "Field Type");
 ?>
-FormID
+
 <input type="hidden" name="FormID" value="<?= $FormID ?>" />
 
 <div>

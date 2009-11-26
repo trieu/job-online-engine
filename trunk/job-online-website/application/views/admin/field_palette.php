@@ -22,7 +22,7 @@
                     </a>
                 </div>
                 <?php echo FieldType::getDefinedTypeName($field->getFieldTypeID()); ?>
-                <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details/".$field->getFieldID()) ?>">Edit</a>
+                <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details/".$field->getFieldID()."/".$FormID) ?>">Edit</a>
             </div>
         <?php endforeach ?>
     </div>

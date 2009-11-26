@@ -61,11 +61,12 @@ class field_controller extends admin_panel {
         $field->setFieldOptions( json_decode( $this->input->post("field_option_data") ) );
         $field->addToForm( $this->input->post("FormID") );
 
-        $this->field_manager->save($field);
+        $fieldID = $this->field_manager->save($field);
 
-        if(FieldType::isSelectableType($field->getFieldTypeID())) {
+        if( FieldType::isSelectableType($field->getFieldTypeID()) && $fieldID > 0 ) {
             $this->load->model("field_options_manager");
             foreach ($field->getFieldOptions() as $arr) {
+                $arr->FieldID = $fieldID;
                 $this->field_options_manager->save($arr);
             }
         }
@@ -73,11 +74,25 @@ class field_controller extends admin_panel {
         $this->output->set_output("Save successfully!");
     }
 
+
+    /**
+     * @Secured(role = "Administrator")
+     */
     public function addFieldOption() {
         $fieldID = $this->input->post("FieldID");
         $optionName = $this->input->post("OptionName");
 
         ApplicationHook::logInfo($fieldID. " - ". $optionName);
+    }
+
+
+    /**
+     * @Secured(role = "Administrator")
+     */
+    public function renderFieldUI($field_id) {
+        $this->load->model("field_manager");
+        $field = $this->field_manager->find_by_id($field_id);
+        echo $field->buildFieldUI();
     }
 }
 ?>

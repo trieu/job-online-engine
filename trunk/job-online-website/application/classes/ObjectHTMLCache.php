@@ -3,10 +3,11 @@
 
 
 class ObjectHTMLCache {
-    private $cacheID;
-    private $objectClass;
-    private $objectPK;
-    private $cacheContent;
+    private $cacheID = 0;
+    private $objectClass = "";
+    private $objectPK = 0;
+    private $cacheContent = "";
+    private $javascriptContent = "";
 
 
     public function __construct() {
@@ -43,6 +44,14 @@ class ObjectHTMLCache {
 
     public function setCacheContent($cacheContent) {
         $this->cacheContent = trim($cacheContent);
+    }
+
+    public function getJavascriptContent() {
+        return $this->javascriptContent;
+    }
+
+    public function setJavascriptContent($javascriptContent) {
+        $this->javascriptContent = $javascriptContent;
     }
 
 

@@ -39,6 +39,12 @@ CREATE TABLE  `job_management`.`class_using_process` (
 -- Dumping data for table `job_management`.`class_using_process`
 --
 
+/*!40000 ALTER TABLE `class_using_process` DISABLE KEYS */;
+LOCK TABLES `class_using_process` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `class_using_process` ENABLE KEYS */;
+
+
 --
 -- Definition of table `job_management`.`field_form`
 --
@@ -56,8 +62,16 @@ CREATE TABLE  `job_management`.`field_form` (
 --
 -- Dumping data for table `job_management`.`field_form`
 --
-INSERT INTO `job_management`.`field_form` (`FieldID`,`FormID`) VALUES 
- (3,1);
+
+/*!40000 ALTER TABLE `field_form` DISABLE KEYS */;
+LOCK TABLES `field_form` WRITE;
+INSERT INTO `job_management`.`field_form` VALUES  (8,1),
+ (9,1),
+ (10,1),
+ (11,1);
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `field_form` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`fieldoptions`
@@ -69,14 +83,33 @@ CREATE TABLE  `job_management`.`fieldoptions` (
   `FieldID` bigint(20) unsigned NOT NULL,
   `OptionName` text CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`FieldOptionID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `job_management`.`fieldoptions`
 --
-INSERT INTO `job_management`.`fieldoptions` (`FieldOptionID`,`FieldID`,`OptionName`) VALUES 
- (1,1,'aaaa'),
- (2,1,'bbb');
+
+/*!40000 ALTER TABLE `fieldoptions` DISABLE KEYS */;
+LOCK TABLES `fieldoptions` WRITE;
+INSERT INTO `job_management`.`fieldoptions` VALUES  (1,1,'aaaa'),
+ (2,1,'bbb'),
+ (3,4,'16 - 25'),
+ (4,4,'26 - 35'),
+ (5,4,'36 - 45'),
+ (6,4,'46 - 55'),
+ (7,4,'56 - 65'),
+ (8,4,'65+'),
+ (9,0,'1-10'),
+ (10,0,'11-20'),
+ (11,9,'10-20'),
+ (12,9,'21-30'),
+ (13,0,'aa'),
+ (14,10,'fsdffsfs'),
+ (15,11,'a'),
+ (16,11,'b');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `fieldoptions` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`fields`
@@ -89,15 +122,28 @@ CREATE TABLE  `job_management`.`fields` (
   `FieldName` text CHARACTER SET utf8 NOT NULL,
   `ValidationRules` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`FieldID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `job_management`.`fields`
 --
-INSERT INTO `job_management`.`fields` (`FieldID`,`FieldTypeID`,`FieldName`,`ValidationRules`) VALUES 
- (1,4,'field 1 ext','required'),
+
+/*!40000 ALTER TABLE `fields` DISABLE KEYS */;
+LOCK TABLES `fields` WRITE;
+INSERT INTO `job_management`.`fields` VALUES  (1,4,'field 1 ext','required'),
  (2,2,'field 2',''),
- (3,3,'Ngay sinh','');
+ (3,3,'Ngay sinh',''),
+ (4,4,'Tuổi/Age',''),
+ (5,1,'aaa',''),
+ (6,1,'Job Seeker Name',''),
+ (7,4,'What is your Age ?',''),
+ (8,1,'Name',''),
+ (9,4,'What is your Age ?',''),
+ (10,4,'aaaa',''),
+ (11,7,'chexcxvbox','');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `fields` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`fieldtype`
@@ -113,6 +159,12 @@ CREATE TABLE  `job_management`.`fieldtype` (
 --
 -- Dumping data for table `job_management`.`fieldtype`
 --
+
+/*!40000 ALTER TABLE `fieldtype` DISABLE KEYS */;
+LOCK TABLES `fieldtype` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `fieldtype` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`fieldvalues`
@@ -131,6 +183,12 @@ CREATE TABLE  `job_management`.`fieldvalues` (
 -- Dumping data for table `job_management`.`fieldvalues`
 --
 
+/*!40000 ALTER TABLE `fieldvalues` DISABLE KEYS */;
+LOCK TABLES `fieldvalues` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `fieldvalues` ENABLE KEYS */;
+
+
 --
 -- Definition of table `job_management`.`form_process`
 --
@@ -145,10 +203,15 @@ CREATE TABLE  `job_management`.`form_process` (
 --
 -- Dumping data for table `job_management`.`form_process`
 --
-INSERT INTO `job_management`.`form_process` (`FormID`,`ProcessID`) VALUES 
- (1,2),
+
+/*!40000 ALTER TABLE `form_process` DISABLE KEYS */;
+LOCK TABLES `form_process` WRITE;
+INSERT INTO `job_management`.`form_process` VALUES  (1,2),
  (4,3),
  (5,1);
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `form_process` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`forms`
@@ -165,8 +228,10 @@ CREATE TABLE  `job_management`.`forms` (
 --
 -- Dumping data for table `job_management`.`forms`
 --
-INSERT INTO `job_management`.`forms` (`FormID`,`FormName`,`Description`) VALUES 
- (1,'PERSONAL INFORMATION','for Job Seeker'),
+
+/*!40000 ALTER TABLE `forms` DISABLE KEYS */;
+LOCK TABLES `forms` WRITE;
+INSERT INTO `job_management`.`forms` VALUES  (1,'PERSONAL INFORMATION','for Job Seeker'),
  (2,'YOUR DISABILITY','for Job Seeker'),
  (3,'EDUCATION','for Job Seeker'),
  (4,'YOUR SKILLS & INTERESTS','for Job Seeker'),
@@ -183,6 +248,9 @@ INSERT INTO `job_management`.`forms` (`FormID`,`FormName`,`Description`) VALUES
  (15,'6  MONTH FOLLOW UP','for Employer'),
  (16,'12  MONTH FOLLOW UP','for Employer'),
  (17,'Employer Feedback','for Employer');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `forms` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`groups`
@@ -199,10 +267,15 @@ CREATE TABLE  `job_management`.`groups` (
 --
 -- Dumping data for table `job_management`.`groups`
 --
-INSERT INTO `job_management`.`groups` (`id`,`name`,`description`) VALUES 
- (1,'admin','Administrator'),
+
+/*!40000 ALTER TABLE `groups` DISABLE KEYS */;
+LOCK TABLES `groups` WRITE;
+INSERT INTO `job_management`.`groups` VALUES  (1,'admin','Administrator'),
  (2,'operator','Operator'),
  (3,'user','User');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `groups` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`language`
@@ -221,6 +294,12 @@ CREATE TABLE  `job_management`.`language` (
 -- Dumping data for table `job_management`.`language`
 --
 
+/*!40000 ALTER TABLE `language` DISABLE KEYS */;
+LOCK TABLES `language` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `language` ENABLE KEYS */;
+
+
 --
 -- Definition of table `job_management`.`meta`
 --
@@ -237,9 +316,14 @@ CREATE TABLE  `job_management`.`meta` (
 --
 -- Dumping data for table `job_management`.`meta`
 --
-INSERT INTO `job_management`.`meta` (`id`,`user_id`,`first_name`,`last_name`) VALUES 
- (1,2,'Trieu','Nguyen tan'),
+
+/*!40000 ALTER TABLE `meta` DISABLE KEYS */;
+LOCK TABLES `meta` WRITE;
+INSERT INTO `job_management`.`meta` VALUES  (1,2,'Trieu','Nguyen tan'),
  (2,3,'Trieu','Nguyen');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `meta` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`object_ext_info`
@@ -257,6 +341,12 @@ CREATE TABLE  `job_management`.`object_ext_info` (
 -- Dumping data for table `job_management`.`object_ext_info`
 --
 
+/*!40000 ALTER TABLE `object_ext_info` DISABLE KEYS */;
+LOCK TABLES `object_ext_info` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `object_ext_info` ENABLE KEYS */;
+
+
 --
 -- Definition of table `job_management`.`objectclass`
 --
@@ -272,10 +362,15 @@ CREATE TABLE  `job_management`.`objectclass` (
 --
 -- Dumping data for table `job_management`.`objectclass`
 --
-INSERT INTO `job_management`.`objectclass` (`ObjectClassID`,`ObjectClassName`,`Description`) VALUES 
- (1,'Job Seeker','Nguoi tim viec '),
+
+/*!40000 ALTER TABLE `objectclass` DISABLE KEYS */;
+LOCK TABLES `objectclass` WRITE;
+INSERT INTO `job_management`.`objectclass` VALUES  (1,'Job Seeker','Nguoi tim viec '),
  (2,'Employers','Nha tuyen dung'),
  (3,'Job Coach','The person who helps the job seeker');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `objectclass` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`objecthtmlcaches`
@@ -284,17 +379,23 @@ INSERT INTO `job_management`.`objectclass` (`ObjectClassID`,`ObjectClassName`,`D
 DROP TABLE IF EXISTS `job_management`.`objecthtmlcaches`;
 CREATE TABLE  `job_management`.`objecthtmlcaches` (
   `cacheID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `objectClass` int(11) NOT NULL,
-  `objectPK` bigint(20) NOT NULL,
+  `objectClass` varchar(30) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `objectPK` bigint(20) unsigned NOT NULL DEFAULT '0',
   `cacheContent` text COLLATE utf8_unicode_ci NOT NULL,
+  `javascriptContent` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`cacheID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `job_management`.`objecthtmlcaches`
 --
-INSERT INTO `job_management`.`objecthtmlcaches` (`cacheID`,`objectClass`,`objectPK`,`cacheContent`) VALUES 
- (1,0,1,'<table class=\"table_dnd\" cellpadding=\"2\" cellspacing=\"0\"><tbody><tr style=\"cursor: move;\"><td><div>\n    <label for=\"field_3\">Ngay sinh:</label>\n    &lt;input class=\"hasDatepicker\" id=\"field_3\" value=\"\" type=\"text\"&gt;\n</div>\n</td><td>#</td></tr></tbody></table>');
+
+/*!40000 ALTER TABLE `objecthtmlcaches` DISABLE KEYS */;
+LOCK TABLES `objecthtmlcaches` WRITE;
+INSERT INTO `job_management`.`objecthtmlcaches` VALUES  (2,'form_',1,'','');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `objecthtmlcaches` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`objects`
@@ -313,6 +414,12 @@ CREATE TABLE  `job_management`.`objects` (
 -- Dumping data for table `job_management`.`objects`
 --
 
+/*!40000 ALTER TABLE `objects` DISABLE KEYS */;
+LOCK TABLES `objects` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `objects` ENABLE KEYS */;
+
+
 --
 -- Definition of table `job_management`.`processes`
 --
@@ -328,13 +435,18 @@ CREATE TABLE  `job_management`.`processes` (
 --
 -- Dumping data for table `job_management`.`processes`
 --
-INSERT INTO `job_management`.`processes` (`ProcessID`,`ProcessName`,`Description`) VALUES 
- (1,'Posting a job profile for Job Seeker','test1 des'),
+
+/*!40000 ALTER TABLE `processes` DISABLE KEYS */;
+LOCK TABLES `processes` WRITE;
+INSERT INTO `job_management`.`processes` VALUES  (1,'Posting a job profile for Job Seeker','test1 des'),
  (2,'Manage Personal Job Seeker Information ','test2 Description1'),
  (3,'Tracking Job Seeker','Tranking Job seeker by a job coach'),
  (4,'Posting Employer Contact Details','This is used by DRD staff'),
  (5,'Posting a job requirements','This process can be used multiple times.'),
  (6,'Tracking Employer','This process is used to manage feedbacks of employer');
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `processes` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`sessions`
@@ -353,6 +465,12 @@ CREATE TABLE  `job_management`.`sessions` (
 --
 -- Dumping data for table `job_management`.`sessions`
 --
+
+/*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
+LOCK TABLES `sessions` WRITE;
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
+
 
 --
 -- Definition of table `job_management`.`users`
@@ -375,10 +493,15 @@ CREATE TABLE  `job_management`.`users` (
 --
 -- Dumping data for table `job_management`.`users`
 --
-INSERT INTO `job_management`.`users` (`id`,`group_id`,`ip_address`,`username`,`password`,`email`,`activation_code`,`forgotten_password_code`,`data_of_birth`) VALUES 
- (1,3,'127.0.0.1','trieu','1362627da60f8abd4176aaf7b3f02f69bca5515a','tantrieuf31@gmail.com','0','892163d6e309f3f2b66f4986fb49bb8d33f37b27',0),
+
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+LOCK TABLES `users` WRITE;
+INSERT INTO `job_management`.`users` VALUES  (1,3,'127.0.0.1','trieu','1362627da60f8abd4176aaf7b3f02f69bca5515a','tantrieuf31@gmail.com','0','892163d6e309f3f2b66f4986fb49bb8d33f37b27',0),
  (2,2,'127.0.0.1','trieunguyen','28501bb04bd8255bf26ea1f2069511731b404d35','trieunguyen@yopco.com','0','0',0),
  (3,1,'127.0.0.1','trieu_drd','0f376afb66926ffb0f4604223fd83d537b64c415','trieu@drdvietnam.com','0','0',0);
+UNLOCK TABLES;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+
 
 
 

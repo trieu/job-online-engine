@@ -22,6 +22,16 @@ class ObjectClass {
      */
     private $Objects = array();
 
+    /**
+     * @EntityField
+     */
+    private $IdentityProcessID = -1;
+
+    /**
+     * @EntityField( is_db_field=FALSE)
+     */
+    private $OtherUsableProcesses = array();
+
 
     public function __construct() {
         ;
@@ -50,7 +60,7 @@ class ObjectClass {
     public function setDescription($Description) {
         $this->Description = $Description;
     }
-    
+
     public function getObjects() {
         return $this->Objects;
     }
@@ -58,6 +68,24 @@ class ObjectClass {
     public function setObjects($Objects) {
         $this->Objects = $Objects;
     }
+
+    public function getIdentityProcessID() {
+        return $this->IdentityProcessID;
+    }
+
+    public function setIdentityProcessID($IdentityProcessID) {
+        $this->IdentityProcessID = $IdentityProcessID;
+    }
+
+    public function getOtherUsableProcesses() {
+        return $this->OtherUsableProcesses;
+    }
+
+    public function setOtherUsableProcesses($OtherUsableProcesses) {
+        $this->OtherUsableProcesses = $OtherUsableProcesses;
+    }
+
+
 
 
 

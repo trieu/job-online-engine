@@ -8,7 +8,7 @@ addScriptFile("js/jquery/jquery.json.js");
     .resizable {       
         background-color: lavender;
         margin: 4px;
-        height:30px;
+        height:auto;
     }
     #form_builder_container {
         border:1px solid #DDDDDD;

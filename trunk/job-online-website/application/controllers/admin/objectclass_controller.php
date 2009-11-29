@@ -56,7 +56,7 @@ class objectclass_controller extends admin_panel {
 
         $data["table_name"] = "classes";
         $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('ObjectClassID', 'ObjectClassName', 'Descripttion','Actions');
+        $data["data_table_heading"] = array('ObjectClassID', 'ObjectClassName', 'Descripttion','IdentityProcessID','Actions');
         $data["data_editable_fields"] = array('ProcessName'=>TRUE);
 
         $pagination_config = array();

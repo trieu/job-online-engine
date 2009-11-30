@@ -23,9 +23,9 @@ class ObjectClass {
     private $Objects = array();
 
     /**
-     * @EntityField
+     * @EntityField( is_db_field=FALSE)
      */
-    private $IdentityProcessID = -1;
+    private $IdentityProcess = null;
 
     /**
      * @EntityField( is_db_field=FALSE)
@@ -69,12 +69,12 @@ class ObjectClass {
         $this->Objects = $Objects;
     }
 
-    public function getIdentityProcessID() {
-        return $this->IdentityProcessID;
+    public function getIdentityProcess() {
+        return $this->IdentityProcess;
     }
 
-    public function setIdentityProcessID($IdentityProcessID) {
-        $this->IdentityProcessID = $IdentityProcessID;
+    public function setIdentityProcess($IdentityProcess) {
+        $this->IdentityProcess = $IdentityProcess;
     }
 
     public function getOtherUsableProcesses() {

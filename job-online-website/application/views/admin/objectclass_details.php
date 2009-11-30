@@ -84,6 +84,13 @@ echo form_fieldset_close();
 <script type="text/javascript">
     var id = <?=  $id ?>;
 
+    function setIdentityProcess(){
+        jQuery("#data_suggestion_container .token-input-list li").attr("title","");
+        jQuery("#data_suggestion_container .token-input-list li").css("background-color","");
+        jQuery("#data_suggestion_container .token-input-list li:first").attr("title","Identity Process");
+        jQuery("#data_suggestion_container .token-input-list li:first").css("background-color","yellow");
+    }
+
     jQuery(document).ready(function(){
         if(id > 0){
             jQuery("#ObjectClassID").val(id);
@@ -118,6 +125,8 @@ echo form_fieldset_close();
             distance: 3
         };
         jQuery("#data_suggestion_container").find(".token-input-list").sortable(sortOpts);
+        setIdentityProcess();
+
     });
 
 </script>

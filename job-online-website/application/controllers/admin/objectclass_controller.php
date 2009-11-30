@@ -26,6 +26,7 @@ class objectclass_controller extends admin_panel {
      */
     public function show_details($id = -1) {
         $this->load->model("objectclass_manager");
+        $this->load->model("process_manager");
         $data = $this->objectclass_manager->get_dependency_instances();
         $data["action_uri"] = "admin/objectclass_controller/save";
         $data["id"] = $id;
@@ -33,6 +34,7 @@ class objectclass_controller extends admin_panel {
             $data["obj_details"] = $this->objectclass_manager->find_by_id($id);
         }
         $data["related_views"] = "";
+        $data["available_processes"] =  $this->process_manager->find_by_filter();
         $this->load->view("admin/objectclass_details",$data);
     }
 
@@ -43,7 +45,7 @@ class objectclass_controller extends admin_panel {
     public function show($id = "all",$start_index = 1) {
         $this->load->model("objectclass_manager");
         $this->load->library('table');
-        
+
         $filter = array();
         if(is_numeric($id)) {
             $filter = array("ObjectClassID"=>$id);
@@ -56,8 +58,8 @@ class objectclass_controller extends admin_panel {
 
         $data["table_name"] = "classes";
         $data["data_table"] = $data_table;
-        $data["data_table_heading"] = array('ObjectClassID', 'ObjectClassName', 'Descripttion','IdentityProcessID','Actions');
-        $data["data_editable_fields"] = array('ProcessName'=>TRUE);
+        $data["data_table_heading"] = array('ObjectClassID', 'ObjectClassName', 'Descripttion','Actions');
+        $data["data_editable_fields"] = array('ObjectClassName'=>TRUE, 'Description' => TRUE);
 
         $pagination_config = array();
         $pagination_config['base_url'] = site_url("admin/objectclass_controller/show");

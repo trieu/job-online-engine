@@ -56,7 +56,7 @@ echo renderInputField("FormName","FormName",$obj->getFormName(),"Form Name");
 <input type="hidden" name=""/>
 
 <div id="data_suggestion_container">
-    <?php    
+    <?php
     $template = '<li class="token-input-token" ><p class="token-[id]">[name]</p><span class="token-input-delete-token">x</span></li>';
     $tokens = "";
     if(count($selected_processes)>0) {
@@ -65,7 +65,7 @@ echo renderInputField("FormName","FormName",$obj->getFormName(),"Form Name");
             $tem = str_replace("[name]", $val, $tem);
             $tokens = $tokens . $tem;
         }
-    }   
+    }
     ?>
     <b>The form in process:</b>
     <input type="text" id="data_suggestion" name="ProcessIDs" />
@@ -73,7 +73,7 @@ echo renderInputField("FormName","FormName",$obj->getFormName(),"Form Name");
 
 <div style="margin-top:32px">
     <input type="submit" value="Submit" />
-    <?php if($id>0){ ?>
+    <?php if($id>0) { ?>
     <input type="button" value="Build interface" style="margin-right:12px;" onclick="buildFormUI();"/>
     <?php } ?>
     <input type="button" value="Cancel" onclick="history.back();" />
@@ -105,6 +105,22 @@ echo form_fieldset_close();
             jQuery("#form_details input[name='ProcessIDs']").val(ids);
         });
 
+        jQuery("#data_suggestion").tokenInput("/job-online-website/index.php/admin/process_controller/getProcessesAsJson", {
+            hintText: "Type in the name of process",
+            noResultsText: "No results",
+            searchingText: "Searching...",
+            method: "POST"
+        });
+        jQuery("#data_suggestion_container").find(".token-input-list").prepend('<?= $tokens ?>');
+        jQuery("#data_suggestion_container .token-input-delete-token").click(function(){ jQuery(this).parent().remove();} );
+
+        var sortOpts = {
+            axis: "y",
+            containment: jQuery("#data_suggestion_container").find(".token-input-list"),
+            cursor: "move",
+            distance: 3
+        };
+        jQuery("#data_suggestion_container").find(".token-input-list").sortable(sortOpts);
     });
 
     function showProcessList(){
@@ -117,19 +133,9 @@ echo form_fieldset_close();
         }
     }
 
-    jQuery("#data_suggestion").tokenInput("/job-online-website/index.php/admin/process_controller/getProcessesAsJson", {
-        hintText: "Type in the name of process",
-        noResultsText: "No results",
-        searchingText: "Searching...",
-        method: "POST"
-    });
 
-    jQuery("#data_suggestion_container").find(".token-input-list").prepend('<?= $tokens ?>');
-    jQuery("#data_suggestion_container .token-input-delete-token").click(
-    function(){
-        jQuery(this).parent().remove();
-    }
-);
+
+
 
 
 </script>

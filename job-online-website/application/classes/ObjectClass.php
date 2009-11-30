@@ -1,10 +1,12 @@
 <?php
 
+require_once 'Process.php';
+
 class ObjectClass {
 
-    /**
-     * @EntityField( is_primary_key=TRUE )
-     */
+/**
+ * @EntityField( is_primary_key=TRUE )
+ */
     private $ObjectClassID = -1;
 
     /**
@@ -25,16 +27,21 @@ class ObjectClass {
     /**
      * @EntityField( is_db_field=FALSE)
      */
-    private $IdentityProcess = null;
+    private $UsableProcesses = array();
 
-    /**
-     * @EntityField( is_db_field=FALSE)
-     */
-    private $OtherUsableProcesses = array();
+
 
 
     public function __construct() {
-        ;
+        $pro = new Process();
+        $pro->setProcessID(1);
+        $pro->setProcessName("Working");
+        array_push($this->UsableProcesses, $pro);
+
+        $pro = new Process();
+        $pro->setProcessID(3);
+        $pro->setProcessName("Eating");
+        array_push($this->UsableProcesses, $pro);
     }
 
     public function getObjectClassID() {
@@ -69,21 +76,14 @@ class ObjectClass {
         $this->Objects = $Objects;
     }
 
-    public function getIdentityProcess() {
-        return $this->IdentityProcess;
+    public function getUsableProcesses() {
+        return $this->UsableProcesses;
     }
 
-    public function setIdentityProcess($IdentityProcess) {
-        $this->IdentityProcess = $IdentityProcess;
+    public function setUsableProcesses($UsableProcesses) {
+        $this->UsableProcesses = $UsableProcesses;
     }
 
-    public function getOtherUsableProcesses() {
-        return $this->OtherUsableProcesses;
-    }
-
-    public function setOtherUsableProcesses($OtherUsableProcesses) {
-        $this->OtherUsableProcesses = $OtherUsableProcesses;
-    }
 
 
 

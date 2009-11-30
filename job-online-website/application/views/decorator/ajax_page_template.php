@@ -4,9 +4,9 @@
         <meta http-equiv="content-language" content="en" />       
         <?php foreach($page_decorator->getPageMetaTags() as $name => $content) { ?>
         <meta name="<?php echo $name;?>" content="<?php echo $content;?>" />
-        <?php } ?>        
+        <?php } ?>
         <base href="<?= base_url()?>" />
-        
+
         <link type="text/css" media="screen" rel="stylesheet" href="<?= base_url() ?>assets/css/style-general.css"/>
         <link type="text/css" media="screen" rel="stylesheet" href="<?= base_url() ?>assets/css/hope-general.css"/>
         <link type="text/css" media="screen" rel="stylesheet" href="<?= base_url() ?>assets/css/left_menu_style.css"/>
@@ -27,5 +27,10 @@
         <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
         <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
         <?php } ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+                jQuery("body > div[style='text-align: center;']").remove();
+            });
+        </script>
     </body>
 </html>

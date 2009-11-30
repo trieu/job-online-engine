@@ -76,5 +76,10 @@
         <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
         <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
         <?php } ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function(){
+                jQuery("body > div[style='text-align: center;']").remove();
+            });
+        </script>
     </body>
 </html>

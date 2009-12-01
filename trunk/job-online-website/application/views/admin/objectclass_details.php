@@ -24,6 +24,7 @@
 require_once 'macros.php';
 addScriptFile("js/jquery.tokeninput/jquery.tokeninput.js");
 addScriptFile("js/commons.js");
+addScriptFile("js/jquery/jquery.json.js");
 addCssFile("js/jquery.tokeninput/token-input.css");
 
 $obj = new ObjectClass();
@@ -67,7 +68,7 @@ echo renderInputField("ObjectClassName","ObjectClassName",$obj->getObjectClassNa
     }
     ?>
     <b>This object can do:</b>
-    <input type="text" id="data_suggestion" name="ProcessIDs" />
+    <input type="text" id="data_suggestion" name="UsableProcesses" />
 </div>
 
 <div style="margin-top:32px">
@@ -102,11 +103,13 @@ echo form_fieldset_close();
         }
 
         jQuery("#ObjectClass_details").submit(function(){
-            var ids = "";
+            var UsableProcesses = [];
+
             jQuery("#data_suggestion_container p[class^='token-']").each(function(){
-                ids += (jQuery(this).attr("class").replace("token-","") + "&");
+                var id = new Number(jQuery(this).attr("class").replace("token-",""));
+                UsableProcesses.push(id);
             });
-            jQuery("#form_details input[name='ProcessIDs']").val(ids);
+            jQuery("#ObjectClass_details input[name='UsableProcesses']").val(jQuery.toJSON(UsableProcesses));
         });
 
         jQuery("#data_suggestion").tokenInput("/job-online-website/index.php/admin/process_controller/getProcessesAsJson", {
@@ -122,7 +125,9 @@ echo form_fieldset_close();
             axis: "y",
             containment: jQuery("#data_suggestion_container").find(".token-input-list"),
             cursor: "move",
-            distance: 3
+            distance: 3 ,
+            stop: function(event, ui) { setIdentityProcess();  }
+
         };
         jQuery("#data_suggestion_container").find(".token-input-list").sortable(sortOpts);
         setIdentityProcess();

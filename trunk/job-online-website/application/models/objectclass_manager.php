@@ -21,16 +21,22 @@ class objectclass_manager extends data_manager {
 
     public function save($obj) {
         $data_array = $this->class_mapper->classToArray("ObjectClass", $obj);
+        $id = -1;
         if($obj->getObjectClassID() > 0) {
-            $this->update($data_array);
+            $id = $this->update($data_array);
         }
         else {
-            $this->insert($data_array);
+            $id = $this->insert($data_array);
         }
+        //TODO save usable processes
     }
 
     protected function insert($data_array) {
         $this->db->insert($this->table_name, $data_array);
+        if($this->db->affected_rows()>0) {
+            return $this->db->insert_id();
+        }
+        return -1;
     }
 
     protected function update($data_array) {
@@ -39,6 +45,10 @@ class objectclass_manager extends data_manager {
         unset($data_array[$key_field_name]);
         $this->db->where($key_field_name, $id);
         $this->db->update($this->table_name, $data_array);
+        if($this->db->affected_rows()>0) {
+            return $id;
+        }
+        return -1;
     }
 
     /**
@@ -72,7 +82,7 @@ class objectclass_manager extends data_manager {
     public function updateByField($id,$editable_field_name,$editable_field_value) {
     }
 
-   
+
 }
 
 

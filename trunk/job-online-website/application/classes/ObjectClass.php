@@ -4,9 +4,9 @@ require_once 'Process.php';
 
 class ObjectClass {
 
-/**
- * @EntityField( is_primary_key=TRUE )
- */
+    /**
+     * @EntityField( is_primary_key=TRUE )
+     */
     private $ObjectClassID = -1;
 
     /**
@@ -28,9 +28,6 @@ class ObjectClass {
      * @EntityField( is_db_field=FALSE)
      */
     private $UsableProcesses = array();
-
-
-
 
     public function __construct() {
         $pro = new Process();

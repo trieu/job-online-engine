@@ -19,7 +19,6 @@ class objectclass_controller extends admin_panel {
         parent::__construct();
     }
 
-
     /**
      * @Decorated
      * @Secured(role = "Administrator")
@@ -80,6 +79,7 @@ class objectclass_controller extends admin_panel {
         $obj->setObjectClassID($this->input->post("ObjectClassID"));
         $obj->setObjectClassName($this->input->post("ObjectClassName"));
         $obj->setDescription($this->input->post("Description"));
+        $obj->setUsableProcesses( json_decode($this->input->post("UsableProcesses") ) );
 
         $this->objectclass_manager->save($obj);
         $this->output->set_output("Save successfully!");

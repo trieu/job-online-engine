@@ -75,8 +75,8 @@ echo renderInputField("ObjectClassName","ObjectClassName",$obj->getObjectClassNa
     ?>
     
     <p> <b>The usable processes for this object:</b>
-        (The <span class="identity_process">yellow process</span> will be the 
-        <strong title="The Indentity Process is the process that object need use it to create basic information">Indentity Process</strong>)
+        (The yellow process will be the
+        <span class="identity_process" title="The Indentity Process is the process which uses for creating basic information">Indentity Process</span>)
     </p>
 
     <input type="text" id="data_suggestion" name="UsableProcesses" />
@@ -99,7 +99,7 @@ echo form_fieldset_close();
     function setIdentityProcess(){
         jQuery("#data_suggestion_container .token-input-list li").attr("title","");
         jQuery("#data_suggestion_container .token-input-list li").removeClass("identity_process");
-        var title = "This process is used to create basic information for " +  jQuery("#ObjectClassName").val();
+        var title = jQuery("#ObjectClassName").val() + " uses this process for creating basic information";
         jQuery("#data_suggestion_container .token-input-list li:first").attr("title",title);
         jQuery("#data_suggestion_container .token-input-list li:first").addClass("identity_process");
     }
@@ -144,6 +144,10 @@ echo form_fieldset_close();
         jQuery("#data_suggestion_container").find(".token-input-list").sortable(sortOpts);
         setIdentityProcess();
 
+
+        if(!jQuery.browser["msie"]){
+            jQuery(".identity_process").bt({shrinkToFit:true,cssStyles:{fontFamily:'"Lucida Grande",Helvetica,Arial,Verdana,sans-serif',fontSize:'12px',padding:'10px 14px'}});
+        };
     });
 
 </script>
@@ -156,3 +160,7 @@ foreach ($available_processes as $p) {
 }
 echo importContainerBox("Available Process", $data_list, TRUE);
  ?>
+
+
+
+

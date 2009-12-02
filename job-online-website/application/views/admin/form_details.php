@@ -129,7 +129,7 @@ echo form_fieldset_close();
 
     function buildFormUI(){
         if(id > 0){
-            window.location = "<?= site_url('admin/admin_panel/form_builder/'.$id)?>";
+            window.location = "<?= site_url('admin/form_controller/form_builder/'.$id)?>";
         }
     }
 

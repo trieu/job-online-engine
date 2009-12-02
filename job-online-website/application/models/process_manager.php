@@ -91,6 +91,23 @@ class process_manager extends data_manager {
 
     public function updateByField($id,$editable_field_name,$editable_field_value) {
     }
+
+    public function getIndentityProcessView($id) {
+        $sql =  " SELECT cacheContent, javascriptContent ";
+        $sql .= " FROM objecthtmlcaches";
+        $sql .= " WHERE objectClass = 'form_' ";
+        $sql .= " AND objectPK ";
+        $sql .= " IN (SELECT forms.FormID FROM forms";
+        $sql .= "     INNER JOIN form_process";
+        $sql .= "     ON form_process.FormID = forms.FormID AND form_process.ProcessID = ?";
+        $sql .= "    );";
+        
+        $q = $this->db->query($sql, array($id));
+        foreach ($q->result_array() as $record){            
+            return $record;
+        }
+        return array();
+    }
 }
 
 

@@ -94,8 +94,6 @@ class objectclass_manager extends data_manager {
             }
             usort($processes, array("Process", "_compare"));
             $obj->setUsableProcesses($processes);
-            ApplicationHook::logInfo( $processes[0]->getProcessName());
-
             return $obj;
         }
         return NULL;

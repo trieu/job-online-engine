@@ -72,10 +72,36 @@ class objectclass_manager extends data_manager {
     public function find_by_id($id) {
         $query = $this->db->get_where($this->table_name, array('ObjectClassID' => $id));
         foreach ($query->result_array() as $data_row) {
-            $pro = new ObjectClass();
-            return $pro = $this->class_mapping($data_row, "ObjectClass", $pro);
+            $obj = new ObjectClass();
+            $obj = $this->class_mapping($data_row, "ObjectClass", $obj);
+
+            $sql =  " SELECT processes.*, class_using_process.ProcessOrder";
+            $sql .= " FROM processes ";
+            $sql .= " INNER JOIN class_using_process";
+            $sql .= " ON processes.ProcessID = class_using_process.ProcessID AND class_using_process.ObjectClassID = ?";
+            
+            $q2 = $this->db->query($sql, array($id));
+            $record_set = $q2->result_array();
+
+            $processes = array();
+            foreach ($record_set as $record) {
+                $process = new Process();
+                $process->setProcessID($record['ProcessID']);
+                $process->setProcessName($record['ProcessName']);
+                $process->setDescription($record['Description']);
+                $process->setProcessOrder($record['ProcessOrder']);
+                array_push($processes, $process);
+            }
+            usort($processes, array("Process", "_compare"));
+            $obj->setUsableProcesses($processes);
+            ApplicationHook::logInfo( $processes[0]->getProcessName());
+
+            return $obj;
         }
+        return NULL;
     }
+
+
 
     /**
      * @access	public

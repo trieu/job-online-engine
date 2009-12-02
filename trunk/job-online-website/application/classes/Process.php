@@ -5,10 +5,15 @@ class Process {
     public static $DATABASE_TABLE = "Processes";
     public static $RELATIONS = array();
 
-    private $ProcessID = -1;    
+    private $ProcessID = -1;
     private $ProcessName = "";
     private $Description = "";
-   
+
+    /**
+     * @EntityField( is_db_field=FALSE )
+     */
+    private $ProcessOrder = -1;
+
 
     public function __construct() {
         ;
@@ -37,6 +42,23 @@ class Process {
         $this->Description = $Description;
     }
 
+    public function getProcessOrder() {
+        return $this->ProcessOrder;
+    }
 
+    public function setProcessOrder($ProcessOrder) {
+        $this->ProcessOrder = $ProcessOrder;
+    }
+
+
+    public static function _compare(Process $a, Process $b) {
+        if($a->getProcessOrder() > $b->getProcessOrder()) {
+            return +1;
+        }
+        else if($a->getProcessOrder() < $b->getProcessOrder()) {
+            return -1;
+        }
+        return 0;
+    }
 }
 ?>

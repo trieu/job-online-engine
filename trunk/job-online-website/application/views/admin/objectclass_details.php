@@ -17,6 +17,11 @@
     textarea {
         font-size: 16px;
     }
+    .identity_process {
+        font-size: 15px!important;
+        color:blue!important;
+        background-color:yellow!important;
+    }
 </style>
 
 
@@ -59,15 +64,21 @@ echo renderInputField("ObjectClassName","ObjectClassName",$obj->getObjectClassNa
     $selected_processes = array();
     $template = '<li class="token-input-token" ><p class="token-[id]">[name]</p><span class="token-input-delete-token">x</span></li>';
     $tokens = "";
+
     if(count($obj->getUsableProcesses())>0) {
-        foreach ($obj->getUsableProcesses() as $key => $val) {
-            $tem = str_replace( "[id]", $key,$template);
-            $tem = str_replace("[name]", $key." - ".$val->getProcessName(), $tem);
+        foreach ($obj->getUsableProcesses() as $process) {
+            $tem = str_replace( "[id]", $process->getProcessID(),$template);
+            $tem = str_replace("[name]",$process->getProcessName(), $tem);
             $tokens = $tokens . $tem;
         }
     }
     ?>
-    <b>This object can do:</b>
+    
+    <p> <b>The usable processes for this object:</b>
+        (The <span class="identity_process">yellow process</span> will be the 
+        <strong title="The Indentity Process is the process that object need use it to create basic information">Indentity Process</strong>)
+    </p>
+
     <input type="text" id="data_suggestion" name="UsableProcesses" />
 </div>
 
@@ -87,9 +98,10 @@ echo form_fieldset_close();
 
     function setIdentityProcess(){
         jQuery("#data_suggestion_container .token-input-list li").attr("title","");
-        jQuery("#data_suggestion_container .token-input-list li").css("background-color","");
-        jQuery("#data_suggestion_container .token-input-list li:first").attr("title","Identity Process");
-        jQuery("#data_suggestion_container .token-input-list li:first").css("background-color","yellow");
+        jQuery("#data_suggestion_container .token-input-list li").removeClass("identity_process");
+        var title = "This process is used to create basic information for " +  jQuery("#ObjectClassName").val();
+        jQuery("#data_suggestion_container .token-input-list li:first").attr("title",title);
+        jQuery("#data_suggestion_container .token-input-list li:first").addClass("identity_process");
     }
 
     jQuery(document).ready(function(){

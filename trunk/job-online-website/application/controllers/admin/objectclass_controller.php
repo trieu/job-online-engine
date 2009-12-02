@@ -11,6 +11,7 @@ require_once 'admin_panel.php';
  * @property CI_DB_active_record $db
  *
  * @property objectclass_manager $objectclass_manager
+ * @property process_manager $process_manager * 
  *
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
@@ -52,7 +53,7 @@ class objectclass_controller extends admin_panel {
         $classes = $this->objectclass_manager->find_by_filter($filter);
         $actions = anchor('admin/objectclass_controller/show_details/[ObjectClassID]', 'View Details', array('title' => 'View Details'));
         $actions .= " | ";
-        $actions .= anchor('admin/object_controller/show_details', 'Create a object', array('title' => 'Create a object'));
+        $actions .= anchor('admin/objectclass_controller/create_object/[ObjectClassID]', 'Create a object', array('title' => 'Create a object'));
         $data_table = $this->class_mapper->DataListToDataTable("ObjectClass",$classes,$actions);
 
         $data["table_name"] = "classes";
@@ -91,11 +92,19 @@ class objectclass_controller extends admin_panel {
      */
     public function create_object($classID ) {
         $this->load->model("objectclass_manager");
+        $this->load->model("process_manager");
+        
         if($classID > 0) {
             $object_class = $this->objectclass_manager->find_by_id($classID);
-            $this->output->set_output("Create a object successfully for " . $object_class->getObjectClassName());
-        }
+            $data["object_class"] = $object_class;
 
+            foreach ($object_class->getUsableProcesses() as $pro) {
+                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessView($pro->getProcessID());
+                break;
+            }
+
+            $this->load->view("admin/create_object",$data);            
+        }
     }
 
 }

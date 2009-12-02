@@ -40,7 +40,7 @@ addScriptFile("js/jquery/jquery.json.js");
 </div>
 
 <div id="form_builder_container" >
-    <?= html_entity_decode($form_cache) ?>   
+    <?= html_entity_decode($form_cache) ?>
 </div>
 
 <div id="list_field_form" style="float:right; width:186px;" >
@@ -57,6 +57,9 @@ addScriptFile("js/jquery/jquery.json.js");
         var data = {};        
         data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
         data["ObjectPK"] = <?= $form->getFormID() ?>;
+        jQuery("#form_builder_container div[class='resizable ui-resizable']").each(function(){
+            jQuery(this).removeAttr("class");
+        });
         data["CacheContent"] =  jQuery("#form_builder_container").html();
         data["JavascriptContent"] = "";
 
@@ -64,8 +67,8 @@ addScriptFile("js/jquery/jquery.json.js");
         var callback =  function(id){
             var html = "";
             if(id > 0){
-                html = "Build form successfully!";
-                is_html_cache_changed = false;
+                html = "Build form successfully!";                
+                is_html_cache_changed = false;                
             }
             else  if(id == -100){
                 html = "You have not changed form, so nothing to update!";
@@ -74,6 +77,7 @@ addScriptFile("js/jquery/jquery.json.js");
                 html = "Build form fail!";
             }
             alert(html);
+            setTimeout( function(){ location.reload(); } , 1000);
         };
         jQuery.post(uri, data, callback );
     }
@@ -104,7 +108,7 @@ addScriptFile("js/jquery/jquery.json.js");
 
     function autoBuildForm(){
         var uri = "<?= site_url("admin/field_controller/renderFieldUI") ?>/";
-        field_form_num = jQuery("#form_builder_container label[for*='field']").length;
+        field_form_num = jQuery("#form_builder_container > div").length;
         var must_build = jQuery("#list_field_form div[id*='<?= Field::$HTML_DOM_ID_PREFIX ?>']").length;
 
         if(field_form_num == must_build) {
@@ -142,7 +146,10 @@ addScriptFile("js/jquery/jquery.json.js");
             minHeight: 40,
             minWidth : 60
         };
-        jQuery("#form_builder_container div.resizable").resizable(resizeOpts);
+        jQuery("#form_builder_container > div").each(function(){
+            jQuery(this).addClass("resizable");
+        });
+        jQuery("#form_builder_container > div").resizable(resizeOpts);
     }
 </script>
 

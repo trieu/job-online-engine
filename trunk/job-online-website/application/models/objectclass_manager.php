@@ -20,14 +20,27 @@ class objectclass_manager extends data_manager {
     }
 
     public function save($obj) {
+        $this->db->trans_start();
         $data_array = $this->class_mapper->classToArray("ObjectClass", $obj);
         $id = -1;
         if($obj->getObjectClassID() > 0) {
             $id = $this->update($data_array);
+            $id = $obj->getObjectClassID();
         }
         else {
             $id = $this->insert($data_array);
         }
+
+        $rec = new stdClass();
+        $rec->ObjectClassID = $id;
+        $this->db->delete("class_using_process",array("ObjectClassID"=>$id));
+        foreach ($obj->getUsableProcesses() as $ProcessOrder => $ProcessID) {
+            $rec->ProcessID = $ProcessID;
+            $rec->ProcessOrder = $ProcessOrder;
+            $this->db->insert("class_using_process",$rec);
+        }
+        $this->db->trans_complete();
+        return $id;
         //TODO save usable processes
     }
 

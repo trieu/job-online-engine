@@ -10,7 +10,7 @@
 
 
 <?php
-    if(isset ($objectCacheHTML)) {
+    if(isset ($objectCacheHTML['cacheContent'])) {
        echo html_entity_decode($objectCacheHTML['cacheContent']);
     }
 ?>

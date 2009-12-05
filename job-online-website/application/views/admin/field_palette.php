@@ -1,28 +1,35 @@
+<style type="text/css">
+    .odd_row_field {
+        background:silver none repeat scroll 0 0;
+    }
+    .even_row_field {
+        background:lavender none repeat scroll 0 0;
+    }
+</style>
 
-
-<div  style="display:block; width:100%; border:1px solid silver;">
+<div style="display:block; width:100%; border:1px solid silver;" >
     <b>Field list</b>
     <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details/-1/".$FormID) ?>">Create a field</a>
     <div style="display:block; height:600px;overflow:scroll; margin-bottom:25px;">
         <?php
             $field = new Field();
-            foreach ($fields as $field ) :
+            foreach ($fields as $idx => $field ) :
         ?>
-            <div class="draggable focusable_text" style="width:150px;height:60px;">
-                <div id="<?= Field::$HTML_DOM_ID_PREFIX.$field->getFieldID() ?>" >
-                    <a href="javascript:void(0)" title="<?= $field->getFieldName() ?>">
-                        <?php
+            <div class="draggable focusable_text <?php if($idx%2 == 1) echo "odd_row_field"; else echo "even_row_field";?>" style="width:170px;height:60px;">
+                <div id="<?= Field::$HTML_DOM_ID_PREFIX.$field->getFieldID() ?>" >                    
+                        <?php                            
                             if(strlen($field->getFieldName()) < 50){
                                 echo $field->getFieldName();
                             }
                             else {
                                 echo substr($field->getFieldName(), 0, 50)."...";
                             }
-                        ?>
-                    </a>
+                        ?>                    
                 </div>
                 <?php echo FieldType::getDefinedTypeName($field->getFieldTypeID()); ?>
-                <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details/".$field->getFieldID()."/".$FormID) ?>">Edit</a>
+                <Br/>
+                <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details/".$field->getFieldID()."/".$FormID) ?>">Edit</a> |
+                <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/remove_field_from_form/".$field->getFieldID()."/".$FormID) ?>">Remove</a>
             </div>
         <?php endforeach ?>
     </div>

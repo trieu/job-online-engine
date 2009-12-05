@@ -12,9 +12,7 @@ class field_manager extends data_manager {
     public function __construct() {
         parent::__construct();
         $this->table_name = "fields";
-
     }
-
 
     public function delete($object) {
 
@@ -88,6 +86,10 @@ class field_manager extends data_manager {
     public function delete_by_id($id) {
         $key_field_name = "FieldID";
         $this->db->delete($this->table_name, array($key_field_name => $id));
+    }
+
+    public function remove_field_from_form($FieldID, $FormID) {
+        $this->db->delete("field_form", array("FieldID" => $FieldID, "FormID"=> $FormID));
     }
 
     public function get_dependency_instances() {

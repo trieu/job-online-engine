@@ -144,7 +144,6 @@ echo form_fieldset_close();
         jQuery("#data_suggestion_container").find(".token-input-list").sortable(sortOpts);
         setIdentityProcess();
 
-
         if(!jQuery.browser["msie"]){
             jQuery(".identity_process").bt({shrinkToFit:true,cssStyles:{fontFamily:'"Lucida Grande",Helvetica,Arial,Verdana,sans-serif',fontSize:'12px',padding:'10px 14px'}});
         };

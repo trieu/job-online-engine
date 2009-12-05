@@ -74,6 +74,16 @@ class field_controller extends admin_panel {
         $this->output->set_output("Save successfully!");
     }
 
+     /**
+     * @AjaxAction
+     * @Secured(role = "Administrator")
+     */
+    public function remove_field_from_form($FieldID, $FormID) {
+        $this->load->model("field_manager");
+        $this->field_manager->remove_field_from_form($FieldID, $FormID);
+        echo "Removed";
+    }
+
 
     /**
      * @Secured(role = "Administrator")

@@ -8,6 +8,7 @@ require_once 'admin_panel.php';
  * @property page_decorator $page_decorator
  * @property class_mapper $class_mapper
  * @property CI_Loader $load
+ * @property CI_Output $output
  * @property CI_DB_active_record $db
  *
  * @property objectclass_manager $objectclass_manager
@@ -104,6 +105,33 @@ class objectclass_controller extends admin_panel {
             }
 
             $this->load->view("admin/create_object",$data);            
+        }
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function save_object($ObjectClassID ) {
+        $this->load->model("object_manager");
+        $this->load->model("field_manager");
+
+        if($ObjectClassID > 0) {
+           
+           $posted_key_data = array_keys($_POST);
+           $obj = new Object();
+           $obj->setObjectClassID($ObjectClassID);
+
+
+           foreach ($posted_key_data as $key) {
+               ApplicationHook::logInfo($key."->".$this->input->post($key));
+
+               if( strpos($key,Field::$HTML_DOM_ID_PREFIX) != FALSE ){
+                    $obj->addFieldValue($FieldValue);
+               }
+           }
+           $ok = $this->object_manager->save($obj);
+           $this->output->set_output("OK = ".$ok);
         }
     }
 

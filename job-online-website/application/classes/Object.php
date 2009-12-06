@@ -7,10 +7,15 @@ class Object {
     private $ObjectClassID = -1;
     private $ObjectRefKey = "";
 
+    /**
+     * @EntityField( is_db_field=FALSE)
+     */
+    private $FieldValues = array();
+
     public function __construct() {
         ;
     }
-    
+
     public function getObjectID() {
         return $this->ObjectID;
     }
@@ -43,6 +48,16 @@ class Object {
         $this->ObjectRefKey = $ObjectRefKey;
     }
 
+    public function getFieldValues() {
+        return $this->FieldValues;
+    }
 
+    public function setFieldValues($FieldValues) {
+        $this->FieldValues = $FieldValues;
+    }
+
+    public function addFieldValue($FieldValue) {
+        array_push($this->FieldValue, $FieldValue);
+    }
 }
 ?>

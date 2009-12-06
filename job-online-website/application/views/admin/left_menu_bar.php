@@ -17,9 +17,9 @@ $action_names  = array(
 renderGroupOfActions("manage_fields","Manage Fields", $action_names);
 
 $action_names  = array(
-    "Create Class"=> "admin/objectclass_controller/show_details"
-    , "List all Object Classes"=> "admin/objectclass_controller/show");
-renderGroupOfActions("manage_object_classes","Manage Object Classes", $action_names);
+    "Create new Object"=> "admin/objectclass_controller/show_details"
+    , "List all Objects"=> "admin/objectclass_controller/show");
+renderGroupOfActions("manage_object_classes","Manage Object", $action_names);
 ?>
 
 <?php  function renderGroupOfActions($group_id, $group_name, $action_names) { ?>

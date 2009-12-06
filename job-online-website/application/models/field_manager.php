@@ -45,7 +45,7 @@ class field_manager extends data_manager {
         }
 
         $FormIDs = $object->getFormIDs();
-        if( count($FormIDs) == 1 ) {
+        if( (count($FormIDs) == 1) && ($id > 0) ) {
             $record = new stdClass();
             $record->FieldID = $id;
             $record->FormID = $FormIDs[0];

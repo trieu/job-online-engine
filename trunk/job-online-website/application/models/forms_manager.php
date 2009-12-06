@@ -29,7 +29,7 @@ class forms_manager extends data_manager {
     public function save($object ) {
         $data_array = $this->class_mapper->classToArray("Form", $object);
 
-        $id = -1;
+        $id = -1;       
         if($object->getFormID() > 0) {
             $this->update($data_array);
             $id = $object->getFormID();
@@ -46,7 +46,6 @@ class forms_manager extends data_manager {
             }
         }
         $this->db->trans_complete();
-
     }
 
     protected function insert($data_array) {

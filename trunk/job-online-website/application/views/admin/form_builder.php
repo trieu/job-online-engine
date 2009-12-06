@@ -60,6 +60,7 @@ addScriptFile("js/jquery/jquery.json.js");
         jQuery("#form_builder_container div[class='resizable ui-resizable']").each(function(){
             jQuery(this).removeAttr("class");
         });
+        jQuery("#form_builder_container div[class*='ui-resizable-handle']").remove();
         data["CacheContent"] =  jQuery("#form_builder_container").html();
         data["JavascriptContent"] = "";
 

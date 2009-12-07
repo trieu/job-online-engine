@@ -57,7 +57,7 @@ class Object {
     }
 
     public function addFieldValue($FieldValue) {
-        array_push($this->FieldValue, $FieldValue);
+        array_push($this->FieldValues, $FieldValue);
     }
 }
 ?>

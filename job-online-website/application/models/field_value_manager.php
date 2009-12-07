@@ -47,8 +47,14 @@ class field_value_manager extends data_manager {
     }
 
     public function find_by_id($id) {
+        $query = $this->db->get_where($this->table_name, array('ObjectID' => $id));
+        foreach ($query->result_array() as $data_row) {
+            $pro = new Object();
+            return $pro = $this->class_mapping($data_row, "Object", $pro);
+        }
     }
-    public function find_by_filter($filter, $join_filter = array()) {
+    public function find_by_filter($filter = array(), $join_filter = array()) {
+        return $this->select_db_helper($filter, $this->table_name, "Object");
     }
 
     public function delete($object) {

@@ -54,7 +54,7 @@ class objectclass_controller extends admin_panel {
         $classes = $this->objectclass_manager->find_by_filter($filter);
         $actions = anchor('admin/objectclass_controller/show_details/[ObjectClassID]', 'View Details', array('title' => 'View Details'));
         $actions .= " | ";
-        $actions .= anchor('admin/objectclass_controller/create_object/[ObjectClassID]', 'Create a object', array('title' => 'Create a object'));
+        $actions .= anchor('admin/object_controller/create_object/[ObjectClassID]', 'Create a object', array('title' => 'Create a object'));
         $data_table = $this->class_mapper->DataListToDataTable("ObjectClass",$classes,$actions);
 
         $data["table_name"] = "classes";
@@ -87,53 +87,7 @@ class objectclass_controller extends admin_panel {
         $this->output->set_output("Save successfully!");
     }
 
-    /**
-     * @Decorated
-     * @Secured(role = "Administrator")
-     */
-    public function create_object($classID ) {
-        $this->load->model("objectclass_manager");
-        $this->load->model("process_manager");
-        
-        if($classID > 0) {
-            $object_class = $this->objectclass_manager->find_by_id($classID);
-            $data["object_class"] = $object_class;
-
-            foreach ($object_class->getUsableProcesses() as $pro) {
-                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessView($pro->getProcessID());
-                break;
-            }
-
-            $this->load->view("admin/create_object",$data);            
-        }
-    }
-
-    /**
-     * @Decorated
-     * @Secured(role = "Administrator")
-     */
-    public function save_object($ObjectClassID ) {
-        $this->load->model("object_manager");
-        $this->load->model("field_manager");
-
-        if($ObjectClassID > 0) {
-           
-           $posted_key_data = array_keys($_POST);
-           $obj = new Object();
-           $obj->setObjectClassID($ObjectClassID);
-
-
-           foreach ($posted_key_data as $key) {
-               ApplicationHook::logInfo($key."->".$this->input->post($key));
-
-               if( strpos($key,Field::$HTML_DOM_ID_PREFIX) != FALSE ){
-                    $obj->addFieldValue($FieldValue);
-               }
-           }
-           $ok = $this->object_manager->save($obj);
-           $this->output->set_output("OK = ".$ok);
-        }
-    }
+  
 
 }
 ?>

@@ -25,11 +25,13 @@ class object_manager extends data_manager {
             $id = $this->insert($data_array);
         }
 
+        $this->load->model("field_value_manager");
+        ApplicationHook::logInfo( count($obj->getFieldValues()) );
         $this->db->trans_start();
         foreach ($obj->getFieldValues() as $field_value) {
             $field_value['ObjectID'] = $id;
             $field_value['FieldValueID'] = -1;
-            $this->load->model("field_value_manager");
+            
             $this->field_value_manager->save($field_value);
         }
         $this->db->trans_complete();

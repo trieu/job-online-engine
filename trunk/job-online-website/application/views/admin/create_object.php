@@ -14,6 +14,10 @@
         border:medium solid!important;
         padding: 11px;
     }
+    legend {
+        font-weight:bold;
+        font-size: 15px;
+    }
 </style>
 
 <?php
@@ -29,7 +33,7 @@ foreach ($object_class->getUsableProcesses() as $pro) {
 
 <fieldset class="input_info">
     <legend><?= $legend_text ?></legend>
-    <form id="create_object_instance_form" action="<?= site_url("admin/objectclass_controller/save_object/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
+    <form id="create_object_instance_form" action="<?= site_url("admin/object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
         <?php
         if(isset ($objectCacheHTML['cacheContent'])) {
             echo html_entity_decode($objectCacheHTML['cacheContent']);

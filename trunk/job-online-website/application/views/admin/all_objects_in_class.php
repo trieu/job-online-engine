@@ -1,9 +1,16 @@
 
-Total records : <?= count($objects) ?>
+Total records :
+<?php 
+    $total_records = count($objects);
+    echo $total_records;
+?>
+
+<?php if($total_records > 0) { ?>
 <table border="1">
     <thead>
         <?php foreach ($objects as $objID => $fields ) { ?>
         <tr>
+            <th>ID</th>
             <?php
                 foreach ($fields as $field ) {
             ?>
@@ -18,6 +25,7 @@ Total records : <?= count($objects) ?>
     <tbody>
         <?php foreach ($objects as $objID => $fields ) { ?>
         <tr>
+            <td><?= $objID ?></td>
             <?php foreach ($fields as $field ) { ?>
                 <td><?= $field['FieldValue'] ?></td>
             <?php } ?>
@@ -26,3 +34,4 @@ Total records : <?= count($objects) ?>
         
     </tbody>
 </table>
+ <?php } ?>

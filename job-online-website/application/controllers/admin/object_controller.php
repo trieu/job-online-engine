@@ -10,6 +10,7 @@ require_once 'admin_panel.php';
  * @property CI_DB_active_record $db
  *
  * @property field_manager $field_manager
+ * @property object_manager $object_manager
  *
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
@@ -66,10 +67,22 @@ class object_controller extends admin_panel {
                     //$FieldValues[$FieldID] = $FieldValue;
                 }
             }
-            
+
             $ok = $this->object_manager->save($obj);
             $this->output->set_output("OK = ".$ok);
         }
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function list_all($ObjectClassID ) {
+        $this->load->model("object_manager");
+        $data = array();
+        $data["objects"] = $this->object_manager->getAllObjectsInClass($ObjectClassID);
+
+        $this->load->view("admin/all_objects_in_class",$data);
     }
 }
 ?>

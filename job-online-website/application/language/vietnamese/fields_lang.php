@@ -1,7 +1,7 @@
 <?php
 
 //////////////////  Home page  ////////////////////
-$lang['home_page_heading'] = "DRD - Hệ thống hoạch định thông tin";
+$lang['home_page_heading'] = "DRD Database";
 $lang['admin_page_heading'] = "Quản lý hệ thống";
 
 $lang['home_page'] = "Trang chủ";

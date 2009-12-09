@@ -31,7 +31,7 @@ class object_manager extends data_manager {
         foreach ($obj->getFieldValues() as $field_value) {
             $field_value['ObjectID'] = $id;
             $field_value['FieldValueID'] = -1;
-            
+
             $this->field_value_manager->save($field_value);
         }
         $this->db->trans_complete();
@@ -79,6 +79,70 @@ class object_manager extends data_manager {
         return $list;
     }
     public function updateByField($id,$editable_field_name,$editable_field_value) {
+    }
+
+    public function getAllObjectsInClass($classID) {
+        $sql = "(
+                SELECT objects.ObjectID, fields.FieldName, fieldoptions.OptionName as FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                AND fields.FieldTypeID >= 4
+                AND fields.FieldTypeID <= 7
+                )
+                INNER JOIN fieldoptions ON fieldoptions.FieldOptionID = fieldvalues.FieldValue
+                WHERE objects.ObjectClassID = ?
+                )
+                UNION
+                (
+                SELECT objects.ObjectID, fields.FieldName,  fieldvalues.FieldValue as FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                AND fields.FieldTypeID >= 1
+                AND fields.FieldTypeID <= 3 
+                )
+                WHERE objects.ObjectClassID = ?
+                )
+                ";
+        $query = $this->db->query($sql, array($classID, $classID));
+        $record_set = $query->result_array();
+        $objects = array();
+        foreach ($record_set as $record) {
+            if( ! isset ($objects[$record['ObjectID']]) ) {
+                $objects[ $record['ObjectID'] ] = array();
+            }
+            $field = array("FieldName"=> $record['FieldName']  , "FieldValue" => $record['FieldValue'] );
+            array_push( $objects[ $record['ObjectID'] ], $field );
+        }
+        return $objects;
+    }
+
+    public function getObjectInstance($objectID) {
+        $sql = "(
+                SELECT objects.ObjectID, fields.FieldName, fieldoptions.OptionName as FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                AND fields.FieldTypeID >= 4
+                AND fields.FieldTypeID <= 7
+                )
+                INNER JOIN fieldoptions ON fieldoptions.FieldOptionID = fieldvalues.FieldValue
+                WHERE objects.ObjectID = ?
+                )
+                UNION
+                (
+                SELECT objects.ObjectID, fields.FieldName, fieldvalues.FieldValue as FieldValue 
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                AND fields.FieldTypeID >= 1
+                AND fields.FieldTypeID <= 3
+                )
+                WHERE objects.ObjectID = ?
+                )
+                ";
+        $this->db->query($sql, array($objectID, $objectID));
     }
 }
 ?>

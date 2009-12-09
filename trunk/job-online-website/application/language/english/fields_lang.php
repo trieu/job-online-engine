@@ -1,7 +1,7 @@
 <?php
 
 //////////////////  Home page  ////////////////////
-$lang['home_page_heading'] = "DRD Information Planning";
+$lang['home_page_heading'] = "DRD Database";
 $lang['admin_page_heading'] = "Administration Panel";
 
 

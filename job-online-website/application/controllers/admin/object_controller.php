@@ -19,7 +19,6 @@ class object_controller extends admin_panel {
         parent::__construct();
     }
 
-
     /**
      * @Decorated
      * @Secured(role = "Administrator")
@@ -45,7 +44,32 @@ class object_controller extends admin_panel {
      * @Decorated
      * @Secured(role = "Administrator")
      */
-    public function save($ObjectClassID ) {
+    public function edit( $objID ) {
+        $this->load->model("object_manager");
+        $this->load->model("objectclass_manager");
+        $this->load->model("process_manager");
+
+        $obj = $this->object_manager->getObjectInstance($objID);
+        $classID = $obj->getObjectClassID();
+        if($classID > 0) {
+            $object_class = $this->objectclass_manager->find_by_id($classID);
+            $data["object_class"] = $object_class;
+            $data["object"] = $obj;
+
+            foreach ($object_class->getUsableProcesses() as $pro) {
+                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessView($pro->getProcessID());
+                break;
+            }
+
+            $this->load->view("admin/create_object",$data);
+        }
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function save($ObjectClassID , $ObjectID = -1 ) {
         $this->load->model("object_manager");
         $this->load->model("field_manager");
 
@@ -54,6 +78,7 @@ class object_controller extends admin_panel {
             $posted_key_data = array_keys($_POST);
             $obj = new Object();
             $obj->setObjectClassID($ObjectClassID);
+            $obj->setObjectID($ObjectID);
 
             $FieldValues = array();
             foreach ($posted_key_data as $key) {
@@ -61,15 +86,22 @@ class object_controller extends admin_panel {
                 ApplicationHook::logInfo($key."->".$FieldValue." pos = ".strpos($key,Field::$HTML_DOM_ID_PREFIX));
 
                 if( strpos($key,Field::$HTML_DOM_ID_PREFIX) ==0 ) {
-                    $FieldID = (int)str_replace(Field::$HTML_DOM_ID_PREFIX, "", $key);
-                    $record = array("FieldID"=>$FieldID, "FieldValue" => $FieldValue);
-                    $obj->addFieldValue($record);
+                    $tokens = explode("FVID_", $key);
+                    if( count($tokens)==2 ){
+                        $FieldID = (int)str_replace(Field::$HTML_DOM_ID_PREFIX, "", $tokens[0]);
+                        $FieldValueID = (int)$tokens[1];
+                        $record = array("FieldValueID" => $FieldValueID ,"FieldID"=>$FieldID, "FieldValue" => $FieldValue);
+                        $obj->addFieldValue($record);
+                    }
                     //$FieldValues[$FieldID] = $FieldValue;
                 }
             }
 
             $ok = $this->object_manager->save($obj);
-            $this->output->set_output("OK = ".$ok);
+            $data = array();
+            $data["info_message"] = "Save successfully !";
+            $data["redirect_url"] = site_url("admin/object_controller/list_all/".$ObjectClassID);
+            $this->load->view("global_view/info_and_redirect",$data);
         }
     }
 

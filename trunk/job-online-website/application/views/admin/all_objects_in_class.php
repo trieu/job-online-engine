@@ -7,20 +7,21 @@ Total records :
 
 <?php if($total_records > 0) { ?>
 <table border="1">
-    <thead>
-        <?php foreach ($objects as $objID => $fields ) { ?>
+    <thead>       
         <tr>
-            <th>ID</th>
+            <th>ID</th>            
             <?php
+             foreach ($objects as $objID => $fields ) {
                 foreach ($fields as $field ) {
             ?>
                 <th><?= $field['FieldName'] ?></th>
             <?php
-            }
-            break;
+                }
+                break;
+             }
             ?>
+            <th>Actions</th>
         </tr>
-        <?php } ?>
     </thead>
     <tbody>
         <?php foreach ($objects as $objID => $fields ) { ?>
@@ -29,9 +30,13 @@ Total records :
             <?php foreach ($fields as $field ) { ?>
                 <td><?= $field['FieldValue'] ?></td>
             <?php } ?>
+            <td>
+                <div>                    
+                    <?= anchor('admin/object_controller/edit/'.$objID , 'Edit', array('title' => 'Edit')) ?>
+                </div>
+            </td>
         </tr>
         <?php } ?>
-        
     </tbody>
 </table>
  <?php } ?>

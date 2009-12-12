@@ -20,21 +20,29 @@ class object_manager extends data_manager {
         if($obj->getObjectID() > 0) {
             $id = $this->update($data_array);
             $id = $obj->getObjectID();
+            
+            $this->load->model("field_value_manager");
+            ApplicationHook::logInfo( count($obj->getFieldValues()) );
+            $this->db->trans_start();
+            foreach ($obj->getFieldValues() as $field_value) {
+                $field_value['ObjectID'] = $id;
+                $this->field_value_manager->save($field_value);
+            }
+            $this->db->trans_complete();
         }
         else {
             $id = $this->insert($data_array);
-        }
 
-        $this->load->model("field_value_manager");
-        ApplicationHook::logInfo( count($obj->getFieldValues()) );
-        $this->db->trans_start();
-        foreach ($obj->getFieldValues() as $field_value) {
-            $field_value['ObjectID'] = $id;
-            $field_value['FieldValueID'] = -1;
-
-            $this->field_value_manager->save($field_value);
+            $this->load->model("field_value_manager");
+            ApplicationHook::logInfo( count($obj->getFieldValues()) );
+            $this->db->trans_start();
+            foreach ($obj->getFieldValues() as $field_value) {
+                $field_value['ObjectID'] = $id;
+                $field_value['FieldValueID'] = -1;
+                $this->field_value_manager->save($field_value);
+            }
+            $this->db->trans_complete();
         }
-        $this->db->trans_complete();
     }
 
     protected function insert($data_array) {
@@ -118,9 +126,14 @@ class object_manager extends data_manager {
         return $objects;
     }
 
+    /**
+     *
+     * @param int $objectID
+     * @return Object
+     */
     public function getObjectInstance($objectID) {
         $sql = "(
-                SELECT objects.ObjectID, fields.FieldName, fieldoptions.OptionName as FieldValue
+                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
@@ -132,7 +145,7 @@ class object_manager extends data_manager {
                 )
                 UNION
                 (
-                SELECT objects.ObjectID, fields.FieldName, fieldvalues.FieldValue as FieldValue 
+                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
@@ -142,7 +155,21 @@ class object_manager extends data_manager {
                 WHERE objects.ObjectID = ?
                 )
                 ";
-        $this->db->query($sql, array($objectID, $objectID));
+        $query = $this->db->query($sql, array($objectID, $objectID));
+        $record_set = $query->result_array();
+        $object = new Object();
+        $fields = array();
+        foreach ($record_set as $record) {
+            if( $object->getObjectID() < 0 ) {
+                $object->setObjectID( $record['ObjectID'] );
+            }
+            if( $object->getObjectClassID() < 0 ) {
+                $object->setObjectClassID( $record['ObjectClassID'] );
+            }
+            $fields[ $record['FieldID']."FVID_".$record['FieldValueID'] ] = $record['FieldValue'];
+        }
+        $object->setFieldValues($fields);
+        return $object;
     }
 }
 ?>

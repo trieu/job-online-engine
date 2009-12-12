@@ -12,6 +12,7 @@
 |
 */
 $config['base_url']	= "http://localhost/job-online-website/";
+//$config['base_url'] = "http://192.168.56.1/job-online-website/";
 
 /*
 |--------------------------------------------------------------------------

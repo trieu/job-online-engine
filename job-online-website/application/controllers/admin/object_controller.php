@@ -111,8 +111,11 @@ class object_controller extends admin_panel {
      */
     public function list_all($ObjectClassID ) {
         $this->load->model("object_manager");
+        $this->load->model("objectclass_manager");
+
         $data = array();
         $data["objects"] = $this->object_manager->getAllObjectsInClass($ObjectClassID);
+        $data["objectClass"] = $this->objectclass_manager->find_by_id($ObjectClassID);
 
         $this->load->view("admin/all_objects_in_class",$data);
     }

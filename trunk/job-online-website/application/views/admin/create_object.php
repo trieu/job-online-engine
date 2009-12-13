@@ -76,6 +76,13 @@ foreach ($object_class->getUsableProcesses() as $pro) {
                 var n = jQuery(node_address).attr("name") + "FVID_" + toks[1];
                 jQuery(node_address).attr("name",n);
              }
+             var f = function(){
+                 var n = jQuery(this).attr("name");
+                 if( n.split("FVID_").length < 2 ){
+                    jQuery(this).attr("name", n + "FVID_0" );
+                 }
+             };
+             jQuery("#object_instance_form *[name*='field_']").each(f);
          }
          else {
              var f = function(){

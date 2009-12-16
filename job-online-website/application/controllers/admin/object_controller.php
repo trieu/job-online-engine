@@ -32,12 +32,34 @@ class object_controller extends admin_panel {
             $data["object_class"] = $object_class;
 
             foreach ($object_class->getUsableProcesses() as $pro) {
-                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessView($pro->getProcessID());
+                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
                 break;
             }
 
             $this->load->view("admin/create_object",$data);
         }
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function objectDoProcess($ObjectID, $ProcessID ) {
+        $this->load->model("object_manager");
+        $this->load->model("process_manager");
+        ApplicationHook::logInfo($ProcessID."-".$ObjectID);
+
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function objectDoForm($ObjectID, $FormID ) {
+        $this->load->model("object_manager");
+        $this->load->model("process_manager");
+        ApplicationHook::logInfo($FormID."-".$ObjectID);
+
     }
 
     /**
@@ -57,7 +79,7 @@ class object_controller extends admin_panel {
             $data["object"] = $obj;
 
             foreach ($object_class->getUsableProcesses() as $pro) {
-                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessView($pro->getProcessID());
+                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
                 break;
             }
 
@@ -87,7 +109,7 @@ class object_controller extends admin_panel {
 
                 if( strpos($key,Field::$HTML_DOM_ID_PREFIX) ==0 ) {
                     $tokens = explode("FVID_", $key);
-                    if( count($tokens)==2 ){
+                    if( count($tokens)==2 ) {
                         $FieldID = (int)str_replace(Field::$HTML_DOM_ID_PREFIX, "", $tokens[0]);
                         $FieldValueID = (int)$tokens[1];
                         $record = array("FieldValueID" => $FieldValueID ,"FieldID"=>$FieldID, "FieldValue" => $FieldValue);

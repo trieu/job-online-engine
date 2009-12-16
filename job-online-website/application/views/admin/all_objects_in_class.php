@@ -1,3 +1,61 @@
+<?php
+addScriptFile("js/jquery.contextmenu/jquery.contextmenu.js");
+addCssFile("js/jquery.contextmenu/style.css");
+?>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {        
+        var f = function(){
+            jQuery(this).contextMenu({ menu: "context_menu_ui", leftButton: true},contextMenuHandler);
+            jQuery(this).mouseover(function(){               
+               // jQuery(this).css("background-color", "#FFFF99");
+            });
+            jQuery(this).click(function(){
+                jQuery("tr.context_menu_trigger").css("background-color", "#FFF");
+                jQuery(this).css("background-color", "#FFFF99");
+            });
+            jQuery(this).mouseout(function(){
+               // jQuery(this).css("background-color", "#FFF");
+            });
+        };
+        jQuery("tr.context_menu_trigger").each(f);
+    });
+
+    function contextMenuHandler(action, el, pos) {
+        var params = "";       
+        if( action.indexOf("ProcessID_") == 0 ) {
+           params = "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("ProcessID_","");
+           window.location = "<?= site_url("admin/object_controller/objectDoProcess")?>" + params;
+        }
+        else if( action.indexOf("FormID_") == 0 ) {
+           params = "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("FormID_","");
+           window.location = "<?= site_url("admin/object_controller/objectDoForm")?>" + params;
+        }        
+    }
+
+</script>
+
+<!-- Right Click Menu -->
+<ul id="context_menu_ui" class="contextMenu">
+    <?php 
+        foreach ($objectClass->getUsableProcesses() as $idx => $p) {
+            if($idx == 0) continue;
+    ?>
+    <li><a href="#ProcessID_<?= $p->getProcessID() ?>">
+            <?php echo $p->getProcessName(); ?>
+        </a>
+    </li>
+
+        <?php foreach ($p->getUsableForms() as $form) { ?>
+            <li>
+               <a href="#FormID_<?= $form->getFormID() ?>">
+                     &nbsp;&nbsp; #Form: <?php echo $form->getFormName(); ?>
+                </a>
+            </li>
+        <?php } ?>
+            
+    <?php } ?>
+</ul>
 
 <div>
     <h3><?= $objectClass->getObjectClassName()  ?> </h3>
@@ -5,7 +63,7 @@
 Display <?= $total_records = count($objects) ?> records
 
 <?php if($total_records > 0) { ?>
-<table border="1">
+<table border="1" style="margin-right: 30px">
     <thead>       
         <tr>
             <th>ID</th>            
@@ -42,7 +100,7 @@ Display <?= $total_records = count($objects) ?> records
     </thead>
     <tbody>
         <?php foreach ($objects as $objID => $fields ) { ?>
-        <tr>
+        <tr class="context_menu_trigger" id="object_row_<?= $objID ?>" >
             <td><?= $objID ?></td>
             <?php
                 for ($i = 0; $i < $max_field_num ; $i++ ) {
@@ -56,7 +114,7 @@ Display <?= $total_records = count($objects) ?> records
              ?>
             <td>
                 <div>                    
-                    <?= anchor('admin/object_controller/edit/'.$objID , 'Edit', array('title' => 'Edit')) ?>
+                    <?= anchor('admin/object_controller/edit/'.$objID , 'Edit', array('title' => 'Edit')) ?>                    
                 </div>
             </td>
         </tr>

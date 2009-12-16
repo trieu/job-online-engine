@@ -189,7 +189,7 @@ class ApplicationHook {
                         echo ( $this->CI->load->view("decorator/page_template", $data, TRUE) );
                     }
                     else if($this->isGroupAdmin() && $this->controllerName == "admin_panel") {
-                            echo ( $this->CI->load->view("decorator/admin_page_template", $data, TRUE) );
+                        echo ( $this->CI->load->view("decorator/admin_page_template", $data, TRUE) );
                     }
                     else {
                         echo ( $this->CI->load->view("decorator/page_template", $data, TRUE) );

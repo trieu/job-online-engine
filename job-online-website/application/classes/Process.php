@@ -42,6 +42,16 @@ class Process {
         $this->Description = $Description;
     }
 
+    public function getUsableForms() {
+        if($this->ProcessID > 0){
+            $CI =& get_instance();
+            $CI->load->model("forms_manager");
+            return $CI->forms_manager->find_by_filter(array(),array("form_process"=>"form_process.FormID = forms.FormID AND form_process.ProcessID = ".$this->ProcessID));
+        }
+        return array();
+    }
+
+
     public function getProcessOrder() {
         return $this->ProcessOrder;
     }

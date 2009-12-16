@@ -19,7 +19,7 @@ renderGroupOfActions("manage_fields","Manage Fields", $action_names);
 $action_names  = array(
     "Create new Object"=> "admin/objectclass_controller/show_details"
     , "List all Objects"=> "admin/objectclass_controller/show"
-    , "Search"=> "admin/seacrh"
+    , "Search"=> "admin/search"
     );
 renderGroupOfActions("manage_object_classes","Manage Object", $action_names);
 ?>

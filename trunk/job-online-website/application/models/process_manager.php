@@ -80,7 +80,7 @@ class process_manager extends data_manager {
      * @return	array
      */
     public function find_by_filter($filter = array(), $join_filter = array()) {
-       return $this->select_db_helper($filter, $this->table_name, "Process");
+        return $this->select_db_helper($filter, $this->table_name, "Process");
     }
 
     public function delete($process) {
@@ -92,7 +92,7 @@ class process_manager extends data_manager {
     public function updateByField($id,$editable_field_name,$editable_field_value) {
     }
 
-    public function getIndentityProcessView($id) {
+    public function getIndentityProcessHTMLCache($id) {
         $sql =  " SELECT cacheContent, javascriptContent ";
         $sql .= " FROM objecthtmlcaches";
         $sql .= " WHERE objectClass = 'form_' ";
@@ -101,9 +101,26 @@ class process_manager extends data_manager {
         $sql .= "     INNER JOIN form_process";
         $sql .= "     ON form_process.FormID = forms.FormID AND form_process.ProcessID = ?";
         $sql .= "    );";
-        
+
         $q = $this->db->query($sql, array($id));
-        foreach ($q->result_array() as $record){            
+        foreach ($q->result_array() as $record) {
+            return $record;
+        }
+        return array();
+    }
+
+    public function getProcessHTMLCaches($id) {
+        $sql =  " SELECT cacheContent, javascriptContent ";
+        $sql .= " FROM objecthtmlcaches";
+        $sql .= " WHERE objectClass = 'form_' ";
+        $sql .= " AND objectPK ";
+        $sql .= " IN (SELECT forms.FormID FROM forms";
+        $sql .= "     INNER JOIN form_process";
+        $sql .= "     ON form_process.FormID = forms.FormID AND form_process.ProcessID = ?";
+        $sql .= "    );";
+
+        $q = $this->db->query($sql, array($id));
+        foreach ($q->result_array() as $record) {
             return $record;
         }
         return array();

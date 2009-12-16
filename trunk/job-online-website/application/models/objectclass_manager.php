@@ -79,7 +79,7 @@ class objectclass_manager extends data_manager {
             $sql .= " FROM processes ";
             $sql .= " INNER JOIN class_using_process";
             $sql .= " ON processes.ProcessID = class_using_process.ProcessID AND class_using_process.ObjectClassID = ?";
-            
+
             $q2 = $this->db->query($sql, array($id));
             $record_set = $q2->result_array();
 
@@ -89,7 +89,8 @@ class objectclass_manager extends data_manager {
                 $process->setProcessID($record['ProcessID']);
                 $process->setProcessName($record['ProcessName']);
                 $process->setDescription($record['Description']);
-                $process->setProcessOrder($record['ProcessOrder']);
+                $process->setProcessOrder($record['ProcessOrder']);                
+
                 array_push($processes, $process);
             }
             usort($processes, array("Process", "_compare"));

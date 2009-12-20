@@ -26,16 +26,13 @@ class object_controller extends admin_panel {
     public function create_object($classID ) {
         $this->load->model("objectclass_manager");
         $this->load->model("process_manager");
-
         if($classID > 0) {
             $object_class = $this->objectclass_manager->find_by_id($classID);
             $data["object_class"] = $object_class;
-
             foreach ($object_class->getUsableProcesses() as $pro) {
                 $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
                 break;
             }
-
             $this->load->view("admin/create_object",$data);
         }
     }
@@ -44,9 +41,12 @@ class object_controller extends admin_panel {
      * @Decorated
      * @Secured(role = "Administrator")
      */
-    public function objectDoProcess($ObjectID, $ProcessID ) {
+    public function do_process($classID, $ObjectID, $ProcessID ) {
         $this->load->model("object_manager");
         $this->load->model("process_manager");
+
+        //$object->getObjectClassID()
+
         ApplicationHook::logInfo($ProcessID."-".$ObjectID);
 
     }
@@ -55,11 +55,18 @@ class object_controller extends admin_panel {
      * @Decorated
      * @Secured(role = "Administrator")
      */
-    public function objectDoForm($ObjectID, $FormID ) {
-        $this->load->model("object_manager");
-        $this->load->model("process_manager");
-        ApplicationHook::logInfo($FormID."-".$ObjectID);
+    public function do_form($classID, $ObjectID, $FormID ) {
+        $this->load->model("object_manager");        
+        $this->load->model("object_html_cache_manager");
+        $this->load->model("forms_manager");
 
+        $data = array();
+        $data["objectID"] = $ObjectID;
+        $data["classID"] = $classID;
+        $data["object"] = $this->object_manager->getObjectInstanceInForm($ObjectID, $FormID);
+        $data["form"] = $this->forms_manager->find_by_id($FormID);
+        $data["cache"] = $this->object_html_cache_manager->get_saved_cache_html(Form::$HTML_DOM_ID_PREFIX, $FormID);
+        $this->load->view("admin/object_do_form_view",$data);
     }
 
     /**

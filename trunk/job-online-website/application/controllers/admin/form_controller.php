@@ -72,14 +72,13 @@ class form_controller extends admin_panel {
      * @Secured(role = "Administrator")
      */
     public function form_builder($formID = -1) {
-        if($formID === -1) {
+        if($formID == -1) {
             redirect(site_url("admin/form_controller/list_forms/all/true"));
         }
-
         $this->load->model("forms_manager");
         $this->load->model("object_html_cache_manager");
         $data["form"] = $this->forms_manager->find_by_id($formID);
-        $data["form_cache"] = $this->object_html_cache_manager->get_saved_cache_html(Form::$HTML_DOM_ID_PREFIX,$formID);
+        $data["cache"] = $this->object_html_cache_manager->get_saved_cache_html(Form::$HTML_DOM_ID_PREFIX,$formID);
         $data["palette_content"] = $this->loadPaletteContent($formID);
         $this->load->view("admin/form_builder",$data);
     }

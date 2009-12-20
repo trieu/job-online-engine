@@ -19,23 +19,17 @@
         font-size: 15px;
     }
 </style>
-
 <?php
-// $object_class = new ObjectClass();
-$legend_text = "";
-$legend_text = $object_class->getObjectClassName()." - ";
-foreach ($object_class->getUsableProcesses() as $pro) {
-    $legend_text .= $pro->getProcessName();
-    break;
-}
+addScriptFile("js/jquery/jquery.field.min.js");
+
 ?>
 
 <fieldset class="input_info">
-    <legend><?= $legend_text ?></legend>
-    <form id="object_instance_form" action="<?= site_url("admin/object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
+    <legend><?= $form->getFormName() ?></legend>
+    <form id="object_instance_form" action="<?= site_url("admin/object_controller/save/".$classID) ?>" accept="utf-8" method="post">
         <?php
-        if(isset ($objectCacheHTML['cacheContent'])) {
-            echo html_entity_decode($objectCacheHTML['cacheContent']);
+        if(isset ($cache) ) {
+            echo html_entity_decode($cache->getCacheContent());
         }
         ?>
         <input type="submit" value="OK" />
@@ -48,12 +42,10 @@ foreach ($object_class->getUsableProcesses() as $pro) {
 
      function initFormData(){
          var object_field = {};
-         var ObjectID = -1;
-         <?php
-            addScriptFile("js/jquery/jquery.field.min.js");
+         var ObjectID = <?= $objectID ?>;
+         <?php            
             if( isset ($object) ) {
-                echo " object_field = ".json_encode($object->getFieldValues()).";\n";
-                echo " ObjectID = ".$object->getObjectID().";\n";
+                echo " object_field = ".json_encode($object->getFieldValues()).";\n";                
             }
          ?>
          if(ObjectID > 0){
@@ -82,6 +74,4 @@ foreach ($object_class->getUsableProcesses() as $pro) {
              jQuery("#object_instance_form *[name*='field_']").each(f);
          }
      }
-
-
 </script>

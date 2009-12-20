@@ -10,5 +10,5 @@
     function redirectTo(){
         window.location = "<?= $redirect_url ?>";
     }
-    setTimeout(redirectTo,3000);
+   // setTimeout(redirectTo,3000);
 </script>

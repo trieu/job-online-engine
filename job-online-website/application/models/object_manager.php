@@ -20,9 +20,9 @@ class object_manager extends data_manager {
         if($obj->getObjectID() > 0) {
             $id = $this->update($data_array);
             $id = $obj->getObjectID();
-            
+
             $this->load->model("field_value_manager");
-            ApplicationHook::logInfo( count($obj->getFieldValues()) );
+            ApplicationHook::logInfo("In object manager,count(obj->getFieldValues()) = ". count($obj->getFieldValues()) );
             $this->db->trans_start();
             foreach ($obj->getFieldValues() as $field_value) {
                 $field_value['ObjectID'] = $id;
@@ -34,7 +34,7 @@ class object_manager extends data_manager {
             $id = $this->insert($data_array);
 
             $this->load->model("field_value_manager");
-            ApplicationHook::logInfo( count($obj->getFieldValues()) );
+            ApplicationHook::logInfo("In object manager,count(obj->getFieldValues()) = ". count($obj->getFieldValues()) );
             $this->db->trans_start();
             foreach ($obj->getFieldValues() as $field_value) {
                 $field_value['ObjectID'] = $id;
@@ -70,10 +70,10 @@ class object_manager extends data_manager {
     }
 
     public function find_by_id($id) {
-        $query = $this->db->get_where($this->table_name, array('ObjectClassID' => $id));
+        $query = $this->db->get_where($this->table_name, array('ObjectID' => $id));
         foreach ($query->result_array() as $data_row) {
-            $pro = new ObjectClass();
-            return $pro = $this->class_mapping($data_row, "ObjectClass", $pro);
+            $pro = new Object();
+            return $pro = $this->class_mapping($data_row, "Object", $pro);
         }
     }
     public function find_by_filter($filter = array(), $join_filter = array()) {
@@ -95,8 +95,13 @@ class object_manager extends data_manager {
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
-                AND fields.FieldTypeID >= 4
-                AND fields.FieldTypeID <= 7
+                    AND fields.FieldTypeID >= 4
+                    AND fields.FieldTypeID <= 7
+                    AND fields.FieldID IN ( SELECT field_form.FieldID
+                             FROM field_form, form_process, class_using_process
+                             WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
+                                   AND class_using_process.ProcessOrder = 0 AND class_using_process.ObjectClassID = ?
+                                )
                 )
                 INNER JOIN fieldoptions ON fieldoptions.FieldOptionID = fieldvalues.FieldValue
                 WHERE objects.ObjectClassID = ?
@@ -107,13 +112,18 @@ class object_manager extends data_manager {
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
-                AND fields.FieldTypeID >= 1
-                AND fields.FieldTypeID <= 3 
+                    AND fields.FieldTypeID >= 1
+                    AND fields.FieldTypeID <= 3
+                    AND fields.FieldID IN ( SELECT field_form.FieldID
+                             FROM field_form, form_process, class_using_process
+                             WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
+                                   AND class_using_process.ProcessOrder = 0 AND class_using_process.ObjectClassID = ?
+                                )
                 )
                 WHERE objects.ObjectClassID = ?
                 )
                 ";
-        $query = $this->db->query($sql, array($classID, $classID));
+        $query = $this->db->query($sql, array($classID, $classID, $classID, $classID));
         $record_set = $query->result_array();
         $objects = array();
         foreach ($record_set as $record) {
@@ -124,6 +134,10 @@ class object_manager extends data_manager {
             array_push( $objects[ $record['ObjectID'] ], $field );
         }
         return $objects;
+    }
+
+    function getFormID_Of_IndentityProcess($classID) {
+        
     }
 
     /**
@@ -169,6 +183,54 @@ class object_manager extends data_manager {
             $fields[ $record['FieldID']."FVID_".$record['FieldValueID'] ] = $record['FieldValue'];
         }
         $object->setFieldValues($fields);
+        return $object;
+    }
+
+    /**
+     *
+     * @param int $objectID
+     * @return Object
+     */
+    public function getObjectInstanceInForm($objectID, $FormID) {
+        $sql = "(
+                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                AND fields.FieldTypeID >= 4
+                AND fields.FieldTypeID <= 7
+                AND fields.FieldID IN (SELECT FieldID FROM field_form WHERE FormID = ?)
+                )
+                INNER JOIN fieldoptions ON fieldoptions.FieldOptionID = fieldvalues.FieldValue
+                WHERE objects.ObjectID = ?
+                )
+                UNION
+                (
+                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                AND fields.FieldTypeID >= 1
+                AND fields.FieldTypeID <= 3
+                AND fields.FieldID IN (SELECT FieldID FROM field_form WHERE FormID = ?)
+                )
+                WHERE objects.ObjectID = ?
+                )
+                ";
+        $query = $this->db->query($sql, array($FormID, $objectID, $FormID, $objectID));
+        $record_set = $query->result_array();
+        $object = new Object();
+        $fields = array();
+        foreach ($record_set as $record) {
+            if( $object->getObjectID() < 0 ) {
+                $object->setObjectID( $record['ObjectID'] );
+            }
+            if( $object->getObjectClassID() < 0 ) {
+                $object->setObjectClassID( $record['ObjectClassID'] );
+            }
+            $fields[ $record['FieldID']."FVID_".$record['FieldValueID'] ] = $record['FieldValue'];
+        }
+        $object->setFieldValues($fields);        
         return $object;
     }
 }

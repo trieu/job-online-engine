@@ -20,7 +20,6 @@ class object_html_cache_manager extends data_manager {
         $query = $this->db->get_where($this->table_name, $filter);
         $arr = $query->result_array();
         if( count($arr) > 0 ) {
-
             return $arr[0]["cacheID"] ;
         }
         else {
@@ -28,16 +27,21 @@ class object_html_cache_manager extends data_manager {
         }
     }
 
-    function get_saved_cache_html($objectClass,$objectPK) {
-        $filter = array("objectClass"=>$objectClass, "objectPK" => $objectPK);
-        $this->db->select("cacheContent");
+    function get_saved_cache_html($objectClass, $objectPK) {
+        $filter = array("objectClass"=>$objectClass, "objectPK" => $objectPK);        
         $query = $this->db->get_where($this->table_name, $filter);
         $arr = $query->result_array();
-        if( count($arr) > 0 ) {
-            return $arr[0]["cacheContent"] ;
+        if( count($arr) == 1 ) {
+            $objCache = new ObjectHTMLCache();
+            $objCache->setCacheID($arr[0]["cacheID"]);
+            $objCache->setObjectClass($arr[0]["objectClass"]);
+            $objCache->setObjectPK($arr[0]["objectPK"]);
+            $objCache->setCacheContent($arr[0]["cacheContent"]);
+            $objCache->setJavascriptContent($arr[0]["javascriptContent"]);
+            return $objCache;
         }
         else {
-            return "";
+            return NULL;
         }
     }
 
@@ -100,14 +104,6 @@ class object_html_cache_manager extends data_manager {
 
     public function get_dependency_instances() {
         $list = array();
-        $this->db->select("id, name, description");
-        $this->db->from("groups");
-        $query = $this->db->get();
-        $groups = array();
-        foreach ($query->result_array() as $row) {
-            $groups[$row["id"]] = $row["name"]." - ".$row["description"];
-        }
-        $list["groups"] = $groups;
         return $list;
     }
 

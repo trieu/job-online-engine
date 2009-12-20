@@ -24,27 +24,37 @@ addCssFile("js/jquery.contextmenu/style.css");
     function contextMenuHandler(action, el, pos) {
         var params = "";       
         if( action.indexOf("ProcessID_") == 0 ) {
-           params = "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("ProcessID_","");
-           window.location = "<?= site_url("admin/object_controller/objectDoProcess")?>" + params;
+           params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("ProcessID_","");
+           window.location = "<?= site_url("admin/object_controller/do_process")?>" + params;
         }
         else if( action.indexOf("FormID_") == 0 ) {
-           params = "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("FormID_","");
-           window.location = "<?= site_url("admin/object_controller/objectDoForm")?>" + params;
-        }        
+           params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("FormID_","");
+           window.location = "<?= site_url("admin/object_controller/do_form")?>" + params;
+        }
+        else if(action == "EditObject"){
+           params = "/" + jQuery(el).attr("id").replace("object_row_","");
+           window.location = "<?= site_url("admin/object_controller/edit/")?>" + params;
+        }
     }
 
 </script>
 
 <!-- Right Click Menu -->
 <ul id="context_menu_ui" class="contextMenu">
+    <li>
+        <a href="#EditObject">
+           @Action: Edit
+        </a>
+    </li>
     <?php 
         foreach ($objectClass->getUsableProcesses() as $idx => $p) {
             if($idx == 0) continue;
     ?>
-    <li><a href="#ProcessID_<?= $p->getProcessID() ?>">
-            <?php echo $p->getProcessName(); ?>
-        </a>
-    </li>
+        <li>
+            <a href="#ProcessID_<?= $p->getProcessID() ?>">
+               @Process: <?php echo $p->getProcessName(); ?>
+            </a>
+        </li>
 
         <?php foreach ($p->getUsableForms() as $form) { ?>
             <li>

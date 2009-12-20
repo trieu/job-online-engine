@@ -40,7 +40,7 @@ addScriptFile("js/jquery/jquery.json.js");
 </div>
 
 <div id="form_builder_container" >
-    <?= html_entity_decode($form_cache) ?>
+    <?= html_entity_decode($cache->getCacheContent()) ?>
 </div>
 
 <div id="list_field_form" style="float:right; width:186px;" >

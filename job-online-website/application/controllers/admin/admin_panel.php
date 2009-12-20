@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Description of admin_panel
  *

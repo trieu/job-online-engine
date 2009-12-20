@@ -52,3 +52,6 @@
     text-decoration:none;
     width:auto;
 }
+.client_template {
+    display: none;
+}

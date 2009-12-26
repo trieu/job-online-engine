@@ -112,3 +112,4 @@ echo form_fieldset_close();
     }
 </script>
 <div id="chart_div"></div>
+

@@ -87,7 +87,6 @@ addScriptFile("js/jquery/jquery.json.js");
         var data = {};
         data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
         data["ObjectPK"] = <?= $form->getFormID() ?>;
-
         var uri = "<?= site_url("admin/form_controller/reset_build_the_form") ?>";
 
         var callback =  function(id){
@@ -106,7 +105,6 @@ addScriptFile("js/jquery/jquery.json.js");
     }
 
     var field_form_num = 0;
-
     function autoBuildForm(){
         var uri = "<?= site_url("admin/field_controller/renderFieldUI") ?>/";
         field_form_num = jQuery("#form_builder_container > div").length;

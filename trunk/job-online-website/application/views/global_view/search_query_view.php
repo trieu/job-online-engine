@@ -1,21 +1,20 @@
 <?php
 addScriptFile("js/jquery/jquery.form.js");
-addScriptFile("js/jquery/jquery.jbind.js");
 addScriptFile("js/jquery/jquery.json.js");
 ?>
 <style type="text/css"> 
-    .query_question > div{
+    .query_question div{
         margin-top:6px;
         display: block;
         position:relative;
         width: 100%;
     }
-    .query_question > div > label{
+    .query_question div label{
         float: left;
         width: 38%;
         position:relative;
     }
-    .query_question > div > select{
+    .query_question div select{
         float: left;
         width: 56%;
         position:relative;
@@ -40,43 +39,40 @@ addScriptFile("js/jquery/jquery.json.js");
     }
 </style>
 
-<textarea id="options_tpl" class="client_template" rows="1" cols="1">
-<select>
-    <!--data-->
-        <!--options-->
-        <option value="{options_val}">{options_label}</option>
-        <!--options-->
-    <!--data-->
-</select>
-</textarea>
-
 <script type="text/javascript">
     function populateClasses(){
 
     }
+
     function populateProcesses(){
-        var val = jQuery("#ObjectClassID").val();
-        var template = jQuery('#options_tpl').val();        
+        var val = jQuery("#ObjectClassID").val();        
         var url = "<?= site_url("admin/search/populate_query_helper")?>";
         var filter =  {what: "<?= search::$PROCESS_HINT ?>" , filterID: val};
         var handler =  function(text){
             var data = jQuery.secureEvalJSON( text );
-            var html = jQuery(template).bindTo(data).replace("<select>","").replace("</select>","");
+            var html = "";
+            for(var i in data.options){                 
+                html += ("<option value='" + data.options[i].options_val + "'>" + data.options[i].options_label + "</option>");
+            }            
             jQuery("#ProcessID").html( html );
             populateForms();
         };
         jQuery.post(url, filter, handler);
     }
     function populateForms(){
-        var val = jQuery("#ProcessID").val();
-        var template = jQuery('#options_tpl').val();
+        var val = jQuery("#ProcessID").val();        
         var url = "<?= site_url("admin/search/populate_query_helper")?>";
         var filter =  {what: "<?= search::$FORM_HINT ?>" , filterID: val};
         var handler =  function(text){
             var data = jQuery.secureEvalJSON( text );
-            var html = jQuery(template).bindTo(data).replace("<select>","").replace("</select>","");
+            var html = "";
+            for(var i in data.options){
+               html += ("<option value='" + data.options[i].options_val + "'>" + data.options[i].options_label + "</option>");
+            }
             jQuery("#FormID").html( html );
-
+            if(jQuery("#FormID").val() != null){
+                populateFields();
+            }
         };
         jQuery.post(url, filter, handler);
     }
@@ -151,3 +147,4 @@ addScriptFile("js/jquery/jquery.json.js");
 </div>
 
 
+<a href="#{q:'sss'}">n</a>

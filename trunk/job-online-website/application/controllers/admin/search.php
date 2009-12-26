@@ -59,34 +59,34 @@ class search extends Controller {
             }
         }
         else if($what == self::$FORM_HINT) {
-            $this->db->select("forms.*");
-            $this->db->from("forms");
-            $this->db->join("form_process", "forms.FormID = form_process.FormID");
-            $this->db->where("form_process.ProcessID", $filterID);
-            $query = $this->db->get();
-            foreach ($query->result() as $row) {
-                $option = new stdClass();
-                $option->options_val = $row->FormID;
-                $option->options_label = $row->FormName;
-                array_push($options, $option);
-            }
+                $this->db->select("forms.*");
+                $this->db->from("forms");
+                $this->db->join("form_process", "forms.FormID = form_process.FormID");
+                $this->db->where("form_process.ProcessID", $filterID);
+                $query = $this->db->get();
+                foreach ($query->result() as $row) {
+                    $option = new stdClass();
+                    $option->options_val = $row->FormID;
+                    $option->options_label = $row->FormName;
+                    array_push($options, $option);
+                }
         }
         else if($what == self::$FIELD_HINT) {
-//            $this->db->select("fields.*");
-//            $this->db->from("fields");
-//            $this->db->join("field_form", "fields.FieldID = field_form.FieldID");
-//            $this->db->where("field_form.FormID", $filterID);
-            $this->load->model("object_html_cache_manager");
-            $this->load->model("forms_manager");
-            $cache = $this->object_html_cache_manager->get_saved_cache_html(Form::$HTML_DOM_ID_PREFIX, $filterID);
-            if($cache) {
-                echo html_entity_decode($cache->getCacheContent());
-                return;
-            }
-            else {
-                echo "No fields available!";
-            }
-        }
+                //            $this->db->select("fields.*");
+                //            $this->db->from("fields");
+                //            $this->db->join("field_form", "fields.FieldID = field_form.FieldID");
+                //            $this->db->where("field_form.FormID", $filterID);
+                $this->load->model("object_html_cache_manager");
+                $this->load->model("forms_manager");
+                $cache = $this->object_html_cache_manager->get_saved_cache_html(Form::$HTML_DOM_ID_PREFIX, $filterID);
+                if($cache) {
+                    echo html_entity_decode($cache->getCacheContent());
+                    return;
+                }
+                else {
+                    echo "No fields available!";
+                }
+         }
 
         $data = array("options"=>$options);
         echo json_encode($data);
@@ -100,8 +100,23 @@ class search extends Controller {
      * FIXME more security here
      */
     function do_search() {
-        $classID = 1;
         $this->load->model("objectclass_manager");
+        $this->load->model("field_manager");
+
+        $posted_key_data = array_keys($_POST);
+        foreach ($posted_key_data as $key) {
+            $FieldValue = $this->input->post($key);
+            if( strpos($key, Field::$HTML_DOM_ID_PREFIX) == 0 && strlen($FieldValue)>0 ) {
+                 $tokens = explode(Field::$HTML_DOM_ID_PREFIX, $key);
+                    if( count($tokens)==2 ) {
+                         echo ($tokens[1]." ");
+                    }
+            }
+        }
+
+
+        $classID = 1;
+       
 
         $sql = "(
                 SELECT objects.ObjectID, fields.FieldName, fieldoptions.OptionName as FieldValue
@@ -146,8 +161,6 @@ class search extends Controller {
             $field = array("FieldName"=> $record['FieldName']  , "FieldValue" => $record['FieldValue'] );
             array_push( $objects[ $record['ObjectID'] ], $field );
         }
-        ;
-
 
         $data = array();
         $data["in_search_mode"] = TRUE;

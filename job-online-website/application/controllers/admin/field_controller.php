@@ -51,15 +51,18 @@ class field_controller extends admin_panel {
      * @Secured(role = "Administrator")
      */
     public function save() {
+        $fieldID = $this->input->post("FieldID");
+        $formID = $this->input->post("FormID");
+
         $this->load->model("field_manager");
 
         $field = new Field();
-        $field->setFieldID( $this->input->post("FieldID") );
+        $field->setFieldID( $fieldID );
         $field->setFieldTypeID( $this->input->post("FieldTypeID") );
         $field->setFieldName( $this->input->post("FieldName") );
         $field->setValidationRules( $this->input->post("ValidationRules") );
         $field->setFieldOptions( json_decode( $this->input->post("field_option_data") ) );
-        $field->addToForm( $this->input->post("FormID") );
+        $field->addToForm( $formID );
 
         $fieldID = $this->field_manager->save($field);
 
@@ -71,7 +74,10 @@ class field_controller extends admin_panel {
             }
         }
 
-        $this->output->set_output("Save successfully!");
+        $data = array();
+        $data["info_message"] = "Save field successfully!";
+        $data["reload_page"] = TRUE;
+        $this->load->view("global_view/info_and_redirect",$data);
     }
 
      /**

@@ -18,10 +18,16 @@ renderGroupOfActions("manage_fields","Manage Fields", $action_names);
 
 $action_names  = array(
     "Create new Object"=> "admin/objectclass_controller/show_details"
-    , "List all Objects"=> "admin/objectclass_controller/show"
-    , "Search"=> "admin/search"
+    , "List all Objects"=> "admin/objectclass_controller/show"    
     );
 renderGroupOfActions("manage_object_classes","Manage Object", $action_names);
+
+$action_names  = array(    
+    "Live search"=> "admin/search"
+    , "Create search filter"=> "admin/search"
+    , "List all filters"=> "admin/search"
+    );
+renderGroupOfActions("manage_search","Search", $action_names);
 ?>
 
 <?php  function renderGroupOfActions($group_id, $group_name, $action_names) { ?>
@@ -30,9 +36,9 @@ renderGroupOfActions("manage_object_classes","Manage Object", $action_names);
         <a href="javascript:void(0)"><?= $group_name ?></a>
     </h3>
     <ul id="<?= $group_id ?>">
-            <?php foreach ($action_names as $action_name => $action_uri) {
-                echo '<li class="focusable_text"><a href="'.site_url($action_uri).'">'.$action_name.'</a></li>';
-            }?>
+        <?php foreach ($action_names as $action_name => $action_uri) {
+            echo '<li class="focusable_text"><a href="'.site_url($action_uri).'">'.$action_name.'</a></li>';
+        }?>
     </ul>
 </div>
 <?php } ?>

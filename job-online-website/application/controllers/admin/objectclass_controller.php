@@ -63,6 +63,7 @@ class objectclass_controller extends admin_panel {
         $data["data_table"] = $data_table;
         $data["data_table_heading"] = array('ObjectClassID', 'ObjectClassName', 'Descripttion','Actions');
         $data["data_editable_fields"] = array('ObjectClassName'=>TRUE, 'Description' => TRUE);
+        $data["edit_in_place_uri"] = "admin/admin_panel/save_data_table_cell/";
 
         $pagination_config = array();
         $pagination_config['base_url'] = site_url("admin/objectclass_controller/show");

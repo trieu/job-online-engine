@@ -10,38 +10,31 @@
         margin-top:15px;
         margin-bottom:5px;
     }
-    .input_info{
-        border:medium solid!important;
-        padding: 11px;
-    }
     legend {
         font-weight:bold;
         font-size: 15px;
+    }
+    #accordion > *{
+        font-size: 15.2px;
+        font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+        color:#1C94C4;
+    }
+    #accordion .ui-accordion-header {
+        font-weight: bold;
+    }
+    #accordion .ui-state-active {
+       font-size:15px;
     }
 </style>
 
 <?php
 // $object_class = new ObjectClass();
 $legend_text = "";
-$legend_text = $object_class->getObjectClassName()." - ";
 foreach ($object_class->getUsableProcesses() as $pro) {
     $legend_text .= $pro->getProcessName();
     break;
 }
 ?>
-
-<fieldset class="input_info">
-    <legend><?= $legend_text ?></legend>
-    <form id="object_instance_form" action="<?= site_url("admin/object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
-        <?php
-        if(isset ($objectCacheHTML['cacheContent'])) {
-            echo html_entity_decode($objectCacheHTML['cacheContent']);
-        }
-        ?>
-        <input type="submit" value="OK" />
-        <input type="button" value="Cancel" onclick="history.back();" />
-    </form>
-</fieldset>
 
 <script type="text/javascript">
      jQuery(document).ready(initFormData);
@@ -81,7 +74,42 @@ foreach ($object_class->getUsableProcesses() as $pro) {
              };
              jQuery("#object_instance_form *[name*='field_']").each(f);
          }
+
+         jQuery("#accordion").accordion({ collapsible: true });
      }
 
 
 </script>
+
+<h3><?= $object_class->getObjectClassName() ?></h3>
+<div id="accordion">
+	<h3><a href="#"><?= $legend_text ?></a></h3>
+	<div>
+            <div class="input_info">
+                <form id="object_instance_form" action="<?= site_url("admin/object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
+                    <?php
+                    if(isset ($objectCacheHTML['cacheContent'])) {
+                        echo html_entity_decode($objectCacheHTML['cacheContent']);
+                    }
+                    ?>
+                    <input type="submit" value="OK" />
+                    <input type="button" value="Cancel" onclick="history.back();" />
+                </form>
+            </div>
+	</div>
+
+	<h3><a href="#">Section 2</a></h3>
+	<div>
+            <p>
+            Sed non urna.
+            </p>
+	</div>
+
+	<h3><a href="#">Section 3</a></h3>
+	<div>
+            <p>
+            Nam enim risu
+            </p>
+	</div>	
+</div>
+

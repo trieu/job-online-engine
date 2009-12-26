@@ -11,7 +11,6 @@
     .input_info{
         border:medium solid!important;
     }
-
     #field_option_data_ul li {
         background-color:lavender;
         border:thin dotted gray;

@@ -7,6 +7,8 @@
  * See MIT-LICENSE.txt and GPL-LICENSE.txt
  *
  */
+(function($){
+
 jQuery.fn.extend( {
 
 	render: function( values, options )
@@ -138,3 +140,5 @@ jQuery.fn.extend( {
 		}
 	}
 });
+
+})(jQuery);

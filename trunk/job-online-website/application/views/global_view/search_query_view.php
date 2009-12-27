@@ -88,21 +88,44 @@ addScriptFile("js/jquery/jquery.json.js");
         };
         jQuery.post(url, filter, handler);
     }
-    function doSearch(){
 
-    }
-    jQuery(document).ready(function(){
-        populateProcesses();   
-
-        var handler = function(responseText, statusText)  {
-            jQuery("#query_search_results").html(responseText);
-            jQuery("#query_search_results").slideDown();
-        };
-        jQuery('#query_builder_form').submit(function() {
+    function initSearchForm(){
+        // pre-submit callback 
+        var preSubmitCallback = function(formData, jqForm, options) {
             jQuery("#query_search_results").slideUp();
-            jQuery(this).ajaxSubmit( {success: handler} );
+            //console.log(formData);
+            var data = {};
+            data["query_fields"] = [];
+            for(var i in formData){
+                var kv = formData[i];                
+                if(kv.name.indexOf("field_") == 0){
+                    kv.type = jQuery("#query_builder_form").find("*[name='"+ kv.name +"'][value='"+ kv.value +"']").attr("type");
+                    kv.name = kv.name.replace("field_", "");
+                    data["query_fields"].push(kv);
+                }
+                else {
+                    data[kv.name] = kv.value;
+                }
+            }
+            data["query_fields"] = jQuery.toJSON(data["query_fields"]);
+            console.log(data);
+            var searchCallback = function(responseText, statusText)  {
+                jQuery("#query_search_results").html(responseText);
+                jQuery("#query_search_results").slideDown();
+            };
+            jQuery.post( jQuery(jqForm).attr("action") ,data , searchCallback);
+
+            return false;
+        };        
+        jQuery('#query_builder_form').submit(function() {
+            jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
             return false;
         });
+    }
+
+    jQuery(document).ready(function(){
+        populateProcesses();   
+        initSearchForm();  
     });
 </script>
 
@@ -145,6 +168,3 @@ addScriptFile("js/jquery/jquery.json.js");
 <div id="query_search_results" style="margin-top: 10px;">
 
 </div>
-
-
-<a href="#{q:'sss'}">n</a>

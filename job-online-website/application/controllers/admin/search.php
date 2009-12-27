@@ -103,20 +103,39 @@ class search extends Controller {
         $this->load->model("objectclass_manager");
         $this->load->model("field_manager");
 
-        $posted_key_data = array_keys($_POST);
-        foreach ($posted_key_data as $key) {
-            $FieldValue = $this->input->post($key);
-            if( strpos($key, Field::$HTML_DOM_ID_PREFIX) == 0 && strlen($FieldValue)>0 ) {
-                 $tokens = explode(Field::$HTML_DOM_ID_PREFIX, $key);
-                    if( count($tokens)==2 ) {
-                         echo ($tokens[1]." ");
-                    }
+        $FormID = $this->input->post("FormID");
+        $ObjectClassID = $this->input->post("ObjectClassID");
+        $ProcessID = $this->input->post("ProcessID");
+        $query_fields = json_decode( $this->input->post("query_fields") );
+
+        $seacrh_obj_sql = " SELECT DISTINCT `ObjectID` FROM fieldvalues ";
+        $query_fields_size = count($query_fields);
+        $field_operator = " AND ";
+        $field_filter = "";
+        $field_filter_values = array();
+        foreach ($query_fields as $idx => $kv ) {
+            if( strlen($kv->value) >0 ){
+                //FIXME TODO update field type
+               if(strlen($field_filter)>0) {
+                    $field_filter .= $field_operator;
+               }
+               if($kv->type == "text" || $kv->type == "textarea" || $kv->type == "datepicker"){
+                    $field_filter .= "(FieldID = ? AND `FieldValue` LIKE ? ) ";
+                    $kv->value = "%" . $kv->value . "%";
+               }
+               else {
+                    $field_filter .= " `FieldValue` = ? ";
+               }
+              array_push( $field_filter_values , $kv->value );
             }
         }
 
-
-        $classID = 1;
-       
+        if( strlen($field_filter) > 0 ){
+            $seacrh_obj_sql .= (" WHERE ".$field_filter);
+        }        
+        $query = $this->db->query($seacrh_obj_sql , $field_filter_values);
+        print_r($query->result_array());
+        echo ($this->db->last_query());
 
         $sql = "(
                 SELECT objects.ObjectID, fields.FieldName, fieldoptions.OptionName as FieldValue
@@ -151,7 +170,7 @@ class search extends Controller {
                 WHERE objects.ObjectClassID = ?
                 )
                 ";
-        $query = $this->db->query($sql, array($classID, $classID, $classID, $classID));
+        $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
         $record_set = $query->result_array();
         $objects = array();
         foreach ($record_set as $record) {
@@ -161,11 +180,12 @@ class search extends Controller {
             $field = array("FieldName"=> $record['FieldName']  , "FieldValue" => $record['FieldValue'] );
             array_push( $objects[ $record['ObjectID'] ], $field );
         }
+        //echo ($this->db->last_query());
 
         $data = array();
         $data["in_search_mode"] = TRUE;
         $data["objects"] = $objects;
-        $data["objectClass"] = $this->objectclass_manager->find_by_id($classID);
+        $data["objectClass"] = $this->objectclass_manager->find_by_id($ObjectClassID);
 
         echo $this->load->view("admin/all_objects_in_class",$data, TRUE);
     }

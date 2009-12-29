@@ -135,3 +135,8 @@ ScriptUtil.subString = function(str, strLength) {
         return (str);
     }
 }
+
+var GUI = {};
+GUI.toggletVisible = function(selector){
+    return jQuery(selector).toggleClass("not_visible");
+}

@@ -1,5 +1,18 @@
-
 <?php
+
+$action_names  = array(
+    "Create new Object"=> "admin/objectclass_controller/show_details"
+    , "List all Objects"=> "admin/objectclass_controller/show"
+    );
+renderGroupOfActions("manage_object_classes","Manage Object", $action_names);
+
+$action_names  = array(
+    "Live search"=> "admin/search"
+    , "Create search filter"=> "admin/search"
+    , "List all filters"=> "admin/search"
+    );
+renderGroupOfActions("manage_search","Search", $action_names);
+
 $action_names  = array(
     "Create new process" => "admin/process_controller/process_details"
     ,"List all processes" => "admin/process_controller/list_processes"
@@ -14,28 +27,17 @@ renderGroupOfActions("manage_form","Manage Forms", $action_names);
 
 $action_names  = array(   
     "List all Fields"=> "admin/field_controller/list_fields");
-renderGroupOfActions("manage_fields","Manage Fields", $action_names);
+renderGroupOfActions("manage_fields","Manage Fields", $action_names, FALSE);
 
-$action_names  = array(
-    "Create new Object"=> "admin/objectclass_controller/show_details"
-    , "List all Objects"=> "admin/objectclass_controller/show"    
-    );
-renderGroupOfActions("manage_object_classes","Manage Object", $action_names);
 
-$action_names  = array(    
-    "Live search"=> "admin/search"
-    , "Create search filter"=> "admin/search"
-    , "List all filters"=> "admin/search"
-    );
-renderGroupOfActions("manage_search","Search", $action_names);
 ?>
 
-<?php  function renderGroupOfActions($group_id, $group_name, $action_names) { ?>
-<div class="group_action">
-    <h3 onclick="jQuery('#<?= $group_id ?>').slideToggle('slow');">
+<?php  function renderGroupOfActions($group_id, $group_name, $action_names, $isShow = TRUE) { ?>
+<div class="group_action" >
+    <h3 onclick="jQuery('#<?= $group_id ?>').slideToggle('slow');" >
         <a href="javascript:void(0)"><?= $group_name ?></a>
     </h3>
-    <ul id="<?= $group_id ?>">
+    <ul id="<?= $group_id ?>"  class="<?php if(!$isShow) echo "display_none"; ?>" >
         <?php foreach ($action_names as $action_name => $action_uri) {
             echo '<li class="focusable_text"><a href="'.site_url($action_uri).'">'.$action_name.'</a></li>';
         }?>

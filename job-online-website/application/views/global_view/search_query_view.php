@@ -84,15 +84,17 @@ addScriptFile("js/jquery/jquery.json.js");
         var url = "<?= site_url("admin/search/populate_query_helper")?>";
         var filter =  {what: "<?= search::$FIELD_HINT ?>" , filterID: val};
         var handler =  function(html){
-            jQuery("#field_list_view").html( html );
+            jQuery("#field_list_view .content").html( html );
+            jQuery("#field_list_view .ajax_loader").hide();
         };
+        jQuery("#field_list_view .ajax_loader").show();
         jQuery.post(url, filter, handler);
     }
 
     function initSearchForm(){
         // pre-submit callback 
         var preSubmitCallback = function(formData, jqForm, options) {
-            jQuery("#query_search_results").slideUp();
+            GUI.toggletVisible("#query_search_results .content");
             //console.log(formData);
             var data = {};
             data["query_fields"] = [];
@@ -108,11 +110,13 @@ addScriptFile("js/jquery/jquery.json.js");
                 }
             }
             data["query_fields"] = jQuery.toJSON(data["query_fields"]);
-            console.log(data);
+            //console.log(data);
             var searchCallback = function(responseText, statusText)  {
-                jQuery("#query_search_results").html(responseText);
-                jQuery("#query_search_results").slideDown();
+                jQuery("#query_search_results .content").html(responseText);
+                GUI.toggletVisible("#query_search_results .content");
+                jQuery("#query_search_results .ajax_loader").hide();
             };
+            jQuery("#query_search_results .ajax_loader").show();
             jQuery.post( jQuery(jqForm).attr("action") ,data , searchCallback);
 
             return false;
@@ -155,7 +159,8 @@ addScriptFile("js/jquery/jquery.json.js");
         <fieldset class="input_info" style="margin-top: 10px;">
             <legend>Enter the fields for searching</legend>
             <div id="field_list_view" >
-
+                <div class="ajax_loader display_none" ></div>
+                <div class="content" ></div>
             </div>
         </fieldset>
     </div>
@@ -166,5 +171,6 @@ addScriptFile("js/jquery/jquery.json.js");
 </form>
 
 <div id="query_search_results" style="margin-top: 10px;">
-
+    <div class="ajax_loader display_none" ></div>
+    <div class="content" ></div>
 </div>

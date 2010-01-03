@@ -10,8 +10,8 @@
         display:block;       
     }
     table div[class=editable_table_cell]:hover {
-        background-color:#330099;
-        color:#FFFF00;
+        background-color:#99CCFF;
+        color:#FF3300;
         cursor:pointer;
         text-decoration:none;        
     }
@@ -22,14 +22,14 @@
     }
 
     .editable_table_cell a:hover{
-        background-color:#330099;
-        color:#FFFF00;      
+        background-color:#99CCFF;
+        color:#FF3300;
         text-decoration:underline;
     }
 
     .editable_table_cell_hover {
-        background-color:#330099;
-        color:#FFFF00;
+        background-color:#99CCFF;
+        color:#FF3300;
         cursor:pointer;
         text-decoration:none;
     }

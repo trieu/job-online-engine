@@ -39,89 +39,6 @@ foreach ($object_class->getUsableProcesses() as $pro) {
     }
 </style>
 
-<script type="text/javascript">
-     jQuery(document).ready(initFormData);
-
-     function initFormData(){
-         var object_field = {};
-         var ObjectID = -1;
-         <?php            
-            if( isset ($object) ) {
-                echo " object_field = ".json_encode($object->getFieldValues()).";\n";
-                echo " ObjectID = ".$object->getObjectID().";\n";
-            }
-         ?>
-         if(ObjectID > 0){
-             var actionUrl = jQuery("#object_instance_form").attr("action") + "/" + ObjectID;
-             jQuery("#object_instance_form").attr("action",actionUrl);
-             for(var id in object_field) {
-                var toks = id.split("FVID_");
-                var node_address = "#object_instance_form *[name='field_" + toks[0] +"']";
-                
-                if(jQuery(node_address).length > 1){
-                    //hacking for checkbox
-                    jQuery(node_address).each(function(){
-                        if(jQuery(this).attr("value") == object_field[id] )
-                        {
-                           jQuery(this).attr("checked",true);
-                           jQuery(this).attr("selected",true);
-                        }
-                    });
-                }
-                else {
-                    jQuery(node_address).setValue( object_field[id] );
-                }
-             };
-             for(var id in object_field){
-                var n = jQuery(node_address).attr("name") + "FVID_" + toks[1];
-                jQuery(node_address).attr("name",n);
-             };
-             var f = function(){
-                 var n = jQuery(this).attr("name");
-                 if( n.split("FVID_").length < 2 ){
-                    jQuery(this).attr("name", n + "FVID_0" );
-                 }
-             };
-             jQuery("#object_instance_form *[name*='field_']").each(f);
-         }
-         else {
-             var f = function(){
-                 var n = jQuery(this).attr("name")+"FVID_0";
-                 jQuery(this).attr("name",n);
-             };
-             jQuery("#object_instance_form *[name*='field_']").each(f);
-         }
-
-         jQuery("#accordion").accordion({ collapsible: true });
-         initSaveObjectForm();
-        
-     }
-
-     function initSaveObjectForm(){
-        var preSubmitCallback = function(formData, jqForm, options) {            
-            console.log(formData);
-            var data = {};
-            data["data_fields"] = [];
-          
-            data["data_fields"] = jQuery.toJSON(data["query_fields"]);
-            console.log(data);
-            var callback = function(responseText, statusText)  {
-                jQuery("#object_instance_div").append(responseText);
-                jQuery("#object_instance_div .ajax_loader").hide();
-            };
-            jQuery("#object_instance_div .ajax_loader").show();
-            jQuery("#object_instance_div form").hide();
-            jQuery.post( jQuery(jqForm).attr("action") ,data , callback);
-
-            return false;
-        };
-        jQuery('#object_instance_form').submit(function() {
-            jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
-            return false;
-        });
-    }
-</script>
-
 <h3><?= $object_class->getObjectClassName() ?></h3>
 <div id="accordion">
 	<h3><a href="#"><?= $legend_text ?></a></h3>
@@ -155,3 +72,110 @@ foreach ($object_class->getUsableProcesses() as $pro) {
 	</div>	
 </div>
 
+
+<script type="text/javascript">
+     jQuery(document).ready(initFormData);
+
+     var checkboxHashmap = {};
+     function initFormData(){
+         var object_field = {};
+         var ObjectID = -1;
+         <?php
+            if( isset ($object) ) {
+                echo " object_field = ".json_encode($object->getFieldValues()).";\n";
+                echo " ObjectID = ".$object->getObjectID().";\n";
+            }
+         ?>
+         if(ObjectID > 0){
+             var actionUrl = jQuery("#object_instance_form").attr("action") + "/" + ObjectID;
+             jQuery("#object_instance_form").attr("action",actionUrl);
+             for(var id in object_field) {
+                var toks = id.split("FVID_");
+                var node_address = "#object_instance_form *[name='field_" + toks[0] +"']";
+
+                if(jQuery(node_address).length > 1){
+                    //hacking for checkbox
+                    jQuery(node_address).each(function(){
+                        if(jQuery(this).attr("value") == object_field[id] )
+                        {
+                           jQuery(this).attr("checked",true);
+                           jQuery(this).attr("selected",true);
+                        }
+                        if(jQuery(this).attr("type") == "checkbox"){
+                            checkboxHashmap[jQuery(this).attr("id")] = true;
+                        }
+                    });
+                }
+                else {
+                    jQuery(node_address).setValue( object_field[id] );
+                }
+             };
+             for(var id in object_field){
+                var toks = id.split("FVID_");
+                var node_address = "#object_instance_form *[name='field_" + toks[0] +"']";
+                var n = jQuery(node_address).attr("name") + "FVID_" + toks[1];
+                jQuery(node_address).attr("name",n);
+             };
+             var f = function(){
+                 var n = jQuery(this).attr("name");
+                 if( n.split("FVID_").length < 2 ){
+                    jQuery(this).attr("name", n + "FVID_0" );
+                 }
+             };
+             jQuery("#object_instance_form *[name*='field_']").each(f);
+         }
+         else {
+             var f = function(){
+                 var n = jQuery(this).attr("name")+"FVID_0";
+                 jQuery(this).attr("name",n);
+             };
+             jQuery("#object_instance_form *[name*='field_']").each(f);
+         }
+
+         jQuery("#accordion").accordion({ collapsible: true });
+         initSaveObjectForm();
+
+     }
+
+     function initSaveObjectForm(){
+        var preSubmitCallback = function(formData, jqForm, options) {
+            var data = {};
+            var records = [];
+            for(var i in formData){
+                var toks = formData[i].name.split("FVID_");
+                var record = {};
+                record["FieldID"] =  new Number( toks[0].replace("field_",""));
+                record["FieldValueID"] =  new Number(toks[1]);
+                record["FieldValue"] = formData[i].value;
+                records.push(record);
+            }
+            for(var id in checkboxHashmap){
+                var toks = jQuery("#" + id).attr("name").split("FVID_");
+                var record = {};
+                var value = -1;
+                if( jQuery("#" + id).attr("checked")){
+                    value = jQuery("#" + id).val();
+                }
+                record["FieldID"] =  new Number( toks[0].replace("field_",""));
+                record["FieldValueID"] =  new Number(toks[1]);
+                record["FieldValue"] = value;
+                records.push(record);
+            }
+            data["FieldValues"] = jQuery.toJSON(records);
+
+            var callback = function(responseText, statusText)  {
+                jQuery("#object_instance_div").append(responseText);
+                jQuery("#object_instance_div .ajax_loader").hide();
+            };
+            jQuery("#object_instance_div .ajax_loader").show();
+            jQuery("#object_instance_div form").hide();
+            jQuery.post( jQuery(jqForm).attr("action"), data, callback );
+            return false;
+        };
+
+        jQuery('#object_instance_form').submit(function() {
+            jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
+            return false;
+        });
+    }
+</script>

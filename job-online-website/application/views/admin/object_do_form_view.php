@@ -42,7 +42,7 @@ addScriptFile("js/jquery/jquery.field.min.js");
 
 <script type="text/javascript">
      jQuery(document).ready(initFormData);
-
+     var checkboxHashmap = {};
      function initFormData() {
          var object_field = {};
          var ObjectID = <?= $objectID ?>;
@@ -67,6 +67,9 @@ addScriptFile("js/jquery/jquery.field.min.js");
                            jQuery(this).attr("checked",true);
                            jQuery(this).attr("selected",true);
                         }
+                        if(jQuery(this).attr("type") == "checkbox"){
+                            checkboxHashmap[jQuery(this).attr("id")] = true;
+                        }
                     });
                 }
                 else {
@@ -74,6 +77,8 @@ addScriptFile("js/jquery/jquery.field.min.js");
                 }
              };
              for(var id in object_field){
+                var toks = id.split("FVID_");
+                var node_address = "#object_instance_form *[name='field_" + toks[0] +"']";
                 var n = jQuery(node_address).attr("name") + "FVID_" + toks[1];
                 jQuery(node_address).attr("name",n);
              };
@@ -98,22 +103,40 @@ addScriptFile("js/jquery/jquery.field.min.js");
 
      function initSaveObjectForm(){
         var preSubmitCallback = function(formData, jqForm, options) {
-            console.log(formData);
             var data = {};
-            data["data_fields"] = [];
+            var records = [];
+            for(var i in formData){
+                var toks = formData[i].name.split("FVID_");
+                var record = {};
+                record["FieldID"] =  new Number( toks[0].replace("field_",""));
+                record["FieldValueID"] =  new Number(toks[1]);
+                record["FieldValue"] = formData[i].value;
+                records.push(record);
+            }
+            for(var id in checkboxHashmap){
+                var toks = jQuery("#" + id).attr("name").split("FVID_");
+                var record = {};
+                var value = -1;
+                if( jQuery("#" + id).attr("checked")){
+                    value = jQuery("#" + id).val();
+                }
+                record["FieldID"] =  new Number( toks[0].replace("field_",""));
+                record["FieldValueID"] =  new Number(toks[1]);
+                record["FieldValue"] = value;
+                records.push(record);
+            }
+            data["FieldValues"] = jQuery.toJSON(records);
 
-            data["data_fields"] = jQuery.toJSON(data["query_fields"]);
-            console.log(data);
             var callback = function(responseText, statusText)  {
                 jQuery("#object_instance_div").append(responseText);
                 jQuery("#object_instance_div .ajax_loader").hide();
             };
             jQuery("#object_instance_div .ajax_loader").show();
             jQuery("#object_instance_div form").hide();
-            jQuery.post( jQuery(jqForm).attr("action") ,data , callback);
-
+            jQuery.post( jQuery(jqForm).attr("action"), data, callback );
             return false;
         };
+
         jQuery('#object_instance_form').submit(function() {
             jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
             return false;

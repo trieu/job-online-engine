@@ -1,3 +1,14 @@
+<?php
+addScriptFile("js/jquery/jquery.form.js");
+addScriptFile("js/jquery/jquery.json.js");
+// $object_class = new ObjectClass();
+$legend_text = "";
+foreach ($object_class->getUsableProcesses() as $pro) {
+    $legend_text .= $pro->getProcessName();
+    break;
+}
+?>
+
 <style type="text/css">
     label {
         margin-right:5px;
@@ -26,15 +37,6 @@
        font-size:15px;
     }
 </style>
-
-<?php
-// $object_class = new ObjectClass();
-$legend_text = "";
-foreach ($object_class->getUsableProcesses() as $pro) {
-    $legend_text .= $pro->getProcessName();
-    break;
-}
-?>
 
 <script type="text/javascript">
      jQuery(document).ready(initFormData);
@@ -78,14 +80,46 @@ foreach ($object_class->getUsableProcesses() as $pro) {
          jQuery("#accordion").accordion({ collapsible: true });
      }
 
+     function initSearchForm(){      
+        var preSubmitCallback = function(formData, jqForm, options) {            
+            console.log(formData);
+            var data = {};
+            data["data_fields"] = [];
+            for(var i in formData){
+                var kv = formData[i];
+                if(kv.name.indexOf("field_") == 0){
+                    kv.type = jQuery("#query_builder_form").find("*[name='"+ kv.name +"'][value='"+ kv.value +"']").attr("type");
+                    kv.name = kv.name.replace("field_", "");
+                    data["query_fields"].push(kv);
+                }
+                else {
+                    data[kv.name] = kv.value;
+                }
+            }
+            data["query_fields"] = jQuery.toJSON(data["query_fields"]);
+            //console.log(data);
+            var searchCallback = function(responseText, statusText)  {
+                jQuery("#query_search_results .content").html(responseText);                
+                jQuery("#query_search_results .ajax_loader").hide();
+            };
+            jQuery("#query_search_results .ajax_loader").show();
+            jQuery.post( jQuery(jqForm).attr("action") ,data , searchCallback);
 
+            return false;
+        };
+        jQuery('#query_builder_form').submit(function() {
+            jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
+            return false;
+        });
+    }
 </script>
 
 <h3><?= $object_class->getObjectClassName() ?></h3>
 <div id="accordion">
 	<h3><a href="#"><?= $legend_text ?></a></h3>
 	<div>
-            <div class="input_info">
+            <div class="input_info" id="" >
+                <div class="ajax_loader display_none" ></div>
                 <form id="object_instance_form" action="<?= site_url("admin/object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
                     <?php
                     if(isset ($objectCacheHTML['cacheContent'])) {

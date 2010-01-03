@@ -133,6 +133,7 @@ class object_manager extends data_manager {
             $field = array("FieldName"=> $record['FieldName']  , "FieldValue" => $record['FieldValue'] );
             array_push( $objects[ $record['ObjectID'] ], $field );
         }
+        //ApplicationHook::log($this->db->last_query());
         return $objects;
     }
 

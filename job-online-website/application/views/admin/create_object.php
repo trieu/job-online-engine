@@ -1,6 +1,7 @@
 <?php
 addScriptFile("js/jquery/jquery.form.js");
 addScriptFile("js/jquery/jquery.json.js");
+addScriptFile("js/jquery/jquery.field.min.js");
 // $object_class = new ObjectClass();
 $legend_text = "";
 foreach ($object_class->getUsableProcesses() as $pro) {
@@ -44,8 +45,7 @@ foreach ($object_class->getUsableProcesses() as $pro) {
      function initFormData(){
          var object_field = {};
          var ObjectID = -1;
-         <?php
-            addScriptFile("js/jquery/jquery.field.min.js");
+         <?php            
             if( isset ($object) ) {
                 echo " object_field = ".json_encode($object->getFieldValues()).";\n";
                 echo " ObjectID = ".$object->getObjectID().";\n";
@@ -54,13 +54,28 @@ foreach ($object_class->getUsableProcesses() as $pro) {
          if(ObjectID > 0){
              var actionUrl = jQuery("#object_instance_form").attr("action") + "/" + ObjectID;
              jQuery("#object_instance_form").attr("action",actionUrl);
-             for(var id in object_field){
+             for(var id in object_field) {
                 var toks = id.split("FVID_");
                 var node_address = "#object_instance_form *[name='field_" + toks[0] +"']";
-                jQuery(node_address).setValue( object_field[id] );
+                
+                if(jQuery(node_address).length > 1){
+                    //hacking for checkbox
+                    jQuery(node_address).each(function(){
+                        if(jQuery(this).attr("value") == object_field[id] )
+                        {
+                           jQuery(this).attr("checked",true);
+                           jQuery(this).attr("selected",true);
+                        }
+                    });
+                }
+                else {
+                    jQuery(node_address).setValue( object_field[id] );
+                }
+             };
+             for(var id in object_field){
                 var n = jQuery(node_address).attr("name") + "FVID_" + toks[1];
                 jQuery(node_address).attr("name",n);
-             }
+             };
              var f = function(){
                  var n = jQuery(this).attr("name");
                  if( n.split("FVID_").length < 2 ){
@@ -78,36 +93,29 @@ foreach ($object_class->getUsableProcesses() as $pro) {
          }
 
          jQuery("#accordion").accordion({ collapsible: true });
+         initSaveObjectForm();
+        
      }
 
-     function initSearchForm(){      
+     function initSaveObjectForm(){
         var preSubmitCallback = function(formData, jqForm, options) {            
             console.log(formData);
             var data = {};
             data["data_fields"] = [];
-            for(var i in formData){
-                var kv = formData[i];
-                if(kv.name.indexOf("field_") == 0){
-                    kv.type = jQuery("#query_builder_form").find("*[name='"+ kv.name +"'][value='"+ kv.value +"']").attr("type");
-                    kv.name = kv.name.replace("field_", "");
-                    data["query_fields"].push(kv);
-                }
-                else {
-                    data[kv.name] = kv.value;
-                }
-            }
-            data["query_fields"] = jQuery.toJSON(data["query_fields"]);
-            //console.log(data);
-            var searchCallback = function(responseText, statusText)  {
-                jQuery("#query_search_results .content").html(responseText);                
-                jQuery("#query_search_results .ajax_loader").hide();
+          
+            data["data_fields"] = jQuery.toJSON(data["query_fields"]);
+            console.log(data);
+            var callback = function(responseText, statusText)  {
+                jQuery("#object_instance_div").append(responseText);
+                jQuery("#object_instance_div .ajax_loader").hide();
             };
-            jQuery("#query_search_results .ajax_loader").show();
-            jQuery.post( jQuery(jqForm).attr("action") ,data , searchCallback);
+            jQuery("#object_instance_div .ajax_loader").show();
+            jQuery("#object_instance_div form").hide();
+            jQuery.post( jQuery(jqForm).attr("action") ,data , callback);
 
             return false;
         };
-        jQuery('#query_builder_form').submit(function() {
+        jQuery('#object_instance_form').submit(function() {
             jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
             return false;
         });
@@ -118,7 +126,7 @@ foreach ($object_class->getUsableProcesses() as $pro) {
 <div id="accordion">
 	<h3><a href="#"><?= $legend_text ?></a></h3>
 	<div>
-            <div class="input_info" id="" >
+            <div class="input_info" id="object_instance_div" >
                 <div class="ajax_loader display_none" ></div>
                 <form id="object_instance_form" action="<?= site_url("admin/object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
                     <?php

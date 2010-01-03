@@ -100,31 +100,11 @@ class object_controller extends admin_panel {
     public function save($ObjectClassID , $ObjectID = -1 ) {
         $this->load->model("object_manager");
         $this->load->model("field_manager");
-
-        if($ObjectClassID > 0) {
-
-          
+        if($ObjectClassID > 0) {       
             $obj = new Object();
             $obj->setObjectClassID($ObjectClassID);
-            $obj->setObjectID($ObjectID);
-
-//            $posted_key_data = array_keys($_POST);
-//            $FieldValues = array();
-//            foreach ($posted_key_data as $key) {
-//                $FieldValue = $this->input->post($key);
-//                ApplicationHook::logInfo($key."->".$FieldValue." pos = ".strpos($key,Field::$HTML_DOM_ID_PREFIX));
-//
-//                if( strpos($key,Field::$HTML_DOM_ID_PREFIX) ==0 ) {
-//                    $tokens = explode("FVID_", $key);
-//                    if( count($tokens)==2 ) {
-//                        $FieldID = (int)str_replace(Field::$HTML_DOM_ID_PREFIX, "", $tokens[0]);
-//                        $FieldValueID = (int)$tokens[1];
-//                        $record = array("FieldValueID" => $FieldValueID ,"FieldID"=>$FieldID, "FieldValue" => $FieldValue);
-//                        $obj->addFieldValue($record);
-//                    }
-//                    //$FieldValues[$FieldID] = $FieldValue;
-//                }
-//            }
+            $obj->setObjectID($ObjectID);            
+            $obj->setFieldValues( json_decode($this->input->post("FieldValues")) );
 
             $ok = $this->object_manager->save($obj);
             $data = array();

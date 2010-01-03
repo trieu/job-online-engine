@@ -17,9 +17,11 @@
         <? endif; ?>        
     }
 
+<? if (isset ($reload_page)): ?>
     <? if ($reload_page): ?>
         setTimeout(redirectTo,3300);
     <? else: ?>
         setTimeout(redirectTo,3300);
     <? endif; ?>
+<? endif; ?>
 </script>

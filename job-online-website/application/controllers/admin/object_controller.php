@@ -94,8 +94,7 @@ class object_controller extends admin_panel {
         }
     }
 
-    /**
-     * @Decorated
+    /**     
      * @Secured(role = "Administrator")
      */
     public function save($ObjectClassID , $ObjectID = -1 ) {
@@ -104,27 +103,28 @@ class object_controller extends admin_panel {
 
         if($ObjectClassID > 0) {
 
-            $posted_key_data = array_keys($_POST);
+          
             $obj = new Object();
             $obj->setObjectClassID($ObjectClassID);
             $obj->setObjectID($ObjectID);
 
-            $FieldValues = array();
-            foreach ($posted_key_data as $key) {
-                $FieldValue = $this->input->post($key);
-                ApplicationHook::logInfo($key."->".$FieldValue." pos = ".strpos($key,Field::$HTML_DOM_ID_PREFIX));
-
-                if( strpos($key,Field::$HTML_DOM_ID_PREFIX) ==0 ) {
-                    $tokens = explode("FVID_", $key);
-                    if( count($tokens)==2 ) {
-                        $FieldID = (int)str_replace(Field::$HTML_DOM_ID_PREFIX, "", $tokens[0]);
-                        $FieldValueID = (int)$tokens[1];
-                        $record = array("FieldValueID" => $FieldValueID ,"FieldID"=>$FieldID, "FieldValue" => $FieldValue);
-                        $obj->addFieldValue($record);
-                    }
-                    //$FieldValues[$FieldID] = $FieldValue;
-                }
-            }
+//            $posted_key_data = array_keys($_POST);
+//            $FieldValues = array();
+//            foreach ($posted_key_data as $key) {
+//                $FieldValue = $this->input->post($key);
+//                ApplicationHook::logInfo($key."->".$FieldValue." pos = ".strpos($key,Field::$HTML_DOM_ID_PREFIX));
+//
+//                if( strpos($key,Field::$HTML_DOM_ID_PREFIX) ==0 ) {
+//                    $tokens = explode("FVID_", $key);
+//                    if( count($tokens)==2 ) {
+//                        $FieldID = (int)str_replace(Field::$HTML_DOM_ID_PREFIX, "", $tokens[0]);
+//                        $FieldValueID = (int)$tokens[1];
+//                        $record = array("FieldValueID" => $FieldValueID ,"FieldID"=>$FieldID, "FieldValue" => $FieldValue);
+//                        $obj->addFieldValue($record);
+//                    }
+//                    //$FieldValues[$FieldID] = $FieldValue;
+//                }
+//            }
 
             $ok = $this->object_manager->save($obj);
             $data = array();

@@ -19,6 +19,8 @@
             echo anchor('admin/admin_panel', lang('admin_panel'));
         }
      ?>
+
+    | <a href="http://docs.google.com/View?id=dgsrc7qn_345j7f5smgf" target="_blank" title="Hướng dẫn sử dụng (User Guide) for DRD Admin">Hướng dẫn sử dụng (User Guide)</a>
 </div>
 <div class="box accessBox has-access">
     <div class="box access">

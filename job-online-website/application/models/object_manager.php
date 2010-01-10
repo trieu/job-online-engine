@@ -205,7 +205,7 @@ class object_manager extends data_manager {
                 )
                 UNION
                 (
-                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue
+                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue, fieldvalues.SelectedFieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
@@ -231,7 +231,7 @@ class object_manager extends data_manager {
             $field->FieldID = $record['FieldID'];
             $field->FieldValueID = $record['FieldValueID'];
             $field->FieldValue = $record['FieldValue'];
-            $field->SelectedFieldValue = $record['SelectedFieldValue'];
+            $field->SelectedFieldValue = (int)$record['SelectedFieldValue'];
             array_push($fields , $field);
         }
         $object->setFieldValues($fields);        

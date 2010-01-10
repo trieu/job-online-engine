@@ -154,8 +154,7 @@ class object_manager extends data_manager {
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
                 AND fields.FieldTypeID >= 4
                 AND fields.FieldTypeID <= 7
-                )
-                INNER JOIN fieldoptions ON fieldoptions.FieldOptionID = fieldvalues.FieldValue
+                )                
                 WHERE objects.ObjectID = ?
                 )
                 UNION
@@ -194,15 +193,14 @@ class object_manager extends data_manager {
      */
     public function getObjectInstanceInForm($objectID, $FormID) {
         $sql = "(
-                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue
+                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue, fieldvalues.SelectedFieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
                 AND fields.FieldTypeID >= 4
                 AND fields.FieldTypeID <= 7
                 AND fields.FieldID IN (SELECT FieldID FROM field_form WHERE FormID = ?)
-                )
-                INNER JOIN fieldoptions ON fieldoptions.FieldOptionID = fieldvalues.FieldValue
+                )                
                 WHERE objects.ObjectID = ?
                 )
                 UNION
@@ -229,7 +227,12 @@ class object_manager extends data_manager {
             if( $object->getObjectClassID() < 0 ) {
                 $object->setObjectClassID( $record['ObjectClassID'] );
             }
-            $fields[ $record['FieldID']."FVID_".$record['FieldValueID'] ] = $record['FieldValue'];
+            $field = new stdClass();
+            $field->FieldID = $record['FieldID'];
+            $field->FieldValueID = $record['FieldValueID'];
+            $field->FieldValue = $record['FieldValue'];
+            $field->SelectedFieldValue = $record['SelectedFieldValue'];
+            array_push($fields , $field);
         }
         $object->setFieldValues($fields);        
         return $object;

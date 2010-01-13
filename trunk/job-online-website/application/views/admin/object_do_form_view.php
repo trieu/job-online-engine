@@ -93,23 +93,23 @@ addScriptFile("js/jquery/jquery.field.min.js");
         initSaveObjectForm();
      }
 
-     function initSaveObjectForm(){      
+     function initSaveObjectForm(){
         jQuery('#object_instance_form').submit(function() {
             //jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
             var data = {};
             data["FieldValues"] = [];
-            var tokens = jQuery(this).formSerialize().split("&");
             var addedCheckBoxIds = {};
-            for(var i in tokens){               
-                var toks2 = tokens[i].split("=");
-                var toks3 = toks2[0].split("FVID_");
+
+            var hashmap = jQuery(this).serializeArray();
+            for(var i=0; i< hashmap.length; i++){
+                var toks3 = hashmap[i].name.split("FVID_");
                 var record = {};
                 record["FieldID"] =  new Number( toks3[0].replace("field_",""));
                 record["FieldValueID"] =  new Number(toks3[1]);
-                record["FieldValue"] = toks2[1];
+                record["FieldValue"] = hashmap[i].value;
                 record["SelectedFieldValue"] = false;
 
-                var node = "input[type='checkbox'][name='" + toks2[0] + "']";
+                var node = "input[type='checkbox'][name='" + hashmap[i].name + "']";
                 if( jQuery(node).length > 0 ){
                     record["SelectedFieldValue"] = jQuery(node).attr("checked");
                     addedCheckBoxIds[jQuery(node).attr("id")] = true;
@@ -128,7 +128,7 @@ addScriptFile("js/jquery/jquery.field.min.js");
                 }
             }
             data["FieldValues"] = jQuery.toJSON( data["FieldValues"] );
-            
+
             var callback = function(responseText, statusText)  {
                 jQuery("#object_instance_div").append(responseText);
                 jQuery("#object_instance_div .ajax_loader").hide();

@@ -89,6 +89,13 @@ class object_manager extends data_manager {
     public function updateByField($id,$editable_field_name,$editable_field_value) {
     }
 
+    /**
+     *  List all objects with field.
+     *  Selectable field as checkbox will be skipped
+     *
+     * @param int $classID
+     * @return array $objects
+     */
     public function getAllObjectsInClass($classID) {
         $sql = "(
                 SELECT objects.ObjectID, fields.FieldName, fieldoptions.OptionName as FieldValue
@@ -96,7 +103,7 @@ class object_manager extends data_manager {
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
                     AND fields.FieldTypeID >= 4
-                    AND fields.FieldTypeID <= 7
+                    AND fields.FieldTypeID <= 6
                     AND fields.FieldID IN ( SELECT field_form.FieldID
                              FROM field_form, form_process, class_using_process
                              WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
@@ -148,7 +155,7 @@ class object_manager extends data_manager {
      */
     public function getObjectInstance($objectID) {
         $sql = "(
-                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue
+                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue, fieldvalues.SelectedFieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
@@ -159,7 +166,7 @@ class object_manager extends data_manager {
                 )
                 UNION
                 (
-                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue
+                SELECT objects.ObjectID, objects.ObjectClassID, fieldvalues.FieldValueID, fieldvalues.FieldID, fieldvalues.FieldValue, fieldvalues.SelectedFieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
@@ -180,7 +187,12 @@ class object_manager extends data_manager {
             if( $object->getObjectClassID() < 0 ) {
                 $object->setObjectClassID( $record['ObjectClassID'] );
             }
-            $fields[ $record['FieldID']."FVID_".$record['FieldValueID'] ] = $record['FieldValue'];
+            $field = new stdClass();
+            $field->FieldID = $record['FieldID'];
+            $field->FieldValueID = $record['FieldValueID'];
+            $field->FieldValue = $record['FieldValue'];
+            $field->SelectedFieldValue = (int)$record['SelectedFieldValue'];
+            array_push($fields , $field);
         }
         $object->setFieldValues($fields);
         return $object;

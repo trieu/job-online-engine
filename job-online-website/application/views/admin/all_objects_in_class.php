@@ -5,6 +5,14 @@
     addCssFile("js/jquery.contextmenu/style.css");
     ?>
 
+    <style type="text/css">
+        .context_menu_trigger span {
+            min-width: 102px;
+        }
+        .context_menu_trigger td:first {
+            font-weight:bold;
+        }
+    </style>
     <script type="text/javascript">
         jQuery(document).ready(function() {
             var f = function(){
@@ -114,10 +122,10 @@
                 <?php
                     for ($i = 0; $i < $max_field_num ; $i++ ) {
                         if( isset ($fields[ $i ])){
-                            echo "<td>". $fields[ $i ]['FieldValue'] ."</td>";
+                            echo "<td><span>". $fields[ $i ]['FieldValue'] ."</span></td>";
                         }
                         else {
-                            echo "<td></td>";
+                            echo "<td><span>&nbsp;</span></td>";
                         }
                     }
                  ?>

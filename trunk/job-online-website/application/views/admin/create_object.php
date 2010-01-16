@@ -90,18 +90,20 @@ foreach ($object_class->getUsableProcesses() as $pro) {
              var actionUrl = jQuery("#object_instance_form").attr("action") + "/" + ObjectID;
              jQuery("#object_instance_form").attr("action",actionUrl);
              for(var id in object_field) {
-                var node_address = "#object_instance_form *[name='field_" + object_field[id].FieldID +"']";
+                var node_address = "#object_instance_form *[name*='field_" + object_field[id].FieldID +"']";
 
                 //hacking for checkbox
                 if( jQuery(node_address).attr("type") == "checkbox" ){
                     node_address += "[value='" + object_field[id].FieldValue + "']"
-                    if(object_field[id].SelectedFieldValue == 1){
-                        jQuery(node_address).attr("checked",true);
-                        jQuery(node_address).attr("selected",true);
+                    if(jQuery(node_address).length >0 ){
+                        if(object_field[id].SelectedFieldValue == 1){
+                            jQuery(node_address).attr("checked",true);
+                            jQuery(node_address).attr("selected",true);
+                        }
+                        checkboxHashmap[jQuery(node_address).attr("id")] = jQuery(node_address).attr("id");
+                        var n = jQuery(node_address).attr("name") + "FVID_" + object_field[id].FieldValueID;
+                        jQuery(node_address).attr("name",n);
                     }
-                    checkboxHashmap[jQuery(node_address).attr("id")] = jQuery(node_address).attr("id");
-                    var n = jQuery(node_address).attr("name") + "FVID_" + object_field[id].FieldValueID;
-                    jQuery(node_address).attr("name",n);
                 }
                 else {
                     jQuery(node_address).setValue( object_field[id].FieldValue );
@@ -159,7 +161,7 @@ foreach ($object_class->getUsableProcesses() as $pro) {
                 data["FieldValues"].push(record);
             }
             for(var id in checkboxHashmap){
-                if(addedCheckBoxIds[id] != true) {
+                if(id != null && addedCheckBoxIds[id] != true) {
                     var toks = jQuery("#" + id).attr("name").split("FVID_");
                     var record = {};
                     record["FieldID"] =  new Number( toks[0].replace("field_",""));

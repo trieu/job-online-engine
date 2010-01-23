@@ -99,6 +99,12 @@ class field_manager extends data_manager {
     }
 
     public function updateByField($id,$editable_field_name,$editable_field_value) {
+
+    }
+
+    public function getFieldsInForm($formID) {
+        $join_filter = array("field_form"=>"field_form.FieldID = fields.FieldID AND field_form.FormID = ".$formID);
+        return $this->field_manager->find_by_filter(array(),$join_filter);
     }
 }
 ?>

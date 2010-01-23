@@ -83,11 +83,13 @@ class form_controller extends admin_panel {
         $this->load->view("admin/form_builder",$data);
     }
 
+    /**
+     * @Secured(role = "Administrator")
+     */
     public function loadPaletteContent($formID = -1) {
         $palette_content = "";
-        $this->load->model("field_manager");
-        $join_filter = array("field_form"=>"field_form.FieldID = fields.FieldID AND field_form.FormID = ".$formID);
-        $data["fields"] = $this->field_manager->find_by_filter(array(),$join_filter);
+        $this->load->model("field_manager");        
+        $data["fields"] = $this->field_manager->getFieldsInForm($formID);
         $data["FormID"] = $formID;
         $palette_content = $this->load->view("admin/field_palette",$data,TRUE);
         return $palette_content;

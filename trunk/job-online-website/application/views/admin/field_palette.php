@@ -31,7 +31,7 @@
                         ?>                    
                 </div>
                 <?php echo FieldType::getDefinedTypeName($field->getFieldTypeID()); ?>
-                <Br/>
+                <br/>
                 <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details/".$field->getFieldID()."/".$FormID) ?>">Edit</a> |
                 <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/remove_field_from_form/".$field->getFieldID()."/".$FormID) ?>">Remove</a>
             </div>

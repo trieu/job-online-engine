@@ -123,9 +123,7 @@ if(isset ($pagination_config)) {
         };
         jQuery("#"+ table_name +" td").each(f);
     }
-
-
-
+    
     function setEditableTableCell(node, edit_type){
         var field_value =  jQuery.trim(jQuery(node).html());
         var tip = field_value;

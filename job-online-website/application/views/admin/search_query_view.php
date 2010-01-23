@@ -3,18 +3,18 @@ addScriptFile("js/jquery/jquery.form.js");
 addScriptFile("js/jquery/jquery.json.js");
 ?>
 <style type="text/css"> 
-    .query_question div{
+    .query_question > div{
         margin-top:6px;
         display: block;
         position:relative;
         width: 100%;
     }
-    .query_question div label{
+    .query_question > div > label{
         float: left;
         width: 38%;
         position:relative;
     }
-    .query_question div select{
+    .query_question > div > select{
         float: left;
         width: 56%;
         position:relative;
@@ -63,7 +63,7 @@ addScriptFile("js/jquery/jquery.json.js");
         </div>
         <input type="button" value="Load fields" onclick="populateFields()" />
         <fieldset class="input_info" style="margin-top: 10px;">
-            <legend>Enter the fields for searching</legend>
+            <legend>Enter the searched fields</legend>
             <div id="field_list_view" >
                 <div class="ajax_loader display_none" ></div>
                 <div class="content" ></div>

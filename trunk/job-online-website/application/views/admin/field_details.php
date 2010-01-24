@@ -9,7 +9,7 @@
         margin-bottom:5px;
     }
     .input_info{
-        border:medium solid!important;
+        border:thin solid!important;
     }
     #field_option_data_ul li {
         background-color:lavender;

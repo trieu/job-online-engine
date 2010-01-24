@@ -26,43 +26,45 @@ class search_manager extends Model {
         $ProcessID = $this->input->post("ProcessID");
         $query_fields = json_decode( $this->input->post("query_fields") );
 
-        $seacrh_obj_sql = " SELECT DISTINCT `ObjectID` FROM fieldvalues ";
+        $seacrh_obj_sql = " SELECT DISTINCT ObjectID FROM fieldvalues ";
         $query_fields_size = count($query_fields);
-        $field_operator = " AND ";
+        $field_operator = " OR ";
         $field_filter = "";
-        $field_filter_values = array();
         foreach ($query_fields as $idx => $kv ) {
             if( strlen($kv->value) >0 ) {
             //FIXME TODO update field type
                 if(strlen($field_filter)>0) {
                     $field_filter .= $field_operator;
                 }
-                if($kv->type == "text" || $kv->type == "textarea" || $kv->type == "datepicker") {
-                    $field_filter .= "(FieldID = ? AND `FieldValue` LIKE ? ) ";
-                    $kv->value = "%" . $kv->value . "%";
+                if($kv->type == "text" || $kv->type == "textarea") {
+                    $kv->value = "'%" . $kv->value . "%'";
+                    $field_filter .= "(FieldID = ".$kv->name." AND ";
+                    $field_filter .= "FieldValue LIKE ". $kv->value ." ) ";
                 }
                 else {
-                    $field_filter .= " `FieldValue` = ? ";
+                    $field_filter .= " `FieldValue` = '". $kv->value ."' ";
                 }
-                array_push( $field_filter_values , $kv->value );
+
             }
         }
-
         if( strlen($field_filter) > 0 ) {
             $seacrh_obj_sql .= (" WHERE ".$field_filter);
         }
-        $query = $this->db->query($seacrh_obj_sql , $field_filter_values);
-        print_r($query->result_array());
-        echo ($this->db->last_query());
+        //echo "<br/>".($seacrh_obj_sql);
 
-        $sql = "(
+        $sql = "                
+                SELECT r.*
+                FROM
+                (
+                (
                 SELECT objects.ObjectID, fields.FieldName, fieldoptions.OptionName as FieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
                     AND fields.FieldTypeID >= 4
-                    AND fields.FieldTypeID <= 7
-                    AND fields.FieldID IN ( SELECT field_form.FieldID
+                    AND fields.FieldTypeID < 7
+                    AND fields.FieldID IN (
+                             SELECT field_form.FieldID
                              FROM field_form, form_process, class_using_process
                              WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
                                    AND class_using_process.ProcessOrder = 0 AND class_using_process.ObjectClassID = ?
@@ -79,7 +81,8 @@ class search_manager extends Model {
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
                     AND fields.FieldTypeID >= 1
                     AND fields.FieldTypeID <= 3
-                    AND fields.FieldID IN ( SELECT field_form.FieldID
+                    AND fields.FieldID IN (
+                             SELECT field_form.FieldID
                              FROM field_form, form_process, class_using_process
                              WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
                                    AND class_using_process.ProcessOrder = 0 AND class_using_process.ObjectClassID = ?
@@ -87,9 +90,14 @@ class search_manager extends Model {
                 )
                 WHERE objects.ObjectClassID = ?
                 )
+                ) r
+                WHERE r.ObjectID IN ( ".$seacrh_obj_sql." )
                 ";
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
         $record_set = $query->result_array();
+
+        //echo "<br/>".($this->db->last_query());
+
         $objects = array();
         foreach ($record_set as $record) {
             if( ! isset ($objects[$record['ObjectID']]) ) {
@@ -104,6 +112,8 @@ class search_manager extends Model {
         $data["in_search_mode"] = TRUE;
         $data["objects"] = $objects;
         $data["objectClass"] = $this->CI->objectclass_manager->find_by_id($ObjectClassID);
+
+        
         return $data;
     }
 }

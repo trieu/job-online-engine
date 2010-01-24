@@ -120,14 +120,18 @@ addScriptFile("js/jquery/jquery.json.js");
 
 <script type="text/javascript">
     function toggleFieldList(node){
-        jQuery("#field_list_view").find("table td:first").toggle("slide");
-        jQuery("#field_list_view").find("table th:first").toggle("slide");
+        var th = jQuery("#field_list_view").find("table th:first");
+        var td = jQuery("#field_list_view").find("table td:first");
         var val = jQuery(node).val();
         if(val.search("Hide") >= 0){
             val = val.replace("Hide", "Show")
+            th.hide();
+            td.hide();
         }
         else {
             val = val.replace("Show", "Hide")
+            th.show();
+            td.show();
         }
         jQuery(node).val(val);
     }

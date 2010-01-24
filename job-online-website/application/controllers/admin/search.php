@@ -93,7 +93,11 @@ class search extends Controller {
      */
     function do_search() {
         $this->load->model("search_manager");
-        $data = $this->search_manager->search_object();
-        echo $this->load->view("admin/all_objects_in_class",$data, TRUE);
+        try {
+            $data = $this->search_manager->search_object();
+            echo $this->load->view("admin/all_objects_in_class",$data, TRUE);
+        } catch (Exception $e) {
+            echo $e->getTraceAsString();
+        }
     }
 }

@@ -54,7 +54,7 @@ addScriptFile("js/jquery/jquery.json.js");
 </style>
 
 <fieldset class="input_info" style="margin-top: 10px;">
-    <legend>Query Form</legend>
+    <legend>Search Form</legend>
     <form id="query_builder_form" action="<?= site_url("admin/search/do_search")?>" accept="utf-8" method="post">
         <div class="query_question" >
             <div>
@@ -112,10 +112,16 @@ addScriptFile("js/jquery/jquery.json.js");
     </form>
 </fieldset>
 
-
 <div id="query_search_results" style="margin-top: 10px;">
     <div class="ajax_loader display_none" ></div>
     <div class="content" ></div>
+</div>
+
+<div id="query_operator_tpl" class="display_none" >
+    <select id="@=name@">
+        <option selected="selected" >OR</option>
+        <option>AND</option>
+    </select>
 </div>
 
 <script type="text/javascript">
@@ -188,7 +194,13 @@ addScriptFile("js/jquery/jquery.json.js");
     }
     function selectSearchedField(fieldID){
         var uri = "<?= site_url("admin/field_controller/renderFieldUI") ?>/" + fieldID;
-        var callback = function(html){           
+        var callback = function(html){
+
+            if(jQuery("#searched_field_form").find("div").length > 0){
+                var operator = jQuery("#query_operator_tpl").html().replace("@=name@", "operator_f_"+ fieldID);
+                jQuery("#searched_field_form").append(operator);
+            }
+
             jQuery("#searched_field_form").append(html);
         };
         jQuery.get( uri ,{}, callback );
@@ -200,24 +212,29 @@ addScriptFile("js/jquery/jquery.json.js");
             GUI.toggletVisible("#query_search_results .content");
             //console.log(formData);
             var data = {};
-            data["query_fields"] = [];
+            var query_fields = [];
             for(var i in formData){
                 var kv = formData[i];
                 if(kv.name.indexOf("field_") == 0){
                     kv.type = jQuery("#query_builder_form").find("*[name='"+ kv.name +"'][value='"+ kv.value +"']").attr("type");
                     kv.name = kv.name.replace("field_", "");
-                    data["query_fields"].push(kv);
+                    if( jQuery("#operator_f_" + kv.name).length > 0 )
+                        kv.operator = jQuery("#operator_f_" + kv.name).val();
+                    else
+                        kv.operator = "";
+                    query_fields.push(kv);
                 }
                 else {
                     data[kv.name] = kv.value;
-                }
-            }
-            data["query_fields"] = jQuery.toJSON(data["query_fields"]);
+                }                
+            }            
+            data["query_fields"] = jQuery.toJSON( query_fields );
             //console.log(data);
             var searchCallback = function(responseText, statusText)  {
                 jQuery("#query_search_results .content").html(responseText);
                 GUI.toggletVisible("#query_search_results .content");
                 jQuery("#query_search_results .ajax_loader").hide();
+                reduceQueriedResultsByOperator(query_fields);
             };
             jQuery("#query_search_results .ajax_loader").show();
             jQuery.post( jQuery(jqForm).attr("action") ,data , searchCallback);
@@ -228,6 +245,21 @@ addScriptFile("js/jquery/jquery.json.js");
             jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
             return false;
         });
+    }
+
+    function reduceQueriedResultsByOperator(query_fields){
+        console.log( query_fields );
+        var f = function(){
+        //console.log( jQuery(this).find(".data_cell") );
+        jQuery(this).find("span[class*='data_cell']") .each(function(){
+            var data_cell = jQuery(this).html();
+            if( data_cell.length > 0 ){
+                //console.log(data_cell );
+                
+            }
+        });
+        };
+        jQuery("#query_search_results").find("tr[id*='object_row_']").map(f);
     }
 
     jQuery(document).ready(function(){

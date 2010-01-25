@@ -30,7 +30,7 @@ class search_manager extends Model {
         $query_fields_size = count($query_fields);
         $field_operator = " OR ";
         $field_filter = "";
-        foreach ($query_fields as $idx => $kv ) {
+        foreach ($query_fields as  $kv ) {
             if( strlen($kv->value) >0 ) {
             //FIXME TODO update field type
                 if(strlen($field_filter)>0) {
@@ -44,7 +44,6 @@ class search_manager extends Model {
                 else {
                     $field_filter .= " `FieldValue` = '". $kv->value ."' ";
                 }
-
             }
         }
         if( strlen($field_filter) > 0 ) {
@@ -57,7 +56,7 @@ class search_manager extends Model {
                 FROM
                 (
                 (
-                SELECT objects.ObjectID, fields.FieldName, fieldoptions.OptionName as FieldValue
+                SELECT objects.ObjectID, fields.FieldID, fields.FieldName, fieldoptions.OptionName as FieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
@@ -75,7 +74,7 @@ class search_manager extends Model {
                 )
                 UNION
                 (
-                SELECT objects.ObjectID, fields.FieldName,  fieldvalues.FieldValue as FieldValue
+                SELECT objects.ObjectID, fields.FieldID, fields.FieldName,  fieldvalues.FieldValue as FieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
@@ -103,7 +102,11 @@ class search_manager extends Model {
             if( ! isset ($objects[$record['ObjectID']]) ) {
                 $objects[ $record['ObjectID'] ] = array();
             }
-            $field = array("FieldName"=> $record['FieldName']  , "FieldValue" => $record['FieldValue'] );
+            $field = array("FieldName"=> $record['FieldName']  ,
+                            "FieldValue" => $record['FieldValue'] ,
+                            "FieldID" => $record['FieldID']
+
+                );
             array_push( $objects[ $record['ObjectID'] ], $field );
         }
         //echo ($this->db->last_query());

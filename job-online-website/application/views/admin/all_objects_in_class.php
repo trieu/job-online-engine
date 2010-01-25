@@ -74,68 +74,73 @@
     </ul>
 
 <?php } ?>
-    <div>
-        <h3><?= $objectClass->getObjectClassName()  ?> </h3>
-    </div>
-    Display <?= $total_records = count($objects) ?> records
 
-    <?php if($total_records > 0) { ?>
-    <table border="1" style="margin-right: 30px">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <?php
-                $field_num_vector =  array();
-                foreach ($objects as $objID => $fields ) {
-                    $field_num_vector[$objID] = count($fields);
+<div>
+    <h3><?= $objectClass->getObjectClassName()  ?> </h3>
+</div>
+Display <?= $total_records = count($objects) ?> records
+
+<?php if($total_records > 0) { ?>
+<table border="1" style="margin-right: 30px">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <?php
+            $field_num_vector =  array();
+            foreach ($objects as $objID => $fields ) {
+                $field_num_vector[$objID] = count($fields);
+            }
+
+            function cmp($a,$b){
+                if($a > $b){
+                    return -1;
                 }
+                else if($a < $b){
+                    return +1;
+                }
+                return 0;
+            }
+            uasort($field_num_vector, 'cmp');
 
-                function cmp($a,$b){
-                    if($a > $b){
-                        return -1;
+            $max_field_num = 0;
+            $max_field_key =  key($field_num_vector);
+            if($max_field_key != NULL){
+                $max_field_num = $field_num_vector[ $max_field_key ];
+            }
+
+            $fields = $objects[ key($field_num_vector) ];
+            foreach ($fields as $field ) {
+                echo "<th>". $field['FieldName'] . "</th>";
+            }
+            ?>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($objects as $objID => $fields ) { ?>
+        <tr class="context_menu_trigger" id="object_row_<?= $objID ?>" >
+            <td><?= $objID ?></td>
+            <?php
+                for ($i = 0; $i < $max_field_num ; $i++ ) {
+                    if( isset ($fields[ $i ])){
+                        echo "<td><span class='data_cell_f_".$fields[ $i ]['FieldID'] ."'>". $fields[ $i ]['FieldValue'] ."</span></td>";
                     }
-                    else if($a < $b){
-                        return +1;
+                    else {
+                        echo "<td><span>&nbsp;</span></td>";
                     }
-                    return 0;
                 }
-                uasort($field_num_vector, 'cmp');
-
-                $max_field_num = 0;
-                $max_field_key =  key($field_num_vector);
-                if($max_field_key != NULL){
-                    $max_field_num = $field_num_vector[ $max_field_key ];
-                }
-
-                $fields = $objects[ key($field_num_vector) ];
-                foreach ($fields as $field ) {
-                    echo "<th>". $field['FieldName'] . "</th>";
-                }
-                ?>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($objects as $objID => $fields ) { ?>
-            <tr class="context_menu_trigger" id="object_row_<?= $objID ?>" >
-                <td><?= $objID ?></td>
-                <?php
-                    for ($i = 0; $i < $max_field_num ; $i++ ) {
-                        if( isset ($fields[ $i ])){
-                            echo "<td><span>". $fields[ $i ]['FieldValue'] ."</span></td>";
-                        }
-                        else {
-                            echo "<td><span>&nbsp;</span></td>";
-                        }
-                    }
-                 ?>
-                <td>
-                    <div>
-                        <?= anchor('admin/object_controller/edit/'.$objID , 'View', array('title' => 'Edit')) ?>
-                    </div>
-                </td>
-            </tr>
-            <?php } ?>
-        </tbody>
-    </table>
- <?php } ?>
+             ?>
+            <td>
+                <div>
+                    <?= anchor('admin/object_controller/edit/'.$objID , 'View', array('title' => 'Edit')) ?>
+                </div>
+            </td>
+        </tr>
+        <?php } ?>
+    </tbody>
+</table>
+ <?php } else { ?>
+<div>
+    <b>No results were found!</b>
+</div>
+<?php } ?>

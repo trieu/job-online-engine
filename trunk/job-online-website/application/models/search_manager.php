@@ -18,6 +18,28 @@ class search_manager extends Model {
         $this->CI =& get_instance();
     }
 
+    var $intersectSQL = "
+            SELECT r1.*  FROM
+            (
+            SELECT ObjectID
+            FROM fieldvalues
+            WHERE (FieldID = 8 AND FieldValue LIKE '%Hong Huynh%' )
+            ) r1
+            INNER JOIN
+            (
+            SELECT ObjectID
+            FROM fieldvalues
+            WHERE   (FieldID = 15 AND FieldValue LIKE '%0943332248%' )
+            ) r2
+            ON r1.ObjectID = r2.ObjectID
+            INNER JOIN
+            (
+            SELECT ObjectID
+            FROM fieldvalues
+            WHERE   (FieldID = 13 AND FieldValue LIKE '%Nguyen Cong Tru, Q1%' )
+            ) r3
+            ON r1.ObjectID = r3.ObjectID";
+
     function search_object() {
         $this->CI->load->model('objectclass_manager');        
 

@@ -248,7 +248,7 @@ addScriptFile("js/jquery/jquery.json.js");
     }
 
     function reduceQueriedResultsByOperator(query_fields){
-        console.log( query_fields );
+       // console.log( query_fields );
         var f = function(){
         //console.log( jQuery(this).find(".data_cell") );
         jQuery(this).find("span[class*='data_cell']") .each(function(){

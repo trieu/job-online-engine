@@ -58,13 +58,13 @@ class search_manager extends Model {
                 if(strlen($field_filter)>0) {
                     $field_filter .= $field_operator;
                 }
+                $field_filter .= "(FieldID = ".$kv->name." AND ";
                 if($kv->type == "text" || $kv->type == "textarea") {
-                    $kv->value = "'%" . $kv->value . "%'";
-                    $field_filter .= "(FieldID = ".$kv->name." AND ";
-                    $field_filter .= "FieldValue LIKE ". $kv->value ." ) ";
+                    $kv->value = "'%" . $kv->value . "%'";                    
+                    $field_filter .= " FieldValue LIKE ". $kv->value ." ) ";
                 }
                 else {
-                    $field_filter .= " `FieldValue` = '". $kv->value ."' ";
+                    $field_filter .= " FieldValue = ". $kv->value ." ) ";
                 }
             }
         }
@@ -117,7 +117,7 @@ class search_manager extends Model {
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
         $record_set = $query->result_array();
 
-        //echo "<br/>".($this->db->last_query());
+        ApplicationHook::logInfo($this->db->last_query());
 
         $objects = array();
         foreach ($record_set as $record) {

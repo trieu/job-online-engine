@@ -123,7 +123,12 @@ Display <?= $total_records = count($objects) ?> records
             <?php
                 for ($i = 0; $i < $max_field_num ; $i++ ) {
                     if( isset ($fields[ $i ])){
-                        echo "<td><span class='data_cell_f_".$fields[ $i ]['FieldID'] ."'>". $fields[ $i ]['FieldValue'] ."</span></td>";
+                        if( isset ($fields[ $i ]['FieldID'])){
+                            echo "<td><span class='data_cell_f_".$fields[ $i ]['FieldID'] ."'>". $fields[ $i ]['FieldValue'] ."</span></td>";
+                        }
+                        else {
+                            echo "<td><span class='data_cell'>". $fields[ $i ]['FieldValue'] ."</span></td>";
+                        }
                     }
                     else {
                         echo "<td><span>&nbsp;</span></td>";

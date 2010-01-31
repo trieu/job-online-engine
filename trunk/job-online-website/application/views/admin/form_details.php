@@ -105,7 +105,7 @@ echo form_fieldset_close();
             jQuery("#form_details input[name='ProcessIDs']").val(ids);
         });
 
-        jQuery("#data_suggestion").tokenInput("/job-online-website/index.php/admin/process_controller/getProcessesAsJson", {
+        jQuery("#data_suggestion").tokenInput("<?php echo base_url()?>/index.php/admin/process_controller/getProcessesAsJson", {
             hintText: "Type in the name of process",
             noResultsText: "No results",
             searchingText: "Searching...",

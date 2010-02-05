@@ -63,7 +63,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 			
 			if ($this->db_debug)
 			{
-				$this->display_error($error, '', TRUE);
+				$this->db->display_error($error, '', TRUE);
 			}
 			
 			return FALSE;
@@ -88,7 +88,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 			
 			if ($this->db_debug)
 			{
-				$this->display_error($error, '', TRUE);
+				$this->db->display_error($error, '', TRUE);
 			}
 			
 			return FALSE;
@@ -374,7 +374,7 @@ class CI_DB_sqlite_driver extends CI_DB {
 
 		if ($prefix_limit !== FALSE AND $this->dbprefix != '')
 		{
-			$sql .= " AND 'name' LIKE '".$this->escape_like_str($this->dbprefix)."%' ".sprintf($this->_like_escape_str, $this->_like_escape_char);
+			$sql .= " AND 'name' LIKE '".$this->escape_like_str($this->dbprefix)."%' ".sprintf($this->_like_escape_str, $this->_like_escape_chr);
 		}
 		return $sql;
 	}

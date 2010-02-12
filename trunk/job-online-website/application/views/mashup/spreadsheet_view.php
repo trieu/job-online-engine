@@ -298,7 +298,7 @@ class SimpleCRUD {
     public function printFeed($feed) {
         $i = 0;
         foreach($feed->entries as $entry) {
-            echo "<br/>".$entry->id->text."<br/>";
+            echo "<br/>id: ".$entry->id->text."<br/>";
             if ($entry instanceof Zend_Gdata_Spreadsheets_CellEntry) {
                 print $entry->title->text .' '. $entry->content->text . "<br/>";
             } else if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
@@ -371,6 +371,29 @@ class SimpleCRUD {
         // $this->promptForWorksheet();
         // $this->promptForFeedtype();
     }
+
+
+    public function insertRowIntoWorkSheet($rowArray, $currKey, $currWkshtId ) {
+        $entry = $this->gdClient->insertRow($rowArray, $currKey, $currWkshtId);
+        if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
+            foreach ($rowArray as $column_header => $value) {
+                echo "Success! Inserted '$value' in column '$column_header' at row ".substr($entry->getTitle()->getText(), 5) ."<br>";
+            }
+        }
+    }
+
+    public function updateRowIntoWorkSheet($index, $rowArray, $currKey, $currWkshtId ) {
+        $query = new Zend_Gdata_Spreadsheets_ListQuery();
+        $query->setSpreadsheetKey($currKey);
+        $query->setWorksheetId($currWkshtId);
+        $listFeed = $this->gdClient->getListFeed($query);
+        $entry = $this->gdClient->updateRow($listFeed->entries[$index], $rowArray);
+
+        if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
+            echo "Update Success!<br>";
+            $response = $entry->save();
+        }
+    }
 }
 
 
@@ -394,14 +417,14 @@ $uri1 = "http://spreadsheets.google.com/feeds/spreadsheets/tPF0KO8zz8gIB75IZB6fM
 
 //list all Worksheets in a Spreadsheet
 $query = new Zend_Gdata_Spreadsheets_DocumentQuery();
-$query->setSpreadsheetKey("tPF0KO8zz8gIB75IZB6fMcQ");
+$query->setSpreadsheetKey("tmsHOAGN0wClx8LNoOVUlTg");
 $worksheets = $sample->gdClient()->getWorksheetFeed($query);
 print "<br>== Available Worksheets ==\n";
 $sample->printFeed($worksheets);
 
 //list all data in a Worksheet
 $query = new Zend_Gdata_Spreadsheets_ListQuery();
-$query->setSpreadsheetKey("tPF0KO8zz8gIB75IZB6fMcQ");
+$query->setSpreadsheetKey("tmsHOAGN0wClx8LNoOVUlTg");
 $query->setWorksheetId("od6");
 $listFeed = $sample->gdClient()->getListFeed($query);
 print "entry id | row-content in column A | column-header: cell-content<br>".
@@ -409,6 +432,25 @@ print "entry id | row-content in column A | column-header: cell-content<br>".
         "the first blank row is encountered.<br><br>";
 $sample->printFeed($listFeed);
 print "<br>";
+
+//insertRowIntoWorkSheet
+$rowArray = array();
+$rowArray["id"] = 2;
+$rowArray["name"] = "Trieu 2.1";
+
+
+//$entry = null;
+//$entry = $sample->gdClient()->insertRow($rowArray, "tPF0KO8zz8gIB75IZB6fMcQ","od6");
+//if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
+//    foreach ($rowArray as $column_header => $value) {
+//        echo "Success! Inserted '$value' in column '$column_header' at row ".substr($entry->getTitle()->getText(), 5) ."<br>";
+//    }
+//}
+
+//$sample->insertRowIntoWorkSheet( $rowArray, "tPF0KO8zz8gIB75IZB6fMcQ", "od6");
+$sample->updateRowIntoWorkSheet( 1 ,  $rowArray, "tPF0KO8zz8gIB75IZB6fMcQ", "od6");
+
+
 
 
 

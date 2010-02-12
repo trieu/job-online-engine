@@ -401,57 +401,52 @@ class SimpleCRUD {
 $email = "tantrieuf31.database@gmail.com";
 $pass = "Mycatisfat@31";
 
-//list all Spreadsheets
-
-$sample = new SimpleCRUD($email, $pass);
-$spreadsheets = $sample->getExistingSpreadsheets();
-print "== Available Spreadsheets ==\n";
-$sample->printFeed($spreadsheets);
-
-
-
-$uri1 = "http://spreadsheets.google.com/feeds/spreadsheets/tPF0KO8zz8gIB75IZB6fMcQ";
-//$currentWorksheet = $sample->gdClient()->GetWorksheetEntry($spreadsheets[0]->id->text);
-
-//echo $currentWorksheet->id->text;
-
-//list all Worksheets in a Spreadsheet
-$query = new Zend_Gdata_Spreadsheets_DocumentQuery();
-$query->setSpreadsheetKey("tmsHOAGN0wClx8LNoOVUlTg");
-$worksheets = $sample->gdClient()->getWorksheetFeed($query);
-print "<br>== Available Worksheets ==\n";
-$sample->printFeed($worksheets);
-
-//list all data in a Worksheet
-$query = new Zend_Gdata_Spreadsheets_ListQuery();
-$query->setSpreadsheetKey("tmsHOAGN0wClx8LNoOVUlTg");
-$query->setWorksheetId("od6");
-$listFeed = $sample->gdClient()->getListFeed($query);
-print "entry id | row-content in column A | column-header: cell-content<br>".
-        "Please note: The 'dump' command on the list feed only dumps data until ".
-        "the first blank row is encountered.<br><br>";
-$sample->printFeed($listFeed);
-print "<br>";
+////list all Spreadsheets
+//
+//$sample = new SimpleCRUD($email, $pass);
+//$spreadsheets = $sample->getExistingSpreadsheets();
+//print "== Available Spreadsheets ==\n";
+//$sample->printFeed($spreadsheets);
+//
+//
+//
+//$uri1 = "http://spreadsheets.google.com/feeds/spreadsheets/tPF0KO8zz8gIB75IZB6fMcQ";
+////$currentWorksheet = $sample->gdClient()->GetWorksheetEntry($spreadsheets[0]->id->text);
+//
+////echo $currentWorksheet->id->text;
+//
+////list all Worksheets in a Spreadsheet
+//$query = new Zend_Gdata_Spreadsheets_DocumentQuery();
+//$query->setSpreadsheetKey("tPF0KO8zz8gIB75IZB6fMcQ");
+//$worksheets = $sample->gdClient()->getWorksheetFeed($query);
+//print "<br>== Available Worksheets ==\n";
+//$sample->printFeed($worksheets);
+//
+////list all data in a Worksheet
+//$query = new Zend_Gdata_Spreadsheets_ListQuery();
+//$query->setSpreadsheetKey("tPF0KO8zz8gIB75IZB6fMcQ");
+//$query->setWorksheetId("od6");
+//$listFeed = $sample->gdClient()->getListFeed($query);
+//print "entry id | row-content in column A | column-header: cell-content<br>".
+//        "Please note: The 'dump' command on the list feed only dumps data until ".
+//        "the first blank row is encountered.<br><br>";
+//$sample->printFeed($listFeed);
+//print "<br>";
 
 //insertRowIntoWorkSheet
 $rowArray = array();
-$rowArray["id"] = 2;
-$rowArray["name"] = "Trieu 2.1";
-
-
-//$entry = null;
-//$entry = $sample->gdClient()->insertRow($rowArray, "tPF0KO8zz8gIB75IZB6fMcQ","od6");
-//if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
-//    foreach ($rowArray as $column_header => $value) {
-//        echo "Success! Inserted '$value' in column '$column_header' at row ".substr($entry->getTitle()->getText(), 5) ."<br>";
-//    }
-//}
+$rowArray["id"] = 3;
+$rowArray["name"] = "Trieu 2.2";
 
 //$sample->insertRowIntoWorkSheet( $rowArray, "tPF0KO8zz8gIB75IZB6fMcQ", "od6");
-$sample->updateRowIntoWorkSheet( 1 ,  $rowArray, "tPF0KO8zz8gIB75IZB6fMcQ", "od6");
+//$sample->updateRowIntoWorkSheet( 1 ,  $rowArray, "tPF0KO8zz8gIB75IZB6fMcQ", "od6");
 
 
 
-
+echo $getRowCount1."<br>";
+echo $getColumnCount1."<br>";
+echo $getRowCount2."<br>";
+echo $getColumnCount2."<br>";
+echo $insertRowIntoWorkSheet."<br>";
 
 ?>

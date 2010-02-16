@@ -401,8 +401,8 @@ class SimpleCRUD {
 $email = "tantrieuf31.database@gmail.com";
 $pass = "Mycatisfat@31";
 
-////list all Spreadsheets
-//
+//list all Spreadsheets
+
 //$sample = new SimpleCRUD($email, $pass);
 //$spreadsheets = $sample->getExistingSpreadsheets();
 //print "== Available Spreadsheets ==\n";
@@ -443,10 +443,23 @@ $rowArray["name"] = "Trieu 2.2";
 
 
 
-echo $getRowCount1."<br>";
-echo $getColumnCount1."<br>";
-echo $getRowCount2."<br>";
-echo $getColumnCount2."<br>";
-echo $insertRowIntoWorkSheet."<br>";
+//echo $getRowCount1."<br>";
+//echo $getColumnCount1."<br>";
+//echo $getRowCount2."<br>";
+//echo $getColumnCount2."<br>";
+//echo $updateRowIntoWorkSheet."<br>";
+
+$i = 0;
+foreach($rows as $entry) {
+    echo ( "<br/>id: ".$entry->id->text."<br/>");
+    if ($entry instanceof Zend_Gdata_Spreadsheets_CellEntry) {
+        echo ($entry->title->text .' '. $entry->content->text . "<br/>");
+    } else if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
+        echo($i .' '. $entry->title->text .' | '. $entry->content->text . "<br/>");
+    } else {
+        echo( $i .' '. $entry->title->text . "<br/>");
+    }
+    $i++;
+}
 
 ?>

@@ -120,6 +120,7 @@ addScriptFile("js/jquery/jquery.json.js");
     </form>
 </fieldset>
 
+<a name="query_search_results" href="#query_search_results"></a>
 <div id="query_search_results" style="margin-top: 10px;">
     <div class="ajax_loader display_none" ></div>
     <div class="content" ></div>
@@ -243,6 +244,7 @@ addScriptFile("js/jquery/jquery.json.js");
                 GUI.toggletVisible("#query_search_results .content");
                 jQuery("#query_search_results .ajax_loader").hide();
                 reduceQueriedResultsByOperator(query_fields);
+                window.location = (window.location + "").split("#")[0] + "#query_search_results";
             };
             jQuery("#query_search_results .ajax_loader").show();
 

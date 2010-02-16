@@ -60,14 +60,14 @@ foreach ($object_class->getUsableProcesses() as $pro) {
 	<h3><a href="#">Section 2</a></h3>
 	<div>
             <p>
-            Sed non urna.
+            data
             </p>
 	</div>
 
 	<h3><a href="#">Section 3</a></h3>
 	<div>
             <p>
-            Nam enim risu
+            data
             </p>
 	</div>	
 </div>

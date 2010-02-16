@@ -84,6 +84,7 @@ class search_manager extends Model {
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
                     AND fields.FieldTypeID >= 4
                     AND fields.FieldTypeID < 7
+                    AND fields.ValidationRules LIKE '%searchable%'
                     AND fields.FieldID IN (
                              SELECT field_form.FieldID
                              FROM field_form, form_process, class_using_process
@@ -102,6 +103,7 @@ class search_manager extends Model {
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
                     AND fields.FieldTypeID >= 1
                     AND fields.FieldTypeID <= 3
+                    AND fields.ValidationRules LIKE '%searchable%'
                     AND fields.FieldID IN (
                              SELECT field_form.FieldID
                              FROM field_form, form_process, class_using_process

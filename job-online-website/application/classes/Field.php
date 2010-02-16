@@ -23,7 +23,7 @@ class Field {
     /**
      * @EntityField
      */
-    private $ValidationRules;
+    private $ValidationRules = "searchable";
 
     /**
      * @EntityField(is_db_field=FALSE)

@@ -96,7 +96,7 @@ class search extends Controller {
         try {
             if($csv_export == "false") {
                 $data = $this->search_manager->search_object();
-                echo $this->load->view("admin/all_objects_in_class",$data, TRUE);
+                echo $this->load->view("admin/all_objects_in_class_list_view",$data, TRUE);
             }
             else {
                 $data = $this->search_manager->search_object();

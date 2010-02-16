@@ -23,22 +23,26 @@ class gdata extends Controller {
 
         $email = "tantrieuf31.database@gmail.com";
         $pass = "Mycatisfat@31";
-        $spreadsheetId = "tPF0KO8zz8gIB75IZB6fMcQ";
+        $spreadsheetId = "tEr88rW-O568mB-C8malVyw";
         $worksheetId = "od6";
         $this->gdata_spreadsheet->connect($email, $pass, $spreadsheetId, $worksheetId);
-        $this->gdata_spreadsheet->countRowAndCollumn();
-        $data["getRowCount1"] =  $this->gdata_spreadsheet->getRowCount();
-        $data["getColumnCount1"] =  $this->gdata_spreadsheet->getColumnCount();
+//        $this->gdata_spreadsheet->countRowAndCollumn();
+//        $data["getRowCount1"] =  $this->gdata_spreadsheet->getRowCount();
+//        $data["getColumnCount1"] =  $this->gdata_spreadsheet->getColumnCount();
 
         $rowArray = array();
-        $rowArray["id"] = 55;
-        $rowArray["name"] = "Trieu 2.55";
-        $data["insertRowIntoWorkSheet"] = $this->gdata_spreadsheet->insertRowIntoWorkSheet($rowArray);
+        $rowArray["name"] = "Nguyen";
+        $rowArray["surname"] = "Trieu";
+        $rowArray["surname3"] = "Trieu2";
+      //  $data["insertRowIntoWorkSheet"] = $this->gdata_spreadsheet->insertRowIntoWorkSheet($rowArray);
+        $filter = 'name="Trieu 2.2"';
+        //$data["updateRowIntoWorkSheet"] = $this->gdata_spreadsheet->updateRowIntoWorkSheet($rowArray, $filter);
 
-        $this->gdata_spreadsheet->countRowAndCollumn();
-        $data["getRowCount2"] =  $this->gdata_spreadsheet->getRowCount();
-        $data["getColumnCount2"] =  $this->gdata_spreadsheet->getColumnCount();
+//        $this->gdata_spreadsheet->countRowAndCollumn();
+//        $data["getRowCount2"] =  $this->gdata_spreadsheet->getRowCount();
+//        $data["getColumnCount2"] =  $this->gdata_spreadsheet->getColumnCount();
 
+        $data["rows"] = $this->gdata_spreadsheet->searchRows('name="Nguyen2" and surname="Trieu2"');
 
         $this->load->view("mashup/spreadsheet_view",$data);
     }

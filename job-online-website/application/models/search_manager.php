@@ -40,8 +40,8 @@ class search_manager extends Model {
             ) r3
             ON r1.ObjectID = r3.ObjectID";
 
-    function search_object() {
-        $this->CI->load->model('objectclass_manager');        
+    public function search_object($return_query = FALSE) {
+        $this->CI->load->model('objectclass_manager');
 
         $FormID = $this->input->post("FormID");
         $ObjectClassID = $this->input->post("ObjectClassID");
@@ -54,13 +54,13 @@ class search_manager extends Model {
         $field_filter = "";
         foreach ($query_fields as  $kv ) {
             if( strlen($kv->value) >0 ) {
-            //FIXME TODO update field type
+                //FIXME TODO update field type
                 if(strlen($field_filter)>0) {
                     $field_filter .= $field_operator;
                 }
                 $field_filter .= "(FieldID = ".$kv->name." AND ";
                 if($kv->type == "text" || $kv->type == "textarea") {
-                    $kv->value = "'%" . $kv->value . "%'";                    
+                    $kv->value = "'%" . $kv->value . "%'";
                     $field_filter .= " FieldValue LIKE ". $kv->value ." ) ";
                 }
                 else {
@@ -73,7 +73,7 @@ class search_manager extends Model {
         }
         //echo "<br/>".($seacrh_obj_sql);
 
-        $sql = "                
+        $sql = "
                 SELECT r.*
                 FROM
                 (
@@ -115,6 +115,9 @@ class search_manager extends Model {
                 WHERE r.ObjectID IN ( ".$seacrh_obj_sql." )
                 ";
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
+        if($return_query) {
+            return $query;
+        }
         $record_set = $query->result_array();
 
         ApplicationHook::logInfo($this->db->last_query());
@@ -125,10 +128,9 @@ class search_manager extends Model {
                 $objects[ $record['ObjectID'] ] = array();
             }
             $field = array("FieldName"=> $record['FieldName']  ,
-                            "FieldValue" => $record['FieldValue'] ,
-                            "FieldID" => $record['FieldID']
-
-                );
+                    "FieldValue" => $record['FieldValue'] ,
+                    "FieldID" => $record['FieldID']
+            );
             array_push( $objects[ $record['ObjectID'] ], $field );
         }
         //echo ($this->db->last_query());
@@ -136,9 +138,7 @@ class search_manager extends Model {
         $data = array();
         $data["in_search_mode"] = TRUE;
         $data["objects"] = $objects;
-        $data["objectClass"] = $this->CI->objectclass_manager->find_by_id($ObjectClassID);
-
-        
+        $data["objectClass"] = $this->CI->objectclass_manager->find_by_id($ObjectClassID);   
         return $data;
     }
 }

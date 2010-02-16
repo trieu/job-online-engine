@@ -77,8 +77,16 @@ addScriptFile("js/jquery/jquery.json.js");
 
                 </select>
             </div>
-            
+         
             <input type="button" value="Hide field List" onclick="toggleFieldList(this)" />
+            <span style="margin-left: 10px">
+                <span >CSV Export:</span>
+                <input id="csv_export_true" type="radio" name="csv_export" value="true" />
+                <label for="csv_export_true">True</label>
+                <input id="csv_export_false" type="radio" name="csv_export" value="false" checked="true"/>
+                <label for="csv_export_false">False</label>
+            </span>
+         
             <div id="field_list_view" >
                 <div class="ajax_loader display_none" ></div>
                 <table border="0" width="100%">
@@ -237,7 +245,14 @@ addScriptFile("js/jquery/jquery.json.js");
                 reduceQueriedResultsByOperator(query_fields);
             };
             jQuery("#query_search_results .ajax_loader").show();
-            jQuery.post( jQuery(jqForm).attr("action") ,data , searchCallback);
+
+            if( jQuery("#csv_export_false").attr("checked")) {
+                jQuery.post( jQuery(jqForm).attr("action") ,data , searchCallback);
+            }
+            else {
+                jQuery.post( jQuery(jqForm).attr("action")+"/true" ,data , searchCallback);
+            }
+            
 
             return false;
         };

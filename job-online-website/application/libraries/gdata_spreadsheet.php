@@ -92,16 +92,37 @@ class gdata_spreadsheet {
         return FALSE;
     }
 
-    public function updateRowIntoWorkSheet($index, $rowArray ) {
+    public function updateRowIntoWorkSheet($rowArray, $selectionQuery = FALSE ) {
         $query = new Zend_Gdata_Spreadsheets_ListQuery();
         $query->setSpreadsheetKey($this->currSpreadsheetId);
         $query->setWorksheetId($this->currWorkSheetId);
+        if($selectionQuery) {
+            $query->setSpreadsheetQuery( $selectionQuery );
+        }        
         $listFeed = $this->gdClient->getListFeed($query);
-        $entry = $this->gdClient->updateRow($listFeed->entries[$index], $rowArray);
+        if($listFeed != NULL) {
+            ApplicationHook::logInfo("entries size: ".sizeof($listFeed->entries));
+            foreach($listFeed->entries as $entry) {
+                $updatedEntry = $this->gdClient->updateRow($entry, $rowArray);
+                if ($updatedEntry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
+                    $response = $updatedEntry->save();
+                    return TRUE;
+                }
+            }
+        }
+        return FALSE;
+    }
 
-        if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
-            $response = $entry->save();
-            return TRUE;
+    public function searchRows($selectionQuery = FALSE ) {
+        $query = new Zend_Gdata_Spreadsheets_ListQuery();
+        $query->setSpreadsheetKey($this->currSpreadsheetId);
+        $query->setWorksheetId($this->currWorkSheetId);
+        if($selectionQuery) {
+            $query->setSpreadsheetQuery( $selectionQuery );
+        }        
+        $listFeed = $this->gdClient->getListFeed($query);
+        if($listFeed != NULL) {
+           return $listFeed;
         }
         return FALSE;
     }

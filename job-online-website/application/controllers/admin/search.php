@@ -77,7 +77,7 @@ class search extends Controller {
             $data = array();
             $data["fields"] = $this->field_manager->getFieldsInForm($filterID);
             echo $this->load->view("admin/searched_fields_hint",$data, TRUE);
-            return;          
+            return;
         }
 
         $data = array("options"=>$options);
@@ -91,11 +91,26 @@ class search extends Controller {
      *
      * FIXME more security here
      */
-    function do_search() {
+    function do_search($csv_export = "false") {
         $this->load->model("search_manager");
         try {
-            $data = $this->search_manager->search_object();
-            echo $this->load->view("admin/all_objects_in_class",$data, TRUE);
+            if($csv_export == "false") {
+                $data = $this->search_manager->search_object();
+                echo $this->load->view("admin/all_objects_in_class",$data, TRUE);
+            }
+            else {
+                $data = $this->search_manager->search_object();
+                $strData = $this->load->view("admin/all_objects_in_class_csv_export",$data, TRUE);
+
+                //$query = $this->search_manager->search_object(TRUE);
+                //$this->load->helper('csv');
+                //$strData = query_to_csv($query, TRUE);
+                
+                $theFile = "search_results.csv";
+                $fh = fopen($theFile, 'w') or die("can't open file");
+                fwrite($fh, $strData  );
+                fclose($fh);
+            }
         } catch (Exception $e) {
             echo $e->getTraceAsString();
         }

@@ -56,7 +56,7 @@ echo renderSelectField("FieldTypeID", "FieldTypeID", $field_types, "Field Type")
 
 <?php
 echo renderInputField("FieldName","FieldName",$obj->getFieldName());
-echo renderInputField("ValidationRules","ValidationRules",$obj->getValidationRules());
+echo renderInputField("Rules","ValidationRules",$obj->getValidationRules());
 echo form_submit('mysubmit', 'Submit');
 echo form_button("cancel", "Cancel", 'onclick="parent.jQuery.fn.fancybox.close();"');
 

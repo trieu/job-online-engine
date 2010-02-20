@@ -93,19 +93,22 @@ class search extends Controller {
      */
     function do_search($csv_export = "false") {
         $this->load->model("search_manager");
+        $FormID = $this->input->post("FormID");
+        $ObjectClassID = $this->input->post("ObjectClassID");
+        $ProcessID = $this->input->post("ProcessID");
+        $query_fields = json_decode( $this->input->post("query_fields") );
         try {
+            $data = $this->search_manager->search_object($FormID, $ObjectClassID, $ProcessID, $query_fields);
             if($csv_export == "false") {
-                $data = $this->search_manager->search_object();
                 echo $this->load->view("admin/all_objects_in_class_list_view",$data, TRUE);
             }
             else {
-                $data = $this->search_manager->search_object();
                 $strData = $this->load->view("admin/all_objects_in_class_csv_export",$data, TRUE);
 
                 //$query = $this->search_manager->search_object(TRUE);
                 //$this->load->helper('csv');
                 //$strData = query_to_csv($query, TRUE);
-                
+
                 $theFile = "search_results.csv";
                 $fh = fopen($theFile, 'w') or die("can't open file");
                 fwrite($fh, $strData  );

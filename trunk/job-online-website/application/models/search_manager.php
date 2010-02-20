@@ -19,7 +19,7 @@ class search_manager extends Model {
     }
 
     var $intersectSQL = "
-            SELECT r1.*  FROM
+            SELECT DISTINCT r1.*  FROM
             (
             SELECT ObjectID
             FROM fieldvalues
@@ -38,15 +38,30 @@ class search_manager extends Model {
             FROM fieldvalues
             WHERE   (FieldID = 13 AND FieldValue LIKE '%Nguyen Cong Tru, Q1%' )
             ) r3
-            ON r1.ObjectID = r3.ObjectID";
+            ON r2.ObjectID = r3.ObjectID";
 
-    public function search_object($return_query = FALSE) {
+    protected function buildSQLSearch($query_fields) {
+        $sql = "";
+        foreach ($query_fields as $id => $kv ) {
+            if( strlen($kv->value) >0 ) {
+                $field_sql = "SELECT DISTINCT ObjectID FROM fieldvalues WHERE ";
+                $field_sql .= "(FieldID = ".$kv->name." AND ";
+                if($kv->type == "text" || $kv->type == "textarea") {
+                    $kv->value = "'%" . $kv->value . "%'";
+                    $field_sql .= " FieldValue LIKE ". $kv->value ." ) ";
+                }
+                else {
+                    $field_sql .= " FieldValue = ". $kv->value ." ) ";
+                }
+                $sql .= ($field_sql . " ");
+            }
+        }
+        ApplicationHook::logInfo( $sql );
+    }
+
+    public function search_object($FormID, $ObjectClassID, $ProcessID, $query_fields, $return_query = FALSE) {
         $this->CI->load->model('objectclass_manager');
-
-        $FormID = $this->input->post("FormID");
-        $ObjectClassID = $this->input->post("ObjectClassID");
-        $ProcessID = $this->input->post("ProcessID");
-        $query_fields = json_decode( $this->input->post("query_fields") );
+        $this->buildSQLSearch($query_fields);
 
         $seacrh_obj_sql = " SELECT DISTINCT ObjectID FROM fieldvalues ";
         $query_fields_size = count($query_fields);
@@ -114,8 +129,7 @@ class search_manager extends Model {
                 WHERE objects.ObjectClassID = ?
                 )
                 ) r
-                WHERE r.ObjectID IN ( ".$seacrh_obj_sql." )
-                ";
+                WHERE r.ObjectID IN ( ".$seacrh_obj_sql." )  ";
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
         if($return_query) {
             return $query;
@@ -140,7 +154,7 @@ class search_manager extends Model {
         $data = array();
         $data["in_search_mode"] = TRUE;
         $data["objects"] = $objects;
-        $data["objectClass"] = $this->CI->objectclass_manager->find_by_id($ObjectClassID);   
+        $data["objectClass"] = $this->CI->objectclass_manager->find_by_id($ObjectClassID);
         return $data;
     }
 }

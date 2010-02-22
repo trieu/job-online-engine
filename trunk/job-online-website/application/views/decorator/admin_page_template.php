@@ -33,7 +33,8 @@
                 <div style="font-weight:bold; margin: 10px 0px;">
                     <?php echo anchor('', lang('home_page')); ?>   |
                     <?php echo anchor('admin/object_controller/list_objects/job_seekers', lang('job_seeker'), array("title"=>lang('job_seeker_a_title'))); ?>   |
-                    <?php echo anchor('admin/object_controller/list_objects/jobs', lang('employer'), array("title"=>lang('employer_a_title'))); ?>   |
+                    <?php echo anchor('admin/object_controller/list_objects/employers', lang('employer'), array("title"=>lang('employer_a_title'))); ?>   |
+                    <?php echo anchor('admin/object_controller/list_objects/jobs', lang('job'), array("title"=>lang('job_a_title'))); ?>   |
                     <?php echo anchor('admin/admin_panel', lang('admin_panel')); ?>
                 </div>
                 <div class="box accessBox has-access">

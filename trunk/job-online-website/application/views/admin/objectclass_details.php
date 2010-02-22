@@ -51,6 +51,7 @@ echo form_open(site_url($action_uri), 'id="ObjectClass_details"');
 
 echo renderInputField("ObjectClassID","ObjectClassID",$obj->getObjectClassID(),"ObjectClassID");
 echo renderInputField("ObjectClassName","ObjectClassName",$obj->getObjectClassName(),"Object Class Name");
+echo renderInputField("AccessDataURI","AccessDataURI",$obj->getAccessDataURI(),"Access Data URI");
 
 ?>
 

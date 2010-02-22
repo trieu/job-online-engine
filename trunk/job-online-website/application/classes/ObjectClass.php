@@ -17,6 +17,11 @@ class ObjectClass {
     /**
      * @EntityField
      */
+    private $AccessDataURI;
+
+    /**
+     * @EntityField
+     */
     private $Description;
 
     /**
@@ -57,6 +62,17 @@ class ObjectClass {
         $this->ObjectClassName = $ObjectClassName;
     }
 
+    public function getAccessDataURI() {
+        if( $this->AccessDataURI == NULL) {
+            $this->AccessDataURI = "";
+        }
+        return $this->AccessDataURI;
+    }
+
+    public function setAccessDataURI($AccessDataURI) {
+        $this->AccessDataURI = $AccessDataURI;
+    }
+
     public function getDescription() {
         return $this->Description;
     }
@@ -64,7 +80,7 @@ class ObjectClass {
     public function setDescription($Description) {
         $this->Description = $Description;
     }
-
+    
     public function getObjects() {
         return $this->Objects;
     }

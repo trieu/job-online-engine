@@ -104,6 +104,7 @@ class object_manager extends data_manager {
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
                     AND fields.FieldTypeID >= 4
                     AND fields.FieldTypeID <= 6
+                    AND fields.ValidationRules LIKE '%searchable%'
                     AND fields.FieldID IN ( SELECT field_form.FieldID
                              FROM field_form, form_process, class_using_process
                              WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
@@ -121,6 +122,7 @@ class object_manager extends data_manager {
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
                     AND fields.FieldTypeID >= 1
                     AND fields.FieldTypeID <= 3
+                    AND fields.ValidationRules LIKE '%searchable%'
                     AND fields.FieldID IN ( SELECT field_form.FieldID
                              FROM field_form, form_process, class_using_process
                              WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID

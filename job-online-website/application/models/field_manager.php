@@ -45,15 +45,18 @@ class field_manager extends data_manager {
         }
 
         $FormIDs = $object->getFormIDs();
-        if( (count($FormIDs) == 1) && ($id > 0) ) {
+        if( (count($FormIDs) == 1) && ($id > 0)  ) {
             $record = new stdClass();
             $record->FieldID = $id;
             $record->FormID = $FormIDs[0];
-            $this->db->select("COUNT(*)")->from('field_form');
-            $this->db->where("FieldID", $record->FieldID );
-            $this->db->where("FormID", $record->FormID );
-            if($this->db->count_all_results() == 0) {
-                $this->db->insert("field_form", $record);
+
+            if( $record->FormID > 0 ) {
+                $this->db->select("COUNT(*)")->from('field_form');
+                $this->db->where("FieldID", $record->FieldID );
+                $this->db->where("FormID", $record->FormID );
+                if($this->db->count_all_results() == 0 ) {
+                    $this->db->insert("field_form", $record);
+                }
             }
         }
         return $id;

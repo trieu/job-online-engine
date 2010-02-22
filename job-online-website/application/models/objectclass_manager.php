@@ -71,7 +71,30 @@ class objectclass_manager extends data_manager {
      */
     public function find_by_id($id) {
         $query = $this->db->get_where($this->table_name, array('ObjectClassID' => $id));
-        foreach ($query->result_array() as $data_row) {
+        ApplicationHook::logInfo(sizeof($query->result_array()));
+        return $this->row_data_mapper($query->result_array());
+    }
+
+    /**
+     * @access	public
+     * @param	AccessDataURI
+     * @return	ObjectClass
+     */
+    public function find_by_uri($AccessDataURI) {
+        $query = $this->db->get_where($this->table_name, array('AccessDataURI' => $AccessDataURI));
+        return $this->row_data_mapper($query->result_array());
+    }
+
+    /**
+     * @access	protected
+     * @param	result_array , CI query result array
+     * @return	ObjectClass
+     */
+    protected function row_data_mapper($result_array) {
+        if( sizeof($result_array) != 1 ) {
+            throw new InvalidArgumentException("ID or URI is not unique",500);
+        }
+        foreach ($result_array as $data_row) {
             $obj = new ObjectClass();
             $obj = $this->class_mapping($data_row, "ObjectClass", $obj);
 
@@ -80,7 +103,7 @@ class objectclass_manager extends data_manager {
             $sql .= " INNER JOIN class_using_process";
             $sql .= " ON processes.ProcessID = class_using_process.ProcessID AND class_using_process.ObjectClassID = ?";
 
-            $q2 = $this->db->query($sql, array($id));
+            $q2 = $this->db->query($sql, array( $obj->getObjectClassID() ));
             $record_set = $q2->result_array();
 
             $processes = array();
@@ -89,7 +112,7 @@ class objectclass_manager extends data_manager {
                 $process->setProcessID($record['ProcessID']);
                 $process->setProcessName($record['ProcessName']);
                 $process->setDescription($record['Description']);
-                $process->setProcessOrder($record['ProcessOrder']);                
+                $process->setProcessOrder($record['ProcessOrder']);
 
                 array_push($processes, $process);
             }

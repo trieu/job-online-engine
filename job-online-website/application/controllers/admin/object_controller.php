@@ -56,7 +56,7 @@ class object_controller extends admin_panel {
      * @Secured(role = "Administrator")
      */
     public function do_form($classID, $ObjectID, $FormID ) {
-        $this->load->model("object_manager");        
+        $this->load->model("object_manager");
         $this->load->model("object_html_cache_manager");
         $this->load->model("forms_manager");
 
@@ -94,16 +94,16 @@ class object_controller extends admin_panel {
         }
     }
 
-    /**     
+    /**
      * @Secured(role = "Administrator")
      */
     public function save($ObjectClassID , $ObjectID = -1 ) {
         $this->load->model("object_manager");
         $this->load->model("field_manager");
-        if($ObjectClassID > 0) {       
+        if($ObjectClassID > 0) {
             $obj = new Object();
             $obj->setObjectClassID($ObjectClassID);
-            $obj->setObjectID($ObjectID);            
+            $obj->setObjectID($ObjectID);
             $obj->setFieldValues( json_decode($this->input->post("FieldValues")) );
 
             $ok = $this->object_manager->save($obj);
@@ -122,9 +122,39 @@ class object_controller extends admin_panel {
         $this->load->model("object_manager");
         $this->load->model("objectclass_manager");
 
-        $data = array();
-        $data["objects"] = $this->object_manager->getAllObjectsInClass($ObjectClassID);
-        $data["objectClass"] = $this->objectclass_manager->find_by_id($ObjectClassID);
+        $objectClass = $this->objectclass_manager->find_by_id($ObjectClassID);
+
+        if($objectClass != NULL) {
+            $data = array();
+            $data["objectClass"] = $objectClass;
+            $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID());
+            $this->load->view("admin/all_objects_in_class_list_view",$data);
+        }
+        else { 
+            throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);
+        }
+
+        
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function list_objects( $AccessDataURI = '/' ) {
+        $this->load->model("object_manager");
+        $this->load->model("objectclass_manager");
+
+        $objectClass = $this->objectclass_manager->find_by_uri($AccessDataURI);
+
+        if($objectClass != NULL) {
+            $data = array();
+            $data["objectClass"] = $objectClass;
+            $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID());
+        }
+        else {
+            throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);
+        }
 
         $this->load->view("admin/all_objects_in_class_list_view",$data);
     }

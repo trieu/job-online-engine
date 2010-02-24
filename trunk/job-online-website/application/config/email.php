@@ -6,4 +6,6 @@ $config['email']['smtp_user'] = 'trieunguyen@yopco.com';
 $config['email']['smtp_pass'] = 'nguyentrieu';
 $config['email']['smtp_port'] = '465';
 $config['email']['mailtype']  = 'html';
+$config['email']['validate']  = 'TRUE';
+$config['email']['wordwrap']  = 'TRUE';
 $config['email']['charset']   = 'utf-8';

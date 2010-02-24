@@ -97,36 +97,26 @@ class email_service extends Controller {
 
                     // break;
                 }
-
-
                 // echo "<br>";
-
-
             }
-
             // echo $output;
         }
-
         /* close the connection */
         imap_close($inbox);
     }
 
     protected function extract_attachments($connection, $message_number) {
-
         $attachments = array();
         $structure = imap_fetchstructure($connection, $message_number);
 
         if(isset($structure->parts) && count($structure->parts)) {
-
             for($i = 0; $i < count($structure->parts); $i++) {
-
                 $attachments[$i] = array(
                         'is_attachment' => false,
                         'filename' => '',
                         'name' => '',
                         'attachment' => ''
                 );
-
                 if($structure->parts[$i]->ifdparameters) {
                     foreach($structure->parts[$i]->dparameters as $object) {
                         if(strtolower($object->attribute) == 'filename') {
@@ -135,7 +125,6 @@ class email_service extends Controller {
                         }
                     }
                 }
-
                 if($structure->parts[$i]->ifparameters) {
                     foreach($structure->parts[$i]->parameters as $object) {
                         if(strtolower($object->attribute) == 'name') {
@@ -144,7 +133,6 @@ class email_service extends Controller {
                         }
                     }
                 }
-
                 if($attachments[$i]['is_attachment']) {
                     $attachments[$i]['attachment'] = imap_fetchbody($connection, $message_number, $i+1);
                     if($structure->parts[$i]->encoding == 3) { // 3 = BASE64

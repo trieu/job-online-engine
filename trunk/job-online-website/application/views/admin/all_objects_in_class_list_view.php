@@ -43,20 +43,21 @@
                 // jQuery(this).css("background-color", "#FFFF99");
             });
             jQuery(this).click(function(){
-                jQuery("tr.context_menu_trigger").css("background-color", "#FFF");
+                jQuery(".context_menu_trigger").css("background-color", "#FFF");
                 jQuery(this).css("background-color", "#FFFF99");
             });
             jQuery(this).mouseout(function(){
                 // jQuery(this).css("background-color", "#FFF");
             });
         };
-        jQuery("tr.context_menu_trigger").each(f);
+        jQuery(".context_menu_trigger").each(f);
     });
     function contextMenuHandler(action, el, pos) {
         var params = "";
         if( action.indexOf("ProcessID_") == 0 ) {
             params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("ProcessID_","");
-            window.location = "<?= site_url("admin/object_controller/do_process")?>" + params;
+           // window.location = "<?= site_url("admin/object_controller/do_process")?>" + params;
+           // TODO
         }
         else if( action.indexOf("FormID_") == 0 ) {
             params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("FormID_","");
@@ -74,24 +75,23 @@
             @Action: Edit
         </a>
     </li>
-        <?php
-        foreach ($objectClass->getUsableProcesses() as $idx => $p) {
-            if($idx == 0) continue;
-            ?>
+<?php foreach ($objectClass->getUsableProcesses() as $idx => $p) {
+    if($idx == 0) continue;
+    ?>
     <li>
         <a href="#ProcessID_<?= $p->getProcessID() ?>">
             @Process: <?php echo $p->getProcessName(); ?>
         </a>
     </li>
 
-            <?php foreach ($p->getUsableForms() as $form) { ?>
+    <?php foreach ($p->getUsableForms() as $form) { ?>
     <li>
         <a href="#FormID_<?= $form->getFormID() ?>">
             &nbsp;&nbsp; #Form: <?php echo $form->getFormName(); ?>
         </a>
     </li>
-                <?php }
-        } ?>
+    <?php }
+} ?>
 </ul>
 
     <?php } ?>

@@ -4,22 +4,24 @@ require_once 'annotations/annotations.php';
 require_once 'annotations/Secured.php';
 require_once 'annotations/AjaxAction.php';
 require_once 'annotations/Decorated.php';
+require_once 'annotations/DecoratedForMobile.php';
 require_once 'annotations/EntityField.php';
+
 require_once 'application/models/data_manager.php';
 
 /**
- * My hook for application, do check role and decorate page using Annotations
+ * The hook for application, do check role and decorate page using Annotations
  * @property CI_Loader CI->load
  * @property redux_auth CI->redux_auth
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
 class ApplicationHook {
 
-/**
- * CodeIgniter global
- *
- * @var string
- **/
+    /**
+     * CodeIgniter global
+     *
+     * @var string
+     **/
     protected $CI;
     public static $LOGIN_URL = "";
 
@@ -31,7 +33,7 @@ class ApplicationHook {
     public static $CONTROLLERS_FOLDER_PATH = "";
     public static $controllers_map;
     protected $is_logged_in = FALSE;
-     protected $is_in_admin_domain = FALSE;
+    protected $is_in_admin_domain = FALSE;
 
 
     private function initHook() {
@@ -77,10 +79,10 @@ class ApplicationHook {
             if($routeTokensSize >= 2) {
                 $c = 0;
                 while(is_dir(ApplicationHook::$CONTROLLERS_FOLDER_PATH.$routeTokens[$c])) {
-                    if($routeTokens[$c] == "admin"){
-                       $this->is_in_admin_domain = TRUE;
-                       $c++;
-                       break;
+                    if($routeTokens[$c] == "admin") {
+                        $this->is_in_admin_domain = TRUE;
+                        $c++;
+                        break;
                     }
                     $c++;
                 }
@@ -98,24 +100,24 @@ class ApplicationHook {
                 return TRUE;
             }
             else if($routeTokensSize===1 && strlen($routeTokens[0])>0 ) {
-                    $this->controllerName = $routeTokens[0];
-                    $this->controllerMethod = "index";
-                    $this->controllerRequest = $tokens[1];
-                    $this->shouldGoToAdminPanel($this->controllerName);
-                    return  TRUE;
-                }
-        }
-        else if(strrpos(current_url(), "/".$index_page)>0) {
-                $this->controllerName = "home";
+                $this->controllerName = $routeTokens[0];
                 $this->controllerMethod = "index";
-                $this->controllerRequest = "";
+                $this->controllerRequest = $tokens[1];
+                $this->shouldGoToAdminPanel($this->controllerName);
                 return  TRUE;
             }
+        }
+        else if(strrpos(current_url(), "/".$index_page)>0) {
+            $this->controllerName = "home";
+            $this->controllerMethod = "index";
+            $this->controllerRequest = "";
+            return  TRUE;
+        }
         return FALSE;
     }
 
     protected function shouldGoToAdminPanel($controllerClassName) {
-        if($controllerClassName == "admin"){
+        if($controllerClassName == "admin") {
             redirect("admin/admin_panel");
         }
     }
@@ -157,16 +159,16 @@ class ApplicationHook {
 
     public static function getExpireTime($num_days = 1) {
         $offset = 60 * 60 * 24 * $num_days;
-      //  return gmdate("D, d M Y H:i:s", time() + $offset) . " GMT";
-      //FIXME
-      return "";
+        //  return gmdate("D, d M Y H:i:s", time() + $offset) . " GMT";
+        //FIXME
+        return "";
     }
 
     public function setPageHeaderCached($num_days = 1) {
         //FIXME
-       // Header("Cache-Control: must-revalidate");
+        // Header("Cache-Control: must-revalidate");
         $ExpStr = "Expires: " . self::getExpireTime($num_days);
-       // Header($ExpStr);
+        // Header($ExpStr);
     }
 
     /**
@@ -197,7 +199,7 @@ class ApplicationHook {
 
                     return;
                 }
-                else if($reflection->hasAnnotation('AjaxAction')){
+                else if($reflection->hasAnnotation('AjaxAction')) {
                     $this->setPageHeaderCached();
                     $this->setSiteLanguage();
                     $data = array(
@@ -207,11 +209,21 @@ class ApplicationHook {
                     echo $this->CI->load->view("decorator/ajax_page_template", $data, TRUE);
                     return;
                 }
+                else if($reflection->hasAnnotation('DecoratedForMobile')) {
+                    $this->setPageHeaderCached();
+                    $this->setSiteLanguage();
+                    $data = array(
+                        'page_decorator' => $this->CI->page_decorator,
+                        'page_content' => trim($this->CI->output->get_output())
+                    );
+                    echo $this->CI->load->view("decorator/default_mobile_theme/page_template", $data, TRUE);
+                    return;
+                }
             }
         }
         echo $this->CI->output->get_output();
         $this->CI->benchmark->mark('code_end');
-    //ApplicationHook::logInfo("Rendering time: ".$this->CI->benchmark->elapsed_time('code_start', 'code_end'));
+        //ApplicationHook::logInfo("Rendering time: ".$this->CI->benchmark->elapsed_time('code_start', 'code_end'));
     }
 
     /**
@@ -238,13 +250,13 @@ class ApplicationHook {
      */
     protected function processFinalViewData() {
         $this->CI->load->library('session');
-        $page_content = $this->decoratePageContent();        
-        $data = array(            
-            'page_decorator' => $this->CI->page_decorator,
-            'page_header' => $this->decorateHeader(),
-            'left_navigation' => $this->decorateLeftNavigation(),
-            'page_content' => $page_content,
-            'page_footer' => $this->decorateFooter()
+        $page_content = $this->decoratePageContent();
+        $data = array(
+                'page_decorator' => $this->CI->page_decorator,
+                'page_header' => $this->decorateHeader(),
+                'left_navigation' => $this->decorateLeftNavigation(),
+                'page_content' => $page_content,
+                'page_footer' => $this->decorateFooter()
         );
         $data['controller'] = $this->controllerName."/".$this->controllerMethod;
         $data['page_respone_time'] =  $this->endAndGetResponseTime();
@@ -257,7 +269,7 @@ class ApplicationHook {
         preg_match_all("{<".$tag."[^>]*>(.*?)</".$tag.">}",  $xml,  $matches,PREG_PATTERN_ORDER);
         self::log(count($matches));
         foreach ($matches as $t) {
-            
+
             self::logInfo(($t));
         }
         return $matches[1];
@@ -271,29 +283,29 @@ class ApplicationHook {
     }
 
     protected function decorateLeftNavigation() {
-        if($this->is_logged_in) {           
+        if($this->is_logged_in) {
             if( $this->is_in_admin_domain && $this->isGroupAdmin()) {
                 return trim( $this->CI->load->view("admin/left_menu_bar",NULL,TRUE) );
             }
             else if($this->isGroupUser()) {
-                    return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
+                return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
             }
             else {
                 $first_name = "";
-                if( $this->CI->redux_auth->profile() ){
+                if( $this->CI->redux_auth->profile() ) {
                     $first_name = $this->CI->redux_auth->profile()->first_name;
                 }
                 $data = array(
-                    'is_login' => TRUE
-                    ,'first_name' => $first_name
+                        'is_login' => TRUE
+                        ,'first_name' => $first_name
                 );
                 return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
             }
         }
         else {
-        //FIXME
+            //FIXME
             $data = array(
-                'is_login' => FALSE
+                    'is_login' => FALSE
             );
             return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
         }
@@ -355,7 +367,7 @@ class ApplicationHook {
         if($this->is_logged_in == FALSE) {
             return FALSE;
         }
-        else if( ! $this->CI->redux_auth->profile() ){
+        else if( ! $this->CI->redux_auth->profile() ) {
             return FALSE;
         }
         return $this->CI->redux_auth->profile()->group === "admin";
@@ -365,7 +377,7 @@ class ApplicationHook {
         if($this->is_logged_in == FALSE) {
             return FALSE;
         }
-        else if( ! $this->CI->redux_auth->profile() ){
+        else if( ! $this->CI->redux_auth->profile() ) {
             return FALSE;
         }
         return $this->CI->redux_auth->profile()->group === "user";
@@ -375,7 +387,7 @@ class ApplicationHook {
         if($this->is_logged_in == FALSE) {
             return FALSE;
         }
-        else if( ! $this->CI->redux_auth->profile() ){
+        else if( ! $this->CI->redux_auth->profile() ) {
             return FALSE;
         }
         return $this->CI->redux_auth->profile()->group === "operator";

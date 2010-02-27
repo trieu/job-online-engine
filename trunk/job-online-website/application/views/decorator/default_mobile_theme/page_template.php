@@ -10,8 +10,14 @@
         <title><?php echo $page_decorator->getPageTitle(); ?></title>     
     </head>
     <body>
+        <div >
+            <?php echo $page_header ?>
+        </div>
         <div>
             <?= $page_content ?>
-        </div>        
+        </div>
+        <div >
+            <?php echo $page_footer ?>
+        </div>
     </body>
 </html>

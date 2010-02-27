@@ -122,6 +122,16 @@ class ApplicationHook {
         }
     }
 
+    protected function getThemeNameFromActionController($reflection) {
+        $themeName = $reflection->getAnnotation('Decorated')->themeName;
+        if( $themeName === FALSE ){
+            $themeName = "";
+        } else {
+            $themeName .= "/";
+        }
+        return $themeName;
+    }
+
     /**
      *
      * @return ReflectionAnnotatedMethod
@@ -182,21 +192,20 @@ class ApplicationHook {
             $this->is_logged_in = $this->CI->redux_auth->logged_in();
             if($reflection !=NULL ) {
                 if($reflection->hasAnnotation('Decorated')) {
-                    $this->setPageHeaderCached();
-                    ApplicationHook::logInfo("->Decorate page for ".$this->controllerName.".".$this->controllerMethod);
+                    $themeName = $this->getThemeNameFromActionController($reflection);
+                    $this->setPageHeaderCached();                    
                     $this->setSiteLanguage();
                     $data = $this->processFinalViewData();
 
                     if($this->isGroupUser()) {
-                        echo ( $this->CI->load->view("decorator/page_template", $data, TRUE) );
+                        echo ( $this->CI->load->view("decorator/".$themeName."page_template", $data, TRUE) );
                     }
                     else if($this->isGroupAdmin() && $this->controllerName == "admin_panel") {
-                        echo ( $this->CI->load->view("decorator/admin_page_template", $data, TRUE) );
+                        echo ( $this->CI->load->view("decorator/".$themeName."admin_page_template", $data, TRUE) );
                     }
                     else {
-                        echo ( $this->CI->load->view("decorator/page_template", $data, TRUE) );
+                        echo ( $this->CI->load->view("decorator/".$themeName."page_template", $data, TRUE) );
                     }
-
                     return;
                 }
                 else if($reflection->hasAnnotation('AjaxAction')) {

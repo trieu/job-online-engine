@@ -1,7 +1,5 @@
 <?php
-
 require_once 'Process.php';
-
 class ObjectClass {
 
     /**
@@ -35,15 +33,6 @@ class ObjectClass {
     private $UsableProcesses = array();
 
     public function __construct() {
-//        $pro = new Process();
-//        $pro->setProcessID(1);
-//        $pro->setProcessName("Working");
-//        array_push($this->UsableProcesses, $pro);
-//
-//        $pro = new Process();
-//        $pro->setProcessID(3);
-//        $pro->setProcessName("Eating");
-//        array_push($this->UsableProcesses, $pro);
     }
 
     public function getObjectClassID() {
@@ -96,11 +85,5 @@ class ObjectClass {
     public function setUsableProcesses($UsableProcesses) {
         $this->UsableProcesses = $UsableProcesses;
     }
-
-
-
-
-
-
 }
 ?>

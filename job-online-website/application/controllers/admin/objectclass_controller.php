@@ -1,6 +1,6 @@
 <?php
 require_once 'admin_panel.php';
-
+require_once 'application/classes/ObjectClassRelationship.php';
 
 /**
  * Description of admin_panel
@@ -86,6 +86,9 @@ class objectclass_controller extends admin_panel {
         $obj->setAccessDataURI($this->input->post("AccessDataURI"));
         $obj->setDescription($this->input->post("Description"));
         $obj->setUsableProcesses( json_decode($this->input->post("UsableProcesses") ) );
+
+        $relation = new ObjectClassRelationship();
+        $relation->createThis();
 
         $this->objectclass_manager->save($obj);
         $this->output->set_output("Save successfully!");

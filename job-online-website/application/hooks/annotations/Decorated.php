@@ -10,5 +10,7 @@ require_once(dirname(__FILE__).'/annotations.php');
  * @author Trieu Nguyen
  * @Target("method")
  */
-class Decorated extends Annotation {}
+class Decorated extends Annotation {
+    public $themeName = FALSE;
+}
 ?>

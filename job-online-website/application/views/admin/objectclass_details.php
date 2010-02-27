@@ -23,8 +23,6 @@
         background-color:yellow!important;
     }
 </style>
-
-
 <?php
 require_once 'macros.php';
 addScriptFile("js/jquery.tokeninput/jquery.tokeninput.js");
@@ -37,7 +35,6 @@ $obj = new ObjectClass();
 if(isset($obj_details)) {
     $obj = $obj_details;
 }
-
 if($id <= 0 ) {
     setPageTitle("Create New Object Class");
 }
@@ -75,12 +72,25 @@ echo renderInputField("AccessDataURI","AccessDataURI",$obj->getAccessDataURI(),"
     }
     ?>
     
-    <p> <b>The usable processes for this object:</b>
-        (The yellow process will be the
+    <div>
+        <b>The usable processes for this object:</b> (The yellow process will be the
         <span class="identity_process" title="The Indentity Process is the process which uses for creating basic information">Indentity Process</span>)
-    </p>
 
-    <input type="text" id="data_suggestion" name="UsableProcesses" />
+        <input type="text" id="data_suggestion" name="UsableProcesses" />
+    </div>
+
+    
+</div>
+
+<div>
+    <input type="text" id="ObjectClassSelfID" name="ObjectClassSelfID" value="<?php echo $obj->getObjectClassID()?>"/>
+    <input type="text" id="ObjectClassOtherID" name="ObjectClassOtherID" />
+
+    <input type="radio" name="ConstraintType" value="1-1" />1-1
+    <input type="radio" name="ConstraintType" value="1-n" />1-n
+    <input type="radio" name="ConstraintType" value="n-n" />n-n
+    
+    <input type="text" id="Explanation" name="Explanation" />
 </div>
 
 <div style="margin-top:32px">
@@ -92,7 +102,6 @@ echo renderInputField("AccessDataURI","AccessDataURI",$obj->getAccessDataURI(),"
 echo form_close();
 echo form_fieldset_close();
 ?>
-
 
 <script type="text/javascript">
     var id = <?=  $id ?>;
@@ -151,7 +160,6 @@ echo form_fieldset_close();
     });
 
 </script>
-
 
 <?php
 $data_list= array();

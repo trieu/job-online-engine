@@ -14,7 +14,7 @@ class myAccountingBook extends Controller {
     }
 
     /**
-     * @DecoratedForMobile
+     * @Decorated(themeName="default_mobile_theme")
      */
     public function index() {
         $data = array();

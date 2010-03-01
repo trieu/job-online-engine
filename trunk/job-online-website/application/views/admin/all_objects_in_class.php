@@ -86,49 +86,23 @@ Display <?= $total_records = count($objects) ?> records
         <tr>
             <th>ID</th>
             <?php
-            $field_num_vector =  array();
-            foreach ($objects as $objID => $fields ) {
-                $field_num_vector[$objID] = count($fields);
-            }
-
-            function cmp($a,$b){
-                if($a > $b){
-                    return -1;
-                }
-                else if($a < $b){
-                    return +1;
-                }
-                return 0;
-            }
-            uasort($field_num_vector, 'cmp');
-
-            $max_field_num = 0;
-            $max_field_key =  key($field_num_vector);
-            if($max_field_key != NULL){
-                $max_field_num = $field_num_vector[ $max_field_key ];
-            }
-
-            $fields = $objects[ key($field_num_vector) ];
-            foreach ($fields as $field ) {
-                echo "<th>". $field['FieldName'] . "</th>";
+            $max_field_num = count($metadata_object);
+            foreach ($metadata_object as $FieldName ) {
+                echo "<th>".$FieldName."</th>";
             }
             ?>
             <th>Actions</th>
         </tr>
     </thead>
-    <tbody>
-        <?php foreach ($objects as $objID => $fields ) { ?>
+    <tbody>       
+        <?php foreach ($objects as $objID => $data_map ) { ?>
         <tr class="context_menu_trigger" id="object_row_<?= $objID ?>" >
             <td><?= $objID ?></td>
             <?php
-                for ($i = 0; $i < $max_field_num ; $i++ ) {
-                    if( isset ($fields[ $i ])){
-                        if( isset ($fields[ $i ]['FieldID'])){
-                            echo "<td><span class='data_cell_f_".$fields[ $i ]['FieldID'] ."'>". $fields[ $i ]['FieldValue'] ."</span></td>";
-                        }
-                        else {
-                            echo "<td><span class='data_cell'>". $fields[ $i ]['FieldValue'] ."</span></td>";
-                        }
+                $fields = $data_map["fields"];
+                foreach ($metadata_object as $FieldID => $FieldName ) {
+                    if( isset($fields[ $FieldID ]) ) {
+                        echo "<td><span class='data_cell_f_".$FieldID ."'>". $fields[ $FieldID ]."</span></td>";                        
                     }
                     else {
                         echo "<td><span>&nbsp;</span></td>";
@@ -141,7 +115,7 @@ Display <?= $total_records = count($objects) ?> records
                 </div>
             </td>
         </tr>
-        <?php } ?>
+        <?php } ?>       
     </tbody>
 </table>
  <?php } else { ?>

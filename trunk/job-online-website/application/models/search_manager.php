@@ -61,7 +61,7 @@ class search_manager extends Model {
 
     public function search_object($FormID, $ObjectClassID, $ProcessID, $query_fields, $return_query = FALSE) {
         $this->CI->load->model('objectclass_manager');
-        $this->buildSQLSearch($query_fields);
+        // $this->buildSQLSearch($query_fields);
 
         $seacrh_obj_sql = " SELECT DISTINCT ObjectID FROM fieldvalues ";
         $query_fields_size = count($query_fields);
@@ -154,6 +154,99 @@ class search_manager extends Model {
         $data = array();
         $data["in_search_mode"] = TRUE;
         $data["objects"] = $objects;
+        //echo json_encode($objects);
+        $data["objectClass"] = $this->CI->objectclass_manager->find_by_id($ObjectClassID);
+        return $data;
+    }
+
+    public function search_object_for_table_view($FormID, $ObjectClassID, $ProcessID, $query_fields, $return_query = FALSE) {
+        $this->CI->load->model('objectclass_manager');
+        $seacrh_obj_sql = " SELECT DISTINCT ObjectID FROM fieldvalues ";
+        $query_fields_size = count($query_fields);
+        $field_operator = " OR ";
+        $field_filter = "";
+        foreach ($query_fields as  $kv ) {
+            if( strlen($kv->value) >0 ) {                
+                if(strlen($field_filter)>0) {
+                    $field_filter .= $field_operator;
+                }
+                $field_filter .= "(FieldID = ".$kv->name." AND ";
+                if($kv->type == "text" || $kv->type == "textarea") {
+                    $kv->value = "'%" . $kv->value . "%'";
+                    $field_filter .= " FieldValue LIKE ". $kv->value ." ) ";
+                }
+                else {
+                    $field_filter .= " FieldValue = ". $kv->value ." ) ";
+                }
+            }
+        }
+        if( strlen($field_filter) > 0 ) {
+            $seacrh_obj_sql .= (" WHERE ".$field_filter);
+        }
+        $sql = "
+                SELECT r.*
+                FROM
+                (
+                (
+                SELECT objects.ObjectID, fields.FieldID, fields.FieldName, fieldoptions.OptionName as FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                    AND fields.FieldTypeID >= 4
+                    AND fields.FieldTypeID < 7
+                    AND fields.ValidationRules LIKE '%searchable%'
+                    AND fields.FieldID IN (
+                             SELECT field_form.FieldID
+                             FROM field_form, form_process, class_using_process
+                             WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
+                                   AND class_using_process.ProcessOrder = 0 AND class_using_process.ObjectClassID = ?
+                                )
+                )
+                INNER JOIN fieldoptions ON fieldoptions.FieldOptionID = fieldvalues.FieldValue
+                WHERE objects.ObjectClassID = ?
+                )
+                UNION
+                (
+                SELECT objects.ObjectID, fields.FieldID, fields.FieldName,  fieldvalues.FieldValue as FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                    AND fields.FieldTypeID >= 1
+                    AND fields.FieldTypeID <= 3
+                    AND fields.ValidationRules LIKE '%searchable%'
+                    AND fields.FieldID IN (
+                             SELECT field_form.FieldID
+                             FROM field_form, form_process, class_using_process
+                             WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
+                                   AND class_using_process.ProcessOrder = 0 AND class_using_process.ObjectClassID = ?
+                                )
+                )
+                WHERE objects.ObjectClassID = ?
+                )
+                ) r
+                WHERE r.ObjectID IN ( ".$seacrh_obj_sql." )  ";
+        $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
+        if($return_query) {
+            return $query;
+        }
+        $record_set = $query->result_array();       
+
+        $objects = array();
+        $metadata_object = array();
+        foreach ($record_set as $record) {
+            if( ! isset ($objects[$record['ObjectID']]) ) {
+                $objects[ $record['ObjectID'] ] = array();
+                $objects[ $record['ObjectID'] ]["fields"] = array();
+            }
+            $metadata_object[$record['FieldID']] = $record['FieldName'];
+            $objects[$record['ObjectID']]["fields"][$record['FieldID']] = $record['FieldValue'];
+        }
+
+        $data = array();
+        $data["in_search_mode"] = TRUE;
+        $data["objects"] = $objects;
+        $data["metadata_object"] = $metadata_object;
+        //echo json_encode($objects);
         $data["objectClass"] = $this->CI->objectclass_manager->find_by_id($ObjectClassID);
         return $data;
     }

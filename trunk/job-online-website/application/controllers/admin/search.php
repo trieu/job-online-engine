@@ -98,9 +98,10 @@ class search extends Controller {
         $ProcessID = $this->input->post("ProcessID");
         $query_fields = json_decode( $this->input->post("query_fields") );
         try {
-            $data = $this->search_manager->search_object($FormID, $ObjectClassID, $ProcessID, $query_fields);
+            $data = $this->search_manager->search_object_for_table_view($FormID, $ObjectClassID, $ProcessID, $query_fields);
             if($csv_export == "false") {
-                echo $this->load->view("admin/all_objects_in_class_list_view",$data, TRUE);
+               // echo $this->load->view("admin/all_objects_in_class_list_view",$data, TRUE);
+                 echo $this->load->view("admin/all_objects_in_class",$data, TRUE);
             }
             else {
                 $strData = $this->load->view("admin/all_objects_in_class_csv_export",$data, TRUE);

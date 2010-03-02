@@ -68,13 +68,11 @@ addScriptFile("js/jquery/jquery.json.js");
             <div>
                 <label for="ProcessID">Searched Process / Quy trình xử lý cần tìm</label>
                 <select name="ProcessID" id="ProcessID" onchange="populateForms()" >
-
                 </select>
             </div>
             <div>
                 <label for="FormID">Searched Form / Form cần tìm</label>
                 <select name="FormID" id="FormID" onchange="populateFields()">
-
                 </select>
             </div>
          
@@ -152,7 +150,18 @@ addScriptFile("js/jquery/jquery.json.js");
     }
 
     function populateClasses(){
-
+        var url = "<?= site_url("admin/search/populate_query_helper")?>";
+        var filter =  {what: "<?= search::$OBJECT_CLASS_HINT ?>"};
+        var handler =  function(text){
+            var data = jQuery.secureEvalJSON( text );
+            var html = "";
+            for(var i in data.options){
+                html += ("<option value='" + data.options[i].options_val + "'>" + data.options[i].options_label + "</option>");
+            }
+            jQuery("#ObjectClassID").html( html );
+            populateProcesses();
+        };
+        jQuery.post(url, filter, handler);
     }
 
     function populateProcesses(){
@@ -280,7 +289,7 @@ addScriptFile("js/jquery/jquery.json.js");
     }
 
     jQuery(document).ready(function(){
-        populateProcesses();
+        populateClasses();
         initSearchForm();
     });
 </script>

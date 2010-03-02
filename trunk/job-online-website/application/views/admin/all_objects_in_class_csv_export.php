@@ -1,5 +1,4 @@
 <?php 
-
 $max_field_num = count($metadata_object);
 $beginFlag = TRUE;
 foreach ($metadata_object as $FieldName ) {

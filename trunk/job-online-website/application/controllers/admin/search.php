@@ -14,6 +14,7 @@
  */
 class search extends Controller {
 
+    public static $OBJECT_CLASS_HINT = "object_class";
     public static $PROCESS_HINT = "process";
     public static $FORM_HINT = "form";
     public static $FIELD_HINT = "field";
@@ -41,12 +42,20 @@ class search extends Controller {
     function populate_query_helper() {
         $filterID = (int) $this->input->post("filterID");
         $what = $this->input->post("what");
-        ApplicationHook::logInfo($what);
-        ApplicationHook::logInfo($filterID);
 
         $options = array();
-
-        if($what == self::$PROCESS_HINT) {
+        if($what == self::$OBJECT_CLASS_HINT) {
+            $this->db->select("objectclass.*");
+            $this->db->from("objectclass");
+            $query = $this->db->get();
+            foreach ($query->result() as $row) {
+                $option = new stdClass();
+                $option->options_val = $row->ObjectClassID;
+                $option->options_label = $row->ObjectClassName;
+                array_push($options, $option);
+            }
+        }
+        else if($what == self::$PROCESS_HINT) {
             $this->db->select("processes.*");
             $this->db->from("processes");
             $this->db->join("class_using_process", "processes.ProcessID = class_using_process.ProcessID");

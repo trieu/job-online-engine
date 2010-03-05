@@ -248,16 +248,27 @@ addScriptFile("js/jquery/jquery.json.js");
             }            
             data["query_fields"] = jQuery.toJSON( query_fields );
             //console.log(data);
+
+            var isCsvExport = jQuery("#csv_export_false").attr("checked");
+
             var searchCallback = function(responseText, statusText)  {
-                jQuery("#query_search_results .content").html(responseText);
-                GUI.toggletVisible("#query_search_results .content");
-                jQuery("#query_search_results .ajax_loader").hide();
-                reduceQueriedResultsByOperator(query_fields);
-                window.location = (window.location + "").split("#")[0] + "#query_search_results";
+                if(!isCsvExport){
+                    GUI.toggletVisible("#query_search_results .content");
+                    jQuery("#query_search_results .ajax_loader").hide();
+                    reduceQueriedResultsByOperator(query_fields);
+                    window.location = jQuery.trim(responseText);
+                }
+                else {
+                    jQuery("#query_search_results .content").html(responseText);
+                    GUI.toggletVisible("#query_search_results .content");
+                    jQuery("#query_search_results .ajax_loader").hide();
+                    reduceQueriedResultsByOperator(query_fields);
+                    window.location = (window.location + "").split("#")[0] + "#query_search_results";
+                }
             };
             jQuery("#query_search_results .ajax_loader").show();
 
-            if( jQuery("#csv_export_false").attr("checked")) {
+            if(isCsvExport ) {
                 jQuery.post( jQuery(jqForm).attr("action") ,data , searchCallback);
             }
             else {

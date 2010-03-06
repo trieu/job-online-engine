@@ -55,7 +55,7 @@
     function contextMenuHandler(action, el, pos) {
         var params = "";
         if( action.indexOf("ProcessID_") == 0 ) {
-            params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("ProcessID_","");
+            params = "/" + <?echo $objectClass->getObjectClassID(); ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("ProcessID_","");
            // window.location = "<?= site_url("admin/object_controller/do_process")?>" + params;
            // TODO
         }
@@ -71,7 +71,7 @@
 </script>
 <ul id="context_menu_ui" class="contextMenu">
     <li>
-        <a href="#EditObject">
+        <a href="#EditObject" >
             @Action: Edit
         </a>
     </li>
@@ -105,7 +105,7 @@
 
 <?php if($total_records > 0) {
     foreach ($objects as $objID => $fields ) { ?>
-<div class="context_menu_trigger focusable_text" id="object_row_<?= $objID ?>"
+<div class="context_menu_trigger focusable_text" id="object_row_<?= $objID ?>">
      <div class="id">ID: <?php echo $objID; ?></div>
             <?php
             foreach ($fields as $field ) {

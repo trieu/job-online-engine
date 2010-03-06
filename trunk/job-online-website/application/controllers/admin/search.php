@@ -52,7 +52,7 @@ class search extends Controller {
                 $option = new stdClass();
                 $option->options_val = $row->ObjectClassID;
                 $option->options_label = $row->ObjectClassName;
-                array_push($options, $option);
+                array_push($options, $option);                
             }
         }
         else if($what == self::$PROCESS_HINT) {
@@ -118,11 +118,12 @@ class search extends Controller {
                 //$query = $this->search_manager->search_object(TRUE);
                 //$this->load->helper('csv');
                 //$strData = query_to_csv($query, TRUE);
-
+                
                 $theFile = "search_results.csv";
                 $fh = fopen($theFile, 'w') or die("can't open file");
                 fwrite($fh, $strData  );
                 fclose($fh);
+                echo str_replace("index.php/","",site_url($theFile));
             }
         } catch (Exception $e) {
             echo $e->getTraceAsString();

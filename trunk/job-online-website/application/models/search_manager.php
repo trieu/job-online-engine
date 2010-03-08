@@ -40,11 +40,11 @@ class search_manager extends Model {
             ) r3
             ON r2.ObjectID = r3.ObjectID";
 
-    protected function buildSQLSearch($query_fields) {
+    protected function buildSQLSearchForANDOperator($query_fields) {
         $sql = "";
         foreach ($query_fields as $id => $kv ) {
             if( strlen($kv->value) >0 ) {
-                $field_sql = "SELECT DISTINCT ObjectID FROM fieldvalues WHERE ";
+                $sql = "SELECT DISTINCT ObjectID FROM fieldvalues WHERE ";
                 $field_sql .= "(FieldID = ".$kv->name." AND ";
                 if($kv->type == "text" || $kv->type == "textarea") {
                     $kv->value = "'%" . $kv->value . "%'";
@@ -86,8 +86,7 @@ class search_manager extends Model {
         if( strlen($field_filter) > 0 ) {
             $seacrh_obj_sql .= (" WHERE ".$field_filter);
         }
-        //echo "<br/>".($seacrh_obj_sql);
-
+        
         $sql = "
                 SELECT r.*
                 FROM

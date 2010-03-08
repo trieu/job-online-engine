@@ -56,22 +56,8 @@ foreach ($object_class->getUsableProcesses() as $pro) {
                 </form>
             </div>
 	</div>
-
-	<h3><a href="#">Section 2</a></h3>
-	<div>
-            <p>
-            data
-            </p>
-	</div>
-
-	<h3><a href="#">Section 3</a></h3>
-	<div>
-            <p>
-            data
-            </p>
-	</div>	
+	
 </div>
-
 
 <script type="text/javascript">
      jQuery(document).ready(initFormData);

@@ -3,8 +3,15 @@
         <?php
             $field = new Field();
             foreach ($fields as $idx => $field ) :
+            $ext_css_class = " odd_row_field ";
+            if( $idx % 2 === 1) {
+                $ext_css_class = " even_row_field ";
+            }
+            if( FieldType::isSelectableType($field->getFieldTypeID()) ) {
+                $ext_css_class .= " selectable_field ";
+            }
         ?>
-            <div class="draggable focusable_text <?php if($idx%2 == 1) echo "odd_row_field"; else echo "even_row_field";?>" >
+            <div class="draggable focusable_text <?php echo $ext_css_class;?> " >
                 <div id="<?php echo Field::$HTML_DOM_ID_PREFIX.$field->getFieldID() ?>" title="<?php echo $field->getFieldName() ?>">
                     <?php
                         if(strlen($field->getFieldName()) < 50){

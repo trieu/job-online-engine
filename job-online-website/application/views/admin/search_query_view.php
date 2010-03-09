@@ -50,6 +50,9 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
     #field_list_view {
         display:block; clear:both; 
     }
+    .statistical_field_query{
+        font-weight: bold;
+    }
 </style>
 
 <fieldset class="input_info" style="margin-top: 10px;">
@@ -64,9 +67,6 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
                     <label for="statistics_mode_true">Yes</label>
                     <input id="statistics_mode_false" type="radio" name="statistics_mode" value="false" onchange="setStatisticsMode(this)"/>
                     <label for="statistics_mode_false">No</label>
-                </div>
-                <div>
-                    <b><a href="javascript:void(0)" onclick="toggleFieldList(this)">Hide</a> Field List</b>
                 </div>
             </div>
             <div>
@@ -94,6 +94,9 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
                     <label for="csv_export_true">Yes</label>
                     <input id="csv_export_false" type="radio" name="csv_export" value="false" checked="true"/>
                     <label for="csv_export_false">No</label>
+                </div>
+                <div>
+                    <b><a href="javascript:void(0)" onclick="toggleFieldList(this)">Hide</a> Field List</b>
                 </div>
             </div> 
             <div id="field_list_view" >
@@ -124,8 +127,7 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
         </div>
         <div style="text-align: center;">
             <input type="submit" value="Search" />
-            <input type="button" value="Cancel" />
-            <input type="button" value="Cancel" />
+            <input type="button" value="Cancel" />            
         </div>
     </form>
 </fieldset>
@@ -192,6 +194,7 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
         };
         jQuery.post(url, filter, handler);
     }
+
     function populateForms(){
         var val = jQuery("#ProcessID").val();
         var url = "<?= site_url("admin/search/populate_query_helper")?>";
@@ -209,6 +212,7 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
         };
         jQuery.post(url, filter, handler);
     }
+
     function populateFields(){
         var val = jQuery("#FormID").val();
         if(val == null){
@@ -223,10 +227,13 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
         jQuery("#field_list_view .ajax_loader").show();
         jQuery.post(url, filter, handler);
     }
-    function selectSearchedField(fieldID){
+
+    function selectSearchedField(fieldID,fieldtypeID){
         if( jQuery("#statistics_mode_true:checked").length == 1 ) {
              var field_content = jQuery("#field_" + fieldID).attr("title");
-             var html = "<div><b>" + field_content + "</b></div>";
+             var html = "<div class='statistical_field_query' id='statistical_field_[fieldID]' fieldtypeid=[fieldtypeID]>" + field_content + "</div>";
+             html = html.replace("[fieldID]", fieldID);
+             html = html.replace("[fieldtypeID]", fieldtypeID);
              jQuery("#searched_field_form").append(html);
         }
         else {
@@ -242,10 +249,8 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
         }
     }
 
-    function initSearchForm(){
-        // pre-submit callback
-        var preSubmitCallback = function(formData, jqForm, options) {
-            GUI.toggletVisible("#query_search_results .content");            
+     var initSearchQuery = function(formData, jqForm, options) {
+            GUI.toggletVisible("#query_search_results .content");
             var data = {};
             var query_fields = [];
             for(var i in formData){
@@ -261,13 +266,13 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
                 }
                 else {
                     data[kv.name] = kv.value;
-                }                
-            }            
-            data["query_fields"] = jQuery.toJSON( query_fields );            
+                }
+            }
+            data["query_fields"] = jQuery.toJSON( query_fields );
 
-            var isCsvExport = jQuery("#csv_export_false").attr("checked");
+            var isCsvExport = jQuery("#csv_export_true").attr("checked");
             var searchCallback = function(responseText, statusText)  {
-                if(!isCsvExport){
+                if(isCsvExport){
                     GUI.toggletVisible("#query_search_results .content");
                     jQuery("#query_search_results .ajax_loader").hide();
                     reduceQueriedResultsByOperator(query_fields);
@@ -280,23 +285,46 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
                     reduceQueriedResultsByOperator(query_fields);
                     window.location = (window.location + "").split("#")[0] + "#query_search_results";
                 }
-
-                if( jQuery("#statistics_mode_true:checked").length == 1 ) {
-                    makePieChart("age");
-                }
             };
             jQuery("#query_search_results .ajax_loader").show();
+            
+            jQuery.post( jQuery(jqForm).attr("action") ,data , searchCallback);           
+            return false;
+    };
 
-            if(isCsvExport ) {
-                jQuery.post( jQuery(jqForm).attr("action") ,data , searchCallback);
+    var initStatisticsQuery = function(formData, jqForm, options) {
+        jQuery("#query_search_results .ajax_loader").show();
+
+        var query_fields = [];
+        var f = function(){
+            var id = new Number(jQuery(this).attr("id").replace("statistical_field_", ""));
+            var fieldtypeid = new Number(jQuery(this).attr("fieldtypeid"));
+            query_fields.push({"id":id,type:fieldtypeid});
+        };
+        jQuery("#searched_field_form").find("div[id*='statistical_field_']").each(f);
+
+        formData.push( {"name": "query_fields" ,"value": jQuery.toJSON( query_fields )} );
+        
+        jQuery.post( jQuery(jqForm).attr("action"), formData , function(jsonText, statusText)  {
+            //jQuery("#query_search_results .content").html(jsonText);
+            processStatisticResults( jQuery.evalJSON(jsonText) );
+            jQuery("#query_search_results .ajax_loader").hide();
+        });        
+        return false;
+    };
+
+    function initSearchForm(){
+        // pre-submit callback
+        jQuery('#query_builder_form').submit(function() {
+            var isStatisticsMode = jQuery("#statistics_mode_true:checked").length == 1;
+            if(isStatisticsMode)  {
+               jQuery("#query_search_results .content").html("");
+               jQuery(this).ajaxSubmit({beforeSubmit: initStatisticsQuery});
             }
             else {
-                jQuery.post( jQuery(jqForm).attr("action")+"/true" ,data , searchCallback);
+               jQuery("#statistics_diagram_list").html("");
+               jQuery(this).ajaxSubmit({beforeSubmit: initSearchQuery});
             }
-            return false;
-        };
-        jQuery('#query_builder_form').submit(function() {
-            jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
             return false;
         });
     }
@@ -325,31 +353,59 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
             jQuery("#field_list_view").find("table td .draggable").hide();
             jQuery("#field_list_view").find("table td .selectable_field").show();
             jQuery("#question_holder_csv_export").hide();
-            jQuery("#query_builder_form").find("input[type='submit']").val("Draw Diagrams");
+            jQuery("#query_builder_form").find("input[type='submit']").val("Do Statistics");
+            jQuery("#query_builder_form").attr("action","<?= site_url("admin/search/do_statistics")?>");            
         }
         else {
             jQuery("#field_list_view").find("table td .draggable").show();
             jQuery("#question_holder_csv_export").show();
             jQuery("#query_builder_form").find("input[type='submit']").val("Search");
+            jQuery("#query_builder_form").attr("action","<?= site_url("admin/search/do_search")?>");            
+        }
+        jQuery("#searched_field_form").html("");
+    }
+
+    function processStatisticResults(statistic_results){
+        jQuery("#statistics_diagram_list div").remove();
+        for(var k in statistic_results){
+            var statistic_data = statistic_results[k];
+            var fieldID = k.replace("statistic_fieldID_", "");
+            var fieldName = jQuery("#statistical_field_"+fieldID).html();
+            var data = [];
+            data.push([]);
+
+            var total = 0;
+            jQuery(statistic_data).each(function(){
+                total += this.frequency;
+            });
+            fieldName += (" (Total: " + total + " " + jQuery("#ObjectClassID option:checked").html() + " )");
+
+            jQuery(statistic_data).each(function(){
+                var record = [];
+                var percent = Math.ceil((this.frequency * 100)/ total);
+                record.push(this.OptionName + " (" + percent + "%) ");
+                record.push( percent );
+                data[0].push(record);
+            });
+            makePieChart(fieldID, fieldName, data);
         }
     }
 
-    function makePieChart(fieldID){
-        var data = [[['a',50],['b',40],['c',10]]];
-        var titleText = 'Distribution for Field: ';
+    function makePieChart(fieldID, fieldName, data){
+        //var data = [[['a',50],['b',40],['c',10]]];
+        var titleText = 'Statistics for ' + fieldName;
         var diagram_key = "diagram_field_" + fieldID;
 
-        var diagram_holder = '<div id="[ID]" style="margin-top:20px; margin-left:20px; width:480px; height:360px;"></div>';
+        var diagram_holder = '<div id="[ID]" style="margin-top:20px; margin-left:20px; width:96%; height:370px;"></div>';
         diagram_holder = diagram_holder.replace("[ID]", diagram_key);
-        jQuery("#statistics_diagram_list").append(diagram_holder);
 
-        var $ = jQuery;
+        jQuery("#statistics_diagram_list").append(diagram_holder);        
         jQuery.jqplot.config.enablePlugins = true;
         var plot1 = jQuery.jqplot(diagram_key ,data , {
           title: titleText,
-          seriesDefaults:{renderer:$.jqplot.PieRenderer, trendline:{show:true}, rendererOptions:{sliceMargin:5}},
+          seriesDefaults:{renderer:jQuery.jqplot.PieRenderer, trendline:{show:true}, rendererOptions:{sliceMargin:4}},
           legend:{show:true}
-        });
+        });        
     }
 
     jQuery(document).ready(function(){

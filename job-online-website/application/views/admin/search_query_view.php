@@ -235,8 +235,11 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
              html = html.replace("[fieldID]", fieldID);
              html = html.replace("[fieldtypeID]", fieldtypeID);
              jQuery("#searched_field_form").append(html);
+             jQuery("#field_" + fieldID).hide();
         }
         else {
+            if( jQuery("#searched_field_form").find("#field_"+fieldID).length > 0)
+                return;
             var uri = "<?= site_url("admin/field_controller/renderFieldUI") ?>/" + fieldID;
             var callback = function(html){
                 if(jQuery("#searched_field_form").find("div").length > 0){

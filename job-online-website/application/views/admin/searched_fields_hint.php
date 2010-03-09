@@ -7,7 +7,7 @@
             if( $idx % 2 === 1) {
                 $ext_css_class = " even_row_field ";
             }
-            if( FieldType::isSelectableType($field->getFieldTypeID()) && $field->getFieldTypeID() != FieldType::$CHECK_BOX ) {
+            if( FieldType::isSelectableType($field->getFieldTypeID()) ) {
                 $ext_css_class .= " selectable_field ";
             }
         ?>

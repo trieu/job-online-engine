@@ -215,51 +215,56 @@ class search_manager extends Model {
         return $data;
     }
 
-    
+
     public function do_statistics_on_field($FormID, $ObjectClassID, $ProcessID, $query_fields) {
         $metadataSql = 'SELECT fieldoptions.FieldOptionID, fieldoptions.OptionName
                  FROM fieldoptions
                  WHERE fieldoptions.fieldID = ?';
         $countSql = 'SELECT COUNT( fieldvalues.FieldValueID ) as frequency
-                     FROM fieldvalues
-                     WHERE fieldvalues.FieldValue = ? ';
+                 FROM fieldvalues
+                 WHERE fieldvalues.FieldValue = ? ';
 
         $data = array();
-       
+
         foreach ($query_fields as $query_field  ) {
-           $fieldID = $query_field->id;
-           $fieldtypeID = $query_field->type;
-           if($fieldtypeID == FieldType::$CHECK_BOX){
-               //not support now
-               continue;
-           }
+            $fieldID = $query_field->id;
+            $fieldtypeID = $query_field->type;
+            if( ! FieldType::isSelectableType($fieldtypeID)) {
+                continue;
+            }
 
-           $statistic_name =  "statistic_fieldID_".$fieldID;
-           $data[$statistic_name] = array();
+            $statistic_name =  "statistic_fieldID_".$fieldID;
+            $data[$statistic_name] = array();
 
-           $query = $this->db->query($metadataSql, array($fieldID));
+            $query = $this->db->query($metadataSql, array($fieldID));
 
-           $countAllSql = "";
-           foreach ($query->result_array() as $record) {
-               if( strlen($countAllSql) > 0 ) {
+            $countAllSql = "";
+            foreach ($query->result_array() as $record) {
+                if( strlen($countAllSql) > 0 ) {
                     $countAllSql .= " UNION ALL ";
-               }
-               $countAllSql .= str_replace("?", $record['FieldOptionID'] , $countSql);
+                }
+                $countAllSql .= str_replace("?", $record['FieldOptionID'] , $countSql);
+                if($fieldtypeID == FieldType::$CHECK_BOX) {
+                    $countAllSql .= " AND fieldvalues.SelectedFieldValue = 1 ";
+                }
 
-               $record['frequency'] = 0;
-               array_push( $data[$statistic_name] , $record );
-           }
 
-           $countQuery = $this->db->query($countAllSql);
-           $c = 0;
-           foreach ($countQuery->result_array() as $record) {
+                $record['frequency'] = 0;
+                array_push( $data[$statistic_name] , $record );
+            }
+
+            ApplicationHook::logInfo($countAllSql);
+
+            $countQuery = $this->db->query($countAllSql);
+            $c = 0;
+            foreach ($countQuery->result_array() as $record) {
                 $data[$statistic_name][$c++]['frequency'] = (int)$record['frequency'];
-           }
-           //ApplicationHook::logInfo($countAllSql);
-           //ApplicationHook::logInfo(json_encode($countQuery->result_array()));
+            }
 
-           //just support for do statistics in ONE field only
-           //break;
+            //ApplicationHook::logInfo(json_encode($countQuery->result_array()));
+
+            //just support for do statistics in ONE field only
+            //break;
         }
 
         return $data;

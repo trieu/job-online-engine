@@ -127,6 +127,7 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
         </div>
         <div style="text-align: center;">
             <input type="submit" value="Search" />
+            <input type="button" value="Reset" onclick="location.reload()" />
             <input type="button" value="Cancel" />            
         </div>
     </form>
@@ -222,6 +223,12 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
         var filter =  {what: "<?= search::$FIELD_HINT ?>" , filterID: val};
         var handler =  function(html){
             jQuery("#field_list_view .content").html( html );
+            
+            if( jQuery("#statistics_mode_true:checked").length == 1 ) {
+                jQuery("#field_list_view").find("table td .draggable").hide();
+                jQuery("#field_list_view").find("table td .selectable_field").show();
+            }
+
             jQuery("#field_list_view .ajax_loader").hide();
         };
         jQuery("#field_list_view .ajax_loader").show();
@@ -412,6 +419,7 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
     }
 
     jQuery(document).ready(function(){
+        jQuery("#field_list_view .ajax_loader").show();
         populateClasses();
         initSearchForm();
         initStatisticsMode();       

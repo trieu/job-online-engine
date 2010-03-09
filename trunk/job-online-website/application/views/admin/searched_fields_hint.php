@@ -7,12 +7,12 @@
             if( $idx % 2 === 1) {
                 $ext_css_class = " even_row_field ";
             }
-            if( FieldType::isSelectableType($field->getFieldTypeID()) ) {
+            if( FieldType::isSelectableType($field->getFieldTypeID()) && $field->getFieldTypeID() != FieldType::$CHECK_BOX ) {
                 $ext_css_class .= " selectable_field ";
             }
         ?>
             <div class="draggable focusable_text <?php echo $ext_css_class;?> " >
-                <div id="<?php echo Field::$HTML_DOM_ID_PREFIX.$field->getFieldID() ?>" title="<?php echo $field->getFieldName() ?>">
+                <div id="<?php echo Field::$HTML_DOM_ID_PREFIX.$field->getFieldID() ?>" title="<?php echo $field->getFieldName() ?>" >
                     <?php
                         if(strlen($field->getFieldName()) < 50){
                             echo $field->getFieldName();
@@ -22,7 +22,7 @@
                         }
                     ?>
                     <br>
-                    <a href="javascript:void(0)" title="Add this field" onclick="selectSearchedField(<?php echo $field->getFieldID() ?>)">Add</a>
+                    <a href="javascript:void(0)" title="Add this field" onclick="selectSearchedField(<?php echo $field->getFieldID() ?>,<?php echo $field->getFieldTypeID() ?>)">Add</a>
                 </div>
             </div>
         <?php endforeach ?>

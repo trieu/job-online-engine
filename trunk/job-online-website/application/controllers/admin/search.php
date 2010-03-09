@@ -52,7 +52,7 @@ class search extends Controller {
                 $option = new stdClass();
                 $option->options_val = $row->ObjectClassID;
                 $option->options_label = $row->ObjectClassName;
-                array_push($options, $option);                
+                array_push($options, $option);
             }
         }
         else if($what == self::$PROCESS_HINT) {
@@ -100,25 +100,23 @@ class search extends Controller {
      *
      * FIXME more security here
      */
-    function do_search($csv_export = "false") {
+    function do_search() {
         $this->load->model("search_manager");
+        
         $FormID = $this->input->post("FormID");
         $ObjectClassID = $this->input->post("ObjectClassID");
         $ProcessID = $this->input->post("ProcessID");
         $query_fields = json_decode( $this->input->post("query_fields") );
+        $csv_export =  $this->input->post("csv_export");
+
         try {
             $data = $this->search_manager->search_object_for_table_view($FormID, $ObjectClassID, $ProcessID, $query_fields);
             if($csv_export == "false") {
-               // echo $this->load->view("admin/all_objects_in_class_list_view",$data, TRUE);
-                 echo $this->load->view("admin/all_objects_in_class",$data, TRUE);
+                // echo $this->load->view("admin/all_objects_in_class_list_view",$data, TRUE);
+                echo $this->load->view("admin/all_objects_in_class",$data, TRUE);
             }
             else {
                 $strData = $this->load->view("admin/all_objects_in_class_csv_export",$data, TRUE);
-
-                //$query = $this->search_manager->search_object(TRUE);
-                //$this->load->helper('csv');
-                //$strData = query_to_csv($query, TRUE);
-                
                 $theFile = "search_results.csv";
                 $fh = fopen($theFile, 'w') or die("can't open file");
                 fwrite($fh, $strData  );
@@ -128,5 +126,17 @@ class search extends Controller {
         } catch (Exception $e) {
             echo $e->getTraceAsString();
         }
+    }
+
+    public function do_statistics() {
+        $this->load->model("search_manager");
+        
+        $FormID = $this->input->post("FormID");
+        $ObjectClassID = $this->input->post("ObjectClassID");
+        $ProcessID = $this->input->post("ProcessID");
+        $query_fields = json_decode( $this->input->post("query_fields") );
+
+        $data = $this->search_manager->do_statistics_on_field($FormID, $ObjectClassID, $ProcessID, $query_fields);
+        echo json_encode($data);
     }
 }

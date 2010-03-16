@@ -169,16 +169,16 @@ class ApplicationHook {
 
     public static function getExpireTime($num_days = 1) {
         $offset = 60 * 60 * 24 * $num_days;
-        //  return gmdate("D, d M Y H:i:s", time() + $offset) . " GMT";
+       //  return gmdate("D, d M Y H:i:s", time() + $offset) . " GMT";
         //FIXME
         return "";
     }
 
     public function setPageHeaderCached($num_days = 1) {
         //FIXME
-        // Header("Cache-Control: must-revalidate");
-        $ExpStr = "Expires: " . self::getExpireTime($num_days);
-        // Header($ExpStr);
+       // Header("Cache-Control: must-revalidate");
+      //  $ExpStr = "Expires: " . self::getExpireTime($num_days);
+       // Header($ExpStr);
     }
 
     /**

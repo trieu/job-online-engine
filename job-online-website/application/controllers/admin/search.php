@@ -9,6 +9,7 @@
  * @property CI_DB_active_record $db
  * @property CI_Input $input
  * @property search_manager $search_manager
+ * @property ci_pchart $ci_pchart
  *
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
@@ -128,7 +129,7 @@ class search extends Controller {
         }
     }
 
-    public function do_statistics() {
+    public function do_statistics($js_mode = TRUE) {
         $this->load->model("search_manager");
         
         $FormID = $this->input->post("FormID");
@@ -137,6 +138,10 @@ class search extends Controller {
         $query_fields = json_decode( $this->input->post("query_fields") );
 
         $data = $this->search_manager->do_statistics_on_field($FormID, $ObjectClassID, $ProcessID, $query_fields);
+
+        $this->load->library("ci_pchart");
+        $this->ci_pchart->drawPieChart();
+
         echo json_encode($data);
     }
 }

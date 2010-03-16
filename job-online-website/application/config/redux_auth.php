@@ -18,7 +18,7 @@ $config['tables']['meta'] = 'meta';
 /**
  * Default group, use name
  */
-$config['default_group'] = 'customer';
+$config['default_group'] = 'user';
 
 /**
  * Meta table column you want to join WITH.

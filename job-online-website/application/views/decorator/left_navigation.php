@@ -4,6 +4,9 @@
 
         <div style="width:98%;font-weight:bold" >
             <div>
+
+            </div>
+            <div>
                 <label for="user_email" >Email</label>
                 <input id="user_email" type="text" name="email" value="trieu@drdvietnam.com" style="width:100%;" />
             </div>

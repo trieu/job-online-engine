@@ -8,11 +8,11 @@
             </div>
             <div>
                 <label for="user_email" >Email</label>
-                <input id="user_email" type="text" name="email" value="trieu@drdvietnam.com" style="width:100%;" />
+                <input id="user_email" type="text" name="email" value="" style="width:100%;" />
             </div>
             <div style="margin-top:5px;" >
                 <label for="user_password" >Password</label>
-                <input id="user_password" type="password" name="password" value="123456" style="width:100%;"/>
+                <input id="user_password" type="password" name="password" value="" style="width:100%;"/>
             </div>
             <input type="submit" value="Login" />
         </div>

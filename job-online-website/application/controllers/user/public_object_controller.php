@@ -27,9 +27,9 @@ class public_object_controller extends Controller {
         if($classID > 0) {
             $object_class = $this->objectclass_manager->find_by_id($classID);
             $data["object_class"] = $object_class;
+            $data["objectHTMLCaches"] = array();
             foreach ($object_class->getUsableProcesses() as $pro) {
-                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
-                break;
+                $data["objectHTMLCaches"][$pro->getProcessID()] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
             }
             $this->load->view("user/create_object",$data);
         }

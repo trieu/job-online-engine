@@ -139,8 +139,8 @@ class search extends Controller {
 
         $data = $this->search_manager->do_statistics_on_field($FormID, $ObjectClassID, $ProcessID, $query_fields);
 
-        $this->load->library("ci_pchart");
-        $this->ci_pchart->drawPieChart();
+       // $this->load->library("ci_pchart");
+       // $this->ci_pchart->drawPieChart();
 
         echo json_encode($data);
     }

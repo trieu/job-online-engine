@@ -139,7 +139,7 @@ class search_manager extends Model {
         }
         $record_set = $query->result_array();
 
-        ApplicationHook::logInfo($this->db->last_query());
+        //ApplicationHook::logInfo($this->db->last_query());
 
         $objects = array();
         foreach ($record_set as $record) {
@@ -253,7 +253,7 @@ class search_manager extends Model {
                 array_push( $data[$statistic_name] , $record );
             }
 
-            ApplicationHook::logInfo($countAllSql);
+            //ApplicationHook::logInfo($countAllSql);
 
             $countQuery = $this->db->query($countAllSql);
             $c = 0;

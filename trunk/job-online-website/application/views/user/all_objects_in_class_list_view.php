@@ -70,11 +70,6 @@
     }
 </script>
 <ul id="context_menu_ui" class="contextMenu">
-    <li>
-        <a href="#EditObject" >
-            @Action: Edit
-        </a>
-    </li>
 <?php foreach ($objectClass->getUsableProcesses() as $idx => $p) {
     if($idx == 0) continue;
     ?>

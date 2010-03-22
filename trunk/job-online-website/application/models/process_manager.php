@@ -93,7 +93,7 @@ class process_manager extends data_manager {
     }
 
     public function getIndentityProcessHTMLCache($id) {
-        $sql =  " SELECT cacheContent, javascriptContent ";
+        $sql =  " SELECT objecthtmlcaches.cacheContent, objecthtmlcaches.javascriptContent ";
         $sql .= " FROM objecthtmlcaches";
         $sql .= " WHERE objectClass = 'form_' ";
         $sql .= " AND objectPK ";

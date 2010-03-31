@@ -128,7 +128,7 @@
             }
             ?>
     <div class="actions" >
-          <?= anchor('user/public_object_controller/edit/'.$objID , 'More Details', array('title' => 'Edit')) ?>
+          
     </div>
 </div>
         <?php } ?>

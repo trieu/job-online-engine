@@ -120,10 +120,8 @@ class process_manager extends data_manager {
         $sql .= "    );";
 
         $q = $this->db->query($sql, array($id));
-        foreach ($q->result_array() as $record) {
-            return $record;
-        }
-        return array();
+        ApplicationHook::log(count($q->result_array()));
+        return $q->result_array();
     }
 }
 

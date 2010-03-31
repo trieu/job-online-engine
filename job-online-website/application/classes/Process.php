@@ -76,7 +76,7 @@ class Process {
         return 0;
     }
 
-    public function getOptions() {
+    public function getOptionsAsObject() {
         return $this->Options;
     }
 
@@ -84,11 +84,11 @@ class Process {
         $this->Options[$key] = $val;
     }
 
-    public function getOptionsAsJSON() {
+    public function getOptions() {
         return json_encode($this->Options);
     }
 
-    public function setOptionsFromJSON($Options) {
+    public function setOptions($Options = "{}") {
         $this->Options = json_decode($Options);
     }
 

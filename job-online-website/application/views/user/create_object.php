@@ -17,6 +17,10 @@ legend {
   text-align:right;
   font-weight: bold;
 }
+.process_forms > div > div {
+    background-color: #CCFFFF;
+    margin: 5px 3px 3px 5px;
+}
 </style>
 
 <h3><?= $object_class->getObjectClassName() ?></h3>
@@ -25,14 +29,17 @@ legend {
     <div class="input_info" id="object_instance_div" >
         <div class="ajax_loader display_none" ></div>
             <?php foreach ($object_class->getUsableProcesses() as $pro) { ?>
-                <fieldset>
+                <fieldset class="process_forms">
                 <legend><?= $pro->getProcessName() ?></legend>
                 <div>
                     <?php
-                    if(isset ( $objectHTMLCaches[$pro->getProcessID()]["cacheContent"] ) )
-                    {
-                        echo html_entity_decode($objectHTMLCaches[$pro->getProcessID()]["cacheContent"] );
-                    }
+                    foreach ($objectHTMLCaches[$pro->getProcessID()] as $caches){                      
+                        foreach ( $caches as $cName => $cache ){
+                            if($cName === "cacheContent") {
+                                echo html_entity_decode($cache );
+                            }
+                        }
+                    }                   
                     ?>
                 </div>
                 </fieldset>

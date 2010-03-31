@@ -77,6 +77,7 @@ class form_controller extends admin_panel {
         }
         $this->load->model("forms_manager");
         $this->load->model("object_html_cache_manager");
+        $data["related_objects"] = $this->forms_manager->get_related_objects($formID);
         $data["form"] = $this->forms_manager->find_by_id($formID);
         $data["cache"] = $this->object_html_cache_manager->get_saved_cache_html(Form::$HTML_DOM_ID_PREFIX,$formID);
         $data["palette_content"] = $this->loadPaletteContent($formID);

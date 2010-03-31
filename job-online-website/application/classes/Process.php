@@ -12,6 +12,11 @@ class Process {
     /**
      * @EntityField( is_db_field=FALSE )
      */
+    private $Options = array();
+
+    /**
+     * @EntityField( is_db_field=FALSE )
+     */
     private $ProcessOrder = -1;
 
 
@@ -43,7 +48,7 @@ class Process {
     }
 
     public function getUsableForms() {
-        if($this->ProcessID > 0){
+        if($this->ProcessID > 0) {
             $CI =& get_instance();
             $CI->load->model("forms_manager");
             return $CI->forms_manager->find_by_filter(array(),array("form_process"=>"form_process.FormID = forms.FormID AND form_process.ProcessID = ".$this->ProcessID));
@@ -70,5 +75,23 @@ class Process {
         }
         return 0;
     }
+
+    public function getOptions() {
+        return $this->Options;
+    }
+
+    public function setOption($key, $val) {
+        $this->Options[$key] = $val;
+    }
+
+    public function getOptionsAsJSON() {
+        return json_encode($this->Options);
+    }
+
+    public function setOptionsFromJSON($Options) {
+        $this->Options = json_decode($Options);
+    }
+
+
 }
 ?>

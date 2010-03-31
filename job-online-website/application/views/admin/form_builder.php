@@ -33,10 +33,18 @@ addScriptFile("js/jquery/jquery.json.js");
     }
 </style>
 
+<strong>
+<?php
+foreach ($related_objects["processes"] as $proID => $proName) {
+    echo "Process: ".$proName;
+}
+?>  <br> Form: <?= $form->getFormName() ?>
+</strong>
+
 <div>
     <input type="button" value="Save" onclick="save_object_form()" />
     <input type="button" value="Cancel" onclick="history.back()" />
-    <input type="button" value="Reset" onclick="reset_build_the_form()" style="margin-left:7px;" />
+    <input type="button" value="Reset" onclick="reset_build_the_form()" style="margin-left:7px;" title="Clear and rebuild UI of Form" />
 </div>
 
 <div id="form_builder_container" >
@@ -104,6 +112,7 @@ addScriptFile("js/jquery/jquery.json.js");
                 html = "Build form fail!";
             }
             alert(html);
+            window.location.reload();
         };
         jQuery.post(uri, data, callback );
     }

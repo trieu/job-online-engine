@@ -39,12 +39,14 @@ class class_mapper {
     }
 
     public function dataRowMappingToObject($data_row, $object) {
-        try {
-            foreach ($data_row as $fieldName => $fieldData) {
-                $this->setter_fields[strtolower($fieldName)]->invokeArgs($object, array($fieldData) );
+        foreach ($data_row as $fieldName => $fieldData) {
+            try {
+                if( isset ($this->setter_fields[strtolower($fieldName)]) ){
+                    $this->setter_fields[strtolower($fieldName)]->invokeArgs($object, array($fieldData) );
+                }
+            } catch (Exception $e ) {
+                //echo $e->getTraceAsString();
             }
-        } catch (Exception $e ) {
-            echo $e->getTraceAsString();
         }
         return $object;
     }
@@ -56,18 +58,20 @@ class class_mapper {
             $methods = $this->objectClass->getMethods();
             $properties = $this->objectClass->getProperties();
             foreach ($properties as $property) {
-                 $is_db_field = TRUE;
+                $is_db_field = TRUE;
 
                 $reflectedProperty = new ReflectionAnnotatedProperty($class_name, $property->getName());
                 try {
-                    if($reflectedProperty != NULL){
-                      if($reflectedProperty->hasAnnotation('EntityField')){
-                          $annotation = $reflectedProperty->getAnnotation('EntityField');
-                          $is_db_field = ($annotation->is_db_field == TRUE);
-                      }
+                    if($reflectedProperty != NULL) {
+                        if($reflectedProperty->hasAnnotation('EntityField')) {
+                            $annotation = $reflectedProperty->getAnnotation('EntityField');
+                            $is_db_field = ($annotation->is_db_field == TRUE);
+                        }
                     }
                 }
-                catch (Exception $exc) {}
+                catch (Exception $exc) {
+
+                }
 
 
                 if( ($property->isPrivate() || $property->isProtected()) && $is_db_field) {
@@ -76,10 +80,10 @@ class class_mapper {
                     $value = $getter->invoke($obj);
                     $property_values[$property->getName()] = $value;
 
-                    $pattern_p = "[".$property->getName()."]";                    
-                    $pos = strpos($actions,$pattern_p );                    
+                    $pattern_p = "[".$property->getName()."]";
+                    $pos = strpos($actions,$pattern_p );
                     if($pos > 0) {
-                        $actions = str_replace($pattern_p, $value, $actions);                       
+                        $actions = str_replace($pattern_p, $value, $actions);
                     }
                 }
             }

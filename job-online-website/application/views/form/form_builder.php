@@ -21,7 +21,6 @@ addScriptFile("js/jquery/jquery.json.js");
     #droppable label {
         margin-right: 5px;
     }
-
     .table_dnd tr.myDragClass td {
         color: yellow!important;
         background-color: black!important;
@@ -108,7 +107,7 @@ addScriptFile("js/jquery/jquery.json.js");
                 html = "Reset form successfully!";
                 FormBuilderScript.data_fields = [];
                 jQuery("#droppable *").remove();
-                jQuery("#droppable").html("");
+                jQuery("#droppable").html("");                
             }
             else{
                 html = "Build form fail!";
@@ -215,8 +214,7 @@ addScriptFile("js/jquery/jquery.json.js");
 
     jQuery(document).ready(function() {        
         initDragAndDrop();
-        makeSortableTable();
-       
+        makeSortableTable();      
 
     });
 </script>

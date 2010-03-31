@@ -66,11 +66,16 @@ class public_object_controller extends Controller {
             $obj->setObjectID($ObjectID);
             $obj->setFieldValues( json_decode($this->input->post("FieldValues")) );
 
-            $ok = $this->object_manager->save($obj);
-            $data = array();
-            $data["info_message"] = "Save successfully !";
-            $data["redirect_url"] = site_url("user/public_object_controller/list_all/".$ObjectClassID);
-            $this->load->view("global_view/info_and_redirect",$data);
+            $id = $this->object_manager->save($obj);
+            if($id > 0){
+                $data = array();
+                $data["info_message"] = "Save successfully !";
+                $data["redirect_url"] = site_url("user/public_object_controller/list_all/".$ObjectClassID)."#".$id;
+                $this->load->view("global_view/info_and_redirect",$data);
+            }
+            else {
+                echo "Insert new object fail!";
+            }
         }
     }
 

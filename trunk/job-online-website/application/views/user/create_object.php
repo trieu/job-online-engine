@@ -17,33 +17,69 @@ legend {
   text-align:right;
   font-weight: bold;
 }
-.process_forms > div > div {
-    background-color: #CCFFFF;
+.process_forms > div > div {    
     margin: 5px 3px 3px 5px;
+}
+.process_forms > div > div p {
+   font-weight: bold; margin-bottom: 1px!important;
+}
+.process_forms hr {
+    visibility: visible !important;
+    border:thin solid !important;
+}
+.process_forms .form_name {
+    background-color: #CCFFFF;
+    color: blue;
+    margin-top: 16px;
+    font-weight: bold;
+}
+.process_forms .form_name a{
+     text-decoration: none !important;
+}
+.process_forms label {
+    cursor: pointer;
+}
+#object_instance_form_navigation ol li{
+    clear: none !important;
+    margin: 3px 0 0 3px !important;
+}
+.to_top {
+    margin-left: 10px;
+    font-size: 10px;
 }
 </style>
 
 <h3><?= $object_class->getObjectClassName() ?></h3>
 
+<a name="object_instance_form_navigation"></a>
+<b>Danh sách các forms thông tin cần nhập</b>
+<div id="object_instance_form_navigation">
+</div>
+
 <form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
     <div class="input_info" id="object_instance_div" >
         <div class="ajax_loader display_none" ></div>
-            <?php foreach ($object_class->getUsableProcesses() as $pro) { ?>
+            <?php foreach ($object_class->getUsableProcesses() as $pro) {                
+                if( strpos($pro->getDescription(), "#not_show_on_create#") === FALSE ){
+                ?>
                 <fieldset class="process_forms">
                 <legend><?= $pro->getProcessName() ?></legend>
                 <div>
                     <?php
                     foreach ($objectHTMLCaches[$pro->getProcessID()] as $caches){                      
-                        foreach ( $caches as $cName => $cache ){
+                        foreach ( $caches as $cName => $cValue ){
+                            if($cName === "FormName") {
+                                echo "<div class='form_name'><a name='$cValue' href='javascript:void(0)'>$cValue</a></div><hr>";
+                            }
                             if($cName === "cacheContent") {
-                                echo html_entity_decode($cache );
+                                echo html_entity_decode( $cValue );
                             }
                         }
                     }                   
                     ?>
                 </div>
                 </fieldset>
-            <?php } ?>
+            <?php } } ?>
         <input type="submit" value="OK" />
         <input type="button" value="Cancel" onclick="history.back();" />
     </div>
@@ -57,14 +93,15 @@ legend {
 
     var checkboxHashmap = {};
     function initFormData(){
+        makeFormNavigation();
         var object_field = {};
         var ObjectID = -1;
-<?php
-if( isset ($object) ) {
-    echo " object_field = ".json_encode($object->getFieldValues()).";\n";
-    echo " ObjectID = ".$object->getObjectID().";\n";
-}
-?>
+        <?php
+        if( isset ($object) ) {
+            echo " object_field = ".json_encode($object->getFieldValues()).";\n";
+            echo " ObjectID = ".$object->getObjectID().";\n";
+        }
+        ?>
                  if(ObjectID > 0){
                      var actionUrl = jQuery("#object_instance_form").attr("action") + "/" + ObjectID;
                      jQuery("#object_instance_form").attr("action",actionUrl);
@@ -111,8 +148,7 @@ if( isset ($object) ) {
                      };
                      jQuery("#object_instance_form *[name*='field_']").each(f);
                  }
-                 initSaveObjectForm();
-                 
+                 initSaveObjectForm();                 
              }
 
              function initSaveObjectForm(){
@@ -161,4 +197,18 @@ if( isset ($object) ) {
                      return false;
                  });
              }
+
+     function makeFormNavigation(){
+         var container = jQuery("#object_instance_form_navigation");
+         var olHtml = "<ol>";
+         jQuery("#object_instance_form").find("a[name]").each(function(){
+             var name = jQuery(this).html();
+             var link = (window.location + "").split("#")[0] + "#" + name;
+             olHtml = olHtml + ( "<li><a href='"+ link +"'>" + name + "</a></li>" );
+             var to_home  = (window.location + "").split("#")[0] + "#object_instance_form_navigation";     
+             jQuery(this).parent().append( "<a class='to_top' href='"+ to_home +"'>Trờ về Danh sách forms</a>");
+         });
+         olHtml += "</ol>";
+         container.html(olHtml);
+     }
 </script>

@@ -71,7 +71,7 @@ class objectclass_manager extends data_manager {
      */
     public function find_by_id($id) {
         $query = $this->db->get_where($this->table_name, array('ObjectClassID' => $id));
-        ApplicationHook::logInfo(sizeof($query->result_array()));
+        //ApplicationHook::logInfo(sizeof($query->result_array()));
         return $this->row_data_mapper($query->result_array());
     }
 

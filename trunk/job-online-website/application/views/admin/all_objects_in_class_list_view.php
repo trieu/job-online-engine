@@ -67,12 +67,22 @@
             params = "/" + jQuery(el).attr("id").replace("object_row_","");
             window.location = "<?= site_url("admin/object_controller/edit/")?>" + params;
         }
+        else if(action == "DeleteObject"){
+            params = "/" + jQuery(el).attr("id").replace("object_row_","");
+            params += "/" + <?= $objectClass->getObjectClassID() ?>;
+            window.location = "<?= site_url("admin/object_controller/delete/")?>" + params;
+        }
     }
 </script>
 <ul id="context_menu_ui" class="contextMenu">
     <li>
         <a href="#EditObject" >
             @Action: Edit
+        </a>
+    </li>
+    <li>
+        <a href="#DeleteObject" >
+            @Action: Delete
         </a>
     </li>
 <?php foreach ($objectClass->getUsableProcesses() as $idx => $p) {
@@ -110,6 +120,7 @@
 <?php if($total_records > 0) {
     foreach ($objects as $objID => $fields ) { ?>
 <div class="context_menu_trigger focusable_text" id="object_row_<?= $objID ?>">
+    <a name="<?php echo $objID; ?>"></a>
      <div class="id">ID: <?php echo $objID; ?></div>
             <?php
             foreach ($fields as $field ) {
@@ -132,7 +143,9 @@
             }
             ?>
     <div class="actions" >
-          <?= anchor('admin/object_controller/edit/'.$objID , 'More Details', array('title' => 'Edit')) ?>
+       <?= anchor('admin/object_controller/edit/'.$objID , 'More Details', array('title' => 'More Details')) ?>
+        <br>
+       <?= anchor('admin/object_controller/delete/'.$objID."/".$objectClass->getObjectClassID() , 'Delete', array('title' => 'Delete')) ?>
     </div>
 </div>
         <?php } ?>

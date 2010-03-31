@@ -106,11 +106,13 @@ class object_controller extends admin_panel {
             $obj->setObjectID($ObjectID);
             $obj->setFieldValues( json_decode($this->input->post("FieldValues")) );
 
-            $ok = $this->object_manager->save($obj);
-            $data = array();
-            $data["info_message"] = "Save successfully !";
-            $data["redirect_url"] = site_url("admin/object_controller/list_all/".$ObjectClassID);
-            $this->load->view("global_view/info_and_redirect",$data);
+            $id = $this->object_manager->save($obj);
+            if($id > 0){
+                $data = array();
+                $data["info_message"] = "Save successfully !";
+                $data["redirect_url"] = site_url("admin/object_controller/list_all/".$ObjectClassID);
+                $this->load->view("global_view/info_and_redirect",$data);
+            }
         }
     }
 
@@ -155,6 +157,23 @@ class object_controller extends admin_panel {
         }
 
         $this->load->view("admin/all_objects_in_class_list_view",$data);
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function delete( $objID , $classID ) {
+        $this->load->model("object_manager");
+        $data = array();
+        if( $this->object_manager->delete_by_id($objID) ){            
+            $data["info_message"] = "Delete successful! ";            
+        }
+        else {
+             $data["info_message"] = "Object can not found, delete fail!! ";
+        }
+        $data["redirect_url"] = site_url("admin/object_controller/list_all/".$classID);
+        $this->load->view("global_view/info_and_redirect",$data);
     }
 }
 ?>

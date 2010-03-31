@@ -43,6 +43,7 @@ class object_manager extends data_manager {
             }
             $this->db->trans_complete();
         }
+        return $id;
     }
 
     protected function insert($data_array) {
@@ -67,6 +68,12 @@ class object_manager extends data_manager {
 
 
     public function delete_by_id($id) {
+        $this->db->delete("fieldvalues", "ObjectID = ".$id );
+        $this->db->delete("objects", "ObjectID = ".$id );
+        if($this->db->affected_rows()>0){
+            return TRUE;
+        }
+        return FALSE;
     }
 
     public function find_by_id($id) {

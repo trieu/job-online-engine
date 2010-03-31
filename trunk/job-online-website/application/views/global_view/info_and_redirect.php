@@ -3,7 +3,8 @@
         <span style="float: left; margin-right: 0.3em;" class="ui-icon ui-icon-info"></span>
         <h3><?= $info_message ?></h3>
         <? if (isset ($redirect_url)): ?>
-            <a href="<?= $redirect_url ?>" >Redirecting to <?= $redirect_url ?></a>
+        Vui lòng chọn link sau để trờ về danh sách <br>
+           <a href="<?= $redirect_url ?>" ><?= $redirect_url ?></a>
         <? endif; ?>        
     </div>
 </div>

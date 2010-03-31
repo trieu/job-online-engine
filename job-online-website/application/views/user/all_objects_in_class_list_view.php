@@ -105,6 +105,7 @@
 <?php if($total_records > 0) {
     foreach ($objects as $objID => $fields ) { ?>
 <div class="context_menu_trigger focusable_text" id="object_row_<?= $objID ?>">
+    <a name="<?php echo $objID; ?>"></a>
      <div class="id">ID: <?php echo $objID; ?></div>
             <?php
             foreach ($fields as $field ) {

@@ -110,17 +110,13 @@ class process_manager extends data_manager {
     }
 
     public function getProcessHTMLCaches($id) {
-        $sql =  " SELECT cacheContent, javascriptContent ";
-        $sql .= " FROM objecthtmlcaches";
-        $sql .= " WHERE objectClass = 'form_' ";
-        $sql .= " AND objectPK ";
-        $sql .= " IN (SELECT forms.FormID FROM forms";
-        $sql .= "     INNER JOIN form_process";
-        $sql .= "     ON form_process.FormID = forms.FormID AND form_process.ProcessID = ?";
-        $sql .= "    );";
-
-        $q = $this->db->query($sql, array($id));
-        ApplicationHook::log(count($q->result_array()));
+        $sql =  " SELECT forms.FormName , objecthtmlcaches.cacheContent, objecthtmlcaches.javascriptContent ";
+        $sql .= " FROM objecthtmlcaches, forms, form_process";
+        $sql .= " WHERE objecthtmlcaches.objectClass = 'form_' ";
+        $sql .= " AND objecthtmlcaches.objectPK = forms.FormID ";
+        $sql .= " AND form_process.FormID = forms.FormID AND form_process.ProcessID = ? ";
+       
+        $q = $this->db->query($sql, array($id));        
         return $q->result_array();
     }
 }

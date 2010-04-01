@@ -73,6 +73,12 @@ class forms_manager extends data_manager {
     }
 
     public function delete_by_id($id) {
+        $this->db->delete("field_form", "FormID = ".$id);
+        $this->db->delete($this->table_name, "FormID = ".$id);
+        if($this->db->affected_rows()>0) {
+            return $id;
+        }
+        return -1;
     }
 
     public function get_dependency_instances() {

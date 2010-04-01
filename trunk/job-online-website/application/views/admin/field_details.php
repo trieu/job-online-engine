@@ -59,6 +59,7 @@ echo renderInputField("FieldName","FieldName",$obj->getFieldName());
 echo renderInputField("ValidationRules","ValidationRules",$obj->getValidationRules());
 echo form_submit('mysubmit', 'Submit');
 echo form_button("cancel", "Cancel", 'onclick="parent.jQuery.fn.fancybox.close();"');
+echo form_button("CloneField", "Clone Field", 'onclick="cloneThisField();"');
 
 echo form_close();
 echo form_fieldset_close();
@@ -168,7 +169,7 @@ echo form_fieldset_close();
             jQuery("#field_option_data_ul span[id*='field_option_']").each(
                 function(){
                     var OptionName = jQuery(this).html();
-                    var FieldID = <?= $id ?>;
+                    var FieldID = new Number( jQuery("#FieldID").val() );
                     var FieldOptionID = new Number(jQuery(this).attr("id").replace("field_option_", ""));
                     field_option_data.push({'FieldOptionID':FieldOptionID,'FieldID':FieldID,'OptionName':OptionName});
                 }
@@ -178,6 +179,15 @@ echo form_fieldset_close();
         });
         FieldType_Handler();
     });
+
+    function cloneThisField(){
+        jQuery("#FieldID").val("-1");
+        jQuery("#field_option_data_ul span[id*='field_option_']").each(
+            function(){
+                jQuery(this).attr("id","field_option_-1");
+        });
+        jQuery("#field_details_form").submit();
+    }
 </script>
 
 <?php

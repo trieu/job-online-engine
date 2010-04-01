@@ -74,7 +74,7 @@ class public_object_controller extends Controller {
                 $this->load->view("global_view/info_and_redirect",$data);
             }
             else {
-                echo "Insert new object fail!";
+                echo "Insert new object failed!";
             }
         }
     }

@@ -18,8 +18,7 @@ class field_value_manager extends data_manager {
         //echo  $record->FieldValueID;
         $id = -1;
         if($record->FieldValueID > 0) {
-            $id = $this->update($record);
-            //$id = $record->FieldValueID;
+            $id = $this->update($record);           
         }
         else {
             $id = $this->insert($record);
@@ -45,7 +44,11 @@ class field_value_manager extends data_manager {
     }
 
     public function delete_by_id($id) {
-
+        $this->db->delete($this->table_name, "FieldValueID = ".$id);
+        if($this->db->affected_rows()>0) {
+            return $id;
+        }
+        return -1;
     }
 
     public function find_by_id($id) {

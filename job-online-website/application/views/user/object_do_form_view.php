@@ -29,7 +29,7 @@ addScriptFile("js/jquery/jquery.field.min.js");
 <fieldset class="input_info" id="object_instance_div"  >
     <legend><?= $form->getFormName() ?></legend>
     <div class="ajax_loader display_none" ></div>
-    <form id="object_instance_form" action="<?= site_url("user/object_controller/save/".$classID) ?>" accept="utf-8" method="post">
+    <form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$classID) ?>" accept="utf-8" method="post">
         <?php
         if(isset ($cache) ) {
             echo html_entity_decode($cache->getCacheContent());

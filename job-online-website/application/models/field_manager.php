@@ -86,9 +86,13 @@ class field_manager extends data_manager {
         return $this->select_db_helper($filter, $this->table_name, "Field" , $join_filter);
     }
 
-    public function delete_by_id($id) {
-        $key_field_name = "FieldID";
-        $this->db->delete($this->table_name, array($key_field_name => $id));
+    public function delete_by_id($id) {        
+        $this->db->delete("fieldvalues", array("FieldID" => $id) );
+        $this->db->delete($this->table_name, array("FieldID" => $id));
+        if($this->db->affected_rows()>0) {
+            return $id;
+        }
+        return -1;
     }
 
     public function remove_field_from_form($FieldID, $FormID) {

@@ -33,6 +33,7 @@ addScriptFile("js/jquery/jquery.field.min.js");
         <?php
         if(isset ($cache) ) {
             echo html_entity_decode($cache->getCacheContent());
+            echo "<script type='text/javascript'>".$cache->getJavascriptContent()."</script>";
         }
         ?>
         <input type="submit" value="OK" />

@@ -74,6 +74,9 @@ legend {
                             if($cName === "cacheContent") {
                                 echo html_entity_decode( $cValue );
                             }
+                            if($cName === "javascriptContent") {
+                                echo "<script type='text/javascript'>".$cValue."</script>";
+                            }
                         }
                     }                   
                     ?>

@@ -22,7 +22,9 @@
         <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url()."assets/".$file; ?>"/>
         <?php } ?>
 
-        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>    
+        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/js/commons.js"></script>
     </head>
     <body>
         <div id="page_container">
@@ -43,9 +45,8 @@
                 <input id="session_id" type="hidden" name="session_id" value="<?php echo $session_id?>" />
             </div>
         </div>
-        <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
+        
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
-        <script type="text/javascript" src="<?php echo base_url()?>assets/js/commons.js"></script>
         <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
         <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
         <?php } ?>

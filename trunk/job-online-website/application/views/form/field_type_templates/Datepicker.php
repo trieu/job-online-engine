@@ -1,9 +1,18 @@
 <div>
     <label for="<?= $field_name ?>"><?= $field_label ?>:</label>
     <input id="<?= $field_name ?>" type="text" value="" />
+    <!--SCRIPT
+        var <?= $field_name ?>_init = function(){
+            var options = {autoSize: true , constrainInput: true };
+            <?php  if(LANGUAGE_INDEX_PAGE == "tiengviet.php") { ?>
+            options.dateFormat = 'dd-mm-yy';
+            options.dayNamesMin = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+            options.monthNames = ['Tháng 1,','Tháng 2,','Tháng 3,','Tháng 4,','Tháng 5,','Tháng 6,','Tháng 7,','Tháng 8,','Tháng 9,','Tháng 10,','Tháng 11,','Tháng 12,'];
+            options.nextText = 'Tháng kế tiếp' ;
+            options.prevText = 'Tháng trước' ;
+            <? } ?>
+            jQuery("#<?= $field_name ?>").datepicker(options);
+        };
+        <?= $field_name ?>_init();
+    -->
 </div>
-<script type="text/javascript">
-    jQuery(document).ready(function(){
-        jQuery("#<?= $field_name ?>").datepicker();
-    });
-</script>

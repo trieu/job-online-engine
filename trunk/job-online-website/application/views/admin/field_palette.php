@@ -1,20 +1,17 @@
 <style type="text/css">
     .odd_row_field {
-        background:silver none repeat scroll 0 0;
-        width:170px;
+        background:silver none repeat scroll 0 0;      
         padding-bottom: 5px;
     }
     .even_row_field {
-        background:lavender none repeat scroll 0 0;
-        width:170px;
+        background:lavender none repeat scroll 0 0;       
         padding-bottom: 5px;
-    }
+    }    
 </style>
 
-<div style="display:block; width:100%; border:1px solid silver;" >
-    <b>Field list</b>
-    <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details/-1/".$FormID) ?>">Create a field</a>
-    <div style="display:block; height:600px;overflow:scroll; margin-bottom:25px;">
+<div style="width:100%; border:1px solid silver;" >    
+    <a class="iframe use_fancybox" href="<?= site_url("admin/field_controller/field_details/-1/".$FormID) ?>"><b>Create a field</b></a>
+    <div style="height:600px;overflow:scroll; margin: 9px 0 25px 0;">
         <?php
             $field = new Field();
             foreach ($fields as $idx => $field ) :

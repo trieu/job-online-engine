@@ -156,3 +156,20 @@ jQuery.fn.serializeObject = function() {
    });
    return o;
 };
+
+function findScriptInHTML(html) {
+    var s = html.indexOf("<!--SCRIPT") + 10;
+    if(s > 10){
+        var e = html.indexOf("-->") ;
+        var scriptContent = html.substring( s, e);
+        return jQuery.trim(scriptContent);
+    }
+    return "";
+}
+
+function makeScriptTag(scriptContent) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.innerHTML = scriptContent;
+    return script;
+}

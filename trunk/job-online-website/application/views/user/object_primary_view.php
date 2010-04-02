@@ -45,7 +45,7 @@ foreach ($object_class->getUsableProcesses() as $pro) {
 	<div>
             <div class="input_info" id="object_instance_div" >
                 <div class="ajax_loader display_none" ></div>
-                <form id="object_instance_form" action="<?= site_url("admin/object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
+                <form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
                     <?php
                     if(isset ($objectCacheHTML['cacheContent'])) {
                         echo html_entity_decode($objectCacheHTML['cacheContent']);

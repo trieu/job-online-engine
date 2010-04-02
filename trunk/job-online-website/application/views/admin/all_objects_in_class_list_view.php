@@ -61,11 +61,11 @@
         }
         else if( action.indexOf("FormID_") == 0 ) {
             params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("FormID_","");
-            window.location = "<?= site_url("admin/object_controller/do_form")?>" + params;
+            window.location = "<?= site_url("user/public_object_controller/do_form")?>" + params;
         }
         else if(action == "EditObject"){
             params = "/" + jQuery(el).attr("id").replace("object_row_","");
-            window.location = "<?= site_url("admin/object_controller/edit/")?>" + params;
+            window.location = "<?= site_url("user/public_object_controller/edit/")?>" + params;
         }
         else if(action == "DeleteObject"){
             params = "/" + jQuery(el).attr("id").replace("object_row_","");
@@ -108,11 +108,10 @@
 
 
 <div style="margin-bottom: 20px;">   
-    <h3><?= $objectClass->getObjectClassName()  ?> </h3>     
-    
+    <h3><?= $objectClass->getObjectClassName()  ?> </h3>    
     <b>
         Display <?= $total_records = count($objects) ?> records <br
-       <?php echo anchor('admin/object_controller/create_object/'.$objectClass->getObjectClassID(), "Đăng ký ". $objectClass->getObjectClassName() ." mới"); ?>
+       <?php echo anchor('user/public_object_controller/create_object/'.$objectClass->getObjectClassID(), "Đăng ký ". $objectClass->getObjectClassName() ." mới"); ?>
     </b>
 </div>
 
@@ -143,7 +142,7 @@
             }
             ?>
     <div class="actions" >
-       <?= anchor('admin/object_controller/edit/'.$objID , 'More Details', array('title' => 'More Details')) ?>
+       <?= anchor('user/public_object_controller/edit/'.$objID , 'Edit This', array('title' => 'Edit This')) ?>
         <br>
        <?= anchor('admin/object_controller/delete/'.$objID."/".$objectClass->getObjectClassID() , 'Delete', array('title' => 'Delete')) ?>
     </div>

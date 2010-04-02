@@ -54,7 +54,7 @@ class objectclass_controller extends admin_panel {
         $classes = $this->objectclass_manager->find_by_filter($filter);
         $actions = anchor('admin/objectclass_controller/show_details/[ObjectClassID]', 'View Details', array('title' => 'View Details'));
         $actions .= " | ";
-        $actions .= anchor('admin/object_controller/create_object/[ObjectClassID]', 'Create', array('title' => 'Create new'));
+        $actions .= anchor('user/public_object_controller/create_object/[ObjectClassID]', 'Create', array('title' => 'Create new'));
         $actions .= " | ";
         $actions .= anchor('admin/object_controller/list_all/[ObjectClassID]', 'List', array('title' => 'List'));
         $data_table = $this->class_mapper->DataListToDataTable("ObjectClass",$classes,$actions);

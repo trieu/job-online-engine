@@ -12,24 +12,24 @@ addScriptFile("js/jquery/jquery.json.js");
     }
     #form_builder_container {
         border:1px solid #DDDDDD;
-        clear:right;
-        height:500px;
-        overflow:auto;
-        position:relative;
-        width:700px;
-        margin: 20px 10px 10px 10px;
-        padding: 5px; float: left;
+        min-height: 450px;
+        width: 98%;
+        padding: 5px; 
     }
-
+    #form_builder_script {
+        width: 98%;
+    }
     #form_builder_container div {
         margin: 5px 0px;
     }
     #form_builder_container label {
         margin-right: 5px;
     }
-
     #fancy_outer {
         z-index: 1100 !important;
+    }
+    .form_builder_control {
+        margin: 10px 0 0 11px;
     }
 </style>
 
@@ -38,34 +38,69 @@ addScriptFile("js/jquery/jquery.json.js");
 foreach ($related_objects["processes"] as $proID => $proName) {
     echo "Process: ".$proName;
 }
-?>  <br> Form: <?= $form->getFormName() ?>
+?>
 </strong>
 
-<div>
+<div class="form_builder_control">
     <input type="button" value="Save" onclick="save_object_form()" />
     <input type="button" value="Cancel" onclick="history.back()" />
     <input type="button" value="Reset" onclick="reset_build_the_form()" style="margin-left:7px;" title="Clear and rebuild UI of Form" />
 </div>
 
-<div id="form_builder_container" >
-    <?php
-        if(isset ($cache)){
-            echo html_entity_decode($cache->getCacheContent());
-        }
-     ?>
-</div>
+<table border="0">
+    <thead>
+        <tr>
+            <th>Form: <?= $form->getFormName() ?></th>
+            <th>Fields in Form</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td width="80%" style="vertical-align: top">
+                <div>
+                    <div id="form_builder_container" >
+                        <?php
+                            if(isset ($cache)){
+                                echo html_entity_decode($cache->getCacheContent());
+                            }
+                         ?>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <label for="form_builder_script"><b>JavaScript Content</b></label>
+                        <textarea id="form_builder_script" cols="80" rows="20">
+                            <?php
+                                if(isset ($cache)){
+                                    echo ($cache->getJavascriptContent());
+                                }
+                            ?>
+                        </textarea>
+                    </div>
+                </div>
+            </td>
+            <td width="20%" style="vertical-align: top">
+                <div id="list_field_form" >
+                    <?= $palette_content ?>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
 
-<div id="list_field_form" style="float:right; width:186px;" >
-    <?= $palette_content ?>
-</div>
 
 <script type="text/javascript">
     jQuery(document).ready(function() {
         autoBuildForm();       
     });
 
+    function cleanFormGUIBeforeSubmit(){
+        jQuery("#form_builder_container").find("input[type='text']").val("");
+        jQuery(".hasDatepicker").removeClass("hasDatepicker");
+    }
+
     var is_html_cache_changed = false;
     function save_object_form(){
+        cleanFormGUIBeforeSubmit();
+
         var data = {};        
         data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
         data["ObjectPK"] = <?= $form->getFormID() ?>;
@@ -74,7 +109,7 @@ foreach ($related_objects["processes"] as $proID => $proName) {
         });
         jQuery("#form_builder_container div[class*='ui-resizable-handle']").remove();
         data["CacheContent"] =  jQuery("#form_builder_container").html();
-        data["JavascriptContent"] = "";
+        data["JavascriptContent"] = jQuery("#form_builder_script").val().trim();
 
         var uri = "<?= site_url("admin/form_controller/saveFormBuilderResult") ?>";
         var callback =  function(id){
@@ -107,6 +142,7 @@ foreach ($related_objects["processes"] as $proID => $proName) {
                 html = "Reset form successfully!";                
                 jQuery("#form_builder_container *").remove();
                 jQuery("#form_builder_container").html("");
+                jQuery("#form_builder_script").val("");
             }
             else{
                 html = "Build form fail!";
@@ -124,6 +160,9 @@ foreach ($related_objects["processes"] as $proID => $proName) {
         var must_build = jQuery("#list_field_form div[id*='<?= Field::$HTML_DOM_ID_PREFIX ?>']").length;
 
         if(field_form_num == must_build) {
+            //enough, do not poke server            
+            var sc = jQuery("#form_builder_script").val();
+            jQuery("#form_builder_container").append( makeScriptTag(sc) );
             initCustomeFormUIMode();
         }
         else {
@@ -131,7 +170,15 @@ foreach ($related_objects["processes"] as $proID => $proName) {
                 var id = jQuery(this).attr("id").replace("<?= Field::$HTML_DOM_ID_PREFIX ?>","");
                 var callback = function(html){
                     html = "<div class='resizable'>" + html + "</div>";
-                    jQuery("#form_builder_container").append(html);
+                    var sc = findScriptInHTML(html);
+                    if(sc != ""){
+                        jQuery("#form_builder_script").val(sc);
+                        jQuery("#form_builder_container").append(html).append( makeScriptTag(sc) );
+                    }
+                    else {
+                        jQuery("#form_builder_container").append(html);
+                    }
+                    
                     field_form_num = field_form_num + 1;
                     if(field_form_num == must_build) {
                         initCustomeFormUIMode();
@@ -162,6 +209,6 @@ foreach ($related_objects["processes"] as $proID => $proName) {
             jQuery(this).addClass("resizable");
         });
         jQuery("#form_builder_container > div").resizable(resizeOpts);
-    }
+    }   
 </script>
 

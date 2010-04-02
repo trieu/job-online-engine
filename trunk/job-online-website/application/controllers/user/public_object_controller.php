@@ -19,7 +19,7 @@ class public_object_controller extends Controller {
     }
 
     /**
-     * @Decorated     
+     * @Decorated
      */
     public function create_object($classID ) {
         $this->load->model("objectclass_manager");
@@ -35,9 +35,34 @@ class public_object_controller extends Controller {
         }
     }
 
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function edit( $objID ) {
+        $this->load->model("object_manager");
+        $this->load->model("objectclass_manager");
+        $this->load->model("process_manager");
+
+        $obj = $this->object_manager->getObjectInstance($objID);
+        $classID = $obj->getObjectClassID();
+        if($classID > 0) {
+            $object_class = $this->objectclass_manager->find_by_id($classID);
+            $data["object_class"] = $object_class;
+            $data["object"] = $obj;
+
+            foreach ($object_class->getUsableProcesses() as $pro) {
+                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
+                break;
+            }
+
+            $this->load->view("user/object_primary_view",$data);
+        }
+    }
+
 
     /**
-     * @Decorated     
+     * @Decorated
      */
     public function do_form($classID, $ObjectID, $FormID ) {
         $this->load->model("object_manager");
@@ -55,7 +80,7 @@ class public_object_controller extends Controller {
 
 
 
-    /**   
+    /**
      */
     public function save($ObjectClassID , $ObjectID = -1 ) {
         $this->load->model("object_manager");
@@ -67,7 +92,7 @@ class public_object_controller extends Controller {
             $obj->setFieldValues( json_decode($this->input->post("FieldValues")) );
 
             $id = $this->object_manager->save($obj);
-            if($id > 0){
+            if($id > 0) {
                 $data = array();
                 $data["info_message"] = "Save successfully !";
                 $data["redirect_url"] = site_url("user/public_object_controller/list_all/".$ObjectClassID)."#".$id;
@@ -78,6 +103,8 @@ class public_object_controller extends Controller {
             }
         }
     }
+
+   
 
     /**
      * @Decorated
@@ -100,7 +127,7 @@ class public_object_controller extends Controller {
     }
 
     /**
-     * @Decorated    
+     * @Decorated
      */
     public function list_objects( $AccessDataURI = '/' ) {
         $this->load->model("object_manager");

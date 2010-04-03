@@ -38,10 +38,10 @@
 
 
 $action_names  = array(
-    "Manage profile" => "admin/admin_panel/add_new_process"
-    ,"Find a job" => "admin/admin_panel/list_processes"
+    "Đăng ký người tìm việc" => "user/public_object_controller/create_object/1"
+    ,"Đăng ký nhà tuyển dụng" => "user/public_object_controller/create_object/2"
     );
-renderGroupOfActions("manage_process","Job Seeker Menu", $action_names);
+renderGroupOfActions("usergroup_menu","Menu", $action_names);
 ?>
 
 <?php  function renderGroupOfActions($group_id, $group_name, $action_names) { ?>

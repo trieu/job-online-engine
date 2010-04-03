@@ -20,7 +20,7 @@
         Để đăng ký mới về thông tin nhà tuyển dụng , vui chọn liên kết sau:
         <?php echo anchor('user/public_object_controller/create_object/2', "Đăng ký mới nhà tuyển dụng"); ?>
     </div>
-    <div class="user_link">
+    <div class="user_link" style="display: none;">
         Để đăng ký mới về thông tin công việc, vui chọn liên kết sau: 
         <?php echo anchor('user/public_object_controller/create_object/4', "Đăng ký mới công việc"); ?>
     </div>
@@ -35,7 +35,6 @@
         <a target="_blank" href="http://www.mozilla.com/vi/" title="Download Firefox">Download Firefox</a>
         <br>
         <a target="_blank" href="http://www.google.com/chrome/index.html?hl=vi" title="Download Google Chrome">Download Google Chrome</a>
-
 
     </div>
 </div>

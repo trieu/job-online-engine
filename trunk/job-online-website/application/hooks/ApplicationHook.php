@@ -293,22 +293,24 @@ class ApplicationHook {
 
     protected function decorateLeftNavigation() {
         if($this->is_logged_in) {
+            $first_name = "Unknown";
+            if( $this->CI->redux_auth->profile() ) {
+                $first_name = $this->CI->redux_auth->profile()->first_name;
+            }
+            $data = array(
+                    'is_login' => TRUE
+                    ,'first_name' => $first_name
+            );
+            $loginBoxView = trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
+
             if( $this->is_in_admin_domain && $this->isGroupAdmin()) {
-                return trim( $this->CI->load->view("admin/left_menu_bar",NULL,TRUE) );
+                return $loginBoxView."<hr>".trim( $this->CI->load->view("admin/left_menu_bar",NULL,TRUE) );
             }
             else if($this->isGroupUser()) {
-                return trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
+                return $loginBoxView."<hr>".trim( $this->CI->load->view("global_view/left_menu_bar",NULL,TRUE) );
             }
             else {
-                $first_name = "";
-                if( $this->CI->redux_auth->profile() ) {
-                    $first_name = $this->CI->redux_auth->profile()->first_name;
-                }
-                $data = array(
-                        'is_login' => TRUE
-                        ,'first_name' => $first_name
-                );
-                return trim( $this->CI->load->view("decorator/left_navigation", $data, TRUE) );
+               return $loginBoxView;
             }
         }
         else {

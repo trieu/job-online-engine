@@ -24,18 +24,18 @@
      <?php echo anchor('welcome/register', 'Register'); ?>
  <?php else: ?>
     <div>
-        <p>
+        <b>
      <?php
      if(LANGUAGE_INDEX_PAGE == "tiengviet.php"){
-        echo "Chào mừng ".$first_name;
+        echo "User: ".$first_name;
      }
      else {
-        echo "Welcome ".$first_name;
+        echo "User: ".$first_name;
      }
-     ?>,
-        </p>
+     ?>
+        </b>
     </div>
-    <div>
+    <div style="margin-bottom: 15px;">
         <?php echo anchor('welcome/logout', 'Logout'); ?>
     </div>
 <?php endif; ?>

@@ -20,6 +20,7 @@ class public_object_controller extends Controller {
 
     /**
      * @Decorated
+     * @Secured(role = "user")
      */
     public function create_object($classID ) {
         $this->load->model("objectclass_manager");
@@ -37,7 +38,7 @@ class public_object_controller extends Controller {
 
     /**
      * @Decorated
-     * @Secured(role = "Administrator")
+     * @Secured(role = "user")
      */
     public function edit( $objID ) {
         $this->load->model("object_manager");
@@ -63,6 +64,7 @@ class public_object_controller extends Controller {
 
     /**
      * @Decorated
+     * @Secured(role = "user")
      */
     public function do_form($classID, $ObjectID, $FormID ) {
         $this->load->model("object_manager");
@@ -81,6 +83,7 @@ class public_object_controller extends Controller {
 
 
     /**
+     * @Secured(role = "user")
      */
     public function save($ObjectClassID , $ObjectID = -1 ) {
         $this->load->model("object_manager");
@@ -108,6 +111,7 @@ class public_object_controller extends Controller {
 
     /**
      * @Decorated
+     * @Secured(role = "user")
      */
     public function list_all($ObjectClassID ) {
         $this->load->model("object_manager");
@@ -128,6 +132,7 @@ class public_object_controller extends Controller {
 
     /**
      * @Decorated
+     * @Secured(role = "user")
      */
     public function list_objects( $AccessDataURI = '/' ) {
         $this->load->model("object_manager");

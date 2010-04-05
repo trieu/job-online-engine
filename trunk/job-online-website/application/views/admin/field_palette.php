@@ -43,7 +43,7 @@
                 'hideOnContentClick': false , 'hideOnOverlayClick':false,
                 'enableEscapeButton':true,
                 'zoomSpeedIn': 300, 'zoomSpeedOut': 300,
-                'overlayShow': true , 'frameWidth': 800, 'frameHeight': 530
+                'overlayShow': true , 'frameWidth': 820, 'frameHeight': 590
             }
         );
     });

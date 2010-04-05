@@ -19,6 +19,7 @@ class search extends Controller {
     public static $PROCESS_HINT = "process";
     public static $FORM_HINT = "form";
     public static $FIELD_HINT = "field";
+    public static $FIELD_OPTION_HINT = "field_option";
 
     public function __construct() {
         parent::Controller();
@@ -40,7 +41,7 @@ class search extends Controller {
      *
      * FIXME more security here
      */
-    function populate_query_helper() {
+    function populate_query_helper($returnAsHTML = "true") {
         $filterID = (int) $this->input->post("filterID");
         $what = $this->input->post("what");
 
@@ -83,11 +84,36 @@ class search extends Controller {
             }
         }
         else if($what == self::$FIELD_HINT) {
-            $this->load->model("field_manager");
-            $data = array();
-            $data["fields"] = $this->field_manager->getFieldsInForm($filterID);
-            echo $this->load->view("admin/searched_fields_hint",$data, TRUE);
-            return;
+            if($returnAsHTML == "true") {
+                $this->load->model("field_manager");
+                $data = array();
+                $data["fields"] = $this->field_manager->getFieldsInForm($filterID);
+                echo $this->load->view("admin/searched_fields_hint",$data, TRUE);
+                return;
+            }
+            else {
+                $this->load->model("field_manager");
+                $fields = $this->field_manager->getFieldsInForm($filterID);
+                foreach ($fields as $field ) {
+                    $option = new stdClass();
+                    $option->options_val = $field->getFieldID();
+                    $option->options_label = $field->getFieldName();
+                    array_push($options, $option);
+                }
+            }
+        }
+        else if($what == self::$FIELD_OPTION_HINT) {
+            $this->db->select("fieldoptions.FieldOptionID, fieldoptions.OptionName");
+            $this->db->from("fieldoptions");
+            $this->db->where("fieldoptions.FieldID", $filterID);
+            $query = $this->db->get();
+            foreach ($query->result() as $row) {
+                $option = new stdClass();
+                $option->options_val = $row->FieldOptionID;
+                $option->options_label = $row->OptionName;
+                array_push($options, $option);
+            }
+            ApplicationHook::logInfo($this->db->last_query());
         }
 
         $data = array("options"=>$options);

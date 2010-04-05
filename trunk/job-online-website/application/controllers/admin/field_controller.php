@@ -90,6 +90,15 @@ class field_controller extends admin_panel {
         echo "Removed";
     }
 
+   /** 
+     * @Secured(role = "Administrator")
+     */
+    public function deleteOptionOfField() {
+        $FieldOptionID = $this->input->post("FieldOptionID");
+        $this->load->model("field_options_manager");
+        echo $this->field_options_manager->delete_by_id( $FieldOptionID );
+    }
+
 
     /**
      * @Secured(role = "Administrator")
@@ -97,7 +106,6 @@ class field_controller extends admin_panel {
     public function addFieldOption() {
         $fieldID = $this->input->post("FieldID");
         $optionName = $this->input->post("OptionName");
-
         ApplicationHook::logInfo($fieldID. " - ". $optionName);
     }
 

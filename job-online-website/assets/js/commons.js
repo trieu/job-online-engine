@@ -173,3 +173,22 @@ function makeScriptTag(scriptContent) {
     script.innerHTML = scriptContent;
     return script;
 }
+
+function initFancyBoxLinks(frameWidth, frameHeight){
+    var w = 800, h = 530;
+    if( typeof frameWidth == "undefined" ){
+        frameWidth = w;        
+    }
+    if( typeof frameHeight == "undefined"){
+        frameHeight = w;
+    }
+    
+    jQuery("a.use_fancybox").fancybox(
+        {
+            'hideOnContentClick': false , 'hideOnOverlayClick':false,
+            'enableEscapeButton':true, 'autoDimensions' : false,
+            'zoomSpeedIn': 300, 'zoomSpeedOut': 300,
+            'overlayShow': true , 'frameWidth': frameWidth , 'frameHeight': frameHeight
+        }
+    );
+}

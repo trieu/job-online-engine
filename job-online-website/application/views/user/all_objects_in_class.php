@@ -38,11 +38,11 @@
             }
             else if( action.indexOf("FormID_") == 0 ) {
                params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("FormID_","");
-               window.location = "<?= site_url("admin/object_controller/do_form")?>" + params;
+               window.location = "<?= site_url("user/public_object_controller/do_form")?>" + params;
             }
             else if(action == "EditObject"){
                params = "/" + jQuery(el).attr("id").replace("object_row_","");
-               window.location = "<?= site_url("admin/object_controller/edit/")?>" + params;
+               window.location = "<?= site_url("user/public_object_controller/edit/")?>" + params;
             }
         }
     </script>  

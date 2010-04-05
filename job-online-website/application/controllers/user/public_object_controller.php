@@ -42,6 +42,7 @@ class public_object_controller extends Controller {
      */
     public function edit( $objID ) {
         $this->load->model("object_manager");
+        $this->load->model("forms_manager");
         $this->load->model("objectclass_manager");
         $this->load->model("process_manager");
 
@@ -51,7 +52,8 @@ class public_object_controller extends Controller {
             $object_class = $this->objectclass_manager->find_by_id($classID);
             $data["object_class"] = $object_class;
             $data["object"] = $obj;
-
+            $data["formsOfObject"] = $this->forms_manager->getAllFormsOfObjectClass($classID);;
+            
             foreach ($object_class->getUsableProcesses() as $pro) {
                 $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
                 break;
@@ -80,6 +82,14 @@ class public_object_controller extends Controller {
         $this->load->view("user/object_do_form_view",$data);
     }
 
+    /**
+     * @AjaxAction
+     * @Secured(role = "user")
+     */
+    public function ajax_edit_form($classID, $ObjectID, $FormID ) {
+        $this->do_form($classID, $ObjectID, $FormID);
+    }
+
 
 
     /**
@@ -97,7 +107,7 @@ class public_object_controller extends Controller {
             $id = $this->object_manager->save($obj);
             if($id > 0) {
                 $data = array();
-                $data["info_message"] = "Save successfully !";
+                $data["info_message"] = "Đã lưu dữ liệu!";
                 $data["redirect_url"] = site_url("user/public_object_controller/list_all/".$ObjectClassID)."#".$id;
                 $this->load->view("global_view/info_and_redirect",$data);
             }

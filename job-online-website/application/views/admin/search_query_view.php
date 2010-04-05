@@ -8,7 +8,7 @@ addScriptFile("js/jquery.jqplot/jquery.jqplot.min.js");
 addScriptFile("js/jquery.jqplot/plugins/jqplot.pieRenderer.js");
 addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
 
-
+require_once 'macros.php';
 ?>
 <style type="text/css"> 
     .query_question > div{
@@ -71,21 +71,15 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
             </div>
             <div>
                 <label for="ObjectClassID">Object / Đối tượng cần tìm: </label>
-                <select name="ObjectClassID" id="ObjectClassID" onchange="populateProcesses()" >
-                    <option value="1" selected >Job Seeker / Người tìm việc</option>
-                    <option value="2"  >Employers / Nhà tuyển dụng</option>
-                    <option value="3">Job Coaches / </option>
-                </select>
+                <select name="ObjectClassID" id="ObjectClassID" onchange="populateProcesses()" > </select>
             </div>
             <div>
                 <label for="ProcessID">Process / Quy trình xử lý cần tìm: </label>
-                <select name="ProcessID" id="ProcessID" onchange="populateForms()" >
-                </select>
+                <select name="ProcessID" id="ProcessID" onchange="populateForms()" ></select>
             </div>
             <div>
                 <label for="FormID">Form / Form cần tìm: </label>
-                <select name="FormID" id="FormID" onchange="populateFields()">
-                </select>
+                <select name="FormID" id="FormID" onchange="populateFields()"></select>
             </div>            
             <div>
                 <div id="question_holder_csv_export" style="margin-top: 8px;">
@@ -147,6 +141,7 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
     </select>
 </div>
 
+<?php jsMetaObjectScript(); ?>
 <script type="text/javascript">
     function toggleFieldList(node){
         var th = jQuery("#field_list_view").find("table th:first");
@@ -164,55 +159,7 @@ addScriptFile("js/jquery.jqplot/plugins/jqplot.trendline.js");
         }
         jQuery(node).html(val);
     }
-
-    function populateClasses(){
-        var url = "<?= site_url("admin/search/populate_query_helper")?>";
-        var filter =  {what: "<?= search::$OBJECT_CLASS_HINT ?>"};
-        var handler =  function(text){
-            var data = jQuery.secureEvalJSON( text );
-            var html = "";
-            for(var i in data.options){
-                html += ("<option value='" + data.options[i].options_val + "'>" + data.options[i].options_label + "</option>");
-            }
-            jQuery("#ObjectClassID").html( html );
-            populateProcesses();
-        };
-        jQuery.post(url, filter, handler);
-    }
-
-    function populateProcesses(){
-        var val = jQuery("#ObjectClassID").val();
-        var url = "<?= site_url("admin/search/populate_query_helper")?>";
-        var filter =  {what: "<?= search::$PROCESS_HINT ?>" , filterID: val};
-        var handler =  function(text){
-            var data = jQuery.secureEvalJSON( text );
-            var html = "";
-            for(var i in data.options){
-                html += ("<option value='" + data.options[i].options_val + "'>" + data.options[i].options_label + "</option>");
-            }
-            jQuery("#ProcessID").html( html );
-            populateForms();
-        };
-        jQuery.post(url, filter, handler);
-    }
-
-    function populateForms(){
-        var val = jQuery("#ProcessID").val();
-        var url = "<?= site_url("admin/search/populate_query_helper")?>";
-        var filter =  {what: "<?= search::$FORM_HINT ?>" , filterID: val};
-        var handler =  function(text){
-            var data = jQuery.secureEvalJSON( text );
-            var html = "";
-            for(var i in data.options){
-               html += ("<option value='" + data.options[i].options_val + "'>" + data.options[i].options_label + "</option>");
-            }
-            jQuery("#FormID").html( html );
-            if(jQuery("#FormID").val() != null){
-                populateFields();
-            }
-        };
-        jQuery.post(url, filter, handler);
-    }
+   
 
     function populateFields(){
         var val = jQuery("#FormID").val();

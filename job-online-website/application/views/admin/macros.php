@@ -66,3 +66,58 @@
 </script>
 
 <? } ?>
+
+<?php 
+function jsMetaObjectScript() {?>
+
+<script type="text/javascript">
+     function populateClasses(){
+        var url = "<?= site_url("admin/search/populate_query_helper")?>";
+        var filter =  {what: "object_class"};
+        var handler =  function(text){
+            var data = jQuery.secureEvalJSON( text );
+            var html = "";
+            for(var i in data.options){
+                html += ("<option value='" + data.options[i].options_val + "'>" + data.options[i].options_label + "</option>");
+            }
+            jQuery("#ObjectClassID").html( html );
+            populateProcesses();
+        };
+        jQuery.post(url, filter, handler);
+    }
+
+    function populateProcesses(){
+        var val = jQuery("#ObjectClassID").val();
+        var url = "<?= site_url("admin/search/populate_query_helper")?>";
+        var filter =  {what: "process" , filterID: val};
+        var handler =  function(text){
+            var data = jQuery.secureEvalJSON( text );
+            var html = "";
+            for(var i in data.options){
+                html += ("<option value='" + data.options[i].options_val + "'>" + data.options[i].options_label + "</option>");
+            }
+            jQuery("#ProcessID").html( html );
+            populateForms();
+        };
+        jQuery.post(url, filter, handler);
+    }
+
+    function populateForms(){
+        var val = jQuery("#ProcessID").val();
+        var url = "<?= site_url("admin/search/populate_query_helper")?>";
+        var filter =  {what: "form" , filterID: val};
+        var handler =  function(text){
+            var data = jQuery.secureEvalJSON( text );
+            var html = "";
+            for(var i in data.options){
+               html += ("<option value='" + data.options[i].options_val + "'>" + data.options[i].options_label + "</option>");
+            }
+            jQuery("#FormID").html( html );
+            if(jQuery("#FormID").val() != null){
+                populateFields();
+            }
+        };
+        jQuery.post(url, filter, handler);
+    }
+</script>
+<?php } ?>

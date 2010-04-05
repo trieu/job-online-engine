@@ -189,17 +189,6 @@ if(isset ($pagination_config)) {
         });
     }
 
-    function initFancyBoxLinks(){
-        jQuery("a.use_fancybox").fancybox(
-            {
-                'hideOnContentClick': false , 'hideOnOverlayClick':false,
-                'enableEscapeButton':true,
-                'zoomSpeedIn': 300, 'zoomSpeedOut': 300,
-                'overlayShow': true , 'frameWidth': 800, 'frameHeight': 530
-            }
-        );
-    }
-
     jQuery(document).ready(function() {
         initEditableTableCell();
         //initTooltipForEditableFields();

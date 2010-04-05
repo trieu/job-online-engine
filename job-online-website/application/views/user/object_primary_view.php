@@ -2,6 +2,8 @@
 addScriptFile("js/jquery/jquery.form.js");
 addScriptFile("js/jquery/jquery.json.js");
 addScriptFile("js/jquery/jquery.field.min.js");
+addScriptFile("js/jquery.fancybox/jquery.fancybox.min.js");
+addCssFile("js/jquery.fancybox/jquery.fancybox.css");
 // $object_class = new ObjectClass();
 $legend_text = "";
 foreach ($object_class->getUsableProcesses() as $pro) {
@@ -28,7 +30,7 @@ foreach ($object_class->getUsableProcesses() as $pro) {
     }
     #accordion > *{
         font-size: 15.2px;
-        font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
+        font-family: Trebuchet,Tahoma,Verdana,Arial,sans-serif;
         color:#1C94C4;
     }
     #accordion .ui-accordion-header {
@@ -40,23 +42,36 @@ foreach ($object_class->getUsableProcesses() as $pro) {
 </style>
 
 <h3><?= $object_class->getObjectClassName() ?></h3>
+
+<div>
+    Chọn một form để xem hoặc cập nhật thông tin
+    <ol>
+        <?php foreach($formsOfObject as $form){?>
+        <li>
+            <a class="iframe use_fancybox" href="<?php echo site_url("user/public_object_controller/ajax_edit_form/".$object->getObjectClassID()."/".$object->getObjectID()."/".$form["FormID"]) ?> ">
+            <?= $form["FormName"] ?>
+            </a>
+        </li>
+        <?php }?>
+    </ol>
+</div>
 <div id="accordion">
-	<h3><a href="#"><?= $legend_text ?></a></h3>
-	<div>
-            <div class="input_info" id="object_instance_div" >
-                <div class="ajax_loader display_none" ></div>
-                <form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
-                    <?php
-                    if(isset ($objectCacheHTML['cacheContent'])) {
-                        echo html_entity_decode($objectCacheHTML['cacheContent']);
-                    }
-                    ?>
-                    <input type="submit" value="OK" />
-                    <input type="button" value="Cancel" onclick="history.back();" />
-                </form>
-            </div>
-	</div>
-	
+    <h3><a href="#"><?= $legend_text ?></a></h3>
+    <div>
+        <div class="input_info" id="object_instance_div" >
+            <div class="ajax_loader display_none" ></div>
+            <form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
+                <?php
+                if(isset ($objectCacheHTML['cacheContent'])) {
+                    echo html_entity_decode($objectCacheHTML['cacheContent']);
+                }
+                if(isset ( $objectCacheHTML['javascriptContent'] ) ) {
+                    echo "<script type='text/javascript'>".$objectCacheHTML['javascriptContent']."</script>";
+                }
+                ?>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -121,6 +136,7 @@ foreach ($object_class->getUsableProcesses() as $pro) {
          initSaveObjectForm();
          
          jQuery("#accordion").accordion({ collapsible: true });
+         initFancyBoxLinks(1000, 700);
      }
 
      function initSaveObjectForm(){

@@ -110,5 +110,20 @@ class forms_manager extends data_manager {
     }
     public function updateByField($id,$editable_field_name,$editable_field_value) {
     }
+
+    public function getAllFormsOfObjectClass($classID){
+       $sql =   "SELECT forms.FormID, forms.FormName
+                FROM forms
+                INNER JOIN form_process
+                ON form_process.FormID = forms.FormID
+                AND form_process.ProcessID IN
+                (
+                SELECT class_using_process.ProcessID
+                FROM class_using_process
+                WHERE class_using_process.ObjectClassID = ?
+                )";
+       $query = $this->db->query($sql,array($classID));
+       return $query->result_array();
+    }
 }
 ?>

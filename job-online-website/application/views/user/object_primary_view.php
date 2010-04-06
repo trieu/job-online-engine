@@ -39,12 +39,16 @@ foreach ($object_class->getUsableProcesses() as $pro) {
     #accordion .ui-state-active {
        font-size:15px;
     }
+    ol li {
+        clear: none!important;
+        margin:4px 0 0 4px;
+    }
 </style>
 
 <h3><?= $object_class->getObjectClassName() ?></h3>
 
 <div>
-    Chọn một form để xem hoặc cập nhật thông tin
+    <b>Chọn một form để xem hoặc cập nhật thông tin</b>
     <ol>
         <?php foreach($formsOfObject as $form){?>
         <li>
@@ -75,6 +79,25 @@ foreach ($object_class->getUsableProcesses() as $pro) {
 </div>
 
 <script type="text/javascript">
+    function initFancyBoxLinks(frameWidth, frameHeight){
+        var w = 800, h = 530;
+        if( typeof frameWidth == "undefined" ){
+            frameWidth = w;
+        }
+        if( typeof frameHeight == "undefined"){
+            frameHeight = w;
+        }
+
+        jQuery("a.use_fancybox").fancybox(
+            {
+                'hideOnContentClick': false , 'hideOnOverlayClick':false,
+                'enableEscapeButton':true, 'autoDimensions' : false,
+                'zoomSpeedIn': 300, 'zoomSpeedOut': 300,
+                'overlayShow': true , 'frameWidth': frameWidth , 'frameHeight': frameHeight
+            }
+        );
+    }
+
      jQuery(document).ready(initFormData);
 
      var checkboxHashmap = {};
@@ -135,7 +158,6 @@ foreach ($object_class->getUsableProcesses() as $pro) {
          }         
          
          jQuery("#accordion").accordion({ collapsible: true });
-         initFancyBoxLinks(1000, 700);
-     }
-    
+         initFancyBoxLinks(800, 600);
+     }    
 </script>

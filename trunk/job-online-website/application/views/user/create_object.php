@@ -116,8 +116,7 @@ legend {
                              node_address += "[value='" + object_field[id].FieldValue + "']"
                              if(jQuery(node_address).length >0 ){
                                  if(object_field[id].SelectedFieldValue == 1){
-                                     jQuery(node_address).attr("checked",true);
-                                     jQuery(node_address).attr("selected",true);
+                                     jQuery(node_address).attr("checked",true);                                     
                                  }
                                  checkboxHashmap[jQuery(node_address).attr("id")] = jQuery(node_address).attr("id");
                                  var n = jQuery(node_address).attr("name") + "FVID_" + object_field[id].FieldValueID;

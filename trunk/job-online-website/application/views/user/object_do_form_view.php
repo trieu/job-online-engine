@@ -65,7 +65,7 @@ addScriptFile("js/jquery/jquery.field.min.js");
                     if(jQuery(node_address).length >0 ){
                         if(object_field[id].SelectedFieldValue == 1){
                             jQuery(node_address).attr("checked",true);
-                            jQuery(node_address).attr("selected",true);
+                            //jQuery(node_address).attr("selected",true);
                         }
                         checkboxHashmap[jQuery(node_address).attr("id")] = jQuery(node_address).attr("id");
                         var n = jQuery(node_address).attr("name") + "FVID_" + object_field[id].FieldValueID;
@@ -97,8 +97,7 @@ addScriptFile("js/jquery/jquery.field.min.js");
      }
 
      function initSaveObjectForm(){
-        jQuery('#object_instance_form').submit(function() {
-                       
+        jQuery('#object_instance_form').submit(function() {                       
             var data = {};
             data["FieldValues"] = [];
             var addedCheckBoxIds = {};
@@ -114,7 +113,8 @@ addScriptFile("js/jquery/jquery.field.min.js");
 
                 var node = "input[type='checkbox'][name='" + hashmap[i].name + "']";
                 if( jQuery(node).length > 0 ){
-                    record["SelectedFieldValue"] = jQuery(node).attr("checked");
+                    //FIXME
+                    record["SelectedFieldValue"] = true;
                     addedCheckBoxIds[jQuery(node).attr("id")] = true;
                 }
                 data["FieldValues"].push(record);

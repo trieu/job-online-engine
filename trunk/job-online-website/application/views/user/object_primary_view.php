@@ -133,56 +133,9 @@ foreach ($object_class->getUsableProcesses() as $pro) {
              };
              jQuery("#object_instance_form *[name*='field_']").each(f);
          }         
-         initSaveObjectForm();
          
          jQuery("#accordion").accordion({ collapsible: true });
          initFancyBoxLinks(1000, 700);
      }
-
-     function initSaveObjectForm(){
-        jQuery('#object_instance_form').submit(function() {
-            //jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
-            var data = {};
-            data["FieldValues"] = [];            
-            var addedCheckBoxIds = {};
-
-            var hashmap = jQuery(this).serializeArray();
-            for(var i=0; i< hashmap.length; i++){
-                var toks3 = hashmap[i].name.split("FVID_");
-                var record = {};
-                record["FieldID"] =  new Number( toks3[0].replace("field_",""));
-                record["FieldValueID"] =  new Number(toks3[1]);
-                record["FieldValue"] = hashmap[i].value;
-                record["SelectedFieldValue"] = false;
-
-                var node = "input[type='checkbox'][name='" + hashmap[i].name + "']";
-                if( jQuery(node).length > 0 ){
-                    record["SelectedFieldValue"] = jQuery(node).attr("checked");
-                    addedCheckBoxIds[jQuery(node).attr("id")] = true;
-                }
-                data["FieldValues"].push(record);
-            }
-            for(var id in checkboxHashmap){
-                if(id != null && addedCheckBoxIds[id] != true) {
-                    var toks = jQuery("#" + id).attr("name").split("FVID_");
-                    var record = {};
-                    record["FieldID"] =  new Number( toks[0].replace("field_",""));
-                    record["FieldValueID"] =  new Number(toks[1]);
-                    record["FieldValue"] = jQuery("#" + id).val();
-                    record["SelectedFieldValue"] = jQuery("#" + id).attr("checked");
-                    data["FieldValues"].push(record);
-                }
-            }
-            data["FieldValues"] = jQuery.toJSON( data["FieldValues"] );
-
-            var callback = function(responseText, statusText)  {
-                jQuery("#object_instance_div").append(responseText);
-                jQuery("#object_instance_div .ajax_loader").hide();
-            };
-            jQuery("#object_instance_div .ajax_loader").show();
-            jQuery("#object_instance_div form").hide();
-            jQuery.post( jQuery(this).attr("action"), data, callback );
-            return false;
-        });
-    }
+    
 </script>

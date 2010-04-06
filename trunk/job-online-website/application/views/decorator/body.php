@@ -28,13 +28,14 @@
     <div style="margin-top: 50px">
         <i>
             Hiện tai trang web database việc làm DRD được hỗ trợ tốt trên phiên bản mới nhất của trình duyện web
-            Mozila Firefox, hoặc Google Chrome của Google.
+            Mozila Firefox.
             Bạn có thể download ở đây:
         </i>
         <br>
-        <a target="_blank" href="http://www.mozilla.com/vi/" title="Download Firefox">Download Firefox</a>
-        <br>
-        <a target="_blank" href="http://www.google.com/chrome/index.html?hl=vi" title="Download Google Chrome">Download Google Chrome</a>
-
+        <a target="_blank" href="http://www.mozilla.com/vi/" title="Download Firefox">
+            <b>
+                Download Firefox Browser
+            </b>
+        </a>
     </div>
 </div>

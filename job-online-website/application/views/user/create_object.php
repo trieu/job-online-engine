@@ -109,7 +109,7 @@ legend {
                      var actionUrl = jQuery("#object_instance_form").attr("action") + "/" + ObjectID;
                      jQuery("#object_instance_form").attr("action",actionUrl);
                      for(var id in object_field) {
-                         var node_address = "#object_instance_form *[name*='field_" + object_field[id].FieldID +"']";
+                         var node_address = "#object_instance_form *[name='field_" + object_field[id].FieldID +"']";
 
                          //hacking for checkbox
                          if( jQuery(node_address).attr("type") == "checkbox" ){

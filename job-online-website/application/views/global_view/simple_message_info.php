@@ -4,7 +4,7 @@
         <h3><?= $info_message ?></h3>
         <? if (isset ($redirect_url)): ?>
         Vui lòng chọn link sau để trờ về danh sách <br>
-           <a href="<?= $redirect_url ?>" ><?= $redirect_url ?></a>
+           <a href="javascript: redirectTo()" ><?= $redirect_url ?></a>
         <? endif; ?>        
     </div>
 </div>
@@ -12,7 +12,12 @@
 <script type="text/javascript" >        
     function redirectTo(){
         <? if (isset ($redirect_url)): ?>
-            window.location = "<?= $redirect_url ?>";
+            if(typeof parent == "object" ) {
+                parent.window.location = "<?= $redirect_url ?>";
+            }
+            else {
+                window.location = "<?= $redirect_url ?>";
+            }
         <? else: ?>
             parent.window.location.reload();
         <? endif; ?>        

@@ -204,6 +204,7 @@ class object_manager extends data_manager {
             array_push($fields , $field);
         }
         $object->setFieldValues($fields);
+        ApplicationHook::log($this->db->last_query());
         return $object;
     }
 
@@ -255,7 +256,8 @@ class object_manager extends data_manager {
             $field->SelectedFieldValue = (int)$record['SelectedFieldValue'];
             array_push($fields , $field);
         }
-        $object->setFieldValues($fields);        
+        $object->setFieldValues($fields);
+        ApplicationHook::log($this->db->last_query());
         return $object;
     }
 }

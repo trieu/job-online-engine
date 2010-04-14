@@ -14,15 +14,25 @@
     <h3>Chào mừng bạn đến với hệ thống database việc làm DRD</h3>
     <div class="user_link">
         Để đăng ký mới về thông tin người tìm việc, vui chọn liên kết sau:
-        <?php echo anchor('user/public_object_controller/create_object/1', "Đăng ký mới người tìm việc"); ?>
+        <?php action_url_a('user/public_object_controller/create_object/1',lang('register_new_jobseeker')); ?>
     </div>
     <div class="user_link">
-        Để đăng ký mới về thông tin nhà tuyển dụng , vui chọn liên kết sau:
-        <?php echo anchor('user/public_object_controller/create_object/2', "Đăng ký mới nhà tuyển dụng"); ?>
+        Để đăng ký mới về thông tin nhà tuyển dụng , vui chọn liên kết sau:        
+        <?php action_url_a('user/public_object_controller/create_object/2',lang('register_new_employer')); ?>
+        
     </div>
     <div class="user_link" style="display: none;">
         Để đăng ký mới về thông tin công việc, vui chọn liên kết sau: 
-        <?php echo anchor('user/public_object_controller/create_object/4', "Đăng ký mới công việc"); ?>
+        <?php action_url_a('user/public_object_controller/create_object/4', "Đăng ký mới công việc"); ?>
+    </div>
+
+    <div style="margin-top: 40px">
+        <div>
+            <b>Video hướng dẫn cách đăng ký mới 1 Job Seeker</b>
+        </div>
+        <div>
+            <object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/fo2oNirOgJ8&hl=en_US&fs=1&color1=0x006699&color2=0x54abd6"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/fo2oNirOgJ8&hl=en_US&fs=1&color1=0x006699&color2=0x54abd6" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>
+        </div>
     </div>
 
     <div style="margin-top: 50px">

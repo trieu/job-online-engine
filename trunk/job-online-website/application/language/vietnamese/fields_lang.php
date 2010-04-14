@@ -11,9 +11,13 @@ $lang['employer'] = "Nhà tuyển dụng";
 $lang['employer_a_title'] = "Danh sách các nhà tuyển dụng";
 $lang['job'] = "Danh sách công việc";
 $lang['job_a_title'] = "Danh sách công việc";
+$lang['search'] = "Tìm kiếm";
 
 $lang['news_events'] = "Tin tức - Sự kiện";
 $lang['contact'] = "Liên hệ";
 $lang['admin_panel'] = "Quản trị website";
+
+$lang['register_new_employer'] = "Đăng ký mới nhà tuyển dụng";
+$lang['register_new_jobseeker'] = "Đăng ký mới người tìm việc";
 
 ?>

@@ -20,18 +20,37 @@
 
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
+         <script type="text/javascript" >
+            var $PAGE_LANGUAGE_KEY = "<?php echo str_replace(EXT,"", LANGUAGE_INDEX_PAGE) ; ?>";
+        </script>
     </head>
-    <body>
+    <body style="display: none;">
         <div>
             <?= $page_content ?>
         </div>        
         <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
         <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
         <?php } ?>
-        <script type="text/javascript">
+       <script type="text/javascript">
             jQuery(document).ready(function(){
                 jQuery("body > div[style='text-align: center;']").remove();
+                language_saparator();
+                jQuery("body").show();
             });
+
+            function language_saparator(){
+                jQuery(".vietnamese_english").each(function(){
+                    var toks = jQuery(this).html().split("/");
+                    if(toks.length == 2){
+                        if($PAGE_LANGUAGE_KEY == "tiengviet"){
+                            jQuery(this).html( toks[0] );
+                        }
+                        else if($PAGE_LANGUAGE_KEY == "english"){
+                            jQuery(this).html( toks[1] );
+                        }
+                    };
+                });
+            }
         </script>
     </body>
 </html>

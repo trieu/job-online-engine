@@ -102,7 +102,7 @@ Display <?= $total_records = count($objects) ?> records
                 $fields = $data_map["fields"];
                 foreach ($metadata_object as $FieldID => $FieldName ) {
                     if( isset($fields[ $FieldID ]) ) {
-                        echo "<td><span class='data_cell_f_".$FieldID ."'>". $fields[ $FieldID ]."</span></td>";                        
+                        echo "<td><span class='vietnamese_english data_cell_f_".$FieldID ."'>". $fields[ $FieldID ]."</span></td>";
                     }
                     else {
                         echo "<td><span>&nbsp;</span></td>";

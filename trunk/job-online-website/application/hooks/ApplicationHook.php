@@ -15,6 +15,7 @@ require_once 'application/models/data_manager.php';
  * @property redux_auth CI->redux_auth
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
+
 class ApplicationHook {
 
     /**
@@ -153,10 +154,11 @@ class ApplicationHook {
      *
      */
     public function checkRole() {
+        $this->setSiteLanguage();
         if($this->isValidControllerRequest() ) {
             $reflection = $this->getReflectedController();
             $this->is_logged_in = $this->CI->redux_auth->logged_in();
-            if($reflection !=NULL ) {
+            if($reflection !=NULL ) {                
                 if($reflection->hasAnnotation('Secured') && $this->is_logged_in  === FALSE) {
                     ApplicationHook::logInfo("-> CheckRole for ".$this->controllerName.".".$this->controllerMethod);
                     $annotation = $reflection->getAnnotation('Secured');
@@ -186,21 +188,20 @@ class ApplicationHook {
      * Each user group will be decorated by defferent theme template
      *
      */
-    public function decoratePage() {
+    public function decoratePage() {        
         if($this->isValidControllerRequest()) {
             $reflection =  $this->getReflectedController();
             $this->is_logged_in = $this->CI->redux_auth->logged_in();
             if($reflection !=NULL ) {
                 if($reflection->hasAnnotation('Decorated')) {
                     $themeName = $this->getThemeNameFromActionController($reflection);
-                    $this->setPageHeaderCached();                    
-                    $this->setSiteLanguage();
+                    $this->setPageHeaderCached();
                     $data = $this->processFinalViewData();
 
                     if($this->isGroupUser()) {
                         echo ( $this->CI->load->view("decorator/".$themeName."page_template", $data, TRUE) );
                     }
-                    else if($this->isGroupAdmin() && $this->controllerName == "admin_panel") {
+                    else if($this->isGroupAdmin() && $this->is_in_admin_domain) {
                         echo ( $this->CI->load->view("decorator/".$themeName."admin_page_template", $data, TRUE) );
                     }
                     else {
@@ -209,8 +210,7 @@ class ApplicationHook {
                     return;
                 }
                 else if($reflection->hasAnnotation('AjaxAction')) {
-                    $this->setPageHeaderCached();
-                    $this->setSiteLanguage();
+                    $this->setPageHeaderCached();                    
                     $data = array(
                         'page_decorator' => $this->CI->page_decorator,
                         'page_content' => trim($this->CI->output->get_output())
@@ -219,8 +219,7 @@ class ApplicationHook {
                     return;
                 }
                 else if($reflection->hasAnnotation('DecoratedForMobile')) {
-                    $this->setPageHeaderCached();
-                    $this->setSiteLanguage();
+                    $this->setPageHeaderCached();                    
                     $data = array(
                         'page_decorator' => $this->CI->page_decorator,
                         'page_content' => trim($this->CI->output->get_output())
@@ -240,17 +239,17 @@ class ApplicationHook {
      * The default is Vietnamese
      */
     protected function setSiteLanguage() {
-        $_lang = "vietnamese";
+        $PAGE_LANGUAGE_KEY = "vietnamese";
         if ( defined('LANGUAGE_INDEX_PAGE') ) {
             $this->CI->config->set_item('index_page', LANGUAGE_INDEX_PAGE);
             if(LANGUAGE_INDEX_PAGE === "english.php") {
-                $_lang = "english";
+                $PAGE_LANGUAGE_KEY = "english";
             }
         }
         else {
             define('LANGUAGE_INDEX_PAGE', 'tiengviet.php');
         }
-        $this->CI->lang->load('fields',$_lang);
+        $this->CI->lang->load('fields',$PAGE_LANGUAGE_KEY);
     }
 
     /**
@@ -322,13 +321,8 @@ class ApplicationHook {
         }
     }
 
-    protected function decoratePageContent() {
-        $pagintor_view = "";
-        if($this->controllerName == "job_seeker" || $this->controllerName == "employer") {
-            $tem_data = array('controllerName'=>$this->controllerName);
-            $pagintor_view =  $this->CI->load->view("global_view/question_url",$tem_data,TRUE);
-        }
-        return trim( $this->CI->output->get_output() ).$pagintor_view;
+    protected function decoratePageContent() {       
+        return trim( $this->CI->output->get_output() );
     }
 
     protected function decorateFooter() {

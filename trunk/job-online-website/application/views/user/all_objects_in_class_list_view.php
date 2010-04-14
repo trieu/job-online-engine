@@ -112,7 +112,7 @@
                 if( isset ($field['FieldID'])) {
                     ?>
     <div style="margin-top: 3px;">
-        <span class="field_name"><?php echo $field['FieldName'];?></span>
+        <span class="field_name vietnamese_english"><?php echo $field['FieldName'];?></span>
         <span class="field_value"><?php echo $field['FieldValue'];?></span>
     </div>
                     <?php
@@ -120,7 +120,7 @@
                 else {
                     ?>
     <div style="margin-top: 3px;">
-        <span class="field_name"><?php echo $field['FieldName'];?></span>
+        <span class="field_name vietnamese_english"><?php echo $field['FieldName'];?></span>
         <span class="field_value"><?php echo $field['FieldValue'];?></span>
     </div>
                     <?php

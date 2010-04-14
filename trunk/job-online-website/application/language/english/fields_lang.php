@@ -13,9 +13,13 @@ $lang['employer'] = "Employers";
 $lang['employer_a_title'] = "All Employers";
 $lang['job'] = "Jobs List";
 $lang['job_a_title'] = "Jobs List";
+$lang['search'] = "Search";
 
 $lang['news_events'] = "News - Events";
 $lang['contact'] = "Contact";
 $lang['admin_panel'] = "Administer";
+
+$lang['register_new_employer'] = "Register new employer";
+$lang['register_new_jobseeker'] = "Register new Job Seeker";
 
 ?>

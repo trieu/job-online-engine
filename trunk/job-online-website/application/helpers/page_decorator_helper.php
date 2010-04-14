@@ -36,4 +36,23 @@ if ( ! function_exists('setPageTitle') ) {
     }
 }
 
+if ( ! function_exists('action_url') ) {
+    function action_url($uri){
+        if ( defined('LANGUAGE_INDEX_PAGE') ){
+            return base_url().LANGUAGE_INDEX_PAGE."/".$uri;
+        }
+        return site_url($uri);
+    }
+}
+
+if ( ! function_exists('action_url_a') ) {
+    function action_url_a($uri, $link_name, $title = ""){
+        $url = action_url($uri);
+        if($title == ""){
+            $title = $link_name;
+        }
+        echo '<a href="'.$url.'" title="'.$title.'" >'.$link_name."</a>";
+    }
+}
+
 ?>

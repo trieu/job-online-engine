@@ -1,5 +1,5 @@
 <div>
-    <label for="<?= $field_name ?>"><?= $field_label ?>:</label>
+    <label for="<?= $field_name ?>" class="vietnamese_english" ><?= $field_label ?>:</label>
     <input id="<?= $field_name ?>" name="<?= $field_name ?>" type="text" value="" />
     <!--SCRIPT
         var <?= $field_name ?>_init = function(){

@@ -83,6 +83,19 @@ echo form_fieldset_close();
     </div>
 </div>
 
+<div id="edit_field_options_box" style="display:none;">
+    <div >
+        <form id="add_field_option_form" method="post" action="<? site_url('field_controller/addFieldOption') ?>" accept-charset="UTF-8">
+            <textarea name="OptionName" style="width:100%;height:190px;" cols="40" rows="3"></textarea>
+            <div class="confirmation" style="font-weight:bold; font-size:16; margin:5px; display:none;">
+                Added successfully, add more ?
+            </div>
+            <input type="button" value="OK" />
+            <input type="button" value="Cancel" onclick="Modalbox.hide();" />
+        </form>
+    </div>
+</div>
+
 <textarea id="copy_field_options_box" style="display:none;">
     <div>
         <form id="add_field_option_form" method="post" action="<? site_url('field_controller/addFieldOption') ?>" accept-charset="UTF-8">
@@ -172,7 +185,7 @@ echo form_fieldset_close();
 
 
     function callEditFieldOptionBox(selector){
-        Modalbox.show("#add_field_options_box",{width:550,height:320,title:'Add Field Options'});
+        Modalbox.show("#edit_field_options_box",{width:550,height:320,title:'Add Field Options'});
         Modalbox.contentSelector("textarea[name='OptionName']").val(jQuery(selector).html());
         Modalbox.contentSelector("textarea[name='OptionName']").show();
         Modalbox.contentSelector("div[class='confirmation']").hide();

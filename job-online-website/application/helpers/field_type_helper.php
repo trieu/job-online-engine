@@ -14,7 +14,7 @@ if ( ! function_exists('renderSelectField') ) {
 
         $html = $html .  "<div>";
         $attributes = array(
-            'class' => '',
+            'class' => 'vietnamese_english',
             'style' => '',
         );
         $html = $html . form_label($label_name, $input_id, $attributes);
@@ -40,7 +40,7 @@ if ( ! function_exists('renderInputField') ) {
 
         $html = "<div>";
         $attributes = array(
-            'class' => '',
+            'class' => 'vietnamese_english',
             'style' => '',
         );
         $html = $html . form_label($label_name, $input_id, $attributes);

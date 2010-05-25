@@ -154,7 +154,7 @@ addScriptFile("js/jquery/jquery.json.js");
             html = "<tr><td>"+html+"</td></tr>";
             if(jQuery("#droppable table").length == 0){
                 jQuery("#droppable").html("<table cellspacing='0' cellpadding='2' class='table_dnd'></table>");
-                jQuery("#droppable table").append(html);               
+                jQuery("#droppable table").append(html);
             }
             else {
                 jQuery("#droppable table").append(html);

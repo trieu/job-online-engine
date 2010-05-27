@@ -103,8 +103,11 @@ class object_manager extends data_manager {
      * @param int $classID
      * @return array $objects
      */
-    public function getAllObjectsInClass($classID) {
-        $sql = "(
+    public function getAllObjectsInClass($classID, $startIndex = 0, $total_rs = 0) {
+        $sql = "
+            SELECT * FROM
+            (
+                (
                 SELECT objects.ObjectID, fields.FieldName, fieldoptions.OptionName as FieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
@@ -119,7 +122,7 @@ class object_manager extends data_manager {
                                 )
                 )
                 INNER JOIN fieldoptions ON fieldoptions.FieldOptionID = fieldvalues.FieldValue
-                WHERE objects.ObjectClassID = ?
+                WHERE objects.ObjectClassID = ?                
                 )
                 UNION
                 (
@@ -138,8 +141,15 @@ class object_manager extends data_manager {
                 )
                 WHERE objects.ObjectClassID = ?
                 )
-                ";
-        $query = $this->db->query($sql, array($classID, $classID, $classID, $classID));
+            ) rs ";
+
+        $arr_params = array($classID, $classID, $classID, $classID);
+        if($total_rs > 0){
+            $sql .= " LIMIT ?,? ";
+            array_push($arr_params, $startIndex);
+            array_push($arr_params, $total_rs);
+        }
+        $query = $this->db->query($sql, $arr_params );
         $record_set = $query->result_array();
         $objects = array();
         foreach ($record_set as $record) {

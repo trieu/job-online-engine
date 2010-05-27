@@ -6,10 +6,10 @@ addScriptFile("js/jquery.fancybox/jquery.fancybox.min.js");
 addCssFile("js/jquery.fancybox/jquery.fancybox.css");
 // $object_class = new ObjectClass();
 $legend_text = "";
-foreach ($object_class->getUsableProcesses() as $pro) {
-    $legend_text .= $pro->getProcessName();
-    break;
-}
+//foreach ($object_class->getUsableProcesses() as $pro) {
+//    $legend_text .= $pro->getProcessName();
+//    break;
+//}
 ?>
 
 <style type="text/css">
@@ -156,7 +156,7 @@ foreach ($object_class->getUsableProcesses() as $pro) {
              jQuery("#object_instance_form *[name*='field_']").each(f);
          }         
          
-         jQuery("#accordion").accordion({ collapsible: true });
+         //jQuery("#accordion").accordion({ collapsible: true });
          initFancyBoxLinks(800, 600);
      }    
 </script>

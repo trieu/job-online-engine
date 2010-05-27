@@ -50,7 +50,7 @@ class process_controller extends admin_panel {
             $filter = array("ProcessID"=>$id);
         }
         $processses = $this->process_manager->find_by_filter($filter);
-        $actions = anchor('admin/process_controller/process_details/[ProcessID]', 'View Details', array('title' => 'View Details'));
+        $actions = anchor('admin/process_controller/process_details/[ProcessID]', 'Edit', array('title' => 'Edit'));
         $data_table = $this->class_mapper->DataListToDataTable("Process",$processses,$actions);
 
         $data["table_name"] = "processes";

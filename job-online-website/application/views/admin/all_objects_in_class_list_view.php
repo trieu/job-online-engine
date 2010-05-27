@@ -51,6 +51,7 @@
             });
         };
         jQuery(".context_menu_trigger").each(f);
+        initConfirmation();
     });
     function contextMenuHandler(action, el, pos) {
         var params = "";
@@ -68,10 +69,24 @@
             window.location = "<?= site_url("user/public_object_controller/edit/")?>" + params;
         }
         else if(action == "DeleteObject"){
-            params = "/" + jQuery(el).attr("id").replace("object_row_","");
-            params += "/" + <?= $objectClass->getObjectClassID() ?>;
-            window.location = "<?= site_url("admin/object_controller/delete/")?>" + params;
+            if(confirm("Delete ?")){
+                params = "/" + jQuery(el).attr("id").replace("object_row_","");
+                params += "/" + <?= $objectClass->getObjectClassID() ?>;
+                window.location = "<?= site_url("admin/object_controller/delete/")?>" + params;
+            }
         }
+    }
+    function initConfirmation(){
+        var f = function(){
+            var href = jQuery(this).attr("href");
+            jQuery(this).attr("href","javascript:void(0)");
+            jQuery(this).click(function(){
+                if(confirm("Delete ?")){
+                    window.location = href;
+                }
+            });
+        };
+        jQuery("a.confirmation").each(f);
     }
 </script>
 <ul id="context_menu_ui" class="contextMenu">
@@ -144,11 +159,13 @@
     <div class="actions" >
        <?= anchor('user/public_object_controller/edit/'.$objID , 'Edit This', array('title' => 'Edit This')) ?>
         <br>
-       <?= anchor('admin/object_controller/delete/'.$objID."/".$objectClass->getObjectClassID() , 'Delete', array('title' => 'Delete')) ?>
+       <?= anchor('admin/object_controller/delete/'.$objID."/".$objectClass->getObjectClassID() , 'Delete', array('title' => 'Delete', 'class' => 'confirmation')) ?>
     </div>
 </div>
-        <?php } ?>
-    <?php } else { ?>
+      <?php }
+            echo $pagination_links;
+        } else {
+      ?>
 <div>
     <b>No results were found!</b>
 </div>

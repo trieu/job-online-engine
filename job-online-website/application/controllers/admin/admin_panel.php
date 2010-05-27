@@ -46,7 +46,7 @@ class admin_panel extends Controller {
         }
         $forms = $this->forms_manager->find_by_filter($filter, $join_filter);
 
-        $actions = anchor('admin/form_controller/form_details/[FormID]', 'View Details', array('title' => 'View Details'));        
+        $actions = anchor('admin/form_controller/form_details/[FormID]', 'Edit', array('title' => 'Edit Details'));
         $actions = $actions ." | ".anchor('admin/form_controller/form_builder/[FormID]', 'Build form', array('title' => 'Build form'));
         
         $data_table = $this->class_mapper->DataListToDataTable("Form",$forms, $actions);
@@ -74,7 +74,7 @@ class admin_panel extends Controller {
             $filter = array("FieldID"=>$id);
         }
         $fields = $this->field_manager->find_by_filter($filter);
-        $actions = anchor('admin/field_controller/field_details/[FieldID]', 'View Details', array('title' => 'Field Details','class'=>'iframe use_fancybox'));
+        $actions = anchor('admin/field_controller/field_details/[FieldID]', 'Edit', array('title' => 'Edit Details','class'=>'iframe use_fancybox'));
         $data_table = $this->class_mapper->DataListToDataTable("Field",$fields,$actions);
 
         $data["table_name"] = "fields";

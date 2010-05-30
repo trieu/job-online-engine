@@ -35,14 +35,6 @@ class object_controller extends admin_panel {
             $data["objectClass"] = $objectClass;
             $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID());
 
-            $this->load->library('pagination');
-            $config['base_url'] = 'http://localhost/job-online-website/tiengviet.php/admin/object_controller/list_all/1';
-            $config['total_rows'] = '60';
-            $config['per_page'] = '20';
-            $config['page_query_string'] = TRUE;
-            $this->pagination->initialize($config);
-            $data["pagination_links"] = $this->pagination->create_links();
-
             $this->load->view("admin/all_objects_in_class_list_view",$data);
         }
         else { 

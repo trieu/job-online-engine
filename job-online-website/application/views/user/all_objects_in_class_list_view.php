@@ -30,13 +30,19 @@
 
 </style>
 <?php if( ! isset ($in_search_mode) ) { ?>
-
     <?php
+    addScriptFile("js/jquery.pagination/jquery.pagination.js");
+    addCssFile("js/jquery.pagination/style.css");
     addScriptFile("js/jquery.contextmenu/jquery.contextmenu.js");
     addCssFile("js/jquery.contextmenu/style.css");
     ?>
 <script type="text/javascript">
     jQuery(document).ready(function() {
+        initContextMenu();
+        initPagination();
+    });
+
+    function initContextMenu(){
         var f = function(){
             jQuery(this).contextMenu({ menu: "context_menu_ui", leftButton: true},contextMenuHandler);
             jQuery(this).mouseover(function(){
@@ -51,7 +57,7 @@
             });
         };
         jQuery(".context_menu_trigger").each(f);
-    });
+    }
     function contextMenuHandler(action, el, pos) {
         var params = "";
         if( action.indexOf("FormID_") == 0 ) {
@@ -66,6 +72,41 @@
             params = "/" + jQuery(el).attr("id").replace("object_row_","");
             window.location = "<?= site_url("user/public_object_controller/edit/")?>" + params;
         }
+    }
+
+
+    var pagination_config = null;
+    <?php
+    if(isset ($pagination_config)) {
+        echo "pagination_config = ".json_encode($pagination_config).";";
+    }
+    ?>
+    function initPagination() {
+        if(pagination_config != null){
+            // First Parameter: number of items
+            // Second Parameter: options object
+            jQuery("div.pagination").pagination( pagination_config["total_rows"], {
+                items_per_page: pagination_config["per_page"] ,
+                callback:handlePaginationClick
+            });
+            setPaginationLink();
+        }
+    }
+    function setPaginationLink(){
+        jQuery("div.pagination a").each(function(){
+            var text = jQuery.trim(jQuery(this).html());
+            jQuery(this).attr("href", "javascript:void("+text+")");
+            if(text == "Next"){
+                jQuery(this).attr("href", "javascript:alert('next')");
+            }
+            else if(text == "Prev") {
+                jQuery(this).attr("href", "javascript:alert('prev')");
+            }
+        });
+    }
+
+    function handlePaginationClick(new_page_index, pagination_container) {
+        setPaginationLink();
     }
 </script>
 <ul id="context_menu_ui" class="contextMenu">
@@ -93,8 +134,7 @@
 
 
 <div style="margin-bottom: 20px;">   
-    <h3><?= $objectClass->getObjectClassName()  ?> </h3>     
-    
+    <h3><?= $objectClass->getObjectClassName()  ?> </h3>         
     <b>
         Display <?= $total_records = count($objects) ?> records <br
        <?php echo anchor('user/public_object_controller/create_object/'.$objectClass->getObjectClassID(), "Đăng ký ". $objectClass->getObjectClassName() ." mới"); ?>
@@ -102,8 +142,13 @@
 </div>
 
 
-<?php if($total_records > 0) {
-    foreach ($objects as $objID => $fields ) { ?>
+
+<?php if($total_records > 0) { ?>
+
+<div class='pagination' style="margin-bottom: 20px; text-align:center"></div>
+
+<div style="margin-bottom: 20px;">
+    <?php foreach ($objects as $objID => $fields ) { ?>
 <div class="context_menu_trigger focusable_text" id="object_row_<?= $objID ?>">
     <a name="<?php echo $objID; ?>"></a>
      <div class="id">ID: <?php echo $objID; ?></div>
@@ -132,6 +177,9 @@
     </div>
 </div>
         <?php } ?>
+
+<div class='pagination' style="text-align:center"></div>
+
     <?php } else { ?>
 <div>
     <b>No results were found!</b>

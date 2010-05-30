@@ -52,14 +52,16 @@ class objectclass_controller extends admin_panel {
             $filter = array("ObjectClassID"=>$id);
         }
         $classes = $this->objectclass_manager->find_by_filter($filter);
-        $actions = anchor('admin/objectclass_controller/show_details/[ObjectClassID]', 'Edit', array('title' => 'Edit Object'));
+        $actions = '<div class="actions" >';
+        $actions .= anchor('admin/objectclass_controller/show_details/[ObjectClassID]', 'Edit', array('title' => 'Edit Object'));
         $actions .= " <br> ";
         $actions .= anchor('user/public_object_controller/create_object/[ObjectClassID]', 'New-Record', array('title' => 'New Record'));
         $actions .= " <br> ";
         $actions .= anchor('admin/object_controller/list_all/[ObjectClassID]', 'All-Records', array('title' => 'All Records'));
+        $actions .= "</div>";
         $data_table = $this->class_mapper->DataListToDataTable("ObjectClass",$classes,$actions);
 
-        $data["table_name"] = "classes";
+        $data["table_name"] = "object_classes";
         $data["data_table"] = $data_table;
         $data["data_table_heading"] = array('ObjectClassID', 'ObjectClassName','AccessDataURI', 'Descripttion','Actions');
         $data["data_editable_fields"] = array('ObjectClassName'=>TRUE, 'Description' => TRUE);

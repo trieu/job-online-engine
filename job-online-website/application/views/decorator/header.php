@@ -32,15 +32,6 @@
             <?php } else if(LANGUAGE_INDEX_PAGE === "english.php") {?>
             <li class="accessLanguage">Ngôn ngữ <a hreflang="en" href="javascript: switchPageToLanguage('english.php','tiengviet.php')">Tiếng Việt</a></li>
             <?php } ?>
-            
-            <li class="accessInfo"><a accesskey="0" href="http://drdvietnam.com/access">Hỗ trợ tiếp cận thông tin</a></li>
-            <li class="layoutStyle">
-                Giao diện:
-                <ul>
-                    <li>Thông thường</li>
-                    <li><a href="http://drdvietnam.com/zoom/page/splash">Phóng to</a></li>
-                </ul>
-            </li>
         </ul>
         <hr/>
     </div>

@@ -19,17 +19,17 @@ body {
 table {
     width:100%;
 }
-    td {
-        border-bottom: 1px solid #ddd;
-    }
-    
-    tfoot {
-        background:#eee;
-    }
-    
-    tr td:first-child {
-        width:150px;
-    }
+td {
+    border-bottom: 1px solid #ddd;
+}
+
+tfoot {
+    background:#eee;
+}
+
+tr td:first-child {
+    width:150px;
+}
 
 /*Forms*/
 
@@ -48,31 +48,31 @@ select {
     text-align:left;
     width:1000px;
 }
-    #head, #navigation, #content {
-        margin:0 0 10px 0;
-    }
+#head, #navigation, #content {
+    margin:0 0 10px 0;
+}
 
-    #head {
-        
-    }
-    
-    #navigation {
-        background:#eee;
-        padding:10px 0;
-    }
-    
-        #navigation li {
-            display:inline;
-        }
-        
-            #navigation a {
-                padding:10px;
-            }
-    
-    #content {
-        
-    }
-    
-    #foot {
-        
-    }
+#head {
+
+}
+
+#navigation {
+    background:#eee;
+    padding:10px 0;
+}
+
+#navigation li {
+    display:inline;
+}
+
+#navigation a {
+    padding:10px;
+}
+
+#content {
+
+}
+
+#foot {
+
+}

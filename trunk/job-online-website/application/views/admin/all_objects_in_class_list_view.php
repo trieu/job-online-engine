@@ -162,8 +162,7 @@
        <?= anchor('admin/object_controller/delete/'.$objID."/".$objectClass->getObjectClassID() , 'Delete', array('title' => 'Delete', 'class' => 'confirmation')) ?>
     </div>
 </div>
-      <?php }
-            echo $pagination_links;
+      <?php }           
         } else {
       ?>
 <div>

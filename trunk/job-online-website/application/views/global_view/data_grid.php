@@ -33,6 +33,9 @@
         cursor:pointer;
         text-decoration:none;
     }
+    .actions {
+        width: 110px;
+    }
 </style>
 
 <?php

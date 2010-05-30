@@ -154,6 +154,12 @@ class public_object_controller extends Controller {
             $data = array();
             $data["objectClass"] = $objectClass;
             $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID());
+
+            $pagination_config = array();
+            $pagination_config['base_url'] = site_url("admin/objectclass_controller/show");
+            $pagination_config['total_rows'] = $this->objectclass_manager->count_total();
+            $pagination_config['per_page'] = 2;
+            $data["pagination_config"] = $pagination_config;
         }
         else {
             throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);

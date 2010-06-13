@@ -52,8 +52,35 @@ class public_object_controller extends Controller {
             $object_class = $this->objectclass_manager->find_by_id($classID);
             $data["object_class"] = $object_class;
             $data["object"] = $obj;
-            $data["formsOfObject"] = $this->forms_manager->getAllFormsOfObjectClass($classID);;
-            
+            $data["formsOfObject"] = $this->forms_manager->getAllFormsOfObjectClass($classID);
+           
+            foreach ($object_class->getUsableProcesses() as $pro) {
+                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
+                break;
+            }
+
+            $this->load->view("user/object_primary_view",$data);
+        }
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "user")
+     */
+    public function view( $objID ) {
+        $this->load->model("object_manager");
+        $this->load->model("forms_manager");
+        $this->load->model("objectclass_manager");
+        $this->load->model("process_manager");
+
+        $obj = $this->object_manager->getObjectInstance($objID);
+        $classID = $obj->getObjectClassID();
+        if($classID > 0) {
+            $object_class = $this->objectclass_manager->find_by_id($classID);
+            $data["object_class"] = $object_class;
+            $data["object"] = $obj;
+            $data["formsOfObject"] = $this->forms_manager->getAllFormsOfObjectClass($classID);
+           
             foreach ($object_class->getUsableProcesses() as $pro) {
                 $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
                 break;
@@ -117,7 +144,7 @@ class public_object_controller extends Controller {
         }
     }
 
-   
+
 
     /**
      * @Decorated
@@ -144,7 +171,7 @@ class public_object_controller extends Controller {
      * @Decorated
      * @Secured(role = "user")
      */
-    public function list_objects( $AccessDataURI = '/' ) {
+    public function list_objects( $AccessDataURI = '/', $startIndex = 0, $total_rs = 0 ) {
         $this->load->model("object_manager");
         $this->load->model("objectclass_manager");
 
@@ -153,13 +180,15 @@ class public_object_controller extends Controller {
         if($objectClass != NULL) {
             $data = array();
             $data["objectClass"] = $objectClass;
-            $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID());
+            $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID(), $startIndex, $total_rs);
 
-            $pagination_config = array();
-            $pagination_config['base_url'] = site_url("admin/objectclass_controller/show");
-            $pagination_config['total_rows'] = $this->objectclass_manager->count_total();
-            $pagination_config['per_page'] = 2;
-            $data["pagination_config"] = $pagination_config;
+            echo $AccessDataURI;
+            $config = array();
+            $config['base_url'] = "";
+            $config['total_rows'] = 100;
+            $config['per_page'] = 2;
+            $config['current_page'] = 7;
+            $data["pagination_config"] = $config;
         }
         else {
             throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);

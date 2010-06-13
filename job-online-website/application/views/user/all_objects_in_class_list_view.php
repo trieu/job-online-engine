@@ -90,6 +90,7 @@
                 callback:handlePaginationClick
             });
             setPaginationLink();
+            jQuery("div.pagination").find("a[page_index='"+ pagination_config['current_page'] +"']").click();
         }
     }
     function setPaginationLink(){
@@ -97,10 +98,10 @@
             var text = jQuery.trim(jQuery(this).html());
             jQuery(this).attr("href", "javascript:void("+text+")");
             if(text == "Next"){
-                jQuery(this).attr("href", "javascript:alert('next')");
+               // jQuery(this).attr("href", "javascript:alert('next')");
             }
             else if(text == "Prev") {
-                jQuery(this).attr("href", "javascript:alert('prev')");
+               // jQuery(this).attr("href", "javascript:alert('prev')");
             }
         });
     }
@@ -145,9 +146,9 @@
 
 <?php if($total_records > 0) { ?>
 
-<div class='pagination' style="margin-bottom: 20px; text-align:center"></div>
+<div class='pagination' style="text-align:center"></div>
+<br><br>
 
-<div style="margin-bottom: 20px;">
     <?php foreach ($objects as $objID => $fields ) { ?>
 <div class="context_menu_trigger focusable_text" id="object_row_<?= $objID ?>">
     <a name="<?php echo $objID; ?>"></a>

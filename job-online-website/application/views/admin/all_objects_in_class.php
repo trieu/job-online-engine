@@ -111,7 +111,7 @@ Display <?= $total_records = count($objects) ?> records
              ?>
             <td>
                 <div>
-                    <?= anchor('user/public_object_controller/edit/'.$objID , 'View', array('title' => 'Edit')) ?>
+                    <?= anchor('user/public_object_controller/view/'.$objID , 'View', array('title' => 'Edit')) ?>
                 </div>
             </td>
         </tr>

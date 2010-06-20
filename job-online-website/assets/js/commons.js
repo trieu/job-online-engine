@@ -192,3 +192,16 @@ function initFancyBoxLinks(frameWidth, frameHeight){
         }
     );
 }
+
+function togglePageNavigation(){
+    if( jQuery("#page_content").css("margin-left") != "0px" ){
+        jQuery("#page_leftnav").fadeOut("slow");
+        jQuery("#page_content").css("margin-left","0px");
+        jQuery("#page_leftnav_toggle").html("Show Navigation");
+    }
+    else {
+        jQuery("#page_leftnav").fadeIn("slow");
+        jQuery("#page_content").css("margin-left","230px");
+        jQuery("#page_leftnav_toggle").html("Hide Navigation");
+    }
+};

@@ -22,7 +22,7 @@
         }
      ?>
 
-    | <a href="http://docs.google.com/View?id=dgsrc7qn_345j7f5smgf" target="_blank" title="Hướng dẫn sử dụng (User Guide) for DRD Admin">Hướng dẫn sử dụng (User Guide)</a>
+    | <a href="http://docs.google.com/View?id=dgsrc7qn_345j7f5smgf" target="_blank" title="Hướng dẫn sử dụng (User Guide) for DRD Admin">Help</a>
 </div>
 <div class="box accessBox has-access">
     <div class="box access">
@@ -32,6 +32,7 @@
             <?php } else if(LANGUAGE_INDEX_PAGE === "english.php") {?>
             <li class="accessLanguage">Ngôn ngữ <a hreflang="en" href="javascript: switchPageToLanguage('english.php','tiengviet.php')">Tiếng Việt</a></li>
             <?php } ?>
+            <li><a id="page_leftnav_toggle" href="javascript: togglePageNavigation()">Hide Navigation</a></li>
         </ul>
         <hr/>
     </div>
@@ -45,6 +46,6 @@
         var currentUrl = window.location + "";;
         currentUrl = currentUrl.replace(from, to);
         window.location = currentUrl;
-    }
+    };
 </script>
 

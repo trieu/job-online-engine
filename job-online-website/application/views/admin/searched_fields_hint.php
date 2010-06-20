@@ -14,12 +14,7 @@
             <div class="draggable focusable_text <?php echo $ext_css_class;?> " >
                 <div id="<?php echo Field::$HTML_DOM_ID_PREFIX.$field->getFieldID() ?>" title="<?php echo $field->getFieldName() ?>" >
                     <?php
-                        if(strlen($field->getFieldName()) < 50){
-                            echo $field->getFieldName();
-                        }
-                        else {
-                            echo substr($field->getFieldName(), 0, 50)."...";
-                        }
+                        echo show_the_excerpt($field->getFieldName(), 12);
                     ?>
                     <br>
                     <a href="javascript:void(0)" title="Add this field" onclick="selectSearchedField(<?php echo $field->getFieldID() ?>,<?php echo $field->getFieldTypeID() ?>)">Add</a>

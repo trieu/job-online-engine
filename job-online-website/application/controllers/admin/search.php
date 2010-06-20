@@ -137,7 +137,7 @@ class search extends Controller {
         $csv_export =  $this->input->post("csv_export");
 
         try {
-            $data = $this->search_manager->search_object_for_table_view($FormID, $ObjectClassID, $ProcessID, $query_fields);
+            $data = $this->search_manager->search_object_for_table_view($ObjectClassID, $query_fields);
             if($csv_export == "false") {
                 // echo $this->load->view("admin/all_objects_in_class_list_view",$data, TRUE);
                 echo $this->load->view("admin/all_objects_in_class",$data, TRUE);
@@ -163,7 +163,7 @@ class search extends Controller {
         $ProcessID = $this->input->post("ProcessID");
         $query_fields = json_decode( $this->input->post("query_fields") );
 
-        $data = $this->search_manager->do_statistics_on_field($FormID, $ObjectClassID, $ProcessID, $query_fields);
+        $data = $this->search_manager->do_statistics_on_field($ObjectClassID, $query_fields);
 
        // $this->load->library("ci_pchart");
        // $this->ci_pchart->drawPieChart();

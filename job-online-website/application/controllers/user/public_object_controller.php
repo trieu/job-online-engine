@@ -181,8 +181,7 @@ class public_object_controller extends Controller {
             $data = array();
             $data["objectClass"] = $objectClass;
             $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID(), $startIndex, $total_rs);
-
-            echo $AccessDataURI;
+            
             $config = array();
             $config['base_url'] = "";
             $config['total_rows'] = 100;

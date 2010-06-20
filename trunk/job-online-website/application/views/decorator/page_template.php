@@ -34,19 +34,19 @@
             <div id="page_top">
                 <?php echo $page_header ?>
             </div>
-            <div id="page_leftnav">
+            <div id="page_leftnav">               
                 <?php echo $left_navigation ?>
             </div>
-            <div id="page_content">
+            <div id="page_content">                
                 <?php echo $page_content ?>
             </div>
             <div id="page_footer">
                 <?php echo $page_footer ?>
-            </div>
-            <div>
-                <?php echo $page_respone_time ?>
-                <input id="session_id" type="hidden" name="session_id" value="<?php echo $session_id?>" />
-            </div>
+            </div>            
+        </div>
+        <div>
+            <?php echo $page_respone_time ?>
+            <input id="session_id" type="hidden" name="session_id" value="<?php echo $session_id?>" />
         </div>
         
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
@@ -72,7 +72,7 @@
                         }
                     };
                 });                
-            }
+            };           
         </script>   
     </body>
 </html>

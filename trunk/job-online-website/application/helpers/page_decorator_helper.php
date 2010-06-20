@@ -55,4 +55,16 @@ if ( ! function_exists('action_url_a') ) {
     }
 }
 
+if ( ! function_exists('show_the_excerpt') ) {
+    function show_the_excerpt($str, $length) {
+      $str = strip_tags($str,"<b><br><p>");
+      $str = explode(" ", $str);
+      if(count($str) > $length){
+          return implode(" " , array_slice($str, 0, $length))." [...]";
+      }
+      return implode(" " , array_slice($str, 0, $length));
+    }
+}
+
+
 ?>

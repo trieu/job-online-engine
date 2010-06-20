@@ -30,8 +30,11 @@
         <div>
             <b>Video hướng dẫn cách đăng ký mới 1 Job Seeker</b>
         </div>
-        <div>
+        <div style="display: none;">
             <object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/fo2oNirOgJ8&hl=en_US&fs=1&color1=0x006699&color2=0x54abd6"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/fo2oNirOgJ8&hl=en_US&fs=1&color1=0x006699&color2=0x54abd6" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>
+        </div>
+        <div>
+            <iframe src="http://docs.google.com/present/embed?id=dgsrc7qn_372dkgq3wfs&interval=5&size=l" frameborder="0" width="700" height="559"></iframe>
         </div>
     </div>
 
@@ -49,3 +52,13 @@
         </a>
     </div>
 </div>
+<script type="text/javascript">
+    function isRunInFacebookSandbox(){
+        return <?php if(isset($_GET['fb_sig_in_iframe'])) echo 'true'; else echo 'false'; ?>;
+    };
+    jQuery(document).ready(function(){
+        if(isRunInFacebookSandbox()) {
+            alert("Welcome to Facebook App \"My Innovation \"");
+        }
+    });
+</script>

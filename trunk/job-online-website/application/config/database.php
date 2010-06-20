@@ -53,6 +53,24 @@ $db['windows']['cachedir'] = "application/ci_db_cache";
 $db['windows']['char_set'] = "utf8";
 $db['windows']['dbcollat'] = "utf8_general_ci";
 
+
+/*
+ * Local test database windows
+ */
+$db['test_database']['hostname'] = "localhost";
+$db['test_database']['username'] = "root";
+$db['test_database']['password'] = "";
+$db['test_database']['database'] = "job_management2";
+$db['test_database']['dbdriver'] = "mysql";
+$db['test_database']['dbprefix'] = "";
+$db['test_database']['pconnect'] = TRUE;
+$db['test_database']['db_debug'] = TRUE;
+$db['test_database']['cache_on'] = FALSE;
+$db['test_database']['cachedir'] = "application/ci_db_cache";
+$db['test_database']['char_set'] = "utf8";
+$db['test_database']['dbcollat'] = "utf8_general_ci";
+
+
 /*
  * Summer hosting
  */

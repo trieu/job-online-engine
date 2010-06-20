@@ -149,6 +149,15 @@ class ApplicationHook {
         return $this->reflectedController;
     }
 
+    public function setupTestDatabase(){
+        ApplicationHook::logInfo("Loading test_database");
+        if($this->isTester()){
+            $this->CI->load->database('test_database');
+            $this->CI->db->reconnect();
+            ApplicationHook::logInfo("Loaded test_database");
+         }
+    }
+
     /**
      * Check role of user, if no authentication, redirect to Login Page
      *
@@ -166,6 +175,7 @@ class ApplicationHook {
                     redirect( ApplicationHook::$LOGIN_URL . $this->controllerRequest);
                 }
             }
+            $this->setupTestDatabase();
         }
     }
 
@@ -335,8 +345,8 @@ class ApplicationHook {
 
     protected function endAndGetResponseTime() {
         $this->CI->benchmark->mark('code_end');
-        $diff_time = 1000 * $this->CI->benchmark->elapsed_time('code_start', 'code_end');
-        return "<br/><b>Rendering time: ".$diff_time." miliseconds</b><br/>";
+        $diff_time = $this->CI->benchmark->elapsed_time('code_start', 'code_end');
+        return "<br/><div class='processing_time'>Processing Time: ".$diff_time." seconds</div><br/>";
     }
 
     public static function logInfo($text) {
@@ -396,6 +406,13 @@ class ApplicationHook {
             return FALSE;
         }
         return $this->CI->redux_auth->profile()->group === "operator";
+    }
+
+    protected function isTester() {        
+        if( $this->CI->redux_auth->profile() ) {
+            return $this->CI->redux_auth->profile()->username === 'tester';
+        }
+        return FALSE;
     }
 }
 ?>

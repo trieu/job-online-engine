@@ -162,7 +162,7 @@ class search_manager extends Model {
         return $data;
     }
 
-    public function search_object_for_table_view($FormID, $ObjectClassID, $ProcessID, $query_fields, $return_query = FALSE) {
+    public function search_object_for_table_view($ObjectClassID, $query_fields, $return_query = FALSE) {
         $this->CI->load->model('objectclass_manager');
         $seacrh_obj_sql = " SELECT DISTINCT ObjectID FROM fieldvalues ";
         $query_fields_size = count($query_fields);
@@ -216,7 +216,7 @@ class search_manager extends Model {
     }
 
 
-    public function do_statistics_on_field($FormID, $ObjectClassID, $ProcessID, $query_fields) {
+    public function do_statistics_on_field($ObjectClassID, $query_fields) {
         $metadataSql = 'SELECT fieldoptions.FieldOptionID, fieldoptions.OptionName
                  FROM fieldoptions
                  WHERE fieldoptions.fieldID = ?';

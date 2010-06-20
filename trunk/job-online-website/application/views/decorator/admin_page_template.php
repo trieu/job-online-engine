@@ -37,7 +37,9 @@
                     <?php echo anchor('admin/object_controller/list_objects/job_seekers', lang('job_seeker'), array("title"=>lang('job_seeker_a_title'))); ?>   |
                     <?php echo anchor('admin/object_controller/list_objects/employers', lang('employer'), array("title"=>lang('employer_a_title'))); ?>   |
                     <?php echo anchor('admin/object_controller/list_objects/jobs', lang('job'), array("title"=>lang('job_a_title'))); ?>   |
-                    <?php echo anchor('admin/admin_panel', lang('admin_panel')); ?>
+                    <?php action_url_a('admin/search', lang('search'), lang('search')); ?>   |
+                    <?php echo anchor('admin/admin_panel', lang('admin_panel')); ?> |
+                    <a href="http://docs.google.com/View?id=dgsrc7qn_345j7f5smgf" target="_blank" title="Hướng dẫn sử dụng (User Guide) for DRD Admin">Help</a>
                 </div>
                 <div class="box accessBox has-access">
                     <div class="box access">
@@ -46,25 +48,27 @@
                             <li class="accessLanguage">This page in <a hreflang="en" href="<?= base_url() ?>english.php">English</a></li>
                              <?php } else if(LANGUAGE_INDEX_PAGE === "english.php") {?>
                             <li class="accessLanguage">Xem trang bằng <a hreflang="en" href="<?= base_url() ?>tiengviet.php">Tiếng Việt</a></li>
-                             <?php } ?>                            
+                             <?php } ?>
+                            <li><a id="page_leftnav_toggle" href="javascript: togglePageNavigation()">Hide Navigation</a></li>
                         </ul>
                         <hr/>
                     </div>
                 </div>
 
             </div>
-            <div id="page_leftnav">
+            <div id="page_leftnav">                 
                 <?php echo $left_navigation ?>
             </div>
-            <div id="page_content">
+            <div id="page_content">                
                 <?php echo $page_content ?>
             </div>
             <div id="page_footer">
-                <span class="response_time_span">
-                    <?php echo $page_respone_time ?>
-                    <input id="session_id" type="hidden" name="session_id" value="<?php echo $session_id?>" />
-                </span>
+                <?php echo $page_footer ?>
             </div>
+        </div>
+        <div>
+            <?php echo $page_respone_time ?>
+            <input id="session_id" type="hidden" name="session_id" value="<?php echo $session_id?>" />
         </div>
 
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>       
@@ -74,7 +78,7 @@
         <script type="text/javascript">
             jQuery(document).ready(function(){
                 jQuery("body > div[style='text-align: center;']").remove();
-            });
+            });             
         </script>
     </body>
 </html>

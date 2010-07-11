@@ -13,6 +13,8 @@ $config['fire_php_log_enable'] = TRUE;
 
 
 
+$config['default_jquery_plugins'] = array("");
+
 /* End of file decorator.php */
 /* Location: ./application/config/decorator.php */
 ?>

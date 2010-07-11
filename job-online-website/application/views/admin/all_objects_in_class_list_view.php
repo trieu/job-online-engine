@@ -125,7 +125,7 @@
 <div style="margin-bottom: 20px;">   
     <h3><?= $objectClass->getObjectClassName()  ?> </h3>    
     <b>
-        Display <?= $total_records = count($objects) ?> records <br
+        Display <?= $total_records = count($objects) ?> records <br/>
        <?php echo anchor('user/public_object_controller/create_object/'.$objectClass->getObjectClassID(), "Đăng ký ". $objectClass->getObjectClassName() ." mới"); ?>
     </b>
 </div>

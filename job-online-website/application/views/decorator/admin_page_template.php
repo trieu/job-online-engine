@@ -25,36 +25,15 @@
         <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/commons.js"></script>
+
+        <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url() ?>assets/js/jquery.superfish/superfish.css"/>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.superfish/superfish.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
     </head>
     <body onload="">
         <div id="page_container">
             <div id="page_top">
-
-                <h2><?= lang('admin_page_heading') ?></h2>
-
-                <div style="font-weight:bold; margin: 10px 0px;">
-                    <?php echo anchor('', lang('home_page')); ?>   |
-                    <?php echo anchor('admin/object_controller/list_objects/job_seekers', lang('job_seeker'), array("title"=>lang('job_seeker_a_title'))); ?>   |
-                    <?php echo anchor('admin/object_controller/list_objects/employers', lang('employer'), array("title"=>lang('employer_a_title'))); ?>   |
-                    <?php echo anchor('admin/object_controller/list_objects/jobs', lang('job'), array("title"=>lang('job_a_title'))); ?>   |
-                    <?php action_url_a('admin/search', lang('search'), lang('search')); ?>   |
-                    <?php echo anchor('admin/admin_panel', lang('admin_panel')); ?> |
-                    <a href="http://docs.google.com/View?id=dgsrc7qn_345j7f5smgf" target="_blank" title="Hướng dẫn sử dụng (User Guide) for DRD Admin">Help</a>
-                </div>
-                <div class="box accessBox has-access">
-                    <div class="box access">
-                        <ul>
-                            <?php  if(LANGUAGE_INDEX_PAGE === "tiengviet.php") { ?>
-                            <li class="accessLanguage">This page in <a hreflang="en" href="<?= base_url() ?>english.php">English</a></li>
-                             <?php } else if(LANGUAGE_INDEX_PAGE === "english.php") {?>
-                            <li class="accessLanguage">Xem trang bằng <a hreflang="en" href="<?= base_url() ?>tiengviet.php">Tiếng Việt</a></li>
-                             <?php } ?>
-                            <li><a id="page_leftnav_toggle" href="javascript: togglePageNavigation()">Hide Navigation</a></li>
-                        </ul>
-                        <hr/>
-                    </div>
-                </div>
-
+                <?php echo $page_header ?>
             </div>
             <div id="page_leftnav">                 
                 <?php echo $left_navigation ?>

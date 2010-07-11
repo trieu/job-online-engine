@@ -15,7 +15,7 @@ $lang['search'] = "Tìm kiếm";
 
 $lang['news_events'] = "Tin tức - Sự kiện";
 $lang['contact'] = "Liên hệ";
-$lang['admin_panel'] = "Quản trị website";
+$lang['admin_panel'] = "Admin Panel";
 
 $lang['register_new_employer'] = "Đăng ký mới nhà tuyển dụng";
 $lang['register_new_jobseeker'] = "Đăng ký mới người tìm việc";

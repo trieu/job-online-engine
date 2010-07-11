@@ -53,3 +53,6 @@
 .display_none { display:none; }
 .not_visible { visibility:hidden; }
 .processing_time { font-size: 11px; font-family: serif; padding-right: 15px; text-align: right;}
+img[src='http://get-banner.lookup.co.cc/banner_img/cocc90_40b.gif'] {
+    display: none;
+}

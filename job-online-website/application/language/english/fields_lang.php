@@ -17,7 +17,7 @@ $lang['search'] = "Search";
 
 $lang['news_events'] = "News - Events";
 $lang['contact'] = "Contact";
-$lang['admin_panel'] = "Administer";
+$lang['admin_panel'] = "Admin Panel";
 
 $lang['register_new_employer'] = "Register new employer";
 $lang['register_new_jobseeker'] = "Register new Job Seeker";

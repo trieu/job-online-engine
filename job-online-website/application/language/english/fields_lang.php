@@ -1,7 +1,7 @@
 <?php
 
 //////////////////  Home page  ////////////////////
-$lang['home_page_heading'] = "DRD Database";
+$lang['home_page_heading'] = "DRD Databases";
 $lang['admin_page_heading'] = "Administration Panel";
 
 
@@ -14,6 +14,7 @@ $lang['employer_a_title'] = "All Employers";
 $lang['job'] = "Jobs List";
 $lang['job_a_title'] = "Jobs List";
 $lang['search'] = "Search";
+$lang['search_title'] = "Search and Statistics from database";
 
 $lang['news_events'] = "News - Events";
 $lang['contact'] = "Contact";

@@ -135,9 +135,14 @@
 
 
 <div style="margin-bottom: 20px;">   
-    <h3><?= $objectClass->getObjectClassName()  ?> </h3>         
+    <h3 class="vietnamese_english"><?= $objectClass->getObjectClassName()  ?> </h3>
     <b>
-        Display <?= $total_records = count($objects) ?> records <br/>
+        <span class="vietnamese_english">
+            Tổng cộng <?= $total_records = count($objects) ?> records /
+            Display <?= $total_records = count($objects) ?> records
+        </span>
+        <br/>
+        
        <?php echo anchor('user/public_object_controller/create_object/'.$objectClass->getObjectClassID(), "Đăng ký ". $objectClass->getObjectClassName() ." mới"); ?>
     </b>
 </div>

@@ -1,48 +1,50 @@
-<div align="right" style="text-align:right; height:34px; width:880px;">    
+<div class="page_logo"><?= lang('home_page_heading') ?></div>
 
-</div>
-<h2><?= lang('home_page_heading') ?></h2>
-
-<div style="width: 100%; height: 40px;" >
+<div class="page_menu">
     <ul id="top_menu_bar" class="sf-menu">
             <li class="current">
                 <?php action_url_a('', lang('home_page')); ?>
             </li>
             <li>
-                <?php action_url_a('user/public_object_controller/list_objects/job_seekers', lang('job_seeker'), lang('job_seeker_a_title')); ?>
-                 <ul>
+                <a href="javascript: " title="Manage databases">Databases</a>
+                <ul>
                     <li>
-                        <?php action_url_a('user/public_object_controller/create_object/1',lang('register_new_jobseeker')); ?>
+                        <?php action_url_a('user/public_object_controller/list_objects/job_seekers', lang('job_seeker'), lang('job_seeker_a_title')); ?>
+                        <ul>
+                            <li>
+                                <?php action_url_a('user/public_object_controller/create_object/1',lang('register_new_jobseeker')); ?>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <?php action_url_a('user/public_object_controller/list_objects/employers', lang('employer'),lang('employer_a_title')); ?>
+                        <ul>
+                            <li>
+                                <?php action_url_a('user/public_object_controller/create_object/2',lang('register_new_employer')); ?>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <?php action_url_a('user/public_object_controller/list_objects/jobs', lang('job'), lang('job_a_title')); ?>
                     </li>
                 </ul>
-            </li>
+            </li>           
             <li>
-                <?php action_url_a('user/public_object_controller/list_objects/employers', lang('employer'),lang('employer_a_title')); ?>
-                <ul>                   
-                    <li>
-                        <?php action_url_a('user/public_object_controller/create_object/2',lang('register_new_employer')); ?>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                 <?php action_url_a('user/public_object_controller/list_objects/jobs', lang('job'), lang('job_a_title')); ?>
-            </li>
-            <li>
-                <?php action_url_a('admin/search', lang('search'), lang('search')); ?>
+                <?php action_url_a('admin/search', lang('search'), lang('search_title')); ?>
             </li>
             <?php
                 if($isGroupAdmin){
-                    echo '<li>'.anchor('admin/admin_panel', lang('admin_panel')).'</li>';
+                    echo '<li>'.anchor('admin/admin_panel', lang('admin_panel'),array("title"=>"Panel for Admin")).'</li>';
                 }
             ?>
             <li>
                 <a href="javascript: " title="Set Options of database">Options</a>
                 <ul>
                     <li>
-                        <a hreflang="en" href="javascript: switchPageToLanguage('tiengviet.php','english.php')" title="View page in English">View page in English</a>
+                        <a hreflang="en" href="javascript: switchPageToLanguage('tiengviet.php','english.php')" title="View page in English">Language is English</a>
                     </li>
                     <li>
-                        <a hreflang="en" href="javascript: switchPageToLanguage('english.php','tiengviet.php')" title="Ngôn ngữ hiển thị là tiếng Việt">Tiếng Việt</a>
+                        <a hreflang="en" href="javascript: switchPageToLanguage('english.php','tiengviet.php')" title="Ngôn ngữ hiển thị là tiếng Việt">Ngôn ngữ là Tiếng Việt</a>
                     </li>
                     <li>
                         <a id="page_leftnav_toggle" href="javascript: togglePageNavigation()" >Hide Left Navigation</a>

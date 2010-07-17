@@ -1,7 +1,7 @@
 <?php
 
 //////////////////  Home page  ////////////////////
-$lang['home_page_heading'] = "DRD Database";
+$lang['home_page_heading'] = "DRD Databases";
 $lang['admin_page_heading'] = "Quản lý hệ thống";
 
 $lang['home_page'] = "Trang chủ";
@@ -12,6 +12,7 @@ $lang['employer_a_title'] = "Danh sách các nhà tuyển dụng";
 $lang['job'] = "Danh sách công việc";
 $lang['job_a_title'] = "Danh sách công việc";
 $lang['search'] = "Tìm kiếm";
+$lang['search_title'] = "Tìm kiếm - Thống kê các thông tin từ database";
 
 $lang['news_events'] = "Tin tức - Sự kiện";
 $lang['contact'] = "Liên hệ";

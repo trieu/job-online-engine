@@ -6,7 +6,7 @@
 class page_decorator {
 
     protected $CI;
-    protected $pageTitle;
+    protected $pageTitle = "";
     protected $pageMetaTags= array();
     protected $scriptFiles = array();
     protected $cssFiles = array();
@@ -27,6 +27,9 @@ class page_decorator {
     }
 
     public function getPageTitle() {
+        if($this->pageTitle === ""){
+            $this->pageTitle = lang('home_page_heading');
+        }
         return $this->pageTitle;
     }
 

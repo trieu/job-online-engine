@@ -2,6 +2,12 @@
 addScriptFile("js/jquery/jquery.form.js");
 addScriptFile("js/jquery/jquery.json.js");
 addScriptFile("js/jquery/jquery.field.min.js");
+
+//validation plugin
+addCssFile("js/jquery.validation.engine/validationEngine.jquery.css");
+addScriptFile("js/jquery.validation.engine/jquery.validationEngine-en.js");
+addScriptFile("js/jquery.validation.engine/jquery.validationEngine.js");
+
 ?>
 
 <style type="text/css">
@@ -56,7 +62,7 @@ legend {
 <div id="object_instance_form_navigation">
 </div>
 
-<form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
+<form id="object_instance_form" class="formular" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
     <div class="input_info" id="object_instance_div" >
         <div class="ajax_loader display_none" ></div>
             <?php foreach ($object_class->getUsableProcesses() as $pro) {                
@@ -95,7 +101,7 @@ legend {
     jQuery(document).ready(initFormData);
 
     var checkboxHashmap = {};
-    function initFormData(){
+    function initFormData(){        
         makeFormNavigation();
         var object_field = {};
         var ObjectID = -1;
@@ -155,6 +161,9 @@ legend {
 
              function initSaveObjectForm(){
                  jQuery('#object_instance_form').submit(function() {
+                     if( ! jQuery(this).validationEngine({returnIsValid:true}) ) {
+                         return false;
+                     }
                      //jQuery(this).ajaxSubmit({beforeSubmit: preSubmitCallback});
                      var data = {};
                      data["FieldValues"] = [];
@@ -213,4 +222,8 @@ legend {
          olHtml += "</ol>";
          container.html(olHtml);
      }
+
+    jQuery(document).ready(function() {
+        jQuery("#object_instance_form").validationEngine();						// CLOSE ALL OPEN PROMPTS
+    });
 </script>

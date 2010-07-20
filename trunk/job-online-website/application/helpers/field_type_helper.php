@@ -2,7 +2,7 @@
 
 
 if ( ! function_exists('renderSelectField') ) {
-    function renderSelectField($input_name,$input_id = "" ,array $data_list = array(), $label_name = "",array $selected_list = array(),$selectBoxExtAttr = "" ) {
+    function renderSelectField($input_name,$input_id = "" ,array $data_list = array(), $label_name = "",array $selected_list = array(),$selectBoxExtAttr = "", $ValidationRules = "" ) {
         $html = "";
 
         if($label_name == "") {
@@ -28,7 +28,7 @@ if ( ! function_exists('renderSelectField') ) {
 }
 
 if ( ! function_exists('renderInputField') ) {
-    function renderInputField($input_name,$input_id = "" , $input_value = "", $label_name = "" ) {
+    function renderInputField($input_name,$input_id = "" , $input_value = "", $label_name = "", $ValidationRules = "" ) {
         $html = "";
 
         if($label_name == "") {
@@ -48,10 +48,9 @@ if ( ! function_exists('renderInputField') ) {
         $data = array(
             'name'        => $input_name,
             'id'          => $input_id,
-            'value'       => $input_value,
-            'maxlength'   => '100',
-            'size'        => '50',
-            'style'       => 'width:50%',
+            'value'       => $input_value,            
+            'size'        => '50' ,
+            'class'       => $ValidationRules
         );
         $html = $html .  form_input($data);
         $html = $html .  "</div>";
@@ -61,7 +60,7 @@ if ( ! function_exists('renderInputField') ) {
 
 
 if ( ! function_exists('renderTextArea') ) {
-    function renderTextArea($field_name, $field_value = "", $field_label = "" ) {
+    function renderTextArea($field_name, $field_value = "", $field_label = "", $ValidationRules = "" ) {
         $html = "";
 
         if($field_label == "") {
@@ -83,7 +82,7 @@ if ( ! function_exists('renderTextArea') ) {
 }
 
 if ( ! function_exists('renderSelectBox') ) {
-    function renderSelectBox($field_name, $option_list = array(), $field_label = "", $isMultiple = false ) {
+    function renderSelectBox($field_name, $option_list = array(), $field_label = "", $isMultiple = false, $ValidationRules = "" ) {
         $html = "";
 
         if($field_label == "") {
@@ -106,7 +105,7 @@ if ( ! function_exists('renderSelectBox') ) {
 }
 
 if ( ! function_exists('renderCheckBoxs') ) {
-    function renderCheckBoxs($field_name, $description, $option_list = array()) {
+    function renderCheckBoxs($field_name, $description, $option_list = array(), $ValidationRules = "") {
         $html = "";
 
         $CI =& get_instance();
@@ -125,7 +124,7 @@ if ( ! function_exists('renderCheckBoxs') ) {
 }
 
 if ( ! function_exists('renderRadioButtons') ) {
-    function renderRadioButtons($field_name, $description, $option_list = array()) {
+    function renderRadioButtons($field_name, $description, $option_list = array(), $ValidationRules = "") {
         $html = "";
 
         $CI =& get_instance();
@@ -143,7 +142,7 @@ if ( ! function_exists('renderRadioButtons') ) {
 }
 
 if ( ! function_exists('renderDatepicker') ) {
-    function renderDatepicker($field_name, $field_label) {
+    function renderDatepicker($field_name, $field_label, $ValidationRules = "") {
         $html = "";
 
         $CI =& get_instance();

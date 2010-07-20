@@ -35,6 +35,11 @@ class Field {
      */
     private $FormIDs = array();
 
+    /**
+     * @EntityField(is_db_field=FALSE)
+     */
+    private $OrderInForm = 0;
+
 
     public function __construct() {
         ;
@@ -100,33 +105,41 @@ class Field {
         array_push($this->FormIDs, (int)$FormID );
     }
 
+    public function getOrderInForm() {
+        return $this->OrderInForm;
+    }
 
-
+    public function setOrderInForm($OrderInForm) {
+        if($OrderInForm > 0){
+            $this->OrderInForm = $OrderInForm;
+        }
+    }
 
     public function buildFieldUI() {
         $CI = &get_instance();
         $CI->load->helper("field_type");
         $id =  Field::$HTML_DOM_ID_PREFIX . $this->getFieldID() ;
+        $rules = $this->getValidationRules();
         if($this->getFieldTypeID() == FieldType::$TEXT_BOX) {
-            return renderInputField($id,$id,"",$this->getFieldName());
+            return renderInputField($id,$id,"",$this->getFieldName(),$rules);
         }
         else if($this->getFieldTypeID() == FieldType::$TEXT_AREA) {
-            return renderTextArea($id, "", $this->getFieldName());
+            return renderTextArea($id, "", $this->getFieldName(),$rules);
         }
         else if($this->getFieldTypeID() == FieldType::$SELECT_BOX) {
-            return renderSelectBox($id, $this->getFieldOptionsAsArray(), $this->getFieldName(), FALSE);
+            return renderSelectBox($id, $this->getFieldOptionsAsArray(), $this->getFieldName(), FALSE,$rules);
         }
         else if($this->getFieldTypeID() == FieldType::$MULTI_SELECT_BOX) {
-            return renderSelectBox($id, $this->getFieldOptionsAsArray(), $this->getFieldName(), TRUE);
+            return renderSelectBox($id, $this->getFieldOptionsAsArray(), $this->getFieldName(), TRUE,$rules);
         }
         else if($this->getFieldTypeID() == FieldType::$CHECK_BOX) {
-            return renderCheckBoxs($id, $this->getFieldName(),$this->getFieldOptionsAsArray());
+            return renderCheckBoxs($id, $this->getFieldName(),$this->getFieldOptionsAsArray(),$rules);
         }
         else if($this->getFieldTypeID() == FieldType::$RADIO_BUTTON) {
-            return renderRadioButtons($id, $this->getFieldName(),$this->getFieldOptionsAsArray());
+            return renderRadioButtons($id, $this->getFieldName(),$this->getFieldOptionsAsArray(),$rules);
         }
         else if($this->getFieldTypeID() == FieldType::$DATE_PICKER) {
-            return renderDatepicker($id, $this->getFieldName());
+            return renderDatepicker($id, $this->getFieldName(),$rules);
         }
         return "<div>Undefined field</div>";
     }

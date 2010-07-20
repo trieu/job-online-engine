@@ -32,6 +32,9 @@
         <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url() ?>assets/js/jquery.superfish/superfish.css"/>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.superfish/superfish.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
+        <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
+        <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
+        <?php } ?>
     </head>
     <body style="display: none;">
         <div id="page_container">
@@ -52,10 +55,6 @@
             <?php echo $page_respone_time ?>
             <input id="session_id" type="hidden" name="session_id" value="<?php echo $session_id?>" />
         </div>
-                
-        <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
-        <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
-        <?php } ?>
         <script type="text/javascript">
             jQuery(document).ready(function(){
                 jQuery("body > div[style='text-align: center;']").remove();

@@ -38,4 +38,12 @@
     <div style="margin-bottom: 15px;">
         <?php echo anchor('welcome/logout', 'Logout'); ?>
     </div>
+    <style type="text/css">
+
+    </style>
+    <div class="floating-menu" id="left_action_list" >       
+
+    </div>
+
+
 <?php endif; ?>

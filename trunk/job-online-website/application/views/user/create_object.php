@@ -62,7 +62,7 @@ legend {
 <div id="object_instance_form_navigation">
 </div>
 
-<form id="object_instance_form" class="formular" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
+<form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
     <div class="input_info" id="object_instance_div" >
         <div class="ajax_loader display_none" ></div>
             <?php foreach ($object_class->getUsableProcesses() as $pro) {                
@@ -89,10 +89,13 @@ legend {
                 </div>
                 </fieldset>
             <?php } } ?>
-        <input type="submit" value="OK" />
-        <input type="button" value="Cancel" onclick="history.back();" />
+        <center>
+            <input type="submit" class="button" value="Save" title="Save to database" />
+            <input type="button" class="button" value="Cancel"  title="Cancel and back" onclick="history.back();" />
+        </center>
     </div>
 </form>
+<a name="submit_form" href='javascript:void(0)'></a>
 
 <?php //echo print_r($objectHTMLCaches) ?>
 
@@ -214,13 +217,17 @@ legend {
          var olHtml = "<ol>";
          jQuery("#object_instance_form").find("a[name]").each(function(){
              var name = jQuery(this).html();
-             var link = (window.location + "").split("#")[0] + "#" + name;
+             var link = location.href.split("#")[0] + "#" + name;
              olHtml = olHtml + ( "<li><a href='"+ link +"'>" + name + "</a></li>" );
-             var to_home  = (window.location + "").split("#")[0] + "#object_instance_form_navigation";     
+             var to_home  = location.href.split("#")[0] + "#object_instance_form_navigation";
              jQuery(this).parent().append( "<a class='to_top' href='"+ to_home +"'>Trờ về Danh sách forms</a>");
          });
+         olHtml += '<li><a href="'+ location.href.split("#")[0] +'#submit_form" class="vietnamese_english">Lưu vào database / Save to database</a></li> ';
+
          olHtml += "</ol>";
          container.html(olHtml);
+         jQuery("#left_action_list").html("<h4>Forms:</h4>" + olHtml).show();
+         initTooltip(jQuery("#object_instance_form").find("input"));         
      }
 
     jQuery(document).ready(function() {

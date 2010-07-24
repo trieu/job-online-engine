@@ -14,12 +14,13 @@ if ( ! function_exists('renderSelectField') ) {
 
         $html = $html .  "<div>";
         $attributes = array(
-            'class' => 'vietnamese_english',
+            'class' => 'vietnamese_english ',
             'style' => '',
         );
         $html = $html . form_label($label_name, $input_id, $attributes);
 
         $selectBoxExtAttr = $selectBoxExtAttr . 'id="'.$input_id.'"';
+        $selectBoxExtAttr = $selectBoxExtAttr . 'class="'.$ValidationRules.'"';
 
         $html = $html . form_dropdown($input_name, $data_list, $selected_list, $selectBoxExtAttr);
         $html = $html . "</div>";
@@ -72,7 +73,8 @@ if ( ! function_exists('renderTextArea') ) {
         $data = array(
             'field_name' => $field_name ,
             'field_value' => $field_value ,
-            'field_label' => $field_label
+            'field_label' => $field_label,
+            'rules'       => $ValidationRules
         );
 
         $html = $CI->load->view('form/field_type_templates/TextArea.php', $data, true);
@@ -95,7 +97,8 @@ if ( ! function_exists('renderSelectBox') ) {
             'field_name' => $field_name ,
             'option_list' => $option_list ,
             'field_label' => $field_label ,
-            'isMultiple' => $isMultiple
+            'isMultiple' => $isMultiple ,
+            'rules'       => $ValidationRules
         );
 
         $html = $CI->load->view('form/field_type_templates/SelectBox.php', $data, true);
@@ -114,7 +117,8 @@ if ( ! function_exists('renderCheckBoxs') ) {
         $data = array(
             'field_name' => $field_name ,
             'option_list' => $option_list ,
-            'description' => $description             
+            'description' => $description ,
+            'rules'       => $ValidationRules
         );
 
         $html = $CI->load->view('form/field_type_templates/CheckBox.php', $data, true);
@@ -133,7 +137,8 @@ if ( ! function_exists('renderRadioButtons') ) {
         $data = array(
             'field_name' => $field_name ,
             'option_list' => $option_list ,
-            'description' => $description
+            'description' => $description ,
+            'rules'       => $ValidationRules
         );
 
         $html = $CI->load->view('form/field_type_templates/RadioButton.php', $data, true);
@@ -149,7 +154,8 @@ if ( ! function_exists('renderDatepicker') ) {
 
         $data = array(
             'field_name' => $field_name ,           
-            'field_label' => $field_label
+            'field_label' => $field_label ,
+            'rules'       => $ValidationRules
         );
 
         $html = $CI->load->view('form/field_type_templates/Datepicker.php', $data, true);

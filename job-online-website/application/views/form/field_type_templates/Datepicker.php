@@ -1,6 +1,6 @@
 <div class="datapicker_wrapper">
     <label for="<?= $field_name ?>" class="vietnamese_english" ><?= $field_label ?>:</label>
-    <input id="<?= $field_name ?>" name="<?= $field_name ?>" type="text" value="" />
+    <input id="<?= $field_name ?>" name="<?= $field_name ?>" type="text" value="" class="<?= $rules ?>" />
     <!--SCRIPT
         var <?= $field_name ?>_init = function(){
             var options = {autoSize: true , constrainInput: true };

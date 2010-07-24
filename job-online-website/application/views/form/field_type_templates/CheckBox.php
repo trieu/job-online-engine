@@ -5,7 +5,7 @@
             $id = get_random_password();
      ?>
         <div class="checkbox_wrapper">
-            <input type="checkbox" id="<?= $id  ?>" name="<?= $field_name ?>" value="<?= $key ?>" />
+            <input type="checkbox" id="<?= $id  ?>" name="<?= $field_name ?>" value="<?= $key ?>" class="<?= $rules ?>" />
             <label for="<?= $id  ?>" class="vietnamese_english" ><?= $value  ?></label>           
         </div>
     <?php } ?>

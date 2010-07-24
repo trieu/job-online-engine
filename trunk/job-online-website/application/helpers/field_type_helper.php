@@ -38,7 +38,7 @@ if ( ! function_exists('renderInputField') ) {
             $input_id = $input_name;
         }
 
-        $html = "<div>";
+        $html = "<div class='textinput_wrapper'>";
         $attributes = array(
             'class' => 'vietnamese_english',
             'style' => '',

@@ -16,7 +16,7 @@ if ( ! function_exists('get_random_password')) {
  *
  * @return    string containing a random password
  */
-    function get_random_password($chars_min=6, $chars_max=8, $use_upper_case=false, $include_numbers=false, $include_special_chars=false) {
+    function get_random_password($chars_min=9, $chars_max=12, $use_upper_case=true, $include_numbers=true, $include_special_chars=false) {
         $length = rand($chars_min, $chars_max);
         $selection = 'aeuoyibcdfghjklmnpqrstvwxz';
         if($include_numbers) {

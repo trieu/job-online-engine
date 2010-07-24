@@ -27,7 +27,8 @@ legend {
     margin: 5px 3px 3px 5px;
 }
 .process_forms > div > div p {
-   font-weight: bold; margin-bottom: 1px!important;
+   font-weight: bold; margin: 1px 0 1px 8px!important;
+   font-size:19px; background:#fff4c8;
 }
 .process_forms hr {
     visibility: visible !important;
@@ -57,10 +58,7 @@ legend {
 
 <h3><?= $object_class->getObjectClassName() ?></h3>
 
-<a name="object_instance_form_navigation"></a>
-<b>Danh sách các forms thông tin cần nhập</b>
-<div id="object_instance_form_navigation">
-</div>
+<a name="top_of_form"></a>
 
 <form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
     <div class="input_info" id="object_instance_div" >
@@ -202,6 +200,8 @@ legend {
                      data["FieldValues"] = jQuery.toJSON( data["FieldValues"] );
 
                      var callback = function(responseText, statusText)  {
+                         jQuery("#left_action_list").hide();
+                         jQuery(window).scrollTop(10);
                          jQuery("#object_instance_div").html(responseText);
                          jQuery("#object_instance_div .ajax_loader").hide();
                      };
@@ -213,24 +213,70 @@ legend {
              }
 
      function makeFormNavigation(){
-         var container = jQuery("#object_instance_form_navigation");
+         var container = jQuery("#left_action_list");
          var olHtml = "<ol>";
          jQuery("#object_instance_form").find("a[name]").each(function(){
              var name = jQuery(this).html();
              var link = location.href.split("#")[0] + "#" + name;
              olHtml = olHtml + ( "<li><a href='"+ link +"'>" + name + "</a></li>" );
-             var to_home  = location.href.split("#")[0] + "#object_instance_form_navigation";
-             jQuery(this).parent().append( "<a class='to_top' href='"+ to_home +"'>Trờ về Danh sách forms</a>");
+             var to_home  = location.href.split("#")[0] + "#top_of_form";
+             jQuery(this).parent().append( "<a class='to_top' href='"+ to_home +"'>Top of the form</a>");
          });
          olHtml += '<li><a href="'+ location.href.split("#")[0] +'#submit_form" class="vietnamese_english">Lưu vào database / Save to database</a></li> ';
-
          olHtml += "</ol>";
-         container.html(olHtml);
-         jQuery("#left_action_list").html("<h4>Forms:</h4>" + olHtml).show();
+         container.html("<h4>Forms:</h4>" + olHtml).show();
          initTooltip(jQuery("#object_instance_form").find("input"));         
+     };
+
+     function makeEffectsForCheckboxAndRadio(){
+        var cssSelected = { 'color':'#f00' , 'font-style':'italic' , 'font-size':'18px'};        
+        var hoverHandler = function(){
+                jQuery(this).css(cssSelected);
+        };
+        jQuery("#object_instance_form").find("label[for]").each(function(){
+            var labelNode = jQuery(this);
+            var checkboxNode = jQuery("input[type='checkbox'][id='" + jQuery(this).attr("for") + "']");
+            var radioNode = jQuery("input[type='radio'][id='" + jQuery(this).attr("for") + "']");
+
+            if(checkboxNode.length == 1 ){
+                var outHandler = function(){
+                    if( ! jQuery(checkboxNode).attr('checked')){
+                        jQuery(labelNode).removeAttr("style");
+                    }
+                };
+                jQuery(labelNode).mouseover(hoverHandler).mouseout(outHandler);
+
+                var cH = function(){
+                    if( jQuery(this).attr("checked") ){
+                        jQuery(labelNode).css(cssSelected);
+                    }
+                    else {
+                        jQuery(labelNode).removeAttr("style");
+                    }
+                };
+                checkboxNode.click(cH);               
+            } else if(radioNode.length == 1 ) {
+                 var outHandler = function(){
+                    if( ! jQuery(radioNode).attr('checked') ){
+                        jQuery(labelNode).removeAttr("style");
+                    }
+                };
+                jQuery(labelNode).mouseover(hoverHandler).mouseout(outHandler);
+
+                var cH = function(){
+                    jQuery(this).parent().find("label[for]").removeAttr("style");
+                    if( jQuery(this).attr("checked") ){
+                        jQuery(labelNode).css(cssSelected);
+                    }                    
+                };
+                radioNode.click(cH);
+            }
+        });
      }
 
+    var backURL = "";
     jQuery(document).ready(function() {
-        jQuery("#object_instance_form").validationEngine();						// CLOSE ALL OPEN PROMPTS
+        jQuery("#object_instance_form").validationEngine();
+        makeEffectsForCheckboxAndRadio();
     });
 </script>

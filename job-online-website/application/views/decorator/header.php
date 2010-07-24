@@ -9,19 +9,17 @@
                 <a href="javascript: " title="Manage databases">Databases</a>
                 <ul>
                     <li>
-                        <?php action_url_a('user/public_object_controller/list_objects/job_seekers', lang('job_seeker'), lang('job_seeker_a_title')); ?>
+                        <a href="javascript: " title="<?php echo lang('job_seeker_a_title'); ?>"><?php echo lang('job_seeker'); ?></a>
                         <ul>
-                            <li>
-                                <?php action_url_a('user/public_object_controller/create_object/1',lang('register_new_jobseeker')); ?>
-                            </li>
+                            <li><?php action_url_a('user/public_object_controller/create_object/1',lang('register_new_jobseeker')); ?></li>
+                            <li><?php action_url_a('user/public_object_controller/list_objects/job_seekers', lang('list_job_seeker'), lang('list_job_seeker_a_title')); ?></li>
                         </ul>
                     </li>
                     <li>
-                        <?php action_url_a('user/public_object_controller/list_objects/employers', lang('employer'),lang('employer_a_title')); ?>
+                        <a href="javascript: " title="<?php echo lang('employer_a_title'); ?>"><?php echo lang('employer'); ?></a>
                         <ul>
-                            <li>
-                                <?php action_url_a('user/public_object_controller/create_object/2',lang('register_new_employer')); ?>
-                            </li>
+                            <li><?php action_url_a('user/public_object_controller/create_object/2',lang('register_new_employer')); ?></li>
+                            <li><?php action_url_a('user/public_object_controller/list_objects/employers', lang('list_employer'),lang('list_employer_a_title')); ?></li>
                         </ul>
                     </li>
                     <li>

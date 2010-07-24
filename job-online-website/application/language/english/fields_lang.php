@@ -9,8 +9,14 @@ $lang['home_page'] = "Homepage";
 
 $lang['job_seeker'] = "Job Seekers";
 $lang['job_seeker_a_title'] = "All Job Seekers";
+$lang['list_job_seeker'] = "List All Job Seekers";
+$lang['list_job_seeker_a_title'] = "List All Job Seekers";
+
 $lang['employer'] = "Employers";
 $lang['employer_a_title'] = "All Employers";
+$lang['list_employer'] = "List All Employers";
+$lang['list_employer_a_title'] = "List All Employers";
+
 $lang['job'] = "Jobs List";
 $lang['job_a_title'] = "Jobs List";
 $lang['search'] = "Search";

@@ -23,7 +23,7 @@ class admin_panel extends Controller {
      * @Secured(role = "Administrator")
      */
     public function index() {
-        $data = "Admin panel for administrator! (Thông tin hướng dẫn quản lý database việc làm)";
+        $data = "<div style='margin: 50px 20px'><h3>Admin panel for administrator! (Thông tin hướng dẫn quản lý database việc làm)</h3></div>";
         $this->output->set_output($data);
     //    $this->load->view("admin/left_menu_bar",NULL);
     }

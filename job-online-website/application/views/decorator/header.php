@@ -58,10 +58,10 @@
 </div>
 
 <script type="text/javascript" language="JavaScript">
-    function initTooltip(){jQuery("#top_menu_bar a").bt({shrinkToFit:true,cssStyles:{fontFamily:'"Lucida Grande",Helvetica,Arial,Verdana,sans-serif',fontSize:'12px',padding:'10px 14px'}});}
+    function initTooltip(selector){jQuery(selector).bt({shrinkToFit:true,cssStyles:{fontFamily:'"Lucida Grande",Helvetica,Arial,Verdana,sans-serif',fontSize:'12px',padding:'10px 14px'}});}
     jQuery(document).ready(function(){
         if(!jQuery.browser["msie"]){
-            initTooltip();
+            initTooltip("#top_menu_bar a");
         }        
         jQuery('#top_menu_bar').superfish();
     });

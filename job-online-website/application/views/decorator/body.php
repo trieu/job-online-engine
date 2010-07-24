@@ -33,7 +33,7 @@
             Bạn có thể download ở đây:
         </i>
         <br>
-        <a target="_blank" href="http://www.mozilla.com/vi/" title="Download Firefox">
+        <a target="_blank" href="http://www.mozilla.com/vi/" title="Download Latest Firefox Browser to your computer">
             <b>
                 Download Firefox Browser
             </b>

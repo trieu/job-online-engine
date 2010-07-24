@@ -1,5 +1,3 @@
-
-
 (function($) {
 	$.fn.validationEngineLanguage = function() {};
 	$.validationEngineLanguage = {
@@ -61,7 +59,6 @@
 		}
 	}
 })(jQuery);
-
 jQuery(document).ready(function() {
 	jQuery.validationEngineLanguage.newLang()
 });

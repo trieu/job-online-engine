@@ -40,6 +40,8 @@
     jQuery(document).ready(function() {
         initContextMenu();
         initPagination();
+        setTimeout(populateQuickFilter, 1000);
+        
     });
     
     function initContextMenu(){
@@ -109,6 +111,35 @@
     function handlePaginationClick(new_page_index, pagination_container) {
         setPaginationLink();
     }
+
+    function populateQuickFilter(){
+        var fieldnames = {};
+        jQuery("#page_content .field_name").each(function(){
+            var fn = jQuery(this).html().trim();
+            if(fieldnames[fn] == null){
+                fieldnames[fn] = fn;
+                var tagOption = '<option value="'+ fn +'">'+ fn +'</option>';
+                jQuery("#quick_filter_field_name").append(tagOption);
+            }
+        });
+        jQuery("#quick_filter_ok").click(function(){
+            jQuery("div[id*='object_row_']").hide();
+            var sfn = jQuery("#quick_filter_field_name option:selected").html();
+            var sfv = jQuery("#quick_filter_field_value").val().trim();
+            jQuery("#page_content .field_name").each(function(){
+                var fn = jQuery(this).html();
+                var fv = jQuery(this).next().html();
+
+                if(fn.search(sfn) >= 0 && fv.search(sfv) >= 0) {
+                    jQuery(this).parent().parent().show();
+                }
+            });
+        });
+        jQuery("#quick_filter_reset").click(function(){
+             jQuery("div[id*='object_row_']").show();
+        });
+        jQuery("#quick_filter_div").show();
+    }
 </script>
 <ul id="context_menu_ui" class="contextMenu">
     <li><a href="#EditObject" >@Action: Edit</a></li>
@@ -145,6 +176,12 @@
         
        <?php echo anchor('user/public_object_controller/create_object/'.$objectClass->getObjectClassID(), "Đăng ký ". $objectClass->getObjectClassName() ." mới"); ?>
     </b>
+    <div style="margin-top: 10px; display: none;" id="quick_filter_div" >
+        <select id="quick_filter_field_name" ></select>
+        <input id="quick_filter_field_value" type="text" value="" size="80" />
+        <input id="quick_filter_ok" type="button" value="Filter" />
+        <input id="quick_filter_reset" type="button" value="Show All" />
+    </div>
 </div>
 
 
@@ -154,33 +191,33 @@
 <br><br>
 
     <?php foreach ($objects as $objID => $fields ) { ?>
-<div class="context_menu_trigger focusable_text" id="object_row_<?= $objID ?>">
-    <a name="<?php echo $objID; ?>"></a>
-     <div class="id">ID: <?php echo $objID; ?></div>
+        <div class="context_menu_trigger focusable_text" id="object_row_<?= $objID ?>">
+            <a name="<?php echo $objID; ?>"></a>
+             <div class="id">ID: <?php echo $objID; ?></div>
             <?php
             foreach ($fields as $field ) {
                 if( isset ($field['FieldID'])) {
                     ?>
-    <div style="margin-top: 3px;">
-        <span class="field_name vietnamese_english"><?php echo $field['FieldName'];?></span>
-        <span class="field_value"><?php echo $field['FieldValue'];?></span>
-    </div>
+                    <div style="margin-top: 3px;">
+                        <span class="field_name vietnamese_english"><?php echo $field['FieldName'];?></span>
+                        <span class="field_value"><?php echo $field['FieldValue'];?></span>
+                    </div>
                     <?php
                 }
                 else {
                     ?>
-    <div style="margin-top: 3px;">
-        <span class="field_name vietnamese_english"><?php echo $field['FieldName'];?></span>
-        <span class="field_value"><?php echo $field['FieldValue'];?></span>
-    </div>
+                    <div style="margin-top: 3px;">
+                        <span class="field_name vietnamese_english"><?php echo $field['FieldName'];?></span>
+                        <span class="field_value"><?php echo $field['FieldValue'];?></span>
+                    </div>
                     <?php
                 }
             }
             ?>
-    <div class="actions" >
-          
-    </div>
-</div>
+            <div class="actions" >
+
+            </div>
+        </div>
         <?php } ?>
 
 <div class='pagination' style="text-align:center"></div>

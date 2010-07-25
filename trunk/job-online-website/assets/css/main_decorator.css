@@ -52,11 +52,18 @@ div.floating-menu a {display:block; margin: 0 8px; margin-right:1px;}
 div.floating-menu a:hover {border: 1px solid #f00;   background: #ff6; }
 #left_action_list { display: none; }
 
-input, textarea, select {
+input[type='text'], input[type='radio'], input[type='checkbox'] , textarea, select {
     border: 1px solid #006; background: #fff;
 }
-input:hover , textarea:hover, select:hover {
+input[type='text']:hover, input[type='radio']:hover, input[type='checkbox']:hover, textarea:hover, select:hover {
     border: 1px solid #f00; background: #ffc;
+}
+input[type='button'], input[type='submit'] {
+   border: 1px solid #006; background: #ccf;
+   cursor:pointer; display:inline-block; font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+}
+input[type='button']:hover, input[type='submit']:hover {
+   border: 1px solid #f00; background: #eef; font-style: italic; font-weight: bold; color: #f00;
 }
 
 /* main buttons for form actions */

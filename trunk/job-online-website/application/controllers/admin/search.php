@@ -31,6 +31,7 @@ class search extends Controller {
      * @Secured(role = "Administrator")
      */
     public function index() {
+        $this->page_decorator->setPageTitle("Search and Statistics Form");
         $data = array();
         //$this->load->view("global_view/search_query_view", $data);
         $this->load->view("admin/search_query_view", $data);
@@ -127,7 +128,7 @@ class search extends Controller {
      *
      * FIXME more security here
      */
-    function do_search() {
+    function do_search() {               
         $this->load->model("search_manager");
         
         $FormID = $this->input->post("FormID");

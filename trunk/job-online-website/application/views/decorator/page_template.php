@@ -56,25 +56,10 @@
             <input id="session_id" type="hidden" name="session_id" value="<?php echo $session_id?>" />
         </div>
         <script type="text/javascript">
-            jQuery(document).ready(function(){
-                jQuery("body > div[style='text-align: center;']").remove();
+            jQuery(document).ready(function(){                
                 language_saparator();
                 jQuery("body").show();
             });
-
-            function language_saparator(){
-                jQuery(".vietnamese_english").each(function(){
-                    var toks = jQuery(this).html().split("/");
-                    if(toks.length == 2){
-                        if($PAGE_LANGUAGE_KEY == "tiengviet"){
-                            jQuery(this).html( toks[0] );
-                        }
-                        else if($PAGE_LANGUAGE_KEY == "english"){
-                            jQuery(this).html( toks[1] );
-                        }
-                    };
-                });                
-            };           
         </script>   
     </body>
 </html>

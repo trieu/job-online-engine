@@ -60,30 +60,8 @@ class search_manager extends Model {
                 )
                 WHERE objects.ObjectClassID = ?
                 )
-                ) r
-                WHERE r.ObjectID IN ( [object_id_list] )  ";
-
-    var $intersectSQL = "
-            SELECT DISTINCT r1.*  FROM
-            (
-            SELECT ObjectID
-            FROM fieldvalues
-            WHERE (FieldID = 8 AND FieldValue LIKE '%Hong Huynh%' )
-            ) r1
-            INNER JOIN
-            (
-            SELECT ObjectID
-            FROM fieldvalues
-            WHERE   (FieldID = 15 AND FieldValue LIKE '%0943332248%' )
-            ) r2
-            ON r1.ObjectID = r2.ObjectID
-            INNER JOIN
-            (
-            SELECT ObjectID
-            FROM fieldvalues
-            WHERE   (FieldID = 13 AND FieldValue LIKE '%Nguyen Cong Tru, Q1%' )
-            ) r3
-            ON r2.ObjectID = r3.ObjectID";
+                ) r  ";
+    
 
     protected function buildSQLSearchForANDOperator($query_fields) {
         $sql = "";
@@ -104,92 +82,90 @@ class search_manager extends Model {
         ApplicationHook::logInfo( $sql );
     }
 
-    public function search_object($FormID, $ObjectClassID, $ProcessID, $query_fields, $return_query = FALSE) {
-        $this->CI->load->model('objectclass_manager');
-        // $this->buildSQLSearch($query_fields);
-
-        $seacrh_obj_sql = " SELECT DISTINCT ObjectID FROM fieldvalues ";
-        $query_fields_size = count($query_fields);
-        $field_operator = " OR ";
-        $field_filter = "";
-        foreach ($query_fields as  $kv ) {
-            if( strlen($kv->value) >0 ) {
-                //FIXME TODO update field type
-                if(strlen($field_filter)>0) {
-                    $field_filter .= $field_operator;
-                }
-                $field_filter .= "(FieldID = ".$kv->name." AND ";
-                if($kv->type == "text" || $kv->type == "textarea") {
-                    $kv->value = "'%" . $kv->value . "%'";
-                    $field_filter .= " FieldValue LIKE ". $kv->value ." ) ";
+    protected function do_query_on_single_field($FieldType, $FieldID , $FieldValue) {
+	$sql = " SELECT DISTINCT ObjectID FROM fieldvalues WHERE ";
+        if( strlen($FieldValue) >0 ) {
+                $sql .= " FieldID = $FieldID AND ";
+                if($FieldType == "text" || $FieldType == "textarea") {
+                    $FieldValue = "'%" . $FieldValue . "%'";
+                    $sql .= " FieldValue LIKE ".$FieldValue;
                 }
                 else {
-                    $field_filter .= " FieldValue = ". $kv->value ." ) ";
+                    $sql .= " FieldValue = ".$FieldValue;
                 }
-            }
         }
-        if( strlen($field_filter) > 0 ) {
-            $seacrh_obj_sql .= (" WHERE ".$field_filter);
+        else {
+             return array();
         }
-
-        $sql = str_replace("[object_id_list]",$seacrh_obj_sql , $this->get_fields_object_sql);
-        $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
-        if($return_query) {
-            return $query;
-        }
-        $record_set = $query->result_array();
-
-        //ApplicationHook::logInfo($this->db->last_query());
-
-        $objects = array();
-        foreach ($record_set as $record) {
-            if( ! isset ($objects[$record['ObjectID']]) ) {
-                $objects[ $record['ObjectID'] ] = array();
-            }
-            $field = array("FieldName"=> $record['FieldName']  ,
-                    "FieldValue" => $record['FieldValue'] ,
-                    "FieldID" => $record['FieldID']
-            );
-            array_push( $objects[ $record['ObjectID'] ], $field );
-        }
-        //echo ($this->db->last_query());
-
-        $data = array();
-        $data["in_search_mode"] = TRUE;
-        $data["objects"] = $objects;
-        //echo json_encode($objects);
-        $data["objectClass"] = $this->CI->objectclass_manager->find_by_id($ObjectClassID);
-        return $data;
+        $query = $this->db->query($sql);
+       // print_r($this->db->last_query());
+       // ApplicationHook::logInfo($this->db->last_query());
+        return $query->result_array();
     }
 
-    public function search_object_for_table_view($ObjectClassID, $query_fields, $return_query = FALSE) {
-        $this->CI->load->model('objectclass_manager');
-        $seacrh_obj_sql = " SELECT DISTINCT ObjectID FROM fieldvalues ";
-        $query_fields_size = count($query_fields);
-        $field_operator = " OR ";
-        $field_filter = "";
-        foreach ($query_fields as  $kv ) {
-            if( strlen($kv->value) >0 ) {
-                if(strlen($field_filter)>0) {
-                    $field_filter .= $field_operator;
-                }
-                $field_filter .= "(FieldID = ".$kv->name." AND ";
-                if($kv->type == "text" || $kv->type == "textarea") {
-                    $kv->value = "'%" . $kv->value . "%'";
-                    $field_filter .= " FieldValue LIKE ". $kv->value ." ) ";
-                }
-                else {
-                    $field_filter .= " FieldValue = ". $kv->value ." ) ";
-                }
+    protected function union_query_result($finalSet = array(), $set2 = array()) {
+        foreach ($set2 as  $e ) {
+            $ObjectID = $e['ObjectID']+"";
+            if( ! isset( $finalSet[ $ObjectID ] ) )  {
+               $finalSet[ $ObjectID ] = $ObjectID;
             }
         }
-        if( strlen($field_filter) > 0 ) {
-            $seacrh_obj_sql .= (" WHERE ".$field_filter);
+        return $finalSet;
+    }
+
+    protected function intersect_query_result($finalSet = array(), $set2 = array()) {
+        $intersectedSet = array();
+        foreach ($set2 as  $e ) {
+            $ObjectID = $e['ObjectID']+"";
+            if( isset( $finalSet[$ObjectID] ) ){
+                $intersectedSet[$ObjectID] = $ObjectID;
+            }
         }
+        return $intersectedSet;
+    }
 
-        $sql = str_replace("[object_id_list]",$seacrh_obj_sql , $this->get_fields_object_sql);
+    protected function objectSetToIdList($finalSet, $powerOfSet) {
+        $matched_object_ids = "";
+        $idx = 0; $lastEleIdx = $powerOfSet-1;
+        foreach ($finalSet as  $ObjectID ) {
+            if($idx != $lastEleIdx){
+                $matched_object_ids .= ($ObjectID.", ");
+            } else {
+                $matched_object_ids .= ($ObjectID);
+            }
+            $idx ++;
+        }
+        return $matched_object_ids;
+    }
 
+    public function search_object_for_table_view($ObjectClassID, $query_fields, $return_query = FALSE, $startIndex = -1, $limitSizeReturn = -1) {
+        $this->CI->load->model('objectclass_manager');
+        
+        $finalSet = array();
+        foreach ($query_fields as  $kv ) {
+            $query_operator = $kv->operator;
+            $temSet  = $this->do_query_on_single_field($kv->type, $kv->name, $kv->value);
+            if($query_operator == "" || $query_operator == "OR"){
+                $finalSet = $this->union_query_result($finalSet, $temSet);
+            } else if($query_operator == "AND"){
+                $finalSet = $this->intersect_query_result($finalSet, $temSet);
+            }
+        }
+        $powerOfSet = count($finalSet);
+        $sql = $this->get_fields_object_sql;
+
+        if($powerOfSet <= 0 ) {
+            $sql .= " WHERE r.ObjectID IN ( -1 ) ";
+        }
+        else if($powerOfSet > 0){
+            $filterObjectSubQuery = " WHERE r.ObjectID IN ( [matched_object_ids] ) ";
+            $matched_object_ids = $this->objectSetToIdList($finalSet, $powerOfSet);
+            $filterObjectSubQuery = str_replace("[matched_object_ids]",$matched_object_ids , $filterObjectSubQuery);
+            $sql .= $filterObjectSubQuery;
+        }
+        
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
+       // ApplicationHook::logInfo($this->db->last_query());
         if($return_query) {
             return $query;
         }

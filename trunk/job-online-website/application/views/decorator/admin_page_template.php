@@ -25,6 +25,9 @@
         <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery-ui-1.7.2.custom.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/commons.js"></script>
+        <script type="text/javascript" >
+            var $PAGE_LANGUAGE_KEY = "<?php echo str_replace(EXT,"", LANGUAGE_INDEX_PAGE) ; ?>";
+        </script>
 
         <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url() ?>assets/js/jquery.superfish/superfish.css"/>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.superfish/superfish.js"></script>
@@ -54,7 +57,7 @@
         </div>
         <script type="text/javascript">
             jQuery(document).ready(function(){
-                jQuery("body > div[style='text-align: center;']").remove();
+                 language_saparator();
             });             
         </script>
     </body>

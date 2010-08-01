@@ -205,3 +205,17 @@ function togglePageNavigation(){
         jQuery("#page_leftnav_toggle").html("Hide Navigation");
     }
 };
+
+ function language_saparator(){  
+    jQuery(".vietnamese_english").each(function(){
+        var toks = jQuery(this).html().split("/");
+        if(toks.length == 2){
+            if($PAGE_LANGUAGE_KEY == "tiengviet"){
+                jQuery(this).html( toks[0] );
+            }
+            else if($PAGE_LANGUAGE_KEY == "english"){
+                jQuery(this).html( toks[1] );
+            }
+        };
+    });
+};       

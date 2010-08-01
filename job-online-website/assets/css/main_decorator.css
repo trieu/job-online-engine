@@ -63,7 +63,7 @@ input[type='button'], input[type='submit'] {
    cursor:pointer; display:inline-block; font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
 }
 input[type='button']:hover, input[type='submit']:hover {
-   border: 1px solid #f00; background: #eef; font-style: italic; font-weight: bold; color: #f00;
+   border: 1px solid #f00; background: #eef; color: #f00;
 }
 
 /* main buttons for form actions */
@@ -76,7 +76,7 @@ input[type='button']:hover, input[type='submit']:hover {
     padding:2px 8px; white-space:nowrap;
 }
 .button:hover {
-    border: 1px solid #f00; background: #eef; font-style: italic;
+   border: 1px solid #f00; background: #eef; color: #f00;
 }
 center .button { margin: 10px 2px 20px 2px;}
 

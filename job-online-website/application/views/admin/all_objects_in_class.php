@@ -76,12 +76,20 @@
 <?php } ?>
 
 <div>
-    <h3><?= $objectClass->getObjectClassName()  ?> </h3>    
+    <h3 class="vietnamese_english"><?php echo $objectClass->getObjectClassName() ?> </h3>
+    <div>
+    <?php
+        $total_records = count($objects);
+        echo lang("result_number_label").$total_records;
+    ?>
+    </div>
 </div>
-Display <?= $total_records = count($objects) ?> records
+
+
+
 
 <?php if($total_records > 0) { ?>
-<table border="1" style="margin-right: 30px">
+<table border="1" style="margin: 10px 0 0 5px">
     <thead>
         <tr>
             <th>ID</th>
@@ -120,6 +128,6 @@ Display <?= $total_records = count($objects) ?> records
 </table>
  <?php } else { ?>
 <div>
-    <b>No results were found!</b>
+    <b> <?php echo lang("no_result_text")?> </b>
 </div>
 <?php } ?>

@@ -27,7 +27,7 @@ legend {
     margin: 5px 3px 3px 5px;
 }
 .process_forms > div > div p {
-   font-weight: bold; margin: 1px 0 1px 8px!important;
+   font-weight: bold; margin: 10px 0 4px -2px !important;
    font-size:19px; background:#fff4c8;
 }
 .process_forms hr {

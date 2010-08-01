@@ -27,9 +27,7 @@ class page_decorator {
     }
 
     public function getPageTitle() {
-        if($this->pageTitle === ""){
-            $this->pageTitle = lang('home_page_heading');
-        }
+        $this->pageTitle = lang('home_page_heading')." - ".$this->pageTitle;
         return $this->pageTitle;
     }
 

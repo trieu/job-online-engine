@@ -1,13 +1,12 @@
 <?php
 
 /**
- * Description of admin_panel
+ * public controler for non-admin
  *
  * @property page_decorator $page_decorator
  * @property class_mapper $class_mapper
  * @property CI_Loader $load
- * @property CI_DB_active_record $db
- *
+ * @property CI_DB_active_record $db *
  * @property field_manager $field_manager
  * @property object_manager $object_manager
  *
@@ -90,7 +89,6 @@ class public_object_controller extends Controller {
         }
     }
 
-
     /**
      * @Decorated
      * @Secured(role = "user")
@@ -117,8 +115,6 @@ class public_object_controller extends Controller {
         $this->do_form($classID, $ObjectID, $FormID);
     }
 
-
-
     /**
      * @Secured(role = "user")
      */
@@ -143,8 +139,6 @@ class public_object_controller extends Controller {
             }
         }
     }
-
-
 
     /**
      * @Decorated
@@ -185,8 +179,8 @@ class public_object_controller extends Controller {
             $config = array();
             $config['base_url'] = "";
             $config['total_rows'] = 100;
-            $config['per_page'] = 2;
-            $config['current_page'] = 7;
+            $config['per_page'] = 1;
+            $config['current_page'] = 1;
             $data["pagination_config"] = $config;
         }
         else {

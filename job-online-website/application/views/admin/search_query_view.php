@@ -53,44 +53,52 @@ require_once 'macros.php';
     .statistical_field_query{
         font-weight: bold;
     }
+    #ObjectClassID {
+        position: absolute; left: 200px;
+    }
+    #ProcessID {
+        position: absolute; left: 200px;
+    }
+    #FormID {
+        position: absolute; left: 200px;
+    }
 </style>
 
 <fieldset class="input_info" style="margin-top: 10px;">
-    <legend>Query Form</legend>
+    <legend class="vietnamese_english" >Form tìm kiếm thông tin - Thống kê / Form for Information Retrieval - Statistics</legend>
     <form id="query_builder_form" action="<?= site_url("admin/search/do_search")?>" accept="utf-8" method="post">
         <div class="query_question" >
              <div>
                  <div>
-                    <b>Statistics by Field ?</b>
-                    <span>(Only optional fields are use in Statistics)</span>
+                    <b class="vietnamese_english" > Sử dụng báo cáo thống kế /Statistics by Field ?</b>                    
                     <input id="statistics_mode_true" type="radio" name="statistics_mode" value="true" onchange="setStatisticsMode(this)"/>
-                    <label for="statistics_mode_true">Yes</label>
+                    <label for="statistics_mode_true" class="vietnamese_english" >Đồng ý / Yes</label>
                     <input id="statistics_mode_false" type="radio" name="statistics_mode" value="false" onchange="setStatisticsMode(this)"/>
-                    <label for="statistics_mode_false">No</label>
+                    <label for="statistics_mode_false" class="vietnamese_english">Không / No</label>
                 </div>
             </div>
             <div>
-                <label for="ObjectClassID">Object / Đối tượng cần tìm: </label>
+                <label for="ObjectClassID" class="vietnamese_english" >Đối tượng quản lý / Business Object: </label>
                 <select name="ObjectClassID" id="ObjectClassID" onchange="populateProcesses()" > </select>
             </div>
             <div>
-                <label for="ProcessID">Process / Quy trình xử lý cần tìm: </label>
+                <label for="ProcessID" class="vietnamese_english" >Quy trình xử lý thông tin / Process: </label>
                 <select name="ProcessID" id="ProcessID" onchange="populateForms()" ></select>
             </div>
             <div>
-                <label for="FormID">Form / Form cần tìm: </label>
+                <label for="FormID" class="vietnamese_english" >Form dữ liệu / Form : </label>
                 <select name="FormID" id="FormID" onchange="populateFields()"></select>
             </div>            
             <div>
                 <div id="question_holder_csv_export" style="margin-top: 8px;">
-                    <b>CSV Export for Excel ?</b>
+                    <b class="vietnamese_english"> Xuất dữ liệu cho Excel / CSV Export for Excel ?</b>
                     <input id="csv_export_true" type="radio" name="csv_export" value="true" />
-                    <label for="csv_export_true">Yes</label>
+                    <label for="csv_export_true" class="vietnamese_english" >Đồng ý / Yes</label>
                     <input id="csv_export_false" type="radio" name="csv_export" value="false" checked="true"/>
-                    <label for="csv_export_false">No</label>
+                    <label for="csv_export_false" class="vietnamese_english">Không / No</label>
                 </div>
                 <div>
-                    <b><a href="javascript:void(0)" onclick="toggleFieldList(this)">Hide</a> Field List</b>
+                    <b><a href="javascript:void(0)" onclick="toggleFieldList(this)">Hide</a></b>
                 </div>
             </div> 
             <div id="field_list_view" >
@@ -98,8 +106,8 @@ require_once 'macros.php';
                 <table border="0" width="100%">
                     <thead>
                         <tr>
-                            <th>Field List</th>
-                            <th>Query Details</th>
+                            <th class="vietnamese_english" >Danh sách trường dữ liệu / Field List</th>
+                            <th class="vietnamese_english" >Chi tiết tìm kiếm / Query Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -228,19 +236,20 @@ require_once 'macros.php';
             data["query_fields"] = jQuery.toJSON( query_fields );
 
             var isCsvExport = jQuery("#csv_export_true").attr("checked");
-            var searchCallback = function(responseText, statusText)  {
+            var searchCallback = function(html, statusText)  {
                 if(isCsvExport){
                     GUI.toggletVisible("#query_search_results .content");
                     jQuery("#query_search_results .ajax_loader").hide();
                     reduceQueriedResultsByOperator(query_fields);
-                    window.location = jQuery.trim(responseText);
+                    window.location = jQuery.trim(html);
                 }
                 else {
-                    jQuery("#query_search_results .content").html(responseText);
+                    jQuery("#query_search_results .content").html(html);
                     GUI.toggletVisible("#query_search_results .content");
                     jQuery("#query_search_results .ajax_loader").hide();
                     reduceQueriedResultsByOperator(query_fields);
                     window.location = (window.location + "").split("#")[0] + "#query_search_results";
+                    language_saparator();
                 }
             };
             jQuery("#query_search_results .ajax_loader").show();

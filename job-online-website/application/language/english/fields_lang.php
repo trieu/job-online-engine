@@ -29,4 +29,8 @@ $lang['admin_panel'] = "Admin Panel";
 $lang['register_new_employer'] = "Register new employer";
 $lang['register_new_jobseeker'] = "Register new Job Seeker";
 
+//search view
+$lang['no_result_text'] = "No results were found!";
+$lang['result_number_label'] = "Number of records found: ";
+
 ?>

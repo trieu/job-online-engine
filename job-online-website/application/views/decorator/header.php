@@ -52,6 +52,9 @@
             <li>
                 <a href="http://docs.google.com/View?id=dgsrc7qn_345j7f5smgf" target="_blank" title="Hướng dẫn sử dụng (User Guide) for DRD Admin">Help</a>
             </li>
+            <li>
+                <a href="http://code.google.com/p/job-online-engine/issues/list" target="_blank" title="Submit your issues">Submit issues</a>
+            </li>
     </ul>
 </div>
 

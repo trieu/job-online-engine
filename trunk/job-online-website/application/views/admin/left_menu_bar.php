@@ -7,9 +7,8 @@ $action_names  = array(
 renderGroupOfActions("manage_object_classes","Manage Object", $action_names);
 
 $action_names  = array(
-    "Live search"=> "admin/search"
-    , "Create search filter"=> "admin/search"
-    , "List all filters"=> "admin/search"
+    "Make a search"=> "admin/search"
+    , "List all queries"=> "admin/search/list_all_query_details"
     );
 renderGroupOfActions("manage_search","Search", $action_names);
 

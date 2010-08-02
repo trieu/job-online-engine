@@ -28,6 +28,8 @@
     
     function redirectTo(){
         <? if (isset ($redirect_url)): ?>
+            jQuery("#page_info").show();
+            jQuery("#page_iframe_info").hide();
             window.location = "<?= $redirect_url ?>";
         <? else: ?>
             parent.window.location.reload();
@@ -36,9 +38,11 @@
 
 <? if (isset ($reload_page)): ?>
     <? if ($reload_page): ?>
-        setTimeout(redirectTo,2000);
+        jQuery("#page_info").show();
+        jQuery("#page_iframe_info").hide();
+        setTimeout(redirectTo,3600);
     <? else: ?>
-        setTimeout(redirectTo,2000);
+        setTimeout(redirectTo,3600);
     <? endif; ?>
 <? endif; ?>
 </script>

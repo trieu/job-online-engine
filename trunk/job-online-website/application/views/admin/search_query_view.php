@@ -62,10 +62,32 @@ require_once 'macros.php';
     #FormID {
         position: absolute; left: 200px;
     }
+    .query_detail_wrapper {
+        margin-top:5px; padding: 5px;
+        font-weight:bold;
+        border: 1px solid #f00; background: #ffc;
+    }
+    .query_detail_wrapper .query_detail_name {
+        margin-left: 10px;
+        font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+        font-size:16px; font-weight:bold;
+        color: #f00;
+    }
 </style>
+
 
 <fieldset class="input_info" style="margin-top: 10px;">
     <legend class="vietnamese_english" >Form tìm kiếm thông tin - Thống kê / Form for Information Retrieval - Statistics</legend>
+    <?php
+    if(isset ($the_query_details)){
+        $text = '<div class="query_detail_wrapper" >';
+        $text .= '<span class="vietnamese_english query_detail_label" > Tên câu truy vấn dữ liệu:/Name of query:</span>';
+        $text .= '<span class="vietnamese_english query_detail_name">'.$the_query_details->query_name.'</span>';
+        $text .= '</div>';
+        echo $text;
+        //echo $the_query_details->query_details;
+    }
+    ?>
     <form id="query_builder_form" action="<?= site_url("admin/search/do_search")?>" accept="utf-8" method="post">
         <div class="query_question" >
              <div>
@@ -129,6 +151,7 @@ require_once 'macros.php';
         </div>
         <div style="text-align: center;">
             <input type="submit" value="Search" />
+            <input type="button" value="Save as filter" onclick="saveSearchQueryObj()" />
             <input type="button" value="Reset" onclick="location.reload()" />
             <input type="button" value="Cancel" />            
         </div>
@@ -144,8 +167,8 @@ require_once 'macros.php';
 
 <div id="query_operator_tpl" class="display_none" >
     <select id="@=name@">
-        <option selected="selected" >OR</option>
-        <option>AND</option>
+        <option selected="selected" >AND</option>
+        <option  >OR</option>        
     </select>
 </div>
 
@@ -185,12 +208,13 @@ require_once 'macros.php';
             }
 
             jQuery("#field_list_view .ajax_loader").hide();
+            loadSearchQueryObj();
         };
         jQuery("#field_list_view .ajax_loader").show();
         jQuery.post(url, filter, handler);
     }
 
-    function selectSearchedField(fieldID,fieldtypeID){
+    function selectSearchedField(fieldID,fieldtypeID, callbackAfterDone){
         if( jQuery("#statistics_mode_true:checked").length == 1 ) {
              var field_content = jQuery("#field_" + fieldID).attr("title");
              var html = "<div class='statistical_field_query' id='statistical_field_[fieldID]' fieldtypeid=[fieldtypeID]>" + field_content + "</div>";
@@ -209,6 +233,9 @@ require_once 'macros.php';
                     jQuery("#searched_field_form").append(operator);
                 }
                 jQuery("#searched_field_form").append(html);
+                if(callbackAfterDone instanceof Function){
+                    callbackAfterDone.apply({},[]);
+                }
             };
             jQuery.get( uri ,{}, callback );
         }
@@ -378,6 +405,73 @@ require_once 'macros.php';
         jQuery("#field_list_view .ajax_loader").show();
         populateClasses();
         initSearchForm();
-        initStatisticsMode();       
+        initStatisticsMode();
     });
+
+
+    var SearchQueryObj = {'id' : 0, 'query_name': "No name", 'query_details': {} };
+    <?php
+        if(isset ($the_query_details)){
+            echo "SearchQueryObj.id = ".$the_query_details->id." ;";
+            echo "SearchQueryObj.query_name = \"".$the_query_details->query_name."\" ;";
+            echo "SearchQueryObj.query_details = ".$the_query_details->query_details." ;";
+        }
+    ?>
+
+    var checkboxDone = {};
+    function loadSearchQueryObj(){
+        jQuery(SearchQueryObj.query_details.query_fields).each(function(){
+            var fieldId = this.name;
+            var fieldValue = this.value;
+            var fieldtypeID = jQuery("#field_" + fieldId).attr(this.name);
+            var callbackAfterDone = function(){
+                jQuery("#field_list_view").find("*[id='field_" + fieldId + "']").val(fieldValue);
+            };
+            if( !(checkboxDone[fieldId])) {
+                selectSearchedField(fieldId, fieldtypeID, callbackAfterDone);
+            }
+            checkboxDone[fieldId] = true;
+        });
+    };
+
+    function saveSearchQueryObj(){
+        // pre-submit callback
+        var h = function(formData, jqForm, options) {
+            var query_details = {};
+            var query_fields = [];
+            for(var i in formData){
+                var kv = formData[i];
+                if(kv.name.indexOf("field_") == 0){
+                    kv.type = jQuery("#query_builder_form").find("*[name='"+ kv.name +"'][value='"+ kv.value +"']").attr("type");
+                    kv.name = kv.name.replace("field_", "");
+                    if( jQuery("#operator_f_" + kv.name).length > 0 )
+                        kv.operator = jQuery("#operator_f_" + kv.name).val();
+                    else
+                        kv.operator = "";
+                    query_fields.push(kv);
+                }
+                else {
+                    query_details[kv.name] = kv.value;
+                }
+            }
+            query_details["query_fields"] = query_fields;
+            var query_name = window.prompt("What is your name?","");
+
+            SearchQueryObj.query_name = query_name;
+            SearchQueryObj.query_details = jQuery.toJSON(query_details);
+            jQuery.post( "<?php echo site_url("admin/search/save_query_details")?>", SearchQueryObj , function(rs)  {
+                if(rs > 0){
+                    alert("Save successfully!");
+                }
+                else {
+                    alert("Save failed!");
+                }
+            });
+            return false;
+        };
+        
+        jQuery('#query_builder_form').ajaxSubmit({beforeSubmit: h});
+    };
+
+   
 </script>

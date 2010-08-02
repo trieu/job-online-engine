@@ -211,10 +211,10 @@ function togglePageNavigation(){
         var toks = jQuery(this).html().split("/");
         if(toks.length == 2){
             if($PAGE_LANGUAGE_KEY == "tiengviet"){
-                jQuery(this).html( toks[0] );
+                jQuery(this).html( jQuery.trim(toks[0]) );
             }
             else if($PAGE_LANGUAGE_KEY == "english"){
-                jQuery(this).html( toks[1] );
+                jQuery(this).html( jQuery.trim(toks[1]) );
             }
         };
     });

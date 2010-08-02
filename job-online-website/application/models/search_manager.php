@@ -144,6 +144,9 @@ class search_manager extends Model {
         $finalSet = array();
         foreach ($query_fields as  $kv ) {
             $query_operator = $kv->operator;
+            if($kv->type == "checkbox"){
+                $query_operator = "AND";
+            }
             $temSet  = $this->do_query_on_single_field($kv->type, $kv->name, $kv->value);
             if($query_operator == "" || $query_operator == "OR"){
                 $finalSet = $this->union_query_result($finalSet, $temSet);

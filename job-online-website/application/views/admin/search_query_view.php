@@ -1,6 +1,7 @@
 <?php
 addScriptFile("js/jquery/jquery.form.js");
 addScriptFile("js/jquery/jquery.json.js");
+addScriptFile("js/jquery/jquery.jeditable.js");
 
 //jquery.jqplot
 addCssFile("js/jquery.jqplot/jquery.jqplot.css");
@@ -73,6 +74,12 @@ require_once 'macros.php';
         font-size:16px; font-weight:bold;
         color: #f00;
     }
+    .remove_query_field_handler {        
+        float: right; font-size:16px; font-weight:bold; color: #f00;
+    }
+    #searched_field_form > select{
+        color:red; font-size:15px; font-weight:bold;   margin:16px 0 16px 40%;  
+    }   
 </style>
 
 
@@ -82,7 +89,7 @@ require_once 'macros.php';
     if(isset ($the_query_details)){
         $text = '<div class="query_detail_wrapper" >';
         $text .= '<span class="vietnamese_english query_detail_label" > Tên câu truy vấn dữ liệu:/Name of query:</span>';
-        $text .= '<span class="vietnamese_english query_detail_name">'.$the_query_details->query_name.'</span>';
+        $text .= '<span class="vietnamese_english query_detail_name editable_text" id="query_filters-'.$the_query_details->id.'-query_name">'.$the_query_details->query_name.'</span>';
         $text .= '</div>';
         echo $text;
         //echo $the_query_details->query_details;
@@ -150,10 +157,10 @@ require_once 'macros.php';
             </div>
         </div>
         <div style="text-align: center;">
-            <input type="submit" value="Search" />
-            <input type="button" value="Save as filter" onclick="saveSearchQueryObj()" />
-            <input type="button" value="Reset" onclick="location.reload()" />
-            <input type="button" value="Cancel" />            
+            <input type="submit" title="Search" value="Search" />
+            <input type="button" title="Save this query to database" value="Save this query" onclick="saveSearchQueryObj()" />
+            <input type="button" title="Reload this query" value="Reload" onclick="location.reload()" />
+            <input type="button" value="Cancel" onclick="history.back()" />
         </div>
     </form>
 </fieldset>
@@ -236,6 +243,16 @@ require_once 'macros.php';
                 if(callbackAfterDone instanceof Function){
                     callbackAfterDone.apply({},[]);
                 }
+                var fieldWrapper = jQuery("#searched_field_form > div:last");
+                var operatorNode = fieldWrapper.prev("select");
+                fieldWrapper.addClass("editable_text");
+                fieldWrapper.append('<a class="remove_query_field_handler" href="javascript:" title="Remove this field">X</a>');
+                fieldWrapper.find("a.remove_query_field_handler").click(function(){
+                   fieldWrapper.remove();
+                   if(operatorNode.length > 0){
+                       operatorNode.remove();
+                   }
+                });               
             };
             jQuery.get( uri ,{}, callback );
         }
@@ -412,29 +429,52 @@ require_once 'macros.php';
     var SearchQueryObj = {'id' : 0, 'query_name': "No name", 'query_details': {} };
     <?php
         if(isset ($the_query_details)){
-            echo "SearchQueryObj.id = ".$the_query_details->id." ;";
-            echo "SearchQueryObj.query_name = \"".$the_query_details->query_name."\" ;";
-            echo "SearchQueryObj.query_details = ".$the_query_details->query_details." ;";
+            echo "SearchQueryObj.id = ".$the_query_details->id." ;\n";
+            echo "SearchQueryObj.query_name ='".$the_query_details->query_name."' ;\n";
+            echo "SearchQueryObj.query_details = ".$the_query_details->query_details." ;\n";
         }
     ?>
 
-    var checkboxDone = {};
+    
     function loadSearchQueryObj(){
+        var loadedCheckboxIds = {};       
         jQuery(SearchQueryObj.query_details.query_fields).each(function(){
             var fieldId = this.name;
             var fieldValue = this.value;
+            var fieldType = this.type;
             var fieldtypeID = jQuery("#field_" + fieldId).attr(this.name);
             var callbackAfterDone = function(){
-                jQuery("#field_list_view").find("*[id='field_" + fieldId + "']").val(fieldValue);
+                if(fieldType == "checkbox") {
+                    jQuery(SearchQueryObj.query_details.query_fields).each(function(){
+                        jQuery("#field_list_view").find("input[name='field_" + this.name + "'][value='" + this.value + "']").attr("checked","checked" );
+                    });
+                } else if(fieldType == "select-one") {
+                    jQuery("#field_list_view").find("select[id='field_" + fieldId+ "']").val(fieldValue);
+                } else {
+                    jQuery("#field_list_view").find("input[id='field_" + fieldId + "']").val(fieldValue);
+                }
             };
-            if( !(checkboxDone[fieldId])) {
+            if( !(loadedCheckboxIds[fieldId]) ) {
                 selectSearchedField(fieldId, fieldtypeID, callbackAfterDone);
-            }
-            checkboxDone[fieldId] = true;
+            }            
+            loadedCheckboxIds[fieldId] = true;
         });
+        if(SearchQueryObj.id > 0){
+            var node = jQuery("#query_filters-" + SearchQueryObj.id + "-query_name");
+            node.editable("<?php echo site_url("admin/search/save_query_details"); ?>", {
+                    type      : 'textarea',
+                    rows      : 3,
+                    cancel    : 'Cancel',
+                    submit    : 'Save',
+                    indicator : "<span style='color:red;font-weight:bold;'>Saving...</span>",
+                    tooltip   : "Click to edit",
+                    id   : 'editable_field_name',
+                    name : 'editable_field_value'
+             });             
+         }
     };
 
-    function saveSearchQueryObj(){
+    function saveSearchQueryObj() {
         // pre-submit callback
         var h = function(formData, jqForm, options) {
             var query_details = {};
@@ -455,9 +495,12 @@ require_once 'macros.php';
                 }
             }
             query_details["query_fields"] = query_fields;
-            var query_name = window.prompt("What is your name?","");
 
-            SearchQueryObj.query_name = query_name;
+            if(SearchQueryObj.id == 0) {
+                var query_name = window.prompt("What is your name?","");
+                SearchQueryObj.query_name = query_name;
+            }
+
             SearchQueryObj.query_details = jQuery.toJSON(query_details);
             jQuery.post( "<?php echo site_url("admin/search/save_query_details")?>", SearchQueryObj , function(rs)  {
                 if(rs > 0){
@@ -468,8 +511,7 @@ require_once 'macros.php';
                 }
             });
             return false;
-        };
-        
+        };        
         jQuery('#query_builder_form').ajaxSubmit({beforeSubmit: h});
     };
 

@@ -36,7 +36,8 @@ class page_decorator {
     }
 
     public function setPageTitle($pageTitle) {
-        $this->pageTitle = trim($pageTitle);
+        $pageTitle = show_the_excerpt(trim($pageTitle), 12);
+        $this->pageTitle = ($pageTitle);
     }
 
     public function getScriptFiles() {

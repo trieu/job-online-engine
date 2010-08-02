@@ -437,7 +437,9 @@ require_once 'macros.php';
 
     
     function loadSearchQueryObj(){
-        var loadedCheckboxIds = {};       
+        var loadedCheckboxIds = {};
+        var loadedFieldNum = 0;
+        var sizeOfQuery = SearchQueryObj.query_details.query_fields.length;
         jQuery(SearchQueryObj.query_details.query_fields).each(function(){
             var fieldId = this.name;
             var fieldValue = this.value;
@@ -452,6 +454,11 @@ require_once 'macros.php';
                     jQuery("#field_list_view").find("select[id='field_" + fieldId+ "']").val(fieldValue);
                 } else {
                     jQuery("#field_list_view").find("input[id='field_" + fieldId + "']").val(fieldValue);
+                }
+                loadedFieldNum++;
+                if(loadedFieldNum == sizeOfQuery) {
+                    //load done, now do searching
+                    jQuery('#query_builder_form').ajaxSubmit({beforeSubmit: initSearchQuery});
                 }
             };
             if( !(loadedCheckboxIds[fieldId]) ) {

@@ -11,11 +11,19 @@
         <b> DRD Information Planning</b> is the system that all processes in DRD can be defined, managed and searched.
     </div>
 
-    <h3>Chào mừng bạn đến với hệ thống database việc làm DRD</h3>
-    <div class="user_link" style="display: none;">
-        Để đăng ký mới về thông tin công việc, vui chọn liên kết sau: 
-        <?php action_url_a('user/public_object_controller/create_object/4', "Đăng ký mới công việc"); ?>
-    </div>
+    <h3 class="vietnamese_english">
+        Chào mừng bạn đến với hệ thống database việc làm DRD
+        /
+        Welcome to DRD Database
+    </h3>
+    <ul>
+        <li>
+            <a hreflang="en" href="javascript: switchPageToLanguage('tiengviet.php','english.php')" title="Use database in English">Use database in English</a>
+        </li>
+        <li>
+            <a hreflang="en" href="javascript: switchPageToLanguage('english.php','tiengviet.php')" title="Ngôn ngữ hiển thị là tiếng Việt">Sử dụng ngôn ngữ là Tiếng Việt</a>
+        </li>        
+    </ul>
 
     <div style="margin-top: 40px">       
         <div style="display: none;">

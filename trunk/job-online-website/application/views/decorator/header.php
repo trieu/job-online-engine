@@ -36,24 +36,24 @@
                 }
             ?>
             <li>
-                <a href="javascript: " title="Set Options of database">Options</a>
+                <a href="javascript:" title="Set Options of database" >Options</a>
                 <ul>
                     <li>
-                        <a hreflang="en" href="javascript: switchPageToLanguage('tiengviet.php','english.php')" title="View page in English">Language is English</a>
+                        <a hreflang="en" href="javascript: switchPageToLanguage('tiengviet.php','english.php')" title="Use database in English">Use database in English</a>
                     </li>
                     <li>
                         <a hreflang="en" href="javascript: switchPageToLanguage('english.php','tiengviet.php')" title="Ngôn ngữ hiển thị là tiếng Việt">Ngôn ngữ là Tiếng Việt</a>
                     </li>
                     <li>
-                        <a id="page_leftnav_toggle" href="javascript: togglePageNavigation()" >Hide Left Navigation</a>
+                        <a id="page_leftnav_toggle" href="javascript: togglePageNavigation()" class="vietnamese_english" >Ẩn menu trái / Hide Left Navigation</a>
                     </li>
                 </ul>
             </li>
             <li>
-                <a href="http://docs.google.com/View?id=dgsrc7qn_345j7f5smgf" target="_blank" title="Hướng dẫn sử dụng (User Guide) for DRD Admin">Help</a>
+                <a href="http://docs.google.com/View?id=dgsrc7qn_345j7f5smgf" target="_blank" title="Hướng dẫn sử dụng (User Guide) for DRD Admin" class="vietnamese_english" >Hướng dẫn sử dụng/User Guide</a>
             </li>
             <li>
-                <a href="http://code.google.com/p/job-online-engine/issues/list" target="_blank" title="Submit your issues">Submit issues</a>
+                <a href="http://code.google.com/p/job-online-engine/issues/list" target="_blank" title="Submit your issues" class="vietnamese_english" >Thông báo lỗi/Submit issues</a>
             </li>
     </ul>
 </div>
@@ -68,7 +68,10 @@
     });
 
     function switchPageToLanguage(from, to){
-        var currentUrl = window.location + "";;
+        var currentUrl = window.location + "";
+        if(currentUrl == "<?php echo base_url(); ?>" ){
+            currentUrl += "tiengviet.php";
+        }
         currentUrl = currentUrl.replace(from, to);
         window.location = currentUrl;
     };

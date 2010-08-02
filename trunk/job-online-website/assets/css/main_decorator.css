@@ -80,6 +80,17 @@ input[type='button']:hover, input[type='submit']:hover {
 }
 center .button { margin: 10px 2px 20px 2px;}
 
+.editable_text {
+    border: 1px solid #FFF;
+    cursor:pointer; display:block;
+    font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+    margin:0; outline:medium none;
+    padding:2px 8px;
+}
+.editable_text:hover {
+   border: 1px solid #f00; background: #eef; color: #f00;
+}
+
 /* Highlight invalid form fields. */
 .invalid {
     background: red; color: white;

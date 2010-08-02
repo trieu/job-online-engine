@@ -167,6 +167,14 @@ class search extends Controller {
         echo json_encode($data);
     }
 
+    private function tripForSafeName ($str) {
+        $str = str_replace("\n", " ", $str);
+        $str = str_replace("'", "", $str);
+        $str = str_replace("\"", "", $str);
+        $str = str_replace("\\", "", $str);        
+        return $str;
+    }
+
     /**
      * @Secured(role = "Administrator")
      */
@@ -174,16 +182,38 @@ class search extends Controller {
         $id = (int) $this->input->post("id");
         $query_name = $this->input->post("query_name");
         $query_details = $this->input->post("query_details");
+        $editable_field_name = $this->input->post("editable_field_name");
+        $editable_field_value = $this->input->post("editable_field_value");
+        $isAddNew = ($id == 0 && $editable_field_name == FALSE );
+        $isUpdate = ($id > 0 || $editable_field_name != FALSE );
 
-        if ($id == 0) {
-            $data = array(
-                'query_name' => $query_name,
-                'query_details' => $query_details
-            );
-            $this->db->insert('query_filters', $data);
+        $data = array();
+        if( $query_name != FALSE){
+            $data['query_name'] = $this->tripForSafeName($query_name);
         }
+        if( $query_details != FALSE){
+            $data['query_details'] = $query_details;
+        }
+        if ($isAddNew) {           
+            $this->db->insert('query_filters', $data);
+        } else if($isUpdate > 0) {
+            if( $editable_field_name != FALSE) {
+                $editable_field_name = str_replace("query_filters-","", $editable_field_name);
+                $editable_field_name = str_replace("-query_name", "", $editable_field_name);                 
+                $id = (int)$editable_field_name;
+                $data['query_name'] = $this->tripForSafeName($editable_field_value);
+            }            
+            $this->db->where('id', $id);
+            $this->db->update('query_filters', $data);
+        }
+        ApplicationHook::logInfo($this->db->last_query());
         if ($this->db->affected_rows() > 0) {
-            echo $this->db->insert_id();
+            if( $editable_field_name != FALSE) {
+                echo $data['query_name'];
+            }
+            else {
+                echo $this->db->insert_id();
+            }
         } else {
             echo -1;
         }
@@ -194,6 +224,7 @@ class search extends Controller {
      * @Secured(role = "Administrator")
      */
     public function delete_query_details($id) {
+        $this->page_decorator->setPageTitle("Delete query details, id= ".$id);
         $this->db->delete('query_filters', array('id' => $id));
         $data = array();
         if ($this->db->affected_rows() > 0) {
@@ -217,6 +248,7 @@ class search extends Controller {
             // echo $row->query_name;
             // echo $row->query_details;
             $data["the_query_details"] = $row;
+            $this->page_decorator->setPageTitle($row->query_name);
         }
         $this->load->view("admin/search_query_view", $data);
     }
@@ -226,6 +258,7 @@ class search extends Controller {
      * @Secured(role = "Administrator")
      */
     public function list_all_query_details() {
+        $this->page_decorator->setPageTitle("List all saved queries");
         $this->db->select('id, query_name');
         $query = $this->db->get('query_filters');
 

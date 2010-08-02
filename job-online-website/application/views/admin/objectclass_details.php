@@ -82,7 +82,7 @@ echo renderInputField("AccessDataURI","AccessDataURI",$obj->getAccessDataURI(),"
     
 </div>
 
-<div>
+<div style="display: none;">
     <input type="text" id="ObjectClassSelfID" name="ObjectClassSelfID" value="<?php echo $obj->getObjectClassID()?>"/>
     <input type="text" id="ObjectClassOtherID" name="ObjectClassOtherID" />
 

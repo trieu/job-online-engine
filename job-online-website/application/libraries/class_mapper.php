@@ -73,7 +73,6 @@ class class_mapper {
 
                 }
 
-
                 if( ($property->isPrivate() || $property->isProtected()) && $is_db_field) {
                     $getter = $this->objectClass->getMethod( 'get'.$property->getName() );
                     //ApplicationHook::log('get'.strtoupper($property->getName()));
@@ -97,11 +96,10 @@ class class_mapper {
     }
 
     public function DataListToDataTable($class_name, $list, $actions = "") {
-        $data_table = array();
-        $idx = 0;
+        $data_table = array();        
         foreach ($list as $obj) {
             $row_data = $this->classToArray($class_name, $obj , $actions);
-            $data_table[$idx++] = $row_data;
+            array_push($data_table, $row_data);
         }
         return $data_table;
     }

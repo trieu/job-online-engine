@@ -20,7 +20,7 @@ class search_manager extends Model {
         $this->CI =& get_instance();
     }
 
-    var $get_fields_object_sql = "
+    private $GET_BASIC_FIELDS_OBJECTS_SQL = "
                 SELECT r.*
                 FROM
                 (
@@ -61,7 +61,47 @@ class search_manager extends Model {
                 WHERE objects.ObjectClassID = ?
                 )
                 ) r  ";
-    
+
+     private $GET_FULL_FIELDS_OBJECTS_SQL = "
+                SELECT r.*
+                FROM
+                (
+                (
+                SELECT objects.ObjectID, fields.FieldID, fields.FieldName, fieldoptions.OptionName as FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                    AND fields.FieldTypeID >= 4
+                    AND fields.FieldTypeID < 7
+                    AND fields.FieldID IN (
+                             SELECT field_form.FieldID
+                             FROM field_form, form_process, class_using_process
+                             WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
+                                   AND class_using_process.ObjectClassID = ?
+                                )
+                )
+                INNER JOIN fieldoptions ON fieldoptions.FieldOptionID = fieldvalues.FieldValue
+                WHERE objects.ObjectClassID = ?
+                )
+                UNION
+                (
+                SELECT objects.ObjectID, fields.FieldID, fields.FieldName,  fieldvalues.FieldValue as FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                    AND fields.FieldTypeID >= 1
+                    AND fields.FieldTypeID <= 3                   
+                    AND fields.FieldID IN (
+                             SELECT field_form.FieldID
+                             FROM field_form, form_process, class_using_process
+                             WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
+                                   AND class_using_process.ObjectClassID = ?
+                                )
+                )
+                WHERE objects.ObjectClassID = ?
+                )
+                ) r  ";
+
 
     protected function buildSQLSearchForANDOperator($query_fields) {
         $sql = "";
@@ -138,7 +178,7 @@ class search_manager extends Model {
         return $matched_object_ids;
     }
 
-    public function search_object_for_table_view($ObjectClassID, $query_fields, $return_query = FALSE, $startIndex = -1, $limitSizeReturn = -1) {
+    public function search_objects($ObjectClassID, $query_fields, $return_query = FALSE, $startIndex = -1, $limitSizeReturn = -1, $inDefaultProcess = TRUE) {
         $this->CI->load->model('objectclass_manager');
         
         $finalSet = array();
@@ -155,7 +195,11 @@ class search_manager extends Model {
             }
         }
         $powerOfSet = count($finalSet);
-        $sql = $this->get_fields_object_sql;
+        
+        $sql = $this->GET_BASIC_FIELDS_OBJECTS_SQL;
+        if($inDefaultProcess == FALSE){
+            $sql = $this->GET_FULL_FIELDS_OBJECTS_SQL;
+        }
 
         if($powerOfSet <= 0 ) {
             $sql .= " WHERE r.ObjectID IN ( -1 ) ";

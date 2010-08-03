@@ -96,16 +96,7 @@ require_once 'macros.php';
     }
     ?>
     <form id="query_builder_form" action="<?= site_url("admin/search/do_search")?>" accept="utf-8" method="post">
-        <div class="query_question" >
-             <div>
-                 <div>
-                    <b class="vietnamese_english" > Sử dụng báo cáo thống kế /Statistics by Field ?</b>                    
-                    <input id="statistics_mode_true" type="radio" name="statistics_mode" value="true" onchange="setStatisticsMode(this)"/>
-                    <label for="statistics_mode_true" class="vietnamese_english" >Đồng ý / Yes</label>
-                    <input id="statistics_mode_false" type="radio" name="statistics_mode" value="false" onchange="setStatisticsMode(this)"/>
-                    <label for="statistics_mode_false" class="vietnamese_english">Không / No</label>
-                </div>
-            </div>
+        <div class="query_question" >            
             <div>
                 <label for="ObjectClassID" class="vietnamese_english" >Đối tượng quản lý / Business Object: </label>
                 <select name="ObjectClassID" id="ObjectClassID" onchange="populateProcesses()" > </select>
@@ -117,7 +108,16 @@ require_once 'macros.php';
             <div>
                 <label for="FormID" class="vietnamese_english" >Form dữ liệu / Form : </label>
                 <select name="FormID" id="FormID" onchange="populateFields()"></select>
-            </div>            
+            </div>
+            <div id="statistics_setting">
+                 <div>
+                    <b class="vietnamese_english" > Sử dụng báo cáo thống kế /Use Statistics ?</b>
+                    <input id="statistics_mode_true" type="radio" name="statistics_mode" value="true" onchange="setStatisticsMode(this)"/>
+                    <label for="statistics_mode_true" class="vietnamese_english" >Đồng ý / Yes</label>
+                    <input id="statistics_mode_false" type="radio" name="statistics_mode" value="false" onchange="setStatisticsMode(this)"/>
+                    <label for="statistics_mode_false" class="vietnamese_english">Không / No</label>
+                </div>
+            </div>
             <div>
                 <div id="question_holder_csv_export" style="margin-top: 8px;">
                     <b class="vietnamese_english"> Xuất dữ liệu cho Excel / CSV Export for Excel ?</b>
@@ -141,15 +141,14 @@ require_once 'macros.php';
                     </thead>
                     <tbody>
                         <tr>
-                            <td style="width:25%">
-                                <div>
+                            <td style="width:25%;vertical-align:top;">
+                                <div style="display: none;">
                                     <input style="width:95%" id="searched_field_hint_filter" type="text" name="" value="" />
                                 </div>
                                 <div class="content" ></div>
                             </td>
                             <td style="width:75%; vertical-align:top;">
-                                <div id="searched_field_form" >
-                                </div>
+                                <div id="searched_field_form" ></div>
                             </td>
                         </tr>
                     </tbody>
@@ -181,6 +180,8 @@ require_once 'macros.php';
 
 <?php jsMetaObjectScript(); ?>
 <script type="text/javascript">
+    var afterInitFormCallback = [];
+
     function toggleFieldList(node){
         var th = jQuery("#field_list_view").find("table th:first");
         var td = jQuery("#field_list_view").find("table td:first");
@@ -215,7 +216,7 @@ require_once 'macros.php';
             }
 
             jQuery("#field_list_view .ajax_loader").hide();
-            loadSearchQueryObj();
+            jQuery(afterInitFormCallback).each(function(){ if(this instanceof Function) this.apply({}, []); });
         };
         jQuery("#field_list_view .ajax_loader").show();
         jQuery.post(url, filter, handler);
@@ -426,17 +427,22 @@ require_once 'macros.php';
     });
 
 
-    var SearchQueryObj = {'id' : 0, 'query_name': "No name", 'query_details': {} };
+    var SearchQueryObj = {'id' : 0, 'query_name': "No name", 'query_details': [] };
     <?php
         if(isset ($the_query_details)){
             echo "SearchQueryObj.id = ".$the_query_details->id." ;\n";
             echo "SearchQueryObj.query_name ='".$the_query_details->query_name."' ;\n";
             echo "SearchQueryObj.query_details = ".$the_query_details->query_details." ;\n";
+            echo "afterInitFormCallback.push(loadSearchQueryObj);\n";
         }
     ?>
-
+        
     
     function loadSearchQueryObj(){
+        if(SearchQueryObj.id == 0){
+            return;
+        }
+
         var loadedCheckboxIds = {};
         var loadedFieldNum = 0;
         var sizeOfQuery = SearchQueryObj.query_details.query_fields.length;
@@ -471,6 +477,7 @@ require_once 'macros.php';
             node.editable("<?php echo site_url("admin/search/save_query_details"); ?>", {
                     type      : 'textarea',
                     rows      : 3,
+                    width     : '98%',
                     cancel    : 'Cancel',
                     submit    : 'Save',
                     indicator : "<span style='color:red;font-weight:bold;'>Saving...</span>",
@@ -510,17 +517,30 @@ require_once 'macros.php';
 
             SearchQueryObj.query_details = jQuery.toJSON(query_details);
             jQuery.post( "<?php echo site_url("admin/search/save_query_details")?>", SearchQueryObj , function(rs)  {
-                if(rs > 0){
-                    alert("Save successfully!");
-                }
-                else {
-                    alert("Save failed!");
-                }
+                
+                    alert("Saved this query! ");
+                
             });
             return false;
         };        
         jQuery('#query_builder_form').ajaxSubmit({beforeSubmit: h});
     };
 
-   
+
+
+    <?php if ( isset ($use_form_statistics) ) {?>
+        jQuery("#statistics_setting").show();
+        jQuery("#question_holder_csv_export").hide();        
+        afterInitFormCallback.push(function(){
+            jQuery("#statistics_mode_true").attr("checked", "checked");
+            setStatisticsMode(jQuery("#statistics_mode_true"));
+        });        
+    <?php } ?>
+
+    <?php if ( isset ($use_form_export_data) ) { ?>
+        jQuery("#statistics_setting").hide();
+        jQuery("#question_holder_csv_export").show();
+        jQuery("#csv_export_true").attr("checked", "checked");
+    <?php } ?>
+
 </script>

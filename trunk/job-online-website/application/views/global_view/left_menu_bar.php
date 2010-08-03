@@ -38,9 +38,12 @@
 
 
 $action_names  = array(
-    "Đăng ký người tìm việc" => "user/public_object_controller/create_object/1"
-    ,"Đăng ký nhà tuyển dụng" => "user/public_object_controller/create_object/2"
-    );
+    "Đăng ký người tìm việc / Register new Job Seeker" => "user/public_object_controller/create_object/1"
+    ,"Đăng ký nhà tuyển dụng / Register new Employer" => "user/public_object_controller/create_object/2"
+    ,"Tìm kiếm / Search" => "admin/search"
+    ,"Thống kê dữ liệu / Statistics" => "admin/search/load_form_statistics"
+    ,"Xuất dữ liệu cho Excel / Export data for Excel" => "admin/search/load_form_export_data"
+);
 renderGroupOfActions("usergroup_menu","Menu", $action_names);
 ?>
 
@@ -51,7 +54,7 @@ renderGroupOfActions("usergroup_menu","Menu", $action_names);
     </h3>
     <ul id="<?= $group_id ?>">
             <?php foreach ($action_names as $action_name => $action_uri) {
-                echo '<li><a href="'.site_url($action_uri).'">'.$action_name.'</a></li>';
+                echo '<li><a class="vietnamese_english" href="'.site_url($action_uri).'">'.$action_name.'</a></li>';
             }?>
     </ul>
 </div>

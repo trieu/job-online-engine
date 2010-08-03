@@ -31,9 +31,28 @@ class search extends Controller {
      * @Secured(role = "Administrator")
      */
     public function index() {
-        $this->page_decorator->setPageTitle("Search and Statistics Form");
-        $data = array();
-        //$this->load->view("global_view/search_query_view", $data);
+        $this->page_decorator->setPageTitle("Default Search and Statistics Form");
+        $data = array();        
+        $this->load->view("admin/search_query_view", $data);
+    }
+
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function load_form_export_data() {
+        $this->page_decorator->setPageTitle("Export data for Excel Form");
+        $data = array("use_form_export_data" => TRUE);
+        $this->load->view("admin/search_query_view", $data);
+    }
+
+        /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function load_form_statistics() {
+        $this->page_decorator->setPageTitle("Export data for Excel Form");
+        $data = array("use_form_statistics" => TRUE);
         $this->load->view("admin/search_query_view", $data);
     }
 
@@ -131,17 +150,18 @@ class search extends Controller {
         $csv_export = $this->input->post("csv_export");
 
         try {
-            $data = $this->search_manager->search_object_for_table_view($ObjectClassID, $query_fields);
             if ($csv_export == "false") {
+                $data = $this->search_manager->search_objects($ObjectClassID, $query_fields);
                 // echo $this->load->view("admin/all_objects_in_class_list_view",$data, TRUE);
                 echo $this->load->view("admin/all_objects_in_class", $data, TRUE);
             } else {
+                $data = $this->search_manager->search_objects($ObjectClassID, $query_fields, FALSE, -1, -1, FALSE);
                 $strData = $this->load->view("admin/all_objects_in_class_csv_export", $data, TRUE);
                 $theFile = "search_results.csv";
                 $fh = fopen($theFile, 'w') or die("can't open file");
                 fwrite($fh, $strData);
                 fclose($fh);
-                echo str_replace("index.php/", "", site_url($theFile));
+                echo base_url().$theFile;
             }
         } catch (Exception $e) {
             echo $e->getTraceAsString();

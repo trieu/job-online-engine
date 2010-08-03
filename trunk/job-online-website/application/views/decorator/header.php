@@ -26,9 +26,20 @@
                         <?php action_url_a('user/public_object_controller/list_objects/jobs', lang('job'), lang('job_a_title')); ?>
                     </li>
                 </ul>
-            </li>           
-            <li>
-                <?php action_url_a('admin/search', lang('search'), lang('search_title')); ?>
+            </li>
+             <li>
+                <a href="javascript:" title="Set Options of database" >Database Tools</a>
+                <ul>
+                    <li>
+                        <?php action_url_a('admin/search', lang('search'), lang('search_title')); ?>
+                    </li>
+                    <li>
+                        <a href="<?php echo site_url("admin/search/load_form_statistics") ?>" class="vietnamese_english">Statistics</a>
+                    </li>
+                    <li>
+                        <a href="<?php echo site_url("admin/search/load_form__export_data") ?>" class="vietnamese_english">Export for Excel</a>
+                    </li>
+                </ul>
             </li>
             <?php
                 if($isGroupAdmin){

@@ -34,10 +34,10 @@
                         <?php action_url_a('admin/search', lang('search'), lang('search_title')); ?>
                     </li>
                     <li>
-                        <a href="<?php echo site_url("admin/search/load_form_statistics") ?>" class="vietnamese_english">Statistics</a>
+                        <a href="<?php echo site_url("admin/search/load_form_statistics") ?>" class="vietnamese_english">Thống kê dữ liệu / Statistics</a>
                     </li>
                     <li>
-                        <a href="<?php echo site_url("admin/search/load_form__export_data") ?>" class="vietnamese_english">Export for Excel</a>
+                        <a href="<?php echo site_url("admin/search/load_form_export_data") ?>" class="vietnamese_english">Xuất dữ liệu cho Excel / Export data for Excel</a>
                     </li>
                 </ul>
             </li>

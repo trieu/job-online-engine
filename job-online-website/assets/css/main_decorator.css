@@ -87,6 +87,12 @@ center .button { margin: 10px 2px 20px 2px;}
     margin:0; outline:medium none;
     padding:2px 8px;
 }
+.editable_text input,textarea{
+    background-color: #FFF!important;
+}
+.editable_text input:hover,textarea:hover{
+    background-color: #FFF!important;
+}
 .editable_text:hover {
    border: 1px solid #f00; background: #eef; color: #f00;
 }

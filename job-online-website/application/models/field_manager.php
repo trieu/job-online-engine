@@ -113,5 +113,14 @@ class field_manager extends data_manager {
         $join_filter = array("field_form"=>"field_form.FieldID = fields.FieldID AND field_form.FormID = ".$formID);
         return $this->field_manager->find_by_filter(array(),$join_filter);
     }
+
+    public function setOrderForFieldsInForm($FieldOrderList, $FormID ) {
+        $this->db->trans_start();
+        foreach ($FieldOrderList as $OrderInForm => $FieldID) {
+            $this->db->where( array('FieldID' => $FieldID, 'FormID' => $FormID) );
+            $this->db->update('field_form', array('OrderInForm' => $OrderInForm) );
+        }
+        $this->db->trans_complete();
+    }
 }
 ?>

@@ -110,6 +110,14 @@ foreach ($related_objects["processes"] as $proID => $proName) {
         jQuery("#form_builder_container div[class*='ui-resizable-handle']").remove();
         data["CacheContent"] =  jQuery("#form_builder_container").html();
         data["JavascriptContent"] = jQuery("#form_builder_script").val().trim();
+        
+        //auto-mapping field from DOM into fieldOrderArr array
+        var FieldOrderList = [];
+        jQuery("#form_builder_container").find("div[id*='wrapper_']").each(function(){
+        var fieldId = jQuery(this).attr('id').replace('wrapper_field_','');
+            FieldOrderList.push(fieldId);
+        });
+        data["FieldOrderList"] = jQuery.toJSON(FieldOrderList);
 
         var uri = "<?= site_url("admin/form_controller/saveFormBuilderResult") ?>";
         var callback =  function(id){

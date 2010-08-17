@@ -110,7 +110,7 @@ class Field {
     }
 
     public function setOrderInForm($OrderInForm) {
-        if($OrderInForm > 0){
+        if($OrderInForm >= 0){
             $this->OrderInForm = $OrderInForm;
         }
     }

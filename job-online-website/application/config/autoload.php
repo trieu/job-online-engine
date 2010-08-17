@@ -79,7 +79,7 @@ $autoload['plugin'] = array();
 |
 */
 
-$autoload['config'] = array('redux_auth', 'email','decorator');
+$autoload['config'] = array('redux_auth', 'email','decorator','zend_ci_config');
 
 
 /*

@@ -99,13 +99,19 @@ class form_controller extends admin_panel {
     /** 
      * @Secured(role = "Administrator")
      */
-    public function saveFormBuilderResult() {      
+    public function saveFormBuilderResult() {
+        $FormID = $this->input->post("ObjectPK");
         $this->load->model("object_html_cache_manager");
         $cache = new ObjectHTMLCache();
         $cache->setObjectClass( $this->input->post("ObjectClass") );
-        $cache->setObjectPK( $this->input->post("ObjectPK") );
+        $cache->setObjectPK( $FormID );
         $cache->setCacheContent( $this->input->post("CacheContent") );
         $cache->setJavascriptContent( $this->input->post("JavascriptContent") );
+
+        $this->load->model("field_manager");
+        $FieldOrderList = json_decode($this->input->post("FieldOrderList"));
+        $this->field_manager->setOrderForFieldsInForm( $FieldOrderList, $FormID );
+
         echo $this->object_html_cache_manager->save($cache);
     }
 

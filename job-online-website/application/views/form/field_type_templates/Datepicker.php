@@ -1,4 +1,4 @@
-<div class="datapicker_wrapper">
+<div id="wrapper_<?= $field_name ?>" class="datapicker_wrapper">
     <label for="<?= $field_name ?>" class="vietnamese_english" ><?= $field_label ?>:</label>
     <input id="<?= $field_name ?>" name="<?= $field_name ?>" type="text" value="" class="<?= $rules ?>" />
     <!--SCRIPT

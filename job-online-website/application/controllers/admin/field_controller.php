@@ -61,7 +61,7 @@ class field_controller extends admin_panel {
         $field->setFieldTypeID( $this->input->post("FieldTypeID") );
         $field->setFieldName( $this->input->post("FieldName") );
         $field->setValidationRules( $this->input->post("ValidationRules") );
-        $field->setFieldOptions( json_decode( $this->input->post("field_option_data") ) );
+        $field->setFieldOptions( json_decode( $this->input->post("field_option_data") ) );        
         $field->addToForm( $formID );
 
         $fieldID = $this->field_manager->save($field);

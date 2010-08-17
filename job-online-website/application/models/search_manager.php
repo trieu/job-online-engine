@@ -265,8 +265,12 @@ class search_manager extends Model {
                 $objects[ $record['ObjectID'] ] = array();
                 $objects[ $record['ObjectID'] ]["fields"] = array();
             }
-            $metadata_object[$record['FieldID']] = $record['FieldName'];
-            $objects[$record['ObjectID']]["fields"][$record['FieldID']] = $record['FieldValue'];
+            $metadata_object[$record['FieldID']] = $record['FieldName'];            
+            if( isset( $objects[$record['ObjectID']]["fields"][$record['FieldID']] ) ){
+                $objects[$record['ObjectID']]["fields"][$record['FieldID']] .= (" ; ".$record['FieldValue']);
+            } else {
+                $objects[$record['ObjectID']]["fields"][$record['FieldID']] = $record['FieldValue'];
+            }
         }
 
         $data = array();
@@ -347,7 +351,11 @@ class search_manager extends Model {
                 $objects[ $record['ObjectID'] ]["fields"] = array();
             }
             $metadata_object[$record['FieldID']] = $record['FieldName'];
-            $objects[$record['ObjectID']]["fields"][$record['FieldID']] = $record['FieldValue'];
+            if( isset( $objects[$record['ObjectID']]["fields"][$record['FieldID']] ) ){
+                $objects[$record['ObjectID']]["fields"][$record['FieldID']] .= (" ; ".$record['FieldValue']);
+            } else {
+                $objects[$record['ObjectID']]["fields"][$record['FieldID']] = $record['FieldValue'];
+            }            
         }
 
         $data = array();

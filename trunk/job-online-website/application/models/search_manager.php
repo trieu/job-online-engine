@@ -20,7 +20,7 @@ class search_manager extends Model {
         $this->CI =& get_instance();
     }
 
-    private $GET_BASIC_FIELDS_OBJECTS_SQL = "
+    protected $GET_BASIC_FIELDS_OBJECTS_SQL = "
                 SELECT r.*
                 FROM
                 (
@@ -62,7 +62,7 @@ class search_manager extends Model {
                 )
                 ) r  ";
 
-     private $GET_FULL_FIELDS_OBJECTS_SQL = "
+     protected $GET_FULL_FIELDS_OBJECTS_SQL = "
                 SELECT r.*
                 FROM
                 (
@@ -91,6 +91,46 @@ class search_manager extends Model {
                 INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
                     AND fields.FieldTypeID >= 1
                     AND fields.FieldTypeID <= 3                   
+                    AND fields.FieldID IN (
+                             SELECT field_form.FieldID
+                             FROM field_form, form_process, class_using_process
+                             WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
+                                   AND class_using_process.ObjectClassID = ?
+                                )
+                )
+                WHERE objects.ObjectClassID = ?
+                )
+                ) r  ";
+
+    protected $GET_FULL_OBJECTS_BY_CLASS_SQL = "
+                SELECT r.*
+                FROM
+                (
+                (
+                SELECT objects.ObjectID, fields.FieldID, fields.FieldName, fieldoptions.OptionName as FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                    AND fields.FieldTypeID >= 4
+                    AND fields.FieldTypeID <= 7
+                    AND fields.FieldID IN (
+                             SELECT field_form.FieldID
+                             FROM field_form, form_process, class_using_process
+                             WHERE field_form.FormID = form_process.FormID AND form_process.ProcessID = class_using_process.ProcessID
+                                   AND class_using_process.ObjectClassID = ?
+                                )
+                )
+                INNER JOIN fieldoptions ON fieldoptions.FieldOptionID = fieldvalues.FieldValue
+                WHERE objects.ObjectClassID = ?
+                )
+                UNION
+                (
+                SELECT objects.ObjectID, fields.FieldID, fields.FieldName,  fieldvalues.FieldValue as FieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
+                INNER JOIN fields ON (fields.FieldID = fieldvalues.FieldID
+                    AND fields.FieldTypeID >= 1
+                    AND fields.FieldTypeID <= 3
                     AND fields.FieldID IN (
                              SELECT field_form.FieldID
                              FROM field_form, form_process, class_using_process
@@ -139,7 +179,7 @@ class search_manager extends Model {
         }
         $query = $this->db->query($sql);
        // print_r($this->db->last_query());
-       // ApplicationHook::logInfo($this->db->last_query());
+        ApplicationHook::logInfo($this->db->last_query());
         return $query->result_array();
     }
 
@@ -185,7 +225,7 @@ class search_manager extends Model {
         foreach ($query_fields as  $kv ) {
             $query_operator = $kv->operator;
             if($kv->type == "checkbox"){
-                $query_operator = "AND";
+                $query_operator = "OR";
             }
             $temSet  = $this->do_query_on_single_field($kv->type, $kv->name, $kv->value);
             if($query_operator == "" || $query_operator == "OR"){
@@ -212,7 +252,7 @@ class search_manager extends Model {
         }
         
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
-       // ApplicationHook::logInfo($this->db->last_query());
+        ApplicationHook::logInfo($this->db->last_query());
         if($return_query) {
             return $query;
         }
@@ -283,13 +323,39 @@ class search_manager extends Model {
             foreach ($countQuery->result_array() as $record) {
                 $data[$statistic_name][$c++]['frequency'] = (int)$record['frequency'];
             }
-
             //ApplicationHook::logInfo(json_encode($countQuery->result_array()));
 
             //just support for do statistics in ONE field only
             //break;
         }
+        return $data;
+    }
 
+     public function search_objects_by_class($ObjectClassID, $startIndex = -1, $limitSizeReturn = -1) {
+        $this->CI->load->model('objectclass_manager');
+
+        $sql = $this->GET_FULL_OBJECTS_BY_CLASS_SQL;
+        $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
+        ApplicationHook::logInfo($this->db->last_query());
+
+        $record_set = $query->result_array();
+        $objects = array();
+        $metadata_object = array();
+        foreach ($record_set as $record) {
+            if( ! isset ($objects[$record['ObjectID']]) ) {
+                $objects[ $record['ObjectID'] ] = array();
+                $objects[ $record['ObjectID'] ]["fields"] = array();
+            }
+            $metadata_object[$record['FieldID']] = $record['FieldName'];
+            $objects[$record['ObjectID']]["fields"][$record['FieldID']] = $record['FieldValue'];
+        }
+
+        $data = array();
+        $data["in_search_mode"] = TRUE;
+        $data["objects"] = $objects;
+        $data["metadata_object"] = $metadata_object;
+        //echo json_encode($objects);
+        $data["objectClass"] = $this->CI->objectclass_manager->find_by_id($ObjectClassID);
         return $data;
     }
 }

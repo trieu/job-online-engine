@@ -85,9 +85,6 @@
     </div>
 </div>
 
-
-
-
 <?php if($total_records > 0) { ?>
 <table border="1" style="margin: 10px 0 0 5px">
     <thead>

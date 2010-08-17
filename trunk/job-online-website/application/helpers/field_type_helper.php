@@ -12,7 +12,7 @@ if ( ! function_exists('renderSelectField') ) {
             $input_id = $input_name;
         }
 
-        $html = $html .  "<div>";
+        $html = $html .  '<div id="wrapper_'.$input_id.'" >';
         $attributes = array(
             'class' => 'vietnamese_english ',
             'style' => '',
@@ -29,7 +29,7 @@ if ( ! function_exists('renderSelectField') ) {
 }
 
 if ( ! function_exists('renderInputField') ) {
-    function renderInputField($input_name,$input_id = "" , $input_value = "", $label_name = "", $ValidationRules = "" ) {
+    function renderInputField($input_name, $input_id = "", $input_value = "", $label_name = "", $ValidationRules = "" ) {
         $html = "";
 
         if($label_name == "") {
@@ -39,7 +39,7 @@ if ( ! function_exists('renderInputField') ) {
             $input_id = $input_name;
         }
 
-        $html = "<div class='textinput_wrapper'>";
+        $html = '<div id="wrapper_'.$input_id.'" class="textinput_wrapper" >';
         $attributes = array(
             'class' => 'vietnamese_english',
             'style' => '',

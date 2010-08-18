@@ -116,10 +116,12 @@ class search_indexer extends Controller {
         $this->zend->load('Zend/Search/Lucene');
 
         $index = $this->zend->get_Zend_Search_Lucene(true);
+        $query = new Zend_Search_Lucene_Search_Query_MultiTerm();
 
-        $queryText = 'Công nghệ thông tin / IT ; Excel ; Word';
-        $term  = new Zend_Search_Lucene_Index_Term($queryText);
-        $query = new Zend_Search_Lucene_Search_Query_Term($term);
+       // $query->addTerm(new Zend_Search_Lucene_Index_Term("Word",'88'));
+        //$query->addTerm(new Zend_Search_Lucene_Index_Term("Đồ họa",'88'));
+        $query->addTerm(new Zend_Search_Lucene_Index_Term("108",'object_id'));
+        
         $hits = $index->find($query);
 
         echo 'Index contains ' . $index->count() .
@@ -128,7 +130,7 @@ class search_indexer extends Controller {
         ' hits<br /><br />';
 
         foreach ($hits as $hit) {
-            echo $hit->ObjectID . '<br />';
+            echo '<br />object_id: '.$hit->object_id . '<br />';
             echo 'Score: ' . sprintf('%.2f', $hit->score) . '<br />';            
         }
     }

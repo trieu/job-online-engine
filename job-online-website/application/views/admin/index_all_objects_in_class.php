@@ -29,15 +29,12 @@
                 <td><?= $objID ?></td>
                 <?php
                     $LuceneDoc = new Zend_Search_Lucene_Document();
-                    $LuceneDoc->addField(Zend_Search_Lucene_Field::Keyword('ObjectID', $objID) );
+                    $LuceneDoc->addField(Zend_Search_Lucene_Field::Keyword('object_id', $objID."") );
                     $fields = $data_map["fields"];
                     foreach ($metadata_object as $FieldID => $FieldName ) {
                         $FieldValue =& $fields[$FieldID];
-                        if( isset($FieldValue) ) {
-                            
-                            $LuceneDoc->addField(Zend_Search_Lucene_Field::Unstored($FieldID.'', ($FieldValue), 'utf-8' ) );
-                            
-                            
+                        if( isset($FieldValue) ) {                            
+                            $LuceneDoc->addField(Zend_Search_Lucene_Field::Unstored($FieldID, ($FieldValue), 'utf-8' ) );
                             echo "<td><span class='data_cell_f_".$FieldID ."'>". $FieldValue ."</span></td>";
                         }
                         else {

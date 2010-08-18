@@ -26,8 +26,7 @@ class CI_Zend {
         ApplicationHook::logInfo("Zend Class $class Loaded");
     }
 
-    public function get_Zend_Search_Lucene($search_mode = true) {
-        Zend_Search_Lucene_Analysis_Analyzer::setDefault(new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8());
+    public function get_Zend_Search_Lucene($search_mode = true) {        
         $search_lucene_directory = $this->CI->config->item('search_lucene_directory');
         $dir_path = $_SERVER['DOCUMENT_ROOT'] . $search_lucene_directory;
         ApplicationHook::logInfo($dir_path);
@@ -37,6 +36,7 @@ class CI_Zend {
         } else {
             $this->index_instance = new Zend_Search_Lucene($dir_path, true);
         }
+        Zend_Search_Lucene_Analysis_Analyzer::setDefault(new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8());
         
         return $this->index_instance;
     }

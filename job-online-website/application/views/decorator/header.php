@@ -1,12 +1,11 @@
-<div class="page_logo"><?= lang('home_page_heading') ?></div>
+<div class="page_logo">
+ <?php action_url_a('', lang('home_page_heading'), lang('home_page')); ?>
+</div>
 
 <div class="page_menu">
-    <ul id="top_menu_bar" class="sf-menu">
+    <ul id="top_menu_bar" class="sf-menu">            
             <li class="current">
-                <?php action_url_a('', lang('home_page')); ?>
-            </li>
-            <li>
-                <a href="javascript: " title="Manage databases">Databases</a>
+                <a href="javascript: " title="<?php echo lang('databases_title'); ?>"><?php echo lang('databases'); ?></a>
                 <ul>
                     <li>
                         <a href="javascript: " title="<?php echo lang('job_seeker_a_title'); ?>"><?php echo lang('job_seeker'); ?></a>
@@ -28,7 +27,7 @@
                 </ul>
             </li>
              <li>
-                <a href="javascript:" title="Set Options of database" >Database Tools</a>
+                <a href="javascript:" title="<?php echo lang('database_tools_title'); ?>" ><?php echo lang('database_tools'); ?></a>
                 <ul>
                     <li>
                         <?php action_url_a('admin/search', lang('search'), lang('search_title')); ?>
@@ -37,17 +36,12 @@
                         <a href="<?php echo site_url("admin/search/load_form_statistics") ?>" class="vietnamese_english">Thống kê dữ liệu / Statistics</a>
                     </li>
                     <li>
-                        <a href="<?php echo site_url("admin/search/load_form_export_data") ?>" class="vietnamese_english">Xuất dữ liệu cho Excel / Export data for Excel</a>
+                        <a href="<?php echo site_url("admin/search/load_form_export_data") ?>" class="vietnamese_english">Xuất dữ liệu Excel / Export data for Excel</a>
                     </li>
                 </ul>
-            </li>
-            <?php
-                if($isGroupAdmin){
-                    echo '<li>'.anchor('admin/admin_panel', lang('admin_panel'),array("title"=>"Panel for Admin")).'</li>';
-                }
-            ?>
+            </li>           
             <li>
-                <a href="javascript:" title="Set Options of database" >Options</a>
+                <a href="javascript:" title="" ><?php echo lang('options'); ?></a>
                 <ul>
                     <li>
                         <a hreflang="en" href="javascript: switchPageToLanguage('tiengviet.php','english.php')" title="Use database in English">Use database in English</a>
@@ -66,6 +60,11 @@
             <li>
                 <a href="http://code.google.com/p/job-online-engine/issues/list" target="_blank" title="Submit your issues" class="vietnamese_english" >Thông báo lỗi/Submit issues</a>
             </li>
+            <?php
+                if($isGroupAdmin){
+                    echo '<li>'.anchor('admin/admin_panel', lang('admin_panel'),array("title"=>"Panel for Database Admin")).'</li>';
+                }
+            ?>
     </ul>
 </div>
 

@@ -41,8 +41,9 @@ $action_names  = array(
     "Đăng ký người tìm việc / Register new Job Seeker" => "user/public_object_controller/create_object/1"
     ,"Đăng ký nhà tuyển dụng / Register new Employer" => "user/public_object_controller/create_object/2"
     ,"Tìm kiếm / Search" => "admin/search"
+    ,"Truy vấn dữ diệu / Database queries" => "admin/search/list_all_query_details"
     ,"Thống kê dữ liệu / Statistics" => "admin/search/load_form_statistics"
-    ,"Xuất dữ liệu cho Excel / Export data for Excel" => "admin/search/load_form_export_data"
+    ,"Xuất dữ liệu cho Excel / Export data for Excel" => "admin/search/load_form_export_data"   
 );
 renderGroupOfActions("usergroup_menu","Menu", $action_names);
 ?>

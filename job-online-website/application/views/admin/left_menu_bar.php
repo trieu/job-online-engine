@@ -28,17 +28,19 @@ $action_names  = array(
     "List all Fields"=> "admin/field_controller/list_fields");
 renderGroupOfActions("manage_fields","Manage Fields", $action_names);
 
-
+$action_names  = array(
+    "Index All Objects"=> "services/search_indexer/");
+renderGroupOfActions("manage_matching_engine","Matching Engine", $action_names);
 ?>
 
 <?php  function renderGroupOfActions($group_id, $group_name, $action_names, $isShow = TRUE) { ?>
 <div class="group_action" >
     <h3 onclick="jQuery('#<?= $group_id ?>').slideToggle('slow');" >
-        <a href="javascript:void(0)"><?= $group_name ?></a>
+        <a href="javascript:void(0)" class="vietnamese_english"><?= $group_name ?></a>
     </h3>
     <ul id="<?= $group_id ?>"  class="<?php if(!$isShow) echo "display_none"; ?>" >
         <?php foreach ($action_names as $action_name => $action_uri) {
-            echo '<li class="focusable_text"><a href="'.site_url($action_uri).'">'.$action_name.'</a></li>';
+            echo '<li class="focusable_text"><a class="vietnamese_english" href="'.site_url($action_uri).'">'.$action_name.'</a></li>';
         }?>
     </ul>
 </div>

@@ -17,13 +17,13 @@ class search_indexer extends Controller {
     /**
      * @Decorated
      */
-    public function index() {
+    public function indexTest() {
 
         $this->page_decorator->setPageMetaTag("description", "Home page");
         $this->page_decorator->setPageMetaTag("keywords", "Home page");
         $this->page_decorator->setPageMetaTag("author", "Trieu Nguyen");
         $this->page_decorator->setPageTitle("Indexing database");
-        
+
         $this->load->library('zend');
         $this->load->library('zend', 'Zend/Search/Lucene');
         $this->zend->load('Zend/Search/Lucene');
@@ -67,10 +67,13 @@ class search_indexer extends Controller {
         $this->output->set_output($text);
     }
 
-    public function sanitize($input) {
+    protected function sanitize($input) {
         return htmlentities(strip_tags($input));
     }
 
+    /**
+     * @Decorated
+     */
     function search() {
         $this->load->library('zend', 'Zend/Search/Lucene');
         $this->load->library('zend');
@@ -94,22 +97,58 @@ class search_indexer extends Controller {
     }
 
     /**
+     * @Decorated
      * @Secured(role = "Administrator")
      */
-    function index_all_objects_in_class($ObjectClassID) {
+    public function index() {
+        $this->load->view("admin/index_objects_for_matching", NULL);
+    }
+
+    /**
+     * @AjaxAction
+     * @Secured(role = "Administrator")
+     */
+    function index_all_objects($create_new_index = 'false') {
+        $this->db->select("objectclass.*");
+        $this->db->from("objectclass");
+        $query = $this->db->get();
+        
+        $out = "";
+        foreach ($query->result() as $row) {            
+            $out .= $this->helper_index_all_objects_in_class($row->ObjectClassID, $create_new_index);
+            //after the first time, increasemental index
+            $create_new_index = "false";
+        }
+        $this->output->set_output($out);
+    }
+
+    protected function helper_index_all_objects_in_class($ObjectClassID, $create_new_index = 'false'){
         $this->load->model("search_manager");
         $this->load->library('zend');
         $this->load->library('zend', 'Zend/Search/Lucene');
         $this->zend->load('Zend/Search/Lucene');
         try {
             $data = $this->search_manager->search_objects_by_class($ObjectClassID);
-            $data['Lucene_Indexer'] = $this->zend->get_Zend_Search_Lucene(false);
-            echo $this->load->view("admin/index_all_objects_in_class", $data, TRUE);
+            $data['Lucene_Indexer'] = $this->zend->get_Zend_Search_Lucene($create_new_index == 'true');
+            return $this->load->view("admin/index_all_objects_in_class", $data, TRUE);
         } catch (Exception $e) {
             echo $e->getTraceAsString();
         }
+        return "";
     }
 
+    /**
+     * @AjaxAction
+     * @Secured(role = "Administrator")
+     */
+    function index_all_objects_in_class($ObjectClassID) {
+        $out = $this->helper_index_all_objects_in_class($ObjectClassID);
+        $this->output->set_output($out);
+    }
+
+    /**
+     * @Decorated
+     */
     function test_matching() {
         $this->load->library('zend', 'Zend/Search/Lucene');
         $this->load->library('zend');
@@ -118,22 +157,22 @@ class search_indexer extends Controller {
         $index = $this->zend->get_Zend_Search_Lucene(true);
         $query = new Zend_Search_Lucene_Search_Query_MultiTerm();
 
-       // $query->addTerm(new Zend_Search_Lucene_Index_Term("Word",'88'));
+        // $query->addTerm(new Zend_Search_Lucene_Index_Term("Word",'88'));
         //$query->addTerm(new Zend_Search_Lucene_Index_Term("Đồ họa",'88'));
-        $query->addTerm(new Zend_Search_Lucene_Index_Term("108",'object_id'));
-        
-        $hits = $index->find($query);
+        $query->addTerm(new Zend_Search_Lucene_Index_Term("108", 'object_id'));
 
-        echo 'Index contains ' . $index->count() .
-        ' documents.<br /><br />';
-        echo 'Search for "' . $query . '" returned ' . count($hits) .
-        ' hits<br /><br />';
+        $hits = $index->find($query);
+        $out = "";
+        $out .= 'Index contains ' . $index->count() . ' documents.<br /><br />';
+        $out .= 'Search for "' . $query . '" returned ' . count($hits) . ' hits<br /><br />';
 
         foreach ($hits as $hit) {
-            echo '<br />object_id: '.$hit->object_id . '<br />';
-            echo 'Score: ' . sprintf('%.2f', $hit->score) . '<br />';            
+            $out .= '<br />object_id: ' . $hit->object_id . '<br />';
+            $out .= 'Score: ' . sprintf('%.2f', $hit->score) . '<br />';
         }
+        $this->output->set_output($out);
     }
 
 }
+
 ?>

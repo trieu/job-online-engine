@@ -9,7 +9,10 @@
 }
 #page_top .page_logo {
     float:left; position:relative; font-size: 20px; font-weight: bold;
-    height: 34px; width: 100%; padding-left: 10px; text-transform: uppercase;
+    height: 34px; width: 100%; padding-left: 10px; text-transform: uppercase;    
+}
+#page_top .page_logo a{
+    text-decoration: none;
 }
 #page_top .page_menu {
     float:left; width: 100%; position: relative;

@@ -132,10 +132,4 @@ echo form_fieldset_close();
             window.location = "<?= site_url('admin/form_controller/form_builder/'.$id)?>";
         }
     }
-
-
-
-
-
-
 </script>

@@ -104,8 +104,7 @@ class search_indexer extends Controller {
         $this->load->view("admin/index_objects_for_matching", NULL);
     }
 
-    /**
-     * @AjaxAction
+    /**  
      * @Secured(role = "Administrator")
      */
     function index_all_objects($create_new_index = 'false') {
@@ -137,8 +136,7 @@ class search_indexer extends Controller {
         return "";
     }
 
-    /**
-     * @AjaxAction
+    /** 
      * @Secured(role = "Administrator")
      */
     function index_all_objects_in_class($ObjectClassID) {

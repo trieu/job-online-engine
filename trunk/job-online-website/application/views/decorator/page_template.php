@@ -51,8 +51,17 @@
                 <?php echo $page_footer ?>
             </div>            
         </div>
+        
         <div>
-            <?php echo $page_respone_time ?>
+            <div class='processing_time'>
+                <span>
+                    Processing Time: <?php echo $page_respone_time ?> seconds
+                </span>
+                <span>-</span>
+                <span>
+                    Power by:  <a target="_blank" href="http://code.google.com/p/job-online-engine/" title="The engine for Flexible Information System">FIS</a>
+                </span>                
+            </div>
             <input id="session_id" type="hidden" name="session_id" value="<?php echo $session_id?>" />
         </div>
         <script type="text/javascript">

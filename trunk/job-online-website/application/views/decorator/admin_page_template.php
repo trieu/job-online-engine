@@ -36,7 +36,7 @@
         <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
         <?php } ?>
     </head>
-    <body onload="">
+    <body style="display: none;">
         <div id="page_container">
             <div id="page_top">
                 <?php echo $page_header ?>
@@ -52,12 +52,21 @@
             </div>
         </div>
         <div>
-            <?php echo $page_respone_time ?>
+            <div class='processing_time'>
+                <span>
+                    Processing Time: <?php echo $page_respone_time ?> seconds
+                </span>
+                <span>-</span>
+                <span>
+                    Power by:  <a target="_blank" href="http://code.google.com/p/job-online-engine/" title="The engine for Flexible Information System">FIS</a>
+                </span>
+            </div>
             <input id="session_id" type="hidden" name="session_id" value="<?php echo $session_id?>" />
         </div>
         <script type="text/javascript">
             jQuery(document).ready(function(){
                  language_saparator();
+                 jQuery("body").show();
             });             
         </script>
     </body>

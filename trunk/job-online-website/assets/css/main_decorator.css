@@ -45,7 +45,11 @@
 }
 .display_none { display:none; }
 .not_visible { visibility:hidden; }
-.processing_time { font-size: 11px; font-family: serif; padding-right: 15px; text-align: right;}
+
+.processing_time { font-size: 11px; font-family: serif; padding:5px 15px 12px 0px; text-align: right;float: right;}
+.processing_time span {margin-left: 10px; text-indent: 3px;}
+.processing_time a {font-size: 13px; font-weight: bold; color: blue;text-decoration: none;}
+.processing_time a:hover {color: red;text-decoration: underline;}
 
 /* Floating-menu for form navigation */
 div.floating-menu {position:fixed;background:#fff4c8;border:1px solid #ffcc00;width:205px;z-index:1;}

@@ -346,7 +346,7 @@ class ApplicationHook {
     protected function endAndGetResponseTime() {
         $this->CI->benchmark->mark('code_end');
         $diff_time = $this->CI->benchmark->elapsed_time('code_start', 'code_end');
-        return "<br/><div class='processing_time'>Processing Time: ".$diff_time." seconds</div><br/>";
+        return $diff_time;
     }
 
     public static function logInfo($text) {

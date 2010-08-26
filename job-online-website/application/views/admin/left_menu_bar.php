@@ -29,7 +29,7 @@ $action_names  = array(
 renderGroupOfActions("manage_fields","Manage Fields", $action_names);
 
 $action_names  = array(
-    "Index All Objects"=> "services/search_indexer/");
+    "Set up and Configs"=> "admin/search_indexer/");
 renderGroupOfActions("manage_matching_engine","Matching Engine", $action_names);
 ?>
 

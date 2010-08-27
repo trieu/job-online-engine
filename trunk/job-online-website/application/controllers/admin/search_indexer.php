@@ -16,55 +16,14 @@ class search_indexer extends Controller {
 
     /**
      * @Decorated
+     * @Secured(role = "Administrator")
      */
-    public function indexTest() {
-
+    public function index() {
         $this->page_decorator->setPageMetaTag("description", "Home page");
         $this->page_decorator->setPageMetaTag("keywords", "Home page");
         $this->page_decorator->setPageMetaTag("author", "Trieu Nguyen");
         $this->page_decorator->setPageTitle("Indexing database");
-
-        $this->load->library('zend');
-        $this->load->library('zend', 'Zend/Search/Lucene');
-        $this->zend->load('Zend/Search/Lucene');
-        $this->load->library('zend', 'Zend/Feed');
-        $this->zend->load('Zend/Feed');
-
-        $text = "";
-
-        //Create index.
-        $index = $this->zend->get_Zend_Search_Lucene(false);
-        $feeds = array(
-            'http://2minutefinance.com/feed'
-        );
-
-        //grab each feed.
-        foreach ($feeds as $feed) {
-            $channel = Zend_Feed::import($feed);
-            $text .= ( $channel->title() . '<br />');
-
-            //index each item.
-            foreach ($channel->items as $item) {
-                if ($item->link() && $item->title() && $item->description()) {
-                    //create an index doc.
-                    $doc = new Zend_Search_Lucene_Document();
-                    $doc->addField(Zend_Search_Lucene_Field::Keyword(
-                                    'link', $this->sanitize($item->link())), 'utf-8');
-                    $doc->addField(Zend_Search_Lucene_Field::Text('title', $this->sanitize($item->title())), 'utf-8');
-                    $doc->addField(Zend_Search_Lucene_Field::Unstored(
-                                    'contents', $this->sanitize($item->description())), 'utf-8');
-
-                    $text .= ( "\tAdding: " . $item->title() . '<br />');
-                    $index->addDocument($doc);
-                }
-            }
-        }
-
-        $index->commit();
-        $text .= ( $index->count() . ' Documents indexed.<br />' );
-
-        $text .= "<br />Done!";
-        $this->output->set_output($text);
+        $this->load->view("admin/index_objects_for_matching", NULL);
     }
 
     protected function sanitize($input) {
@@ -74,12 +33,12 @@ class search_indexer extends Controller {
     /**
      * @Decorated
      */
-    function search() {
+    public function search() {
         $this->load->library('zend', 'Zend/Search/Lucene');
         $this->load->library('zend');
         $this->zend->load('Zend/Search/Lucene');
 
-        $index = $this->zend->get_Zend_Search_Lucene(true);
+        $index = $this->zend->get_Zend_Search_Lucene();
 
         $query = 'newly redesigned website';
         $hits = $index->find($query);
@@ -97,23 +56,15 @@ class search_indexer extends Controller {
     }
 
     /**
-     * @Decorated
      * @Secured(role = "Administrator")
      */
-    public function index() {
-        $this->load->view("admin/index_objects_for_matching", NULL);
-    }
-
-    /**  
-     * @Secured(role = "Administrator")
-     */
-    function index_all_objects($create_new_index = 'false') {
+    public function index_all_objects($create_new_index = 'false') {
         $this->db->select("objectclass.*");
         $this->db->from("objectclass");
         $query = $this->db->get();
-        
+
         $out = "";
-        foreach ($query->result() as $row) {            
+        foreach ($query->result() as $row) {
             $out .= $this->helper_index_all_objects_in_class($row->ObjectClassID, $create_new_index);
             //after the first time, increasemental index
             $create_new_index = "false";
@@ -121,7 +72,7 @@ class search_indexer extends Controller {
         $this->output->set_output($out);
     }
 
-    protected function helper_index_all_objects_in_class($ObjectClassID, $create_new_index = 'false'){
+    protected function helper_index_all_objects_in_class($ObjectClassID, $create_new_index = 'false') {
         $this->load->model("search_manager");
         $this->load->library('zend');
         $this->load->library('zend', 'Zend/Search/Lucene');
@@ -136,10 +87,10 @@ class search_indexer extends Controller {
         return "";
     }
 
-    /** 
+    /**
      * @Secured(role = "Administrator")
      */
-    function index_all_objects_in_class($ObjectClassID) {
+    public function index_all_objects_in_class($ObjectClassID) {
         $out = $this->helper_index_all_objects_in_class($ObjectClassID);
         $this->output->set_output($out);
     }
@@ -147,17 +98,17 @@ class search_indexer extends Controller {
     /**
      * @Decorated
      */
-    function test_matching() {
+    public function test_matching() {
         $this->load->library('zend', 'Zend/Search/Lucene');
         $this->load->library('zend');
         $this->zend->load('Zend/Search/Lucene');
 
-        $index = $this->zend->get_Zend_Search_Lucene(true);
+        $index = $this->zend->get_Zend_Search_Lucene();
         $query = new Zend_Search_Lucene_Search_Query_MultiTerm();
 
         // $query->addTerm(new Zend_Search_Lucene_Index_Term("Word",'88'));
         //$query->addTerm(new Zend_Search_Lucene_Index_Term("Đồ họa",'88'));
-        $query->addTerm(new Zend_Search_Lucene_Index_Term("108", 'object_id'));
+        $query->addTerm(new Zend_Search_Lucene_Index_Term("113", 'object_id'));
 
         $hits = $index->find($query);
         $out = "";

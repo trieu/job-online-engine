@@ -115,7 +115,7 @@
     function populateQuickFilter(){
         var fieldnames = {};
         jQuery("#page_content .field_name").each(function(){
-            var fn = jQuery(this).html().trim();
+            var fn = jQuery.trim(jQuery(this).html());
             if(fieldnames[fn] == null){
                 fieldnames[fn] = fn;
                 var tagOption = '<option value="'+ fn +'">'+ fn +'</option>';
@@ -125,7 +125,7 @@
         jQuery("#quick_filter_ok").click(function(){
             jQuery("div[id*='object_row_']").hide();
             var sfn = jQuery("#quick_filter_field_name option:selected").html();
-            var sfv = jQuery("#quick_filter_field_value").val().trim();
+            var sfv = jQuery.trim(jQuery(jQuery("#quick_filter_field_value").val()).html());
             jQuery("#page_content .field_name").each(function(){
                 var fn = jQuery(this).html();
                 var fv = jQuery(this).next().html();

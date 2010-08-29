@@ -31,7 +31,7 @@
             var RemoteService = {};
             RemoteService.params = {service_id:-1, service_name:"", service_method:"", service_method_params:{}};
             RemoteService.callback = function(responseText, statusText)  {
-                var obj = jQuery.secureEvalJSON(responseText.trim());
+                var obj = jQuery.secureEvalJSON(jQuery.trim(responseText));
                 alert(obj.answer);
             };
             RemoteService.callServer = function(){
@@ -85,7 +85,7 @@
             var callback = "h";
             var h = function(a){
                 alert(a);
-                var obj = jQuery.secureEvalJSON(a.trim());
+                var obj = jQuery.secureEvalJSON( jQuery.trim(a) );
                 alert(obj.a);
                 window[callback + "done"] = true;
             };

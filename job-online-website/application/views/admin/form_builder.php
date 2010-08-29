@@ -109,7 +109,7 @@ foreach ($related_objects["processes"] as $proID => $proName) {
         });
         jQuery("#form_builder_container div[class*='ui-resizable-handle']").remove();
         data["CacheContent"] =  jQuery("#form_builder_container").html();
-        data["JavascriptContent"] = jQuery("#form_builder_script").val().trim();
+        data["JavascriptContent"] = jQuery.trim(jQuery("#form_builder_script").val());
         
         //auto-mapping field from DOM into fieldOrderArr array
         var FieldOrderList = [];

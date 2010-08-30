@@ -71,7 +71,7 @@
 function jsMetaObjectScript() {?>
 
 <script type="text/javascript">
-     function populateClasses(){
+     function populateClasses(fn){
         var url = "<?= site_url("admin/search/populate_query_helper")?>";
         var filter =  {what: "object_class"};
         var handler =  function(text){
@@ -82,11 +82,14 @@ function jsMetaObjectScript() {?>
             }
             jQuery("#ObjectClassID").html( html );
             populateProcesses();
+            if(fn instanceof Function){
+                fn.apply({},[]);
+            }
         };
         jQuery.post(url, filter, handler);
     }
 
-    function populateProcesses(){
+    function populateProcesses(fn){
         var val = jQuery("#ObjectClassID").val();
         var url = "<?= site_url("admin/search/populate_query_helper")?>";
         var filter =  {what: "process" , filterID: val};
@@ -98,11 +101,14 @@ function jsMetaObjectScript() {?>
             }
             jQuery("#ProcessID").html( html );
             populateForms();
+            if(fn instanceof Function){
+                fn.apply({},[]);
+            }
         };
         jQuery.post(url, filter, handler);
     }
 
-    function populateForms(){
+    function populateForms(fn){
         var val = jQuery("#ProcessID").val();
         var url = "<?= site_url("admin/search/populate_query_helper")?>";
         var filter =  {what: "form" , filterID: val};
@@ -115,6 +121,9 @@ function jsMetaObjectScript() {?>
             jQuery("#FormID").html( html );
             if(jQuery("#FormID").val() != null){
                 populateFields();
+            }
+            if(fn instanceof Function){
+                fn.apply({},[]);
             }
         };
         jQuery.post(url, filter, handler);

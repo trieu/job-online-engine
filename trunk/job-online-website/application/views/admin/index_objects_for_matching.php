@@ -36,7 +36,8 @@ require_once 'macros.php';
     <div style="margin: 27px 5px 10px">
         <div>
             <label for="ObjectClassID" class="vietnamese_english" >Đối tượng quản lý / Business Object: </label>
-            <select name="ObjectClassID" id="ObjectClassID" onchange="populateProcesses()" > </select>
+            <select name="ObjectClassID" id="ObjectClassID" onchange="updateClassList();" ></select>
+            <div id="ClassHolder" style="display:inline;height: 25px; width: 250px;background-color:#555555;color:#FFFFFF;" ></div>
         </div>
         <div>
             <label for="ProcessID" class="vietnamese_english" >Quy trình xử lý thông tin / Process: </label>
@@ -57,14 +58,21 @@ require_once 'macros.php';
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="width:25%;vertical-align:top;">
-                            <div style="display: none;">
-                                <input style="width:95%" id="searched_field_hint_filter" type="text" name="" value="" />
-                            </div>
+                        <td style="width:25%;vertical-align:top;">                           
                             <div class="content" ></div>
                         </td>
                         <td style="width:75%; vertical-align:top;">
-                            <div id="searched_field_form" ></div>
+                            <div id="matched_structure" >
+                                <div id="class_2">
+                                    <h4 class="ui-widget-header">Base Class</h4>
+                                    <div class="ui-widget-content">
+                                        <div id="class_2_name" style="height: 25px; width: 250px;background-color:#555555;color:#FFFFFF;" ></div>
+                                        <ol> 
+                                            <li class="placeholder">Add matched fields here</li>
+                                        </ol> 
+                                    </div> 
+                                </div>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
@@ -77,18 +85,18 @@ require_once 'macros.php';
 </fieldset>
 
 
-<textarea name="" rows="4" cols="20" onselect="selectedTextHandler(this)">
-            Update incrementally  the index for All Objects:
-</textarea>
+<textarea style="display: none;" name="" rows="4" cols="20" onselect="selectedTextHandler(this)">Update incrementall</textarea>
 
 <?php jsMetaObjectScript(); ?>
 <script  type="text/javascript">
+    function updateClassList(){
+        populateProcesses();
+        jQuery("#ClassHolder").html(jQuery("#ObjectClassID").find("option:selected").html());
+    }
 
     function selectedTextHandler(myArea){
-        if (typeof(myArea.selectionStart) != "undefined") {
-            var begin = myArea.value.substr(0, myArea.selectionStart);
-            var selection = myArea.value.substr(myArea.selectionStart, myArea.selectionEnd - myArea.selectionStart);
-            var end = myArea.value.substr(myArea.selectionEnd);
+        if (typeof(myArea.selectionStart) != "undefined") {            
+            var selection = myArea.value.substr(myArea.selectionStart, myArea.selectionEnd - myArea.selectionStart);            
             alert(selection);
         }
     }
@@ -115,16 +123,23 @@ require_once 'macros.php';
         var filter =  {what: "<?= search::$FIELD_HINT ?>" , filterID: val};
         var handler =  function(html){
             jQuery("#field_list_view .content").html( html );
-
-            jQuery("#field_list_view .ajax_loader").hide();
-            
+            jQuery("#field_list_view .ajax_loader").hide();            
         };
         jQuery("#field_list_view .ajax_loader").show();
         jQuery.post(url, filter, handler);
-    }
+    }    
 
-    jQuery(document).ready(function(){
-        populateClasses();
-
+    jQuery(document).ready(function(){        
+        var callback = function(){            
+            jQuery("#ClassHolder").html(jQuery("#ObjectClassID").find("option:selected").html());
+        };
+        populateClasses(callback);
+         jQuery("#ClassHolder").draggable({helper:'clone'});
+         jQuery("#class_2_name").droppable({              
+                drop: function(event, ui) {
+                    jQuery(this).html(jQuery(ui.draggable).html());
+                }
+         });
+        
     });
 </script>

@@ -426,7 +426,6 @@ require_once 'macros.php';
         initStatisticsMode();
     });
 
-
     var SearchQueryObj = {'id' : 0, 'query_name': "No name", 'query_details': [] };
     <?php
         if(isset ($the_query_details)){
@@ -435,14 +434,12 @@ require_once 'macros.php';
             echo "SearchQueryObj.query_details = ".$the_query_details->query_details." ;\n";
             echo "afterInitFormCallback.push(loadSearchQueryObj);\n";
         }
-    ?>
-        
+    ?>        
     
     function loadSearchQueryObj(){
         if(SearchQueryObj.id == 0){
             return;
         }
-
         var loadedCheckboxIds = {};
         var loadedFieldNum = 0;
         var sizeOfQuery = SearchQueryObj.query_details.query_fields.length;

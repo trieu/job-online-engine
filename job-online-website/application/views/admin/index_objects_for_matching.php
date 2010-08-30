@@ -16,6 +16,25 @@ require_once 'macros.php';
         text-align:right;
         font-weight: bold;
     }
+    fieldset > div > div {
+        margin: 9px 0;
+    }
+    .odd_row_field {
+        background:silver none repeat scroll 0 0;
+        padding-bottom: 5px;
+    }
+    .even_row_field {
+        background:lavender none repeat scroll 0 0;
+        padding-bottom: 5px;
+    }
+    .ui-draggable { cursor: pointer!important; }
+    .ui-draggable:hover {background-color: greenyellow!important;  }
+    .drap_holder { border: 2px solid #555555; color:red; display:inline; }
+    .field_list li {  border: 2px solid #555555; }
+
+    .drap_active { border: #ffcc00 solid 2px !important; background-color: greenyellow; }
+    .drap_hover { background-color: coral; }
+    .drop_holder { border: 2px solid #555555; color:red; }
 </style>
 
 <fieldset>
@@ -37,8 +56,7 @@ require_once 'macros.php';
         <div>
             <label for="ObjectClassID" class="vietnamese_english" >Đối tượng quản lý / Business Object: </label>
             <select name="ObjectClassID" id="ObjectClassID" onchange="updateClassList();" ></select>
-            <div id="ClassHolder" style="display:inline;height: 25px; width: 250px;background-color:#555555;color:#FFFFFF;" ></div>
-        </div>
+        </div>        
         <div>
             <label for="ProcessID" class="vietnamese_english" >Quy trình xử lý thông tin / Process: </label>
             <select name="ProcessID" id="ProcessID" onchange="populateForms()" ></select>
@@ -53,24 +71,37 @@ require_once 'macros.php';
                 <thead>
                     <tr>
                         <th class="vietnamese_english" >Danh sách trường dữ liệu / Field List</th>
-                        <th class="vietnamese_english" >Matching Structure / Query Details</th>
+                        <th class="vietnamese_english" colspan="2" >Matching Structure / Query Details</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td style="width:25%;vertical-align:top;">                           
+                        <td style="width:24%;vertical-align:top;">
+                            <div style="margin-bottom: 20px;">
+                                <div class="vietnamese_english">Current Class Name:</div>
+                                <div id="ClassHolder" class="drap_holder" style="height: 25px; width: 250px;" ></div>
+                            </div>
                             <div class="content" ></div>
                         </td>
-                        <td style="width:75%; vertical-align:top;">
-                            <div id="matched_structure" >
-                                <div id="class_2">
-                                    <h4 class="ui-widget-header">Base Class</h4>
-                                    <div class="ui-widget-content">
-                                        <div id="class_2_name" style="height: 25px; width: 250px;background-color:#555555;color:#FFFFFF;" ></div>
-                                        <ol> 
-                                            <li class="placeholder">Add matched fields here</li>
-                                        </ol> 
-                                    </div> 
+                        <td style="width:38%; vertical-align:top;">
+                            <div id="BaseClass">
+                                <h4 class="ui-widget-header">Base Class</h4>
+                                <div class="ui-widget-content">
+                                    <div id="BaseClassName" class_id="0" class="drop_holder" style="height: 25px; width: 250px;" ></div>
+                                    <ol id="BaseClassFields" class="field_list" >
+                                        <li class="placeholder">Add matching fields here</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="width:38%;vertical-align:top;">
+                            <div id="MatchedClass">
+                                <h4 class="ui-widget-header">Matched Class</h4>
+                                <div class="ui-widget-content">
+                                    <div id="MatchedClassName" class_id="0" class="drop_holder" style="height: 25px; width: 250px;" ></div>
+                                    <ol id="MatchedClassFields" class="field_list" >
+                                        <li class="placeholder">Add matched fields here</li>
+                                    </ol>
                                 </div>
                             </div>
                         </td>
@@ -91,7 +122,11 @@ require_once 'macros.php';
 <script  type="text/javascript">
     function updateClassList(){
         populateProcesses();
-        jQuery("#ClassHolder").html(jQuery("#ObjectClassID").find("option:selected").html());
+        
+        var ClassHolder = jQuery("#ClassHolder");
+        var selectedClass = jQuery("#ObjectClassID").find("option:selected");
+        ClassHolder.html(selectedClass.html());
+        ClassHolder.attr("class_id" , selectedClass.val());
     }
 
     function selectedTextHandler(myArea){
@@ -106,7 +141,6 @@ require_once 'macros.php';
             jQuery("#index_all_objects_result").html(html);
             jQuery("#index_all_objects_working").hide();
         };
-
         var url = "<?= site_url('admin/search_indexer/index_all_objects/') ?>";
         var index_as_new = jQuery("input[name='index_as_new']:checked").val();
         url += ("/"+index_as_new);
@@ -123,23 +157,73 @@ require_once 'macros.php';
         var filter =  {what: "<?= search::$FIELD_HINT ?>" , filterID: val};
         var handler =  function(html){
             jQuery("#field_list_view .content").html( html );
-            jQuery("#field_list_view .ajax_loader").hide();            
+            jQuery("#field_list_view .ajax_loader").hide();
+
+            jQuery("#field_list_view .content").find("a").remove();
+            jQuery("#field_list_view div.draggable").draggable({helper:'clone'});
         };
         jQuery("#field_list_view .ajax_loader").show();
         jQuery.post(url, filter, handler);
     }    
 
-    jQuery(document).ready(function(){        
-        var callback = function(){            
-            jQuery("#ClassHolder").html(jQuery("#ObjectClassID").find("option:selected").html());
+    jQuery(document).ready(function(){
+        var ClassHolder = jQuery("#ClassHolder");
+        ClassHolder.draggable({helper:'clone'});
+
+        populateClasses(function(){
+            var selectedClass = jQuery("#ObjectClassID").find("option:selected");
+            ClassHolder.html(selectedClass.html());
+            ClassHolder.attr("class_id" , selectedClass.val());
+        });
+
+        var ClassNameDropHandler = function(event, ui) {
+            if(jQuery(ui.draggable).hasClass("drap_holder")){
+                jQuery(this).attr("class_id" , jQuery(ui.draggable).attr("class_id"));
+                var newText = jQuery.trim(jQuery(ui.draggable).text());
+                jQuery(this).html(newText);
+            }
         };
-        populateClasses(callback);
-         jQuery("#ClassHolder").draggable({helper:'clone'});
-         jQuery("#class_2_name").droppable({              
-                drop: function(event, ui) {
-                    jQuery(this).html(jQuery(ui.draggable).html());
-                }
-         });
-        
+        var ClassFieldsDropHandler = function(event, ui) {
+            var classId = jQuery(this).prev("div[class_id]").attr("class_id");
+            var isFieldInClass = ClassHolder.attr("class_id") == classId;
+            var field_id = jQuery(ui.draggable).find("div[id*='field_']").attr("id");
+            var notHasField = ! (jQuery(this).find("li[field_id='" + field_id + "']").length > 0);
+            
+            if( ! jQuery(ui.draggable).hasClass("drap_holder") && isFieldInClass && notHasField ){
+                jQuery(this).find(".placeholder").slideUp("slow", function(){ jQuery(this).remove(); });
+                jQuery("<li></li>").text(ui.draggable.text()).attr("field_id",field_id).appendTo(this);
+            }
+        };
+
+        jQuery("#BaseClassName").droppable({
+            activeClass: "drap_active",
+            hoverClass: "drap_hover",
+            drop: ClassNameDropHandler
+        });
+        jQuery("#BaseClassFields").droppable({
+            activeClass: "drap_active",
+            hoverClass: "drap_hover",
+            accept: ":not(.drap_holder)",
+            drop: ClassFieldsDropHandler
+        });
+
+        jQuery("#MatchedClassName").droppable({
+            activeClass: "drap_active",
+            hoverClass: "drap_hover",
+            drop: ClassNameDropHandler
+        });
+        jQuery("#MatchedClassFields").droppable({
+            activeClass: "drap_active",
+            hoverClass: "drap_hover",
+            accept: ":not(.drap_holder)",
+            drop: ClassFieldsDropHandler
+        }).sortable({
+            items: "li:not(.placeholder)",
+            sort: function() {
+                // gets added unintentionally by droppable interacting with sortable
+                // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
+                jQuery(this).removeClass("ui-state-default");
+            }
+        });
     });
 </script>

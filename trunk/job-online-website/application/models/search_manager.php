@@ -119,7 +119,7 @@ class search_manager extends Model {
                 $sql .= ($field_sql . " ");
             }
         }
-        ApplicationHook::logInfo( $sql );
+//        ApplicationHook::logInfo( $sql );
     }
 
     protected function do_query_on_single_field($FieldType, $FieldID , $FieldValue) {
@@ -139,7 +139,7 @@ class search_manager extends Model {
         }
         $query = $this->db->query($sql);
        // print_r($this->db->last_query());
-        ApplicationHook::logInfo($this->db->last_query());
+//        ApplicationHook::logInfo($this->db->last_query());
         return $query->result_array();
     }
 
@@ -212,7 +212,7 @@ class search_manager extends Model {
         }
         
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
-        ApplicationHook::logInfo($this->db->last_query());
+//        ApplicationHook::logInfo($this->db->last_query());
         if($return_query) {
             return $query;
         }
@@ -302,7 +302,7 @@ class search_manager extends Model {
 
         $sql = $this->GET_FULL_FIELDS_OBJECTS_SQL;
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
-        ApplicationHook::logInfo($this->db->last_query());
+//        ApplicationHook::logInfo($this->db->last_query());
 
         $record_set = $query->result_array();
         $objects = array();

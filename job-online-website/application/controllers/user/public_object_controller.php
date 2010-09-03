@@ -189,5 +189,34 @@ class public_object_controller extends Controller {
 
         $this->load->view("user/all_objects_in_class_list_view",$data);
     }
+
+     /**
+     * @Decorated
+     * @Secured(role = "user")
+     */
+    public function list_matched_objects_of( $AccessDataURI = '/') {
+        $this->load->model("object_manager");
+        $this->load->model("objectclass_manager");
+
+        $objectClass = $this->objectclass_manager->find_by_uri($AccessDataURI);
+
+        if($objectClass != NULL) {
+            $data = array();
+            $data["objectClass"] = $objectClass;
+            $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID(), $startIndex, $total_rs);
+
+            $config = array();
+            $config['base_url'] = "";
+            $config['total_rows'] = 100;
+            $config['per_page'] = 1;
+            $config['current_page'] = 1;
+            $data["pagination_config"] = $config;
+        }
+        else {
+            throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);
+        }
+
+        $this->load->view("user/all_objects_in_class_list_view",$data);
+    }
 }
 ?>

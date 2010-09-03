@@ -1,6 +1,6 @@
 <?php
-require_once 'admin_panel.php';
 
+require_once 'admin_panel.php';
 
 /**
  * Description of admin_panel
@@ -15,8 +15,9 @@ require_once 'admin_panel.php';
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
 class field_controller extends admin_panel {
+
     public function __construct() {
-        parent::__construct();
+        parent::__construct();        
     }
 
     /**
@@ -30,13 +31,12 @@ class field_controller extends admin_panel {
         $data["action_uri"] = "admin/field_controller/save";
         $data["id"] = $fieldID;
         $data["FormID"] = $formID;
-        if($fieldID > 0) {
+        if ($fieldID > 0) {
             $data["obj_details"] = $this->field_manager->find_by_id($fieldID);
             $data["related_objects"] = array();
         }
-        $this->load->view("admin/field_details",$data);
+        $this->load->view("admin/field_details", $data);
     }
-
 
     /**
      * @Decorated
@@ -57,16 +57,16 @@ class field_controller extends admin_panel {
         $this->load->model("field_manager");
 
         $field = new Field();
-        $field->setFieldID( $fieldID );
-        $field->setFieldTypeID( $this->input->post("FieldTypeID") );
-        $field->setFieldName( $this->input->post("FieldName") );
-        $field->setValidationRules( $this->input->post("ValidationRules") );
-        $field->setFieldOptions( json_decode( $this->input->post("field_option_data") ) );        
-        $field->addToForm( $formID );
+        $field->setFieldID($fieldID);
+        $field->setFieldTypeID($this->input->post("FieldTypeID"));
+        $field->setFieldName($this->input->post("FieldName"));
+        $field->setValidationRules($this->input->post("ValidationRules"));
+        $field->setFieldOptions(json_decode($this->input->post("field_option_data")));
+        $field->addToForm($formID);
 
         $fieldID = $this->field_manager->save($field);
 
-        if( FieldType::isSelectableType($field->getFieldTypeID()) && $fieldID > 0 ) {
+        if (FieldType::isSelectableType($field->getFieldTypeID()) && $fieldID > 0) {
             $this->load->model("field_options_manager");
             foreach ($field->getFieldOptions() as $arr) {
                 $arr->FieldID = $fieldID;
@@ -77,10 +77,10 @@ class field_controller extends admin_panel {
         $data = array();
         $data["info_message"] = "Save field successfully!";
         $data["reload_page"] = TRUE;
-        $this->load->view("global_view/info_and_redirect",$data);
+        $this->load->view("global_view/info_and_redirect", $data);
     }
 
-     /**
+    /**
      * @AjaxAction
      * @Secured(role = "Administrator")
      */
@@ -90,15 +90,14 @@ class field_controller extends admin_panel {
         echo "Removed";
     }
 
-   /** 
+    /**
      * @Secured(role = "Administrator")
      */
     public function deleteOptionOfField() {
         $FieldOptionID = $this->input->post("FieldOptionID");
         $this->load->model("field_options_manager");
-        echo $this->field_options_manager->delete_by_id( $FieldOptionID );
+        echo $this->field_options_manager->delete_by_id($FieldOptionID);
     }
-
 
     /**
      * @Secured(role = "Administrator")
@@ -106,9 +105,8 @@ class field_controller extends admin_panel {
     public function addFieldOption() {
         $fieldID = $this->input->post("FieldID");
         $optionName = $this->input->post("OptionName");
-        ApplicationHook::logInfo($fieldID. " - ". $optionName);
+        ApplicationHook::logInfo($fieldID . " - " . $optionName);
     }
-
 
     /**
      * @Secured(role = "Administrator")
@@ -118,5 +116,16 @@ class field_controller extends admin_panel {
         $field = $this->field_manager->find_by_id($field_id);
         echo $field->buildFieldUI();
     }
+
+    /**
+     * @Secured(role = "Administrator")
+     */
+    public function getFieldNamesByIDs() {
+        $this->load->model("field_manager");
+        $array_ids = json_decode($this->input->post("array_ids"));
+        echo json_encode($this->field_manager->getFieldNamesByIDs($array_ids));
+    }
+
 }
+
 ?>

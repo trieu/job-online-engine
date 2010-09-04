@@ -16,6 +16,7 @@ class search_indexer extends Controller {
 
     public function __construct() {
         parent::Controller();
+        $this->load->model("matching_engine_manager");
     }
 
     /**
@@ -76,14 +77,14 @@ class search_indexer extends Controller {
         $this->output->set_output($out);
     }
 
-    protected function helper_index_all_objects_in_class($ObjectClassID, $create_new_index = 'false') {
-        $this->load->model("search_manager");
+    protected function helper_index_all_objects_in_class($ObjectClassID, $create_new_index = 'false') {        
         $this->load->library('zend');
         $this->load->library('zend', 'Zend/Search/Lucene');
         $this->zend->load('Zend/Search/Lucene');
         try {
-            $data = $this->search_manager->search_objects_by_class($ObjectClassID);
+            $data = $this->matching_engine_manager->get_full_structure_objects($ObjectClassID);
             $data['Lucene_Indexer'] = $this->zend->get_Zend_Search_Lucene($create_new_index == 'true');
+            $data['ObjectClassID'] = $ObjectClassID;
             return $this->load->view("admin/index_all_objects_in_class", $data, TRUE);
         } catch (Exception $e) {
             echo $e->getTraceAsString();
@@ -108,9 +109,9 @@ class search_indexer extends Controller {
         $data['MatchedClassID'] = $this->input->post("MatchedClassID");
         $data['MatchedStructure'] = $this->input->post("MatchedStructure");
         try {
-            if($mode == "insert") {
+            if ($mode == "insert") {
                 $this->db->insert("matched_class_structure", $data);
-            } else if($mode == "update") {
+            } else if ($mode == "update") {
                 $this->db->where('BaseClassID', $data['BaseClassID']);
                 $this->db->where('MatchedClassID', $data['MatchedClassID']);
                 $this->db->update('matched_class_structure', $data);
@@ -132,32 +133,51 @@ class search_indexer extends Controller {
     public function load_matched_class_structure() {
         $BaseClassID = $this->input->post("BaseClassID");
         $MatchedClassID = $this->input->post("MatchedClassID");
-
-        $filter = array();
-        $filter['BaseClassID'] = $BaseClassID;
-        $filter['MatchedClassID'] = $MatchedClassID;
-        $query = $this->db->get_where('matched_class_structure', $filter);
+        $rs = $this->matching_engine_manager->get_matched_class_structure($BaseClassID, $MatchedClassID);
         $data = array();
-        echo json_encode($query->result());
+        echo json_encode($rs);
     }
 
     /**
      * @Decorated
      */
-    public function test_matching($ObjectID = 113) {
-        $this->load->model("matching_engine_manager");
+    public function test_matching($ObjectID = 22) {
         $this->load->library('zend', 'Zend/Search/Lucene');
         $this->load->library('zend');
         $this->zend->load('Zend/Search/Lucene');
 
-        $baseObject = $this->matching_engine_manager->get_full_structure_object(1, $ObjectID);
+        $BaseClassID = 2;
+        $MatchedClassID = 1;
+        $results = $this->matching_engine_manager->get_matched_class_structure($BaseClassID, $MatchedClassID);
+        $matchStructure = new stdClass();
+        if (count($results) == 1) {
+            $matchStructure = json_decode($results[0]->MatchedStructure);
+        }
 
         $index = $this->zend->get_Zend_Search_Lucene();
-        $query = new Zend_Search_Lucene_Search_Query_MultiTerm();
+        $query = new Zend_Search_Lucene_Search_Query_Boolean();
 
-        // $query->addTerm(new Zend_Search_Lucene_Index_Term("Word",'88'));
-        //$query->addTerm(new Zend_Search_Lucene_Index_Term("Đồ họa",'88'));
-        $query->addTerm(new Zend_Search_Lucene_Index_Term($ObjectID, 'object_id'));
+        $baseObject = $this->matching_engine_manager->get_full_structure_object($BaseClassID, $ObjectID);
+        if ($baseObject != NULL) {
+            $subquery = search_indexer::makeTermQuery($MatchedClassID, 'class_id');
+            $query->addSubquery($subquery, true);
+            $fields = $baseObject["fields"];
+            foreach ($fields as $baseFieldID => $FieldValues) {
+                if (isset($matchStructure->$baseFieldID)) {
+                    $targetFieldId = $matchStructure->$baseFieldID;
+                    ApplicationHook::logInfo('baseFieldID = ' . $baseFieldID);
+                   // $subquery = search_indexer::makeTermQuery($FieldValues, $targetFieldId);
+                    // $query->addSubquery($subquery, true);
+                    break;
+                }
+            }
+        }
+        $subquery = Zend_Search_Lucene_Search_QueryParser::parse("+(fields:88@@~Công nghệ thông tin IT~@@)");
+        $query->addSubquery($subquery, true);
+
+        $subquery = Zend_Search_Lucene_Search_QueryParser::parse("+(fields:19@@~Khuyết ật vận động / Physical disability~@@)");
+        $query->addSubquery($subquery, true);
+//        $query->addTerm(new Zend_Search_Lucene_Index_Term("Đồ họa",'88'));
 
         $hits = $index->find($query);
         $out = "";
@@ -165,13 +185,43 @@ class search_indexer extends Controller {
         $out .= 'Search for "' . $query . '" returned ' . count($hits) . ' hits<br /><br />';
 
         foreach ($hits as $hit) {
-            $out .= '<br />object_id: ' . $hit->object_id . '<br />';
+            $out .= '<br /><b>object_id: ' . $hit->object_id . '</b><br />';
+            $out .= 'class_id: ' . $hit->class_id . '<br />';
+//            $out .= 'fields_values: ' . $hit->fields . '<br />';
             $out .= 'Score: ' . sprintf('%.2f', $hit->score) . '<br />';
+            $matchedObject = $this->matching_engine_manager->get_full_structure_object($MatchedClassID, $hit->object_id);
+            $out .= ( print_r($matchedObject, true) . "<br><br><br> ");
         }
 
-        $out .= ("<br><br><br> ". json_encode($baseObject));
+        $out .= ( "<br><br><b>baseObject:</b> <br> " . print_r($baseObject, true));
+        $out .= ( "<br><br><b>matchStructure:</b> <br> " . print_r($matchStructure, true));
         $this->output->set_output($out);
     }
+
+    public static function makeTermQuery($fieldValue, $fieldName) {
+        $term = new Zend_Search_Lucene_Index_Term($fieldValue, $fieldName);
+        $query = new Zend_Search_Lucene_Search_Query_Term($term);
+        return $query;
+    }
+
+    public static function makeFuzzyQuery($fieldValue, $fieldName) {
+        $term = new Zend_Search_Lucene_Index_Term($fieldValue, $fieldName);
+        $query = new Zend_Search_Lucene_Search_Query_Fuzzy($term);
+        return $query;
+    }
+
+    public static function makeWildcardQuery($fieldValue, $fieldName) {
+        $term = new Zend_Search_Lucene_Index_Term( $fieldValue , $fieldName);
+        $query = new Zend_Search_Lucene_Search_Query_Wildcard($term);
+        return $query;
+    }
+    
+    public static function makePhraseQuery($fieldValue, $fieldName) {
+        $query = new Zend_Search_Lucene_Search_Query_Phrase(array($fieldValue), null, $fieldName);
+        return $query;
+    }
+
+
 
 }
 

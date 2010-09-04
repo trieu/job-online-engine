@@ -187,7 +187,7 @@ class search_manager extends Model {
             if($kv->type == "checkbox"){
                 $query_operator = "OR";
             }
-            $temSet  = $this->do_query_on_single_field($kv->type, $kv->name, $kv->value);
+            $temSet = $this->do_query_on_single_field($kv->type, $kv->name, $kv->value);
             if($query_operator == "" || $query_operator == "OR"){
                 $finalSet = $this->union_query_result($finalSet, $temSet);
             } else if($query_operator == "AND"){
@@ -302,7 +302,6 @@ class search_manager extends Model {
 
         $sql = $this->GET_FULL_FIELDS_OBJECTS_SQL;
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
-//        ApplicationHook::logInfo($this->db->last_query());
 
         $record_set = $query->result_array();
         $objects = array();

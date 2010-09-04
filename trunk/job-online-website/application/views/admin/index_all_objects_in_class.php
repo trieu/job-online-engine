@@ -16,8 +16,8 @@
                 <th>ID</th>
                 <?php
                 $max_field_num = count($metadata_object);
-                foreach ($metadata_object as $FieldName ) {
-                    echo "<th>".$FieldName."</th>";
+                foreach ($metadata_object as $FieldID => $FieldName ) {
+                    echo "<th>".$FieldName." - FieldID: ".$FieldID."</th>";
                 }
                 ?>
                 <th>Actions</th>
@@ -29,18 +29,30 @@
                 <td><?= $objID ?></td>
                 <?php
                     $LuceneDoc = new Zend_Search_Lucene_Document();
-                    $LuceneDoc->addField(Zend_Search_Lucene_Field::Keyword('object_id', $objID."") );
+                    $LuceneDoc->addField(Zend_Search_Lucene_Field::Keyword('object_id', $objID) );
+                    $LuceneDoc->addField(Zend_Search_Lucene_Field::Keyword('class_id', $ObjectClassID) );
+                    
                     $fields = $data_map["fields"];
+                    $fields_values = "";
                     foreach ($metadata_object as $FieldID => $FieldName ) {
                         $FieldValue =& $fields[$FieldID];
-                        if( isset($FieldValue) ) {                            
-                            $LuceneDoc->addField(Zend_Search_Lucene_Field::Unstored($FieldID, ($FieldValue), 'utf-8' ) );
+                        if( isset($FieldValue) ) {
+                            $FieldValue = str_replace("/", "", $FieldValue);
+                            $FieldValue = str_replace(";", "", $FieldValue);
+                            $FieldValue = str_replace("*", "", $FieldValue);
+                            $FieldValue = str_replace("?", "", $FieldValue);
+                            $FieldValue = str_replace("~", "", $FieldValue);
+                            $FieldValue = str_replace(".", "", $FieldValue);
+//                          $LuceneDoc->addField(Zend_Search_Lucene_Field::Text($FieldID, ($FieldValue), 'utf-8' ) );
+                            $fields_values .= ($FieldID."@@".$FieldValue."@@ ");
                             echo "<td><span class='data_cell_f_".$FieldID ."'>". $FieldValue ."</span></td>";
                         }
                         else {
                             echo "<td><span>&nbsp;</span></td>";
                         }
                     }
+                    //$fields_values = htmlentities(strip_tags($fields_values));
+                    $LuceneDoc->addField(Zend_Search_Lucene_Field::Unstored("fields", $fields_values, 'utf-8' ) );
                     $Lucene_Indexer->addDocument($LuceneDoc);
                  ?>
                 <td>

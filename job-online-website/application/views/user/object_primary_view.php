@@ -28,6 +28,9 @@ $legend_text = "";
         font-weight:bold;
         font-size: 15px;
     }
+    #accordion {
+       margin-bottom:19px;
+    }
     #accordion > *{
         font-size: 15.2px;
         font-family: Trebuchet,Tahoma,Verdana,Arial,sans-serif;
@@ -43,22 +46,17 @@ $legend_text = "";
         clear: none!important;
         margin:4px 0 0 4px;
     }
+    #object_instance_div {
+        border: 1px #003399 solid;
+        padding: 17px;
+    }
 </style>
 
-<h3><?= $object_class->getObjectClassName() ?></h3>
-
 <div>
-    <b>Chọn một form để xem hoặc cập nhật thông tin</b>
-    <ol>
-        <?php foreach($formsOfObject as $form){?>
-        <li>
-            <a class="iframe use_fancybox" href="<?php echo site_url("user/public_object_controller/ajax_edit_form/".$object->getObjectClassID()."/".$object->getObjectID()."/".$form["FormID"]) ?> ">
-            <?= $form["FormName"] ?>
-            </a>
-        </li>
-        <?php }?>
-    </ol>
+    <span class="vietnamese_english">Thông tin chi tiết:/Information Details:</span>
+    <b class="vietnamese_english"><?= $object_class->getObjectClassName() ?></b>
 </div>
+
 <div id="accordion">
     <h3><a href="#"><?= $legend_text ?></a></h3>
     <div>
@@ -76,6 +74,22 @@ $legend_text = "";
             </form>
         </div>
     </div>
+</div>
+
+<div>
+    <b class="vietnamese_english">
+        Chọn một form để xem hoặc cập nhật thông tin /
+        Select a form for editing
+    </b>
+    <ol>
+        <?php foreach($formsOfObject as $form){?>
+        <li>
+            <a class="iframe use_fancybox" href="<?php echo site_url("user/public_object_controller/ajax_edit_form/".$object->getObjectClassID()."/".$object->getObjectID()."/".$form["FormID"]) ?> ">
+            <?= $form["FormName"] ?>
+            </a>
+        </li>
+        <?php }?>
+    </ol>
 </div>
 
 <script type="text/javascript">

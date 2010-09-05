@@ -1,28 +1,20 @@
-/* FIXME: indent with tabs to save bandwidth */
-
-/* Top-level size and positioning */
-
-/* FIXME replicate background left-to-right but not tiled, etc. */
 .topBanner {
     /* margin: 10px 2% 10px 2%; */
     margin: 0;
     padding: 0;
 }
-
 .topBanner img {
     border: none;
     display: block;
     margin: 0 auto 0 auto;
     padding: 0;
 }
-
 .leftBar {
     float: left;
     margin: 5px 0 10px 0;
     padding: 0;
     width: 20%;
 }
-
 .main {
     float: right;
     margin-left: 0;
@@ -30,24 +22,20 @@
     padding: 0;
     width: 75%;
 }
-
 .has-rightBar .main {
     width: 60%;
 }
-
 .rightBar {
     float: left;
     margin: 15px 0 20px 0;
     padding: 0;
     width: 14%;
 }
-
 .bottomBanner {
     clear: both;
     margin: 0;
     padding: 0;
 }
-
 /* General tags */
 
 body { 
@@ -66,112 +54,84 @@ pre {
 }
 
 /* HR is only used to clear floats */
-hr { 
-    clear: both; 
-    visibility: hidden; 
-    height: 0; 
-    border: none; 
-    padding: 0; 
-    margin: 0; 
+hr {      
+    margin: 5px 0;
 }
-
 span.email {
     font-style: italic;
 }
-
 ol li {
     clear: both;
     margin: 5px 0 0 5px;
 }
-
 /* Page elements */
 
 .leftBar h2 {
     display: inline;
 }
-
 .leftBar div.control {
     clear: both;
     float: right;
     margin: 3px 10px 3px auto;
 }
-
 .leftBar ul {
     clear: both;
 }
-
 .leftBar .field .fieldLabel label {
     white-space: nowrap;
 }
-
 .navigation form, .navigation input { 
     margin: 0; 
     padding: 0; 
 }
-
 .control {
     clear: both;
     float: right;
     margin-right: 17px;
 }
-
 input[type="textfield"], textarea {
     width: 100%;
 }
-
 .info div {
     display: inline;
     padding: 3px;
 }
-
 .navAuxBox h3 {
     text-align: center;
 }
-
 fieldset {
     border: none;
 }
-
 .item img {
     border: none;
     margin: 0 7px 3px 0;
 }
-
 table caption {
     font-weight: bold;
     margin: auto;
 }
-
 div.date {
     display: inline;
 }
-
-
-/* ********************************************************************** */
 
 /* Forms */
 
 form * {
     font-size: 100%;
 }
-
 .field {
     clear: both;
 }
-
 .field div.fieldLabel {
     float: left;
     font-weight: bold;
     margin: 5px 0 5px 0;
     width: 6em;
 }
-
 .field .fieldLabel label {
     display: inline;
-    font-weight: bolder;
-    /* white-space: nowrap; */
+    font-weight: bolder;  
 }
-
 .field div.fieldWidget {
     display: inline;
     float: right;
@@ -179,62 +139,46 @@ form * {
     min-width: 100px;
     width: 80%;
 }
-
 .field .fieldWidget .widget {
     padding: 0;
     width: 100%;
 }
-
-/* ********************************************************************** */
-
-/* Fallback items style */
-
 .item_list {    
 }
-
 .item { 
     margin: 0 0 10px 0; 
     padding: 0; 
 }
-
 .item .title, .item .owner, .item .date, 
 .item .description, .item .actions, .item .tags, .item .item_language_list,
 .item .pagePath {
     padding: 5px;
 }
-
 .item .title h2, .item .title h3 {
     margin: 0;
     padding: 0;
 }
-
 .item .owner {
     clear: both;
 }
-
 .item .owner, .item .date, .item .tags, .item .item_language_list, .item .pagePath {
     float: left; 
     font-size: small;
 }
-
 .item .description {
     clear: both;
     padding-top: 10px;
 }
-
 .item .description p {
     margin: 0 0 10px 0;
     padding: 0;    
 }
-
 .item .details {
     clear: both;
 }
-
 .item .actions {
     clear: both;
 }
-
 .actions ul {
     padding: 0;
 }
@@ -245,18 +189,14 @@ form * {
     padding: 0; 
 }
 .actions form { display: inline; }
-
 .item_language_list ul, .item_language_list li {
     display: inline;
     padding: 5px;
 }
-
 .item p.readmore {
     float: right;
     font-style: italic;
 }
-
-/* FIXME redundant? */
 .leftBar .userLoginBox .control {
     clear: both;
 }
@@ -264,7 +204,6 @@ form * {
 .leftBar .userLoginBox ul {
     clear: both;
 }
-
 form p.logout {
     padding-left: 0;
     padding-right: 0;

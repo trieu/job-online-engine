@@ -38,6 +38,9 @@
                     <li>
                         <a href="<?php echo site_url("admin/search/load_form_export_data") ?>" class="vietnamese_english">Xuất dữ liệu Excel / Export data for Excel</a>
                     </li>
+                    <li>
+                        <a href="<?php echo site_url("services/email_service/config_user_email") ?>" class="vietnamese_english" >Dịch vụ Email / Email Service</a>
+                    </li>
                 </ul>
             </li>           
             <li>

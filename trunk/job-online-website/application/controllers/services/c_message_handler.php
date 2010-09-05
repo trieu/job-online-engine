@@ -17,8 +17,7 @@ class c_message_handler extends Controller {
    
 
     function c_message_handler() {
-        parent::Controller();
-        $this->load->model('xe');
+        parent::Controller();        
     }
 
     function index() {

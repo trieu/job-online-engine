@@ -30,7 +30,7 @@ $config['join'] = 'user_id';
  * Columns in your meta table,
  * id not required.
  **/
-$config['columns'] = array('first_name', 'last_name');
+$config['columns'] = array('first_name', 'last_name', 'ext_info');
 
 /**
  * A database column which is used to

@@ -1,6 +1,5 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-
 if ( ! function_exists('addCssFile') ) {
     function addCssFile($relative_path){
 		$CI = &get_instance();
@@ -46,12 +45,12 @@ if ( ! function_exists('action_url') ) {
 }
 
 if ( ! function_exists('action_url_a') ) {
-    function action_url_a($uri, $link_name, $title = ""){
+    function action_url_a($uri, $link_name, $title = "", $css_class = ""){
         $url = action_url($uri);
         if($title == ""){
             $title = $link_name;
         }
-        echo '<a href="'.$url.'" title="'.$title.'" >'.$link_name."</a>";
+        echo '<a class="vietnamese_english '.$css_class.'" href="'.$url.'" title="'.$title.'" >'.$link_name."</a>";
     }
 }
 
@@ -65,6 +64,4 @@ if ( ! function_exists('show_the_excerpt') ) {
       return implode(" " , array_slice($str, 0, $length));
     }
 }
-
-
 ?>

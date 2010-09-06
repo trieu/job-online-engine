@@ -39,21 +39,36 @@ class email_service extends Controller {
     public function save_config_user_email() {
         //currently, only support for Gmail Account
         //{"smtp_account":{"smtp_user":"tantrieuf31.database@gmail.com","smtp_pass":"Mycatisfat@31"}}
+        $ext_info = new stdClass();
+        $ext_info->smtp_account = new stdClass();
+        $ext_info->smtp_account->smtp_user = $this->input->post("smtp_user");
+        $ext_info->smtp_account->smtp_pass = $this->input->post("smtp_pass");
+
         $data = array();
-        $user_profile = $this->redux_auth->profile();
-        $data['user_profile'] = $user_profile;
-        echo "Saved!";
+        $update_data = array();
+        $update_data['ext_info'] = json_encode($ext_info);
+        $rs = $this->redux_auth->update_profile($update_data);
+        if ($rs)
+            echo "Saved!";
+        else
+            echo "Save failed!";
     }
 
-    /**
-     * @Secured(role = "GroupOperator")
-     */
-    public function send_email() {
+    protected function init_email_service_from_user_profile() {
         $user_profile = $this->redux_auth->profile();
-        $ext_info_json = json_decode($user_profile->ext_info);
-        $smtp_user = $ext_info_json->smtp_account->smtp_user;
-        $smtp_pass = $ext_info_json->smtp_account->smtp_pass;
-
+        if ($user_profile->ext_info != NULL) {
+            $user_profile->ext_info = json_decode($user_profile->ext_info);
+        } else {
+            // if $user_profile->ext_info === NULL, we use default configs in config/email.php
+            $this->load->config('email');
+            $ext_info = new stdClass();
+            $ext_info->smtp_account = new stdClass();
+            $ext_info->smtp_account->smtp_user = $this->config->item('smtp_user');
+            $ext_info->smtp_account->smtp_pass = $this->config->item('smtp_pass');
+            $user_profile->ext_info = $ext_info;
+        }
+        $smtp_user = $user_profile->ext_info->smtp_account->smtp_user;
+        $smtp_pass = $user_profile->ext_info->smtp_account->smtp_pass;
         $config = Array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
@@ -67,20 +82,57 @@ class email_service extends Controller {
             'wordwrap' => TRUE
         );
         $this->email->initialize($config);
-
         $this->email->clear();
         $this->email->set_newline("\r\n");
-        $this->email->from('tantrieuf31.database@gmail.com', 'tantrieuf31.database');
-        $this->email->to('tantrieuf31.database@gmail.com');
+        $this->email->from($smtp_user, $user_profile->username);
+        return $user_profile;
+    }
 
+    /**
+     * @Secured(role = "GroupOperator")
+     */
+    public function test_email_service() {
+        $toAddresses = $this->input->post("to_addresses");
+
+        $user_profile = $this->init_email_service_from_user_profile();
+        $smtp_user = $user_profile->ext_info->smtp_account->smtp_user;        
+        $this->email->to($toAddresses);
         $this->email->subject('Email Test');
-        $this->email->message('Testing the email class.');
+        $this->email->message('Testing the email service from ' . base_url());
 
-        if (!$this->email->send()) {
-            echo "Send email failed !";
+        $result_text = "";
+        if ($this->email->send()) {
+            $result_text = '<h3 style="color:blue">The Email Service of ' . $smtp_user . '  is working OK!</h3>';
+        } else {
+            $result_text = '<h3 style="color:red">The Email Service of ' . $smtp_user . ' is NOT working!';
+            $result_text .= "<br> Please check the email and password again! </h3>";
         }
+        $result_text .= $this->email->print_debugger();
+        echo $result_text;
+    }
 
-        echo $this->email->print_debugger();
+    /**
+     * @Secured(role = "GroupOperator")
+     */
+    public function send_email() {        
+        $toAddresses = $this->input->post("to_addresses");
+        $subject = $this->input->post("subject");
+        $message = $this->input->post("message");
+
+        $user_profile = $this->init_email_service_from_user_profile();
+        $this->email->to($toAddresses);
+        $this->email->subject($subject);
+        $this->email->message($message);
+
+        $result_text = "";
+        if ($this->email->send()) {
+            $result_text = '<b style="color:blue">The email is sent to the addresses"' . $toAddresses . '" OK!</b>';
+        } else {
+            $result_text = '<b style="color:red">The email is NOT sent to the addresses"' . $toAddresses . '"!';
+            $result_text .= "<br>Something wrong happened, please check the email service configurations again! </b>";
+            ApplicationHook::logError($this->email->print_debugger());
+        }        
+        echo $result_text;
     }
 
 }

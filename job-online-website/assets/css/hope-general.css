@@ -64,40 +64,13 @@ ol li {
     clear: both;
     margin: 5px 0 0 5px;
 }
-/* Page elements */
 
-.leftBar h2 {
-    display: inline;
-}
-.leftBar div.control {
-    clear: both;
-    float: right;
-    margin: 3px 10px 3px auto;
-}
-.leftBar ul {
-    clear: both;
-}
-.leftBar .field .fieldLabel label {
-    white-space: nowrap;
-}
-.navigation form, .navigation input { 
-    margin: 0; 
-    padding: 0; 
-}
-.control {
-    clear: both;
-    float: right;
-    margin-right: 17px;
-}
 input[type="textfield"], textarea {
     width: 100%;
 }
 .info div {
     display: inline;
     padding: 3px;
-}
-.navAuxBox h3 {
-    text-align: center;
 }
 fieldset {
     border: none;
@@ -118,94 +91,4 @@ div.date {
 
 form * {
     font-size: 100%;
-}
-.field {
-    clear: both;
-}
-.field div.fieldLabel {
-    float: left;
-    font-weight: bold;
-    margin: 5px 0 5px 0;
-    width: 6em;
-}
-.field .fieldLabel label {
-    display: inline;
-    font-weight: bolder;  
-}
-.field div.fieldWidget {
-    display: inline;
-    float: right;
-    margin: 5px 20px 5px 0;
-    min-width: 100px;
-    width: 80%;
-}
-.field .fieldWidget .widget {
-    padding: 0;
-    width: 100%;
-}
-.item_list {    
-}
-.item { 
-    margin: 0 0 10px 0; 
-    padding: 0; 
-}
-.item .title, .item .owner, .item .date, 
-.item .description, .item .actions, .item .tags, .item .item_language_list,
-.item .pagePath {
-    padding: 5px;
-}
-.item .title h2, .item .title h3 {
-    margin: 0;
-    padding: 0;
-}
-.item .owner {
-    clear: both;
-}
-.item .owner, .item .date, .item .tags, .item .item_language_list, .item .pagePath {
-    float: left; 
-    font-size: small;
-}
-.item .description {
-    clear: both;
-    padding-top: 10px;
-}
-.item .description p {
-    margin: 0 0 10px 0;
-    padding: 0;    
-}
-.item .details {
-    clear: both;
-}
-.item .actions {
-    clear: both;
-}
-.actions ul {
-    padding: 0;
-}
-.actions li { 
-    display: inline; 
-    list-style-type: none;
-    margin: 3px;
-    padding: 0; 
-}
-.actions form { display: inline; }
-.item_language_list ul, .item_language_list li {
-    display: inline;
-    padding: 5px;
-}
-.item p.readmore {
-    float: right;
-    font-style: italic;
-}
-.leftBar .userLoginBox .control {
-    clear: both;
-}
-
-.leftBar .userLoginBox ul {
-    clear: both;
-}
-form p.logout {
-    padding-left: 0;
-    padding-right: 0;
-    text-align: center;
 }

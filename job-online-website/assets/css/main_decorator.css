@@ -66,11 +66,11 @@ input[type='text']:hover, input[type='radio']:hover, input[type='checkbox']:hove
     border: 1px solid #f00; background: #ffc;
 }
 input[type='button'], input[type='submit'] {
-   border: 1px solid #006; background: #ccf;
-   cursor:pointer; display:inline-block; font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+    border: 1px solid #006; background: #ccf;
+    cursor:pointer; display:inline-block; font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
 }
 input[type='button']:hover, input[type='submit']:hover {
-   border: 1px solid #f00; background: #eef; color: #f00;
+    border: 1px solid #f00; background: #eef; color: #f00;
 }
 
 /* main buttons for form actions */
@@ -83,7 +83,7 @@ input[type='button']:hover, input[type='submit']:hover {
     padding:2px 8px; white-space:nowrap;
 }
 .button:hover {
-   border: 1px solid #f00; background: #eef; color: #f00;
+    border: 1px solid #f00; background: #eef; color: #f00;
 }
 center .button { margin: 10px 2px 20px 2px;}
 
@@ -101,7 +101,7 @@ center .button { margin: 10px 2px 20px 2px;}
     background-color: #FFF!important;
 }
 .editable_text:hover {
-   border: 1px solid #f00; background: #eef; color: #f00;
+    border: 1px solid #f00; background: #eef; color: #f00;
 }
 
 /* Highlight invalid form fields. */
@@ -110,4 +110,31 @@ center .button { margin: 10px 2px 20px 2px;}
 }
 img[src='http://get-banner.lookup.co.cc/banner_img/cocc90_40b.gif'] {
     display: none;
+}
+/* Left menu bar. */
+.group_action {width: 200px; border: 1px solid #ccc;  padding: 0px; margin: 0px;}
+.group_action h3 {
+    height: 30px;
+    font-weight: normal;
+    background-color: #555;
+    color: #fff;
+    padding: 3px 0px 0px 3px;
+    margin: 0px;
+}
+.group_action h3 a{
+    color:white!important;
+}
+.group_action ul, .group_action ul li {
+    padding: 3px;
+    margin: 0px;
+    list-style: none;
+}
+.group_action ul li {
+    height: 30px;
+    vertical-align: middle;
+}
+.group_action ul li a {
+    display: block; border-bottom: 1px dashed #eee; text-decoration: none;
+    font-weight: bold; white-space: nowrap;
+
 }

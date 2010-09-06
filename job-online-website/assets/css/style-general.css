@@ -10,11 +10,6 @@
     border-left: 1px solid silver;
 }
 
-/* General */
-
-
-
-
 /* Special versions of general tags */
 
 a[rel=start]:before { content: "|< " }
@@ -29,12 +24,10 @@ a[rel=end]:after { content: " >|" }
     padding: 0 10px 10px 10px;
     font-size: 80%;
 }
-
 .rightBar .box .title {
     padding: 0;
     margin: 0;
 }
-
 .rightBar .box .box {
     padding: 0;
     font-size: 100%;

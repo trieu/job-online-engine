@@ -20,6 +20,7 @@
 
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery.ui.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery.cookies.js"></script>
          <script type="text/javascript" >
             var $PAGE_LANGUAGE_KEY = "<?php echo str_replace(EXT,"", LANGUAGE_INDEX_PAGE) ; ?>";
         </script>

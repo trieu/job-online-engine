@@ -220,4 +220,16 @@ class redux_auth {
         return $this->ci->redux_auth_model->profile($identity);
     }
 
+     /**
+     * Profile
+     *
+     * @return void
+     * @author Mathew
+     **/
+    public function update_profile($data) {
+        $session  = $this->ci->config->item('identity');
+        $identity = $this->ci->session->userdata($session);
+        return $this->ci->redux_auth_model->update_profile($identity, $data);
+    }
+
 }

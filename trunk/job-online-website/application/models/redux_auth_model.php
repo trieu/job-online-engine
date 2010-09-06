@@ -1,4 +1,7 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH'))
+    exit('No direct script access allowed');
 /*
  * ----------------------------------------------------------------------------
  * "THE BEER-WARE LICENSE" :
@@ -12,46 +15,43 @@
  * redux_auth_model
  */
 class redux_auth_model extends Model {
+
     /**
      * Holds an array of tables used in
      * redux.
      *
      * @var string
-     **/
+     * */
     public $tables = array();
-
     /**
      * activation code
      *
      * @var string
-     **/
+     * */
     public $activation_code;
-
     /**
      * forgotten password key
      *
      * @var string
-     **/
+     * */
     public $forgotten_password_code;
-
     /**
      * new password
      *
      * @var string
-     **/
+     * */
     public $new_password;
-
     /**
      * Identity
      *
      * @var string
-     **/
+     * */
     public $identity;
 
     public function __construct() {
         parent::__construct();
         $this->load->config('redux_auth');
-        $this->tables  = $this->config->item('tables');
+        $this->tables = $this->config->item('tables');
         $this->columns = $this->config->item('columns');
     }
 
@@ -71,7 +71,7 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function hash_password($password = false) {
         $salt_length = $this->config->item('salt_length');
 
@@ -92,20 +92,20 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function hash_password_db($identity = false, $password = false) {
-        $identity_column   = $this->config->item('identity');
-        $users_table       = $this->tables['users'];
-        $salt_length       = $this->config->item('salt_length');
+        $identity_column = $this->config->item('identity');
+        $users_table = $this->tables['users'];
+        $salt_length = $this->config->item('salt_length');
 
         if ($identity === false || $password === false) {
             return false;
         }
 
-        $query  = $this->db->select('password')
-            ->where($identity_column, $identity)
-            ->limit(1)
-            ->get($users_table);
+        $query = $this->db->select('password')
+                        ->where($identity_column, $identity)
+                        ->limit(1)
+                        ->get($users_table);
 
         $result = $query->row();
 
@@ -125,7 +125,7 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function salt() {
         return substr(md5(uniqid(rand(), true)), 0, $this->config->item('salt_length'));
     }
@@ -144,19 +144,19 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function activate($code = false) {
         $identity_column = $this->config->item('identity');
-        $users_table     = $this->tables['users'];
+        $users_table = $this->tables['users'];
 
         if ($code === false) {
             return false;
         }
 
         $query = $this->db->select($identity_column)
-            ->where('activation_code', $code)
-            ->limit(1)
-            ->get($users_table);
+                        ->where('activation_code', $code)
+                        ->limit(1)
+                        ->get($users_table);
 
         $result = $query->row();
 
@@ -178,7 +178,7 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function deactivate($username = false) {
         $users_table = $this->tables['users'];
 
@@ -201,25 +201,25 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function change_password($identity = false, $old = false, $new = false) {
-        $identity_column   = $this->config->item('identity');
-        $users_table       = $this->tables['users'];
+        $identity_column = $this->config->item('identity');
+        $users_table = $this->tables['users'];
 
         if ($identity === false || $old === false || $new === false) {
             return false;
         }
 
-        $query  = $this->db->select('password')
-            ->where($identity_column, $identity)
-            ->limit(1)
-            ->get($users_table);
+        $query = $this->db->select('password')
+                        ->where($identity_column, $identity)
+                        ->limit(1)
+                        ->get($users_table);
 
         $result = $query->row();
 
         $db_password = $result->password;
-        $old         = $this->hash_password_db($identity, $old);
-        $new         = $this->hash_password($new);
+        $old = $this->hash_password_db($identity, $old);
+        $new = $this->hash_password($new);
 
         if ($db_password === $old) {
             $data = array('password' => $new);
@@ -237,7 +237,7 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function username_check($username = false) {
         $users_table = $this->tables['users'];
 
@@ -246,9 +246,9 @@ class redux_auth_model extends Model {
         }
 
         $query = $this->db->select('id')
-            ->where('username', $username)
-            ->limit(1)
-            ->get($users_table);
+                        ->where('username', $username)
+                        ->limit(1)
+                        ->get($users_table);
 
         if ($query->num_rows() == 1) {
             return true;
@@ -262,7 +262,7 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function email_check($email = false) {
         $users_table = $this->tables['users'];
 
@@ -271,9 +271,9 @@ class redux_auth_model extends Model {
         }
 
         $query = $this->db->select('id')
-            ->where('email', $email)
-            ->limit(1)
-            ->get($users_table);
+                        ->where('email', $email)
+                        ->limit(1)
+                        ->get($users_table);
 
         if ($query->num_rows() == 1) {
             return true;
@@ -287,19 +287,19 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     protected function identity_check($identity = false) {
         $identity_column = $this->config->item('identity');
-        $users_table     = $this->tables['users'];
+        $users_table = $this->tables['users'];
 
         if ($identity === false) {
             return false;
         }
 
         $query = $this->db->select('id')
-            ->where($identity_column, $identity)
-            ->limit(1)
-            ->get($users_table);
+                        ->where($identity_column, $identity)
+                        ->limit(1)
+                        ->get($users_table);
 
         if ($query->num_rows() == 1) {
             return true;
@@ -313,7 +313,7 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function forgotten_password($email = false) {
         $users_table = $this->tables['users'];
 
@@ -322,16 +322,16 @@ class redux_auth_model extends Model {
         }
 
         $query = $this->db->select('forgotten_password_code')
-            ->where('email', $email)
-            ->limit(1)
-            ->get($users_table);
+                        ->where('email', $email)
+                        ->limit(1)
+                        ->get($users_table);
 
         $result = $query->row();
 
         $code = $result->forgotten_password_code;
 
         if (empty($code)) {
-            $key = $this->hash_password(microtime().$email);
+            $key = $this->hash_password(microtime() . $email);
 
             $this->forgotten_password_code = $key;
 
@@ -340,8 +340,7 @@ class redux_auth_model extends Model {
             $this->db->update($users_table, $data, array('email' => $email));
 
             return ($this->db->affected_rows() == 1) ? true : false;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -351,7 +350,7 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function forgotten_password_complete($code = false) {
         $users_table = $this->tables['users'];
         $identity_column = $this->config->item('identity');
@@ -361,19 +360,19 @@ class redux_auth_model extends Model {
         }
 
         $query = $this->db->select('id')
-            ->where('forgotten_password_code', $code)
-            ->limit(1)
-            ->get($users_table);
+                        ->where('forgotten_password_code', $code)
+                        ->limit(1)
+                        ->get($users_table);
 
         $result = $query->row();
 
         if ($query->num_rows() > 0) {
-            $salt       = $this->salt();
-            $password   = $this->hash_password($salt);
+            $salt = $this->salt();
+            $password = $this->hash_password($salt);
 
             $this->new_password = $salt;
 
-            $data = array('password'                => $password,
+            $data = array('password' => $password,
                 'forgotten_password_code' => '0');
 
             $this->db->update($users_table, $data, array('forgotten_password_code' => $code));
@@ -389,42 +388,41 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function profile($identity = false) {
-        $users_table     = $this->tables['users'];
-        $groups_table    = $this->tables['groups'];
-        $meta_table      = $this->tables['meta'];
-        $meta_join       = $this->config->item('join');
+        $users_table = $this->tables['users'];
+        $groups_table = $this->tables['groups'];
+        $meta_table = $this->tables['meta'];
+        $meta_join = $this->config->item('join');
         $identity_column = $this->config->item('identity');
 
         if ($identity === false) {
             return false;
         }
 
-        $this->db->select($users_table.'.id, '.
-            $users_table.'.username, ' .
-            $users_table.'.password, '.
-            $users_table.'.email, '.
-            $users_table.'.activation_code, '.
-            $users_table.'.forgotten_password_code , '.
-            $users_table.'.ip_address, '.
-            $groups_table.'.name AS `group`');
+        $this->db->select($users_table . '.id, ' .
+                $users_table . '.username, ' .
+                $users_table . '.password, ' .
+                $users_table . '.email, ' .
+                $users_table . '.activation_code, ' .
+                $users_table . '.forgotten_password_code , ' .
+                $users_table . '.ip_address, ' .
+                $groups_table . '.name AS `group`');
 
         if (!empty($this->columns)) {
             foreach ($this->columns as $value) {
-                $this->db->select($meta_table.'.'.$value);
+                $this->db->select($meta_table . '.' . $value);
             }
         }
 
         $this->db->from($users_table);
-        $this->db->join($meta_table, $users_table.'.id = '.$meta_table.'.'.$meta_join, 'left');
-        $this->db->join($groups_table, $users_table.'.group_id = '.$groups_table.'.id', 'left');
+        $this->db->join($meta_table, $users_table . '.id = ' . $meta_table . '.' . $meta_join, 'left');
+        $this->db->join($groups_table, $users_table . '.group_id = ' . $groups_table . '.id', 'left');
 
         if (strlen($identity) === 40) {
-            $this->db->where($users_table.'.forgotten_password_code', $identity);
-        }
-        else {
-            $this->db->where($users_table.'.'.$identity_column, $identity);
+            $this->db->where($users_table . '.forgotten_password_code', $identity);
+        } else {
+            $this->db->where($users_table . '.' . $identity_column, $identity);
         }
 
         $this->db->limit(1);
@@ -447,12 +445,12 @@ class redux_auth_model extends Model {
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function register($username = false, $password = false, $email = false) {
-        $users_table        = $this->tables['users'];
-        $meta_table         = $this->tables['meta'];
-        $groups_table       = $this->tables['groups'];
-        $meta_join          = $this->config->item('join');
+        $users_table = $this->tables['users'];
+        $meta_table = $this->tables['meta'];
+        $groups_table = $this->tables['groups'];
+        $meta_join = $this->config->item('join');
         $additional_columns = $this->config->item('columns');
 
         if ($username === false || $password === false || $email === false) {
@@ -460,8 +458,8 @@ class redux_auth_model extends Model {
         }
 
         // Group ID
-        $query    = $this->db->select('id')->where('name', $this->config->item('default_group'))->get($groups_table);
-        $result   = $query->row();
+        $query = $this->db->select('id')->where('name', $this->config->item('default_group'))->get($groups_table);
+        $result = $query->row();
         $group_id = $result->id;
 
         // IP Address
@@ -472,7 +470,7 @@ class redux_auth_model extends Model {
         // Users table.
         $data = array('username' => $username,
             'password' => $password,
-            'email'    => $email,
+            'email' => $email,
             'group_id' => $group_id,
             'ip_address' => $ip_address);
 
@@ -495,23 +493,57 @@ class redux_auth_model extends Model {
     }
 
     /**
+     * update_profile, currently, support update meta table only
+     *
+     * @return boolean
+     * @author Trieu
+     * */
+    public function update_profile($identity = false, $data = array()) {
+        $users_table = $this->tables['users'];
+        $meta_table = $this->tables['meta'];
+        $groups_table = $this->tables['groups'];
+        $meta_join = $this->config->item('join');
+        $additional_columns = $this->config->item('columns');
+        $identity_column = $this->config->item('identity');
+
+        if ($identity === false) {
+            return false;
+        }
+        $this->db->select($users_table . '.id');
+        $this->db->from($users_table);
+        $this->db->where($users_table . '.' . $identity_column, $identity);
+        $this->db->limit(1);
+        $i = $this->db->get();
+        $user_id = -1;
+        if ($i->num_rows > 0) {
+            $user = $i->row();
+            $user_id = $user->id;
+        }
+
+        $this->db->where('user_id', $user_id);
+        $this->db->update($meta_table, $data);
+        
+        return ($this->db->affected_rows() > 0) ? true : false;
+    }
+
+    /**
      * login
      *
      * @return void
      * @author Mathew
-     **/
+     * */
     public function login($identity = false, $password = false) {
         $identity_column = $this->config->item('identity');
-        $users_table     = $this->tables['users'];
+        $users_table = $this->tables['users'];
 
         if ($identity === false || $password === false || $this->identity_check($identity) == false) {
             return false;
         }
 
-        $query = $this->db->select($identity_column.', password, activation_code')
-            ->where($identity_column, $identity)
-            ->limit(1)
-            ->get($users_table);
+        $query = $this->db->select($identity_column . ', password, activation_code')
+                        ->where($identity_column, $identity)
+                        ->limit(1)
+                        ->get($users_table);
 
         $result = $query->row();
 
@@ -523,11 +555,12 @@ class redux_auth_model extends Model {
             }
 
             if ($result->password === $password) {
-                $this->session->set_userdata($identity_column,  $result->{$identity_column});
+                $this->session->set_userdata($identity_column, $result->{$identity_column});
                 return true;
             }
         }
 
         return false;
     }
+
 }

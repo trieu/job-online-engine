@@ -1,6 +1,23 @@
-<div class="page_logo">
- <?php action_url_a('', lang('home_page_heading'), lang('home_page')); ?>
-</div>
+<table width="100%">
+    <tr>
+        <td width="85%">
+            <div class="page_logo">
+                <?php action_url_a('', lang('home_page_heading'), lang('home_page')); ?>
+            </div>
+        </td>
+        <td width="15%" >
+             <?php if($is_login == TRUE): ?>
+                <div style="font-weight: bold; white-space: nowrap;float: right;">
+                    <span class="vietnamese_english" >Tên đăng nhập: / Login name: </span>
+                    <a title="<?php echo $first_name;?>" href="javascript:"><?php echo $login_name;?></a>
+                </div>
+                <div style="margin-bottom: 15px;float: right;">
+                    <?php action_url_a('welcome/logout', 'Logout'); ?>
+                </div>
+            <?php endif; ?>
+        </td>
+    </tr>
+</table>
 
 <div class="page_menu">
     <ul id="top_menu_bar" class="sf-menu">            

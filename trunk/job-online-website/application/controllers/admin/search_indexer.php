@@ -77,7 +77,7 @@ class search_indexer extends Controller {
         $this->output->set_output($out);
     }
 
-    protected function helper_index_all_objects_in_class($ObjectClassID, $create_new_index = 'false') {        
+    protected function helper_index_all_objects_in_class($ObjectClassID, $create_new_index = 'false') {
         $this->load->library('zend');
         $this->load->library('zend', 'Zend/Search/Lucene');
         $this->zend->load('Zend/Search/Lucene');
@@ -164,19 +164,17 @@ class search_indexer extends Controller {
             $fields = $baseObject["fields"];
             foreach ($fields as $baseFieldID => $FieldValues) {
                 if (isset($matchStructure->$baseFieldID)) {
-                    $targetFieldId = $matchStructure->$baseFieldID;
-                    ApplicationHook::logInfo('baseFieldID = ' . $baseFieldID);
-                   // $subquery = search_indexer::makeTermQuery($FieldValues, $targetFieldId);
-                    // $query->addSubquery($subquery, true);
-                    break;
+                    $targetFieldId = $matchStructure->$baseFieldID;                                        
+                    $subquery = Zend_Search_Lucene_Search_QueryParser::parse('+(fields:'.$targetFieldId.'@@~'.$FieldValues.'~@@)');
+                    $query->addSubquery($subquery, true);                    
                 }
             }
         }
-        $subquery = Zend_Search_Lucene_Search_QueryParser::parse("+(fields:88@@~Công nghệ thông tin IT~@@)");
-        $query->addSubquery($subquery, true);
-
-        $subquery = Zend_Search_Lucene_Search_QueryParser::parse("+(fields:19@@~Khuyết ật vận động / Physical disability~@@)");
-        $query->addSubquery($subquery, true);
+//        $subquery = Zend_Search_Lucene_Search_QueryParser::parse("+(fields:88@@~Công nghệ thông tin IT~@@)");
+//        $query->addSubquery($subquery, true);
+//
+//        $subquery = Zend_Search_Lucene_Search_QueryParser::parse("+(fields:19@@~Khuyết ật vận động / Physical disability~@@)");
+//        $query->addSubquery($subquery, true);
 //        $query->addTerm(new Zend_Search_Lucene_Index_Term("Đồ họa",'88'));
 
         $hits = $index->find($query);
@@ -211,17 +209,15 @@ class search_indexer extends Controller {
     }
 
     public static function makeWildcardQuery($fieldValue, $fieldName) {
-        $term = new Zend_Search_Lucene_Index_Term( $fieldValue , $fieldName);
+        $term = new Zend_Search_Lucene_Index_Term($fieldValue, $fieldName);
         $query = new Zend_Search_Lucene_Search_Query_Wildcard($term);
         return $query;
     }
-    
+
     public static function makePhraseQuery($fieldValue, $fieldName) {
         $query = new Zend_Search_Lucene_Search_Query_Phrase(array($fieldValue), null, $fieldName);
         return $query;
     }
-
-
 
 }
 

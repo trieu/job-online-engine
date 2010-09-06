@@ -97,8 +97,9 @@ legend {
 
 <?php //echo print_r($objectHTMLCaches) ?>
 
-
+<script type="text/javascript">togglePageNavigation(true);</script>
 <script type="text/javascript">
+
     jQuery(document).ready(initFormData);
 
     var checkboxHashmap = {};

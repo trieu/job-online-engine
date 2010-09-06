@@ -22,8 +22,9 @@
         <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url()."assets/".$file; ?>"/>
         <?php } ?>
 
-        <script type="text/javascript" src="<?= base_url()?>assets/js/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery.min.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery.ui.min.js"></script>
+        <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery.cookies.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/commons.js"></script>
         <script type="text/javascript" >
             var $PAGE_LANGUAGE_KEY = "<?php echo str_replace(EXT,"", LANGUAGE_INDEX_PAGE) ; ?>";
@@ -32,6 +33,7 @@
         <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url() ?>assets/js/jquery.superfish/superfish.css"/>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.superfish/superfish.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
+        
         <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
         <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
         <?php } ?>
@@ -41,7 +43,7 @@
             <div id="page_top">
                 <?php echo $page_header ?>
             </div>
-            <div id="page_leftnav">               
+            <div id="page_leftnav" >
                 <?php echo $left_navigation ?>
             </div>
             <div id="page_content">                

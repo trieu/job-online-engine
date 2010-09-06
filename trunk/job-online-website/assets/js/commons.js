@@ -193,18 +193,31 @@ function initFancyBoxLinks(frameWidth, frameHeight){
     );
 }
 
-function togglePageNavigation(){
-    if( jQuery("#page_content").css("margin-left") != "0px" ){
-        jQuery("#page_leftnav").fadeOut("slow");
+function togglePageNavigation(force_show){
+    if(force_show) {
+        jQuery("#page_leftnav").attr('status', 'show');
+    }
+    if( jQuery("#page_leftnav").attr('status') == 'hide'){
+        jQuery("#page_leftnav").hide();
         jQuery("#page_content").css("margin-left","0px");
         jQuery("#page_leftnav_toggle").html("Show Navigation");
+        jQuery.cookies.set('toggle_page_navigation','hide', {path:'/',expires: 7});
+        jQuery("#page_leftnav").attr('status','show');
     }
     else {
-        jQuery("#page_leftnav").fadeIn("slow");
+        jQuery("#page_leftnav").show();
         jQuery("#page_content").css("margin-left","230px");
         jQuery("#page_leftnav_toggle").html("Hide Navigation");
+        jQuery.cookies.set('toggle_page_navigation','show', {path:'/',expires: 7});
+        jQuery("#page_leftnav").attr('status','hide');
     }
 };
+jQuery(document).ready(function(){
+    var state = jQuery.cookies.get('toggle_page_navigation');
+    if(state == null) {state = 'show';}
+    jQuery("#page_leftnav").attr('status', state);
+    togglePageNavigation();
+});
 
  function language_saparator(){  
     jQuery(".vietnamese_english").each(function(){

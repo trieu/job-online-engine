@@ -17,6 +17,7 @@
 #page_top .page_menu {
     float:left; width: 100%; position: relative;
 }
+#page_body { clear: both; width: 100%; position: relative; }
 #page_leftnav {
     float: left; width: 202px;  margin: 0; padding: 0.5em;
 }

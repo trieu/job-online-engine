@@ -2,7 +2,7 @@
 addScriptFile("js/jquery.fancybox/jquery.fancybox.min.js");
 addCssFile("js/jquery.fancybox/jquery.fancybox.css");
 ?>
-<div style='margin: 50px 20px'>
+<div style='margin: 10px 20px'>
     <h3 class="vietnamese_english" >
         Administrator Dashboard
     </h3>

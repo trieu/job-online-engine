@@ -115,9 +115,9 @@ class email_service extends Controller {
      * @Secured(role = "GroupOperator")
      */
     public function send_email() {        
-        $toAddresses = $this->input->post("to_addresses");
-        $subject = $this->input->post("subject");
-        $message = $this->input->post("message");
+        $toAddresses =  $this->input->post("to_addresses");
+        $subject     =  $this->input->post("email_subject");
+        $message     =  $this->input->post("email_message");
 
         $user_profile = $this->init_email_service_from_user_profile();
         $this->email->to($toAddresses);

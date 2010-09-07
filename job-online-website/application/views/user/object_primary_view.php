@@ -12,22 +12,7 @@ $legend_text = "";
 //}
 ?>
 
-<style type="text/css">
-    label {
-        margin-right:5px;
-        font-weight:bold;
-    }
-    form div {
-        margin-top: 5px;
-    }
-    fieldset div {
-        margin-top:15px;
-        margin-bottom:5px;
-    }
-    legend {
-        font-weight:bold;
-        font-size: 15px;
-    }
+<style type="text/css">   
     #accordion {
        margin-bottom:19px;
     }
@@ -42,7 +27,7 @@ $legend_text = "";
     #accordion .ui-state-active {
        font-size:15px;
     }
-    ol li {
+    .form_name {
         clear: none!important;
         margin:4px 0 0 4px;
     }
@@ -50,47 +35,101 @@ $legend_text = "";
         border: 1px #003399 solid;
         padding: 17px;
     }
+    #object_instance_div div {
+        margin-top: 5px;
+    }
+    #object_instance_div label {
+        margin-right:5px;
+        font-weight:bold;
+    }
+    .ui-tabs .ui-tabs-nav {
+        height: 49px !important;
+    }
 </style>
 
-<div>
-    <span class="vietnamese_english">Thông tin chi tiết:/Information Details:</span>
-    <b class="vietnamese_english"><?= $object_class->getObjectClassName() ?></b>
-</div>
-
-<div id="accordion">
-    <h3><a href="#"><?= $legend_text ?></a></h3>
-    <div>
-        <div class="input_info" id="object_instance_div" >
-            <div class="ajax_loader display_none" ></div>
-            <form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
-                <?php
-                if(isset ($objectCacheHTML['cacheContent'])) {
-                    echo html_entity_decode($objectCacheHTML['cacheContent']);
-                }
-                if(isset ( $objectCacheHTML['javascriptContent'] ) ) {
-                    echo "<script type='text/javascript'>".$objectCacheHTML['javascriptContent']."</script>";
-                }
-                ?>
-            </form>
+<div id="tabs">
+    <ul>
+        <li>
+            <a href="#object_info_tab_content" id="object_info_tab" >
+                <span class="vietnamese_english">Thông tin chi tiết:/Information Details:</span>
+                <span class="vietnamese_english"><?= $object_class->getObjectClassName() ?></span>
+            </a>
+        </li>
+        <li>
+            <a href="#automatic_search_tab_content" id="automatic_search_tab" class="vietnamese_english">
+                Tìm kiếm dữ liệu tự động / Automatic Search
+            </a>
+        </li>
+        <li style="display: none" >
+            <a href="#communication_tab_content" id="communication_tab" class="vietnamese_english">
+                Liên hệ Email / Contact by Email
+            </a>
+        </li>
+        <li style="display: none" >
+            <a href="#location_tab_content" id="location_tab" class="vietnamese_english">
+                Tìm trên bản đồ / Search on map
+            </a>
+        </li>
+    </ul>
+    <div id="object_info_tab_content">
+        <div id="accordion">
+            <h3><a href="#"><?= $legend_text ?></a></h3>
+            <div>
+                <div class="input_info" id="object_instance_div" >
+                    <div class="ajax_loader display_none" ></div>
+                    <form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
+                        <?php
+                        if(isset ($objectCacheHTML['cacheContent'])) {
+                            echo html_entity_decode($objectCacheHTML['cacheContent']);
+                        }
+                        if(isset ( $objectCacheHTML['javascriptContent'] ) ) {
+                            echo "<script type='text/javascript'>".$objectCacheHTML['javascriptContent']."</script>";
+                        }
+                        ?>
+                    </form>
+                </div>
+            </div>
         </div>
+        <div>
+            <b class="vietnamese_english">
+                Chọn một form để xem hoặc cập nhật thông tin /
+                Select a form for editing
+            </b>
+            <ol>
+                <?php foreach($formsOfObject as $form){?>
+                <li class="form_name">
+                    <a class="iframe use_fancybox vietnamese_english" href="<?php echo site_url("user/public_object_controller/ajax_edit_form/".$object->getObjectClassID()."/".$object->getObjectID()."/".$form["FormID"]) ?> ">
+                    <?= $form["FormName"] ?>
+                    </a>
+                </li>
+                <?php }?>
+            </ol>
+        </div>
+    </div>
+    <div id="automatic_search_tab_content">
+        <p class="vietnamese_english" >This function helps us find the matched data more intelligent</p>
+    </div>
+    <div id="communication_tab_content">
+        <p class="vietnamese_english" >This function helps us contact with the object using email</p>
+        <div>            
+            <label for="to_addresses" class="vietnamese_english">Gửi đến địa chỉ Email:/Send To Email Addresses:</label>
+            <input id="to_addresses" type="text" name="to_addresses" value="" size="80" /> <br><br>
+
+            <label for="email_subject" class="vietnamese_english">Chủ đề:/Subject:</label>
+            <textarea id="email_subject" name="email_subject" rows="2" cols="80"></textarea> <br><br>
+
+            <label for="email_message" class="vietnamese_english">Nội dung:/Content:</label>
+            <textarea id="email_message" name="email_message" rows="10" cols="80"></textarea> <br><br>
+            
+            <input type="button" value="Send" onclick="sendEmailToHumanObject()" /><br>
+            <div id="sendEmailToHumanObject_result" style="margin-top: 20px; background-color: lavender;"></div>
+        </div>
+    </div>
+    <div id="location_tab_content">
+        <p class="vietnamese_english" >This function helps us find the location data more intelligent</p>
     </div>
 </div>
 
-<div>
-    <b class="vietnamese_english">
-        Chọn một form để xem hoặc cập nhật thông tin /
-        Select a form for editing
-    </b>
-    <ol>
-        <?php foreach($formsOfObject as $form){?>
-        <li>
-            <a class="iframe use_fancybox" href="<?php echo site_url("user/public_object_controller/ajax_edit_form/".$object->getObjectClassID()."/".$object->getObjectID()."/".$form["FormID"]) ?> ">
-            <?= $form["FormName"] ?>
-            </a>
-        </li>
-        <?php }?>
-    </ol>
-</div>
 
 <script type="text/javascript">
     function initFancyBoxLinks(frameWidth, frameHeight){
@@ -169,8 +208,46 @@ $legend_text = "";
              };
              jQuery("#object_instance_form *[name*='field_']").each(f);
          }         
-         
-         //jQuery("#accordion").accordion({ collapsible: true });
          initFancyBoxLinks(800, 600);
-     }    
+
+         jQuery("#tabs").tabs();
+         initTabRequest();
+         initHowCanCommunicateObject();
+     }
+
+     function initTabRequest(){
+        var toks = location.href.split("#");
+        if(toks.length == 2){
+         var tabId = toks[1].replace('_content','');
+         jQuery("#" + tabId).click();
+        }
+     }
+
+     function initHowCanCommunicateObject(){
+        var email_addresses = "";
+        var f = function(){
+            email_addresses += (jQuery.trim(jQuery(this).val()) + " ");
+        };
+        jQuery("#object_instance_form").find("input[class*='email']").each(f);
+        if( email_addresses != "" ) {
+            jQuery("#communication_tab").parent().slideDown();
+        }
+        jQuery("#to_addresses").val(jQuery.trim(email_addresses))
+     }
+
+     function sendEmailToHumanObject() {
+        var url = "<?php echo site_url("services/email_service/send_email") ?>";
+        var callback = function(html){
+            jQuery("#sendEmailToHumanObject_result").html(html);
+        };
+        var data = {};
+        data.to_addresses = jQuery("#to_addresses").val();
+        data.email_subject = jQuery("#email_subject").val();
+        data.email_message = jQuery("#email_message").val();
+        jQuery.post(url, data , callback);
+     }
+
+     function initWhereCanFindObject(){
+
+     }
 </script>

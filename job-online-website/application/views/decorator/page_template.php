@@ -43,12 +43,14 @@
             <div id="page_top">
                 <?php echo $page_header ?>
             </div>
-            <div id="page_leftnav" >
-                <?php echo $left_navigation ?>
-            </div>
-            <div id="page_content">                
-                <?php echo $page_content ?>
-            </div>
+            <div id="page_body">
+                <div id="page_leftnav" >
+                    <?php echo $left_navigation ?>
+                </div>
+                <div id="page_content">
+                    <?php echo $page_content ?>
+                </div>
+            </div>            
             <div id="page_footer">
                 <?php echo $page_footer ?>
             </div>            

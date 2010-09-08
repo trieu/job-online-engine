@@ -74,57 +74,58 @@
     </ul>
 
 <?php } ?>
-
-<div>
-    <h3 class="vietnamese_english"><?php echo $objectClass->getObjectClassName() ?> </h3>
+<div class="search_data_results">
     <div>
-    <?php
-        $total_records = count($objects);
-        echo lang("result_number_label").$total_records;
-    ?>
+        <h3 class="vietnamese_english"><?php echo $objectClass->getObjectClassName() ?> </h3>
+        <div>
+        <?php
+            $total_records = count($objects);
+            echo lang("result_number_label").$total_records;
+        ?>
+        </div>
     </div>
-</div>
 
-<?php if($total_records > 0) { ?>
-<table border="1" style="margin: 10px 0 0 5px">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <?php
-            $max_field_num = count($metadata_object);
-            foreach ($metadata_object as $FieldName ) {
-                echo "<th>".$FieldName."</th>";
-            }
-            ?>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>       
-        <?php foreach ($objects as $objID => $data_map ) { ?>
-        <tr class="context_menu_trigger" id="object_row_<?= $objID ?>" >
-            <td><?= $objID ?></td>
-            <?php
-                $fields = $data_map["fields"];
-                foreach ($metadata_object as $FieldID => $FieldName ) {
-                    if( isset($fields[ $FieldID ]) ) {
-                        echo "<td><span class='data_cell_f_".$FieldID ."'>". $fields[ $FieldID ]."</span></td>";                        
-                    }
-                    else {
-                        echo "<td><span>&nbsp;</span></td>";
-                    }
+    <?php if($total_records > 0) { ?>
+    <table border="1" style="margin: 10px 0 0 5px">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <?php
+                $max_field_num = count($metadata_object);
+                foreach ($metadata_object as $FieldName ) {
+                    echo "<th>".$FieldName."</th>";
                 }
-             ?>
-            <td>
-                <div>
-                    <?= anchor('user/public_object_controller/view/'.$objID , 'View', array('title' => 'Edit')) ?>
-                </div>
-            </td>
-        </tr>
-        <?php } ?>       
-    </tbody>
-</table>
- <?php } else { ?>
-<div>
-    <b> <?php echo lang("no_result_text")?> </b>
+                ?>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($objects as $objID => $data_map ) { ?>
+            <tr class="context_menu_trigger" id="object_row_<?= $objID ?>" >
+                <td><?= $objID ?></td>
+                <?php
+                    $fields = $data_map["fields"];
+                    foreach ($metadata_object as $FieldID => $FieldName ) {
+                        if( isset($fields[ $FieldID ]) ) {
+                            echo "<td><span class='data_cell_f_".$FieldID ."'>". $fields[ $FieldID ]."</span></td>";
+                        }
+                        else {
+                            echo "<td><span>&nbsp;</span></td>";
+                        }
+                    }
+                 ?>
+                <td>
+                    <div>
+                        <?= anchor('user/public_object_controller/view/'.$objID , 'View', array('title' => 'Edit')) ?>
+                    </div>
+                </td>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+     <?php } else { ?>
+    <div>
+        <b> <?php echo lang("no_result_text")?> </b>
+    </div>
 </div>
 <?php } ?>

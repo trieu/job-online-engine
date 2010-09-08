@@ -153,4 +153,16 @@ class matching_engine_manager extends Model {
         return $query->result();
     }
 
+     public function get_matched_class_structures($BaseClassID) {
+        $filter = array();
+        $filter['BaseClassID'] = $BaseClassID;
+        $this->db->select("matched_class_structure.MatchedClassID, objectclass.ObjectClassName, matched_class_structure.MatchedStructure");
+        $this->db->from("matched_class_structure");
+        $this->db->join("objectclass", "objectclass.ObjectClassID = matched_class_structure.MatchedClassID");
+        $this->db->where("matched_class_structure.BaseClassID", $BaseClassID);
+        
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }

@@ -249,16 +249,16 @@ require_once 'macros.php';
         var Structure = {};
         var MatchedClassFields = jQuery("#MatchedClassFields");
         jQuery("#BaseClassFields").find("li:not(.placeholder)").each(
-        function(i,e){
-            var baseFieldId = jQuery(e).attr("field_id").replace("field_", "");
-            i++;
-            var matchedField = MatchedClassFields.find("li:nth-child("+i+")");
-            if(matchedField.length == 1){
-                var matchedFieldId = matchedField.attr("field_id").replace("field_", "");
-                Structure[baseFieldId] = matchedFieldId;
+            function(i,e){
+                var baseFieldId = jQuery(e).attr("field_id").replace("field_", "");
+                i++;
+                var matchedField = MatchedClassFields.find("li:nth-child("+i+")");
+                if(matchedField.length == 1){
+                    var matchedFieldId = matchedField.attr("field_id").replace("field_", "");
+                    Structure[baseFieldId] = matchedFieldId;
+                }
             }
-        }
-    );
+        );
         matchStructure.MatchedStructure = jQuery.toJSON(Structure);
         return matchStructure;
     };

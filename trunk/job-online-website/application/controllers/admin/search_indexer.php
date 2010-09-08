@@ -133,8 +133,7 @@ class search_indexer extends Controller {
     public function load_matched_class_structure() {
         $BaseClassID = $this->input->post("BaseClassID");
         $MatchedClassID = $this->input->post("MatchedClassID");
-        $rs = $this->matching_engine_manager->get_matched_class_structure($BaseClassID, $MatchedClassID);
-        $data = array();
+        $rs = $this->matching_engine_manager->get_matched_class_structure($BaseClassID, $MatchedClassID);        
         echo json_encode($rs);
     }
 
@@ -151,6 +150,7 @@ class search_indexer extends Controller {
         $results = $this->matching_engine_manager->get_matched_class_structure($BaseClassID, $MatchedClassID);
         $matchStructure = new stdClass();
         if (count($results) == 1) {
+            ApplicationHook::log($results[0]->MatchedStructure);
             $matchStructure = json_decode($results[0]->MatchedStructure);
         }
 
@@ -159,7 +159,7 @@ class search_indexer extends Controller {
 
         $baseObject = $this->matching_engine_manager->get_full_structure_object($BaseClassID, $ObjectID);
         if ($baseObject != NULL) {
-            $subquery = search_indexer::makeTermQuery($MatchedClassID, 'class_id');
+            $subquery = self::makeTermQuery($MatchedClassID, 'class_id');
             $query->addSubquery($subquery, true);
             $fields = $baseObject["fields"];
             foreach ($fields as $baseFieldID => $FieldValues) {

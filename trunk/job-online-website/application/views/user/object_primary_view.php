@@ -45,6 +45,9 @@ $legend_text = "";
     .ui-tabs .ui-tabs-nav {
         height: 49px !important;
     }
+    #doAutomaticSearch_result {
+        margin-top: 20px; background-color: lavender; overflow: auto;
+    }
 </style>
 
 <div id="tabs">
@@ -108,6 +111,12 @@ $legend_text = "";
     </div>
     <div id="automatic_search_tab_content">
         <p class="vietnamese_english" >This function helps us find the matched data more intelligent</p>
+        <div>
+            <select id="matched_class_list" ></select> 
+            <input type="button" value="Search" onclick="doAutomaticSearch()" />
+            <hr>
+            <div id="doAutomaticSearch_result" ></div>
+        </div>
     </div>
     <div id="communication_tab_content">
         <p class="vietnamese_english" >This function helps us contact with the object using email</p>
@@ -212,6 +221,7 @@ $legend_text = "";
 
          jQuery("#tabs").tabs();
          initTabRequest();
+         initAutomaticSearch();
          initHowCanCommunicateObject();
      }
 
@@ -221,6 +231,41 @@ $legend_text = "";
          var tabId = toks[1].replace('_content','');
          jQuery("#" + tabId).click();
         }
+     }
+
+     function initAutomaticSearch(){
+        var url = "<?php echo site_url("services/intelligent_search_service/get_matched_class_structures/".$object_class->getObjectClassID()) ?>";
+        var callback = function(json){
+            var list = jQuery.evalJSON(json);
+            var container = jQuery("#matched_class_list");
+            for(var i in list){
+                var opNode = jQuery('<option></option>');
+                opNode.html(list[i].ObjectClassName);
+                opNode.attr('id',"MatchedClassID_" + list[i].MatchedClassID);
+                opNode.attr('value',list[i].MatchedStructure);
+                container.append(opNode);
+            }            
+        };
+        jQuery.post(url, {} , callback);        
+     }
+
+     function doAutomaticSearch(){
+         var matchedNode = jQuery("#matched_class_list").find("option:selected");
+         var url = "<?php echo site_url("services/intelligent_search_service/search_from_matched_structure/") ?>";
+         var data = {};
+         data.BaseClassID = <?= $object_class->getObjectClassID() ?>;
+         data.MatchedClassID = matchedNode.attr("id").replace('MatchedClassID_', '');
+         data.ObjectID = <?= $object->getObjectID() ?>;
+         data.matchStructure = matchedNode.val();
+         var callback = function(html){
+            jQuery("#doAutomaticSearch_result").html(html);
+            jQuery("#doAutomaticSearch_result > div").not(".search_data_results").hide();
+         };
+         jQuery("#doAutomaticSearch_result").html("Searching data ...");
+         jQuery.post(url, data , callback);
+         var resultNode = jQuery("#doAutomaticSearch_result");
+         var w = resultNode.width();
+         resultNode.attr('style','width=' + w + 'px');
      }
 
      function initHowCanCommunicateObject(){

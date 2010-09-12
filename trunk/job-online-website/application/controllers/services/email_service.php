@@ -7,11 +7,7 @@
  * @property CI_Form_validation $form_validation
  * @property CI_Input $input
  * @property CI_Email $email
- * @property CI_DB_active_record $db
- * @property CI_DB_forge $dbforge
- * @property VehicleDBUtils $VehicleDBUtils
- * @property Xe $xe
- * @property Gps_markers $gps_markers
+ * @property CI_DB_active_record $db  
  */
 class email_service extends Controller {
 

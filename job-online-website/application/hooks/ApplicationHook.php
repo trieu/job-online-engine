@@ -198,6 +198,10 @@ class ApplicationHook {
             $this->is_logged_in = $this->CI->redux_auth->logged_in();
             if ($reflection != NULL) {
                 if ($reflection->hasAnnotation('Decorated')) {
+                    if (self::isMaintenanceEnabled()) {
+                        echo "<h1>Server is on Maintenance Planning, please come back later</h1>";
+                        return;
+                    }
                     $themeName = $this->getThemeNameFromActionController($reflection);
                     $this->setPageHeaderCached();
                     $data = $this->processFinalViewData();
@@ -287,7 +291,7 @@ class ApplicationHook {
         if ($this->user_profile) {
             $first_name = $this->user_profile->first_name;
             $login_name = $first_name;
-            $max_in_first_name = 15;            
+            $max_in_first_name = 15;
             if (strlen($login_name) > $max_in_first_name) {
                 $login_name = substr($login_name, 0, $max_in_first_name);
             }
@@ -371,7 +375,12 @@ class ApplicationHook {
 
     public static function isLogEnabled() {
         $ci = &get_instance();
-        return $ci->config->item('fire_php_log_enable');
+        return $ci->config->item('fire_php_log_enabled');
+    }
+
+    public static function isMaintenanceEnabled() {
+        $ci = &get_instance();
+        return $ci->config->item('maintenance_enabled');
     }
 
     protected function isGroupAdmin() {

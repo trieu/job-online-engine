@@ -35,7 +35,7 @@ class object_service extends Controller {
     /**
      * 
      */
-    public function import_data($ObjectClassID = -1, $justView = TRUE) {
+    public function import_data($ObjectClassID = -1, $justView = 'true') {
         $url1 = 'http://tantrieuf31.summerhost.info/job-database/index.php/services/object_service/export_data/' . $ObjectClassID;
         $url2 = 'http://drd-vn-database.com/index.php/services/object_service/export_data/' . $ObjectClassID;
         $url3 = 'http://localhost/job-online-website/tiengviet.php/services/object_service/export_data/' . $ObjectClassID;
@@ -72,9 +72,9 @@ class object_service extends Controller {
         foreach ($objects as $id => $impoterdObj) {
             if ($this->object_manager->isObjectNotExisted($id, $impoterdObj['IdentityFieldValues'])) {
                 $out .= ( json_encode($impoterdObj['FieldValues']) . " -> Import $id <BR><BR>" );
-                if ($justView) {
+                if ($justView == 'true') {
                     $insertedObjNum++;
-                } else {
+                } else if ($justView == 'false') {
                     $obj = new Object();
                     $obj->setObjectClassID($ObjectClassID);
                     $obj->setObjectID(-1); // add as new
@@ -92,7 +92,7 @@ class object_service extends Controller {
         }
 
         echo $out;
-        echo "<BR> Need to import $insertedObjNum / " . (count($objects)) . " objects";
+        echo "<BR>justView: $justView Need to import $insertedObjNum / " . (count($objects)) . " objects";
     }
 
     public function simple_get() {

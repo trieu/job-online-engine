@@ -205,15 +205,18 @@ class search_manager extends Model {
         return $data;
     }
 
-    public function search_objects_by_class($ObjectClassID, $startIndex = -1, $limitSizeReturn = -1) {
+    public function search_objects_by_class($ObjectClassID, $return_query = FALSE, $startIndex = -1, $limitSizeReturn = -1) {
         $sql = self::$GET_FULL_FIELDS_OBJECTS_SQL;
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
+        if ($return_query) {
+            return $query->result();
+        }
         return $this->makeDataTableModelFromQuery($query);
     }
 
     public function search_objects_by_id_list($ObjectClassID, $matched_object_ids = "-1") {
         $sql = self::$GET_BASIC_FIELDS_OBJECTS_SQL . " WHERE r.ObjectID IN ( [matched_object_ids] ) ";
-        $sql = str_replace("[matched_object_ids]", $matched_object_ids, $sql);        
+        $sql = str_replace("[matched_object_ids]", $matched_object_ids, $sql);
         $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
         return $this->makeDataTableModelFromQuery($ObjectClassID, $query);
     }

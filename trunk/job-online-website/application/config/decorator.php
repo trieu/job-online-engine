@@ -9,7 +9,8 @@
 */
 
 $config['controllers_directory'] = "application/controllers/";
-$config['fire_php_log_enable'] = TRUE;
+$config['fire_php_log_enabled'] = TRUE;
+$config['maintenance_enabled'] = FALSE;
 
 
 

@@ -16,7 +16,7 @@ class object_manager extends data_manager {
 
     public function save($obj) {
         $data_array = $this->class_mapper->classToArray("Object", $obj);
-       // ApplicationHook::logInfo(json_encode($data_array));
+        // ApplicationHook::logInfo(json_encode($data_array));
         $id = -1;
         if ($obj->getObjectID() > 0) {
             $id = $this->update($data_array);
@@ -286,15 +286,30 @@ class object_manager extends data_manager {
         return $query->result();
     }
 
-    public function isObjectExisted($id, $extAttrs = array()) {
-        $sql = "SELECT objects.ObjectID, fieldvalues.FieldID, fieldvalues.FieldValue, fieldvalues.SelectedFieldValue
-                FROM objects
-                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID AND fieldvalues.FieldID != 0 AND fieldvalues.ObjectID = ?
-                ";
-        $query = $this->db->query($sql, array('ObjectID' => $id));
-        foreach ($query->result() as $row) {
-            return TRUE;
+    public function isObjectNotExisted($objId, $IdentityFieldValues) {
+        if (count($IdentityFieldValues) == 0) {
+            return FALSE;
         }
+
+        $sql = "SELECT DISTINCT fieldvalues.ObjectID
+                FROM fieldvalues
+                WHERE fieldvalues.FieldID != 0 ";
+        $filter = array();
+//        array_push($filter, $objId);
+        foreach ($IdentityFieldValues as $id => $value) {
+            $value = trim($value);
+            $sql .= ( " AND fieldvalues.FieldID = ? AND fieldvalues.FieldValue LIKE ?");
+            array_push($filter, $id);
+            array_push($filter, '%'.$value.'%');
+        }
+
+        $query = $this->db->query($sql, $filter);        
+        $n = count($query->result());
+        
+        if($n == 0){
+            ApplicationHook::logInfo($this->db-> last_query(). " , n = $n");
+            return TRUE;
+        }        
         return FALSE;
     }
 

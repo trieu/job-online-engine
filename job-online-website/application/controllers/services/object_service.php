@@ -7,7 +7,7 @@
  * @property CI_Form_validation $form_validation
  * @property CI_Input $input
  * @property CI_Email $email
- * @property CI_DB_active_record $db 
+ * @property object_manager $object_manager
  */
 class object_service extends Controller {
 
@@ -23,26 +23,69 @@ class object_service extends Controller {
     /**
      * 
      */
-    public function export_data() {
+    public function export_data($ObjectClassID = -1) {
         $data = array();
-        $o = new stdClass();
-        $o->name = "Trieu";
-        $o->age = 25;
-        echo json_encode($o);
+
+        $this->load->model("object_manager");
+        $data = $this->object_manager->get_raw_data_objects($ObjectClassID);
+        echo json_encode($data);
         // $this->load->view("user/user_email_config", $data);
     }
 
     /**
      * 
      */
-    public function import_data() {
-        $url1 = 'http://tantrieuf31.summerhost.info/job-database/index.php/services/object_service/export_data';
-        $url2 = 'http://drd-vn-database.com/index.php/services/object_service/export_data';
+    public function import_data($ObjectClassID = -1) {
+        $url1 = 'http://tantrieuf31.summerhost.info/job-database/index.php/services/object_service/export_data/'.$ObjectClassID;
+        $url2 = 'http://drd-vn-database.com/index.php/services/object_service/export_data/'.$ObjectClassID;
+        $url3 = 'http://localhost/job-online-website/tiengviet.php/services/object_service/export_data/'.$ObjectClassID;
         $out = '';
 
-        $out = $this->curl->loadHtml(($url2));
+        $rawData = $this->curl->loadHtml($url1);
+        echo "<BR><BR> $rawData <BR><BR>";
+        return;
+        $this->load->model("object_manager");
+        $rows = json_decode($rawData);
+
+        $objects = array();
+        foreach ($rows as $row) {
+            $objID = $row->ObjectID;
+            if ( $this->object_manager->isObjectExisted($objID)) {
+                if ( ! isset($objects[$objID])) {
+                    $objects[$objID] =  array();
+                    $objects[$objID]['FieldValues'] = array();
+                }
+                $FieldValue = new stdClass();
+                $FieldValue->FieldID = $row->FieldID;
+                $FieldValue->FieldValueID = 0;
+                $FieldValue->FieldValue = $row->FieldValue;
+                $FieldValue->SelectedFieldValue = ($row->SelectedFieldValue == "1") ? true : false;
+                array_push($objects[$objID]['FieldValues'], $FieldValue);
+            }
+        }
+
+        $insertedObjNum = 0;
+        //{"FieldID":112,"FieldValueID":0,"FieldValue":"tester","SelectedFieldValue":false}
+        foreach ($objects as $id => $impoterdObj) {
+            if ($ObjectClassID > 0) {
+                $out .= ( json_encode($impoterdObj['FieldValues']) . " -> Import $id <BR><BR>" );
+//                $obj = new Object();
+//                $obj->setObjectClassID($ObjectClassID);
+//                $obj->setObjectID(-1); // add as new
+//                $obj->setFieldValues($impoterdObj['FieldValues']);
+//                $insertedId = $this->object_manager->save($obj);
+//                if ($insertedId > 0) {
+//                    $out .= ("Import $id to new $insertedId <BR>" );
+//                    $insertedObjNum++;
+//                }
+            }
+        }
+        if($insertedObjNum == count($objects)) {
+            $out .= (" ### Success! $insertedObjNum <BR>" );
+        }
 
         echo $out;
+       // echo json_encode($objects);
     }
 
     public function simple_get() {

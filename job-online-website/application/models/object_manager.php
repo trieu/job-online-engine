@@ -16,25 +16,25 @@ class object_manager extends data_manager {
 
     public function save($obj) {
         $data_array = $this->class_mapper->classToArray("Object", $obj);
+       // ApplicationHook::logInfo(json_encode($data_array));
         $id = -1;
-        if($obj->getObjectID() > 0) {
+        if ($obj->getObjectID() > 0) {
             $id = $this->update($data_array);
             $id = $obj->getObjectID();
 
             $this->load->model("field_value_manager");
-            ApplicationHook::logInfo("In object manager,count(obj->getFieldValues()) = ". count($obj->getFieldValues()) );
+            ApplicationHook::logInfo("In object manager,count(obj->getFieldValues()) = " . count($obj->getFieldValues()));
             $this->db->trans_start();
             foreach ($obj->getFieldValues() as $field_value) {
                 $field_value->ObjectID = $id;
                 $this->field_value_manager->save($field_value);
             }
             $this->db->trans_complete();
-        }
-        else {
+        } else {
             $id = $this->insert($data_array);
 
             $this->load->model("field_value_manager");
-            ApplicationHook::logInfo("In object manager,count(obj->getFieldValues()) = ". count($obj->getFieldValues()) );
+            ApplicationHook::logInfo("In object manager,count(obj->getFieldValues()) = " . count($obj->getFieldValues()));
             $this->db->trans_start();
             foreach ($obj->getFieldValues() as $field_value) {
                 $field_value->ObjectID = $id;
@@ -48,7 +48,7 @@ class object_manager extends data_manager {
 
     protected function insert($data_array) {
         $this->db->insert($this->table_name, $data_array);
-        if($this->db->affected_rows()>0) {
+        if ($this->db->affected_rows() > 0) {
             return $this->db->insert_id();
         }
         return -1;
@@ -60,17 +60,16 @@ class object_manager extends data_manager {
         unset($data_array[$key_field_name]);
         $this->db->where($key_field_name, $id);
         $this->db->update($this->table_name, $data_array);
-        if($this->db->affected_rows()>0) {
+        if ($this->db->affected_rows() > 0) {
             return $id;
         }
         return -1;
     }
 
-
     public function delete_by_id($id) {
-        $this->db->delete("fieldvalues", "ObjectID = ".$id );
-        $this->db->delete("objects", "ObjectID = ".$id );
-        if($this->db->affected_rows()>0){
+        $this->db->delete("fieldvalues", "ObjectID = " . $id);
+        $this->db->delete("objects", "ObjectID = " . $id);
+        if ($this->db->affected_rows() > 0) {
             return TRUE;
         }
         return FALSE;
@@ -79,21 +78,27 @@ class object_manager extends data_manager {
     public function find_by_id($id) {
         $query = $this->db->get_where($this->table_name, array('ObjectID' => $id));
         foreach ($query->result_array() as $data_row) {
-            $pro = new Object();
-            return $pro = $this->class_mapping($data_row, "Object", $pro);
+            $o = new Object();
+            $o = $this->class_mapping($data_row, "Object", $o);
+            return $o;
         }
     }
+
     public function find_by_filter($filter = array(), $join_filter = array()) {
         return $this->select_db_helper($filter, $this->table_name, "Object");
     }
+
     public function delete($object) {
+
     }
 
     public function get_dependency_instances() {
         $list = array();
         return $list;
     }
-    public function updateByField($id,$editable_field_name,$editable_field_value) {
+
+    public function updateByField($id, $editable_field_name, $editable_field_value) {
+
     }
 
     /**
@@ -144,20 +149,20 @@ class object_manager extends data_manager {
             ) rs ";
 
         $arr_params = array($classID, $classID, $classID, $classID);
-        if($total_rs > 0){
+        if ($total_rs > 0) {
             $sql .= " LIMIT ?,? ";
             array_push($arr_params, $startIndex);
             array_push($arr_params, $total_rs);
         }
-        $query = $this->db->query($sql, $arr_params );
+        $query = $this->db->query($sql, $arr_params);
         $record_set = $query->result_array();
         $objects = array();
         foreach ($record_set as $record) {
-            if( ! isset ($objects[$record['ObjectID']]) ) {
-                $objects[ $record['ObjectID'] ] = array();
+            if (!isset($objects[$record['ObjectID']])) {
+                $objects[$record['ObjectID']] = array();
             }
-            $field = array("FieldName"=> $record['FieldName']  , "FieldValue" => $record['FieldValue'] );
-            array_push( $objects[ $record['ObjectID'] ], $field );
+            $field = array("FieldName" => $record['FieldName'], "FieldValue" => $record['FieldValue']);
+            array_push($objects[$record['ObjectID']], $field);
         }
         //ApplicationHook::log($this->db->last_query());
         return $objects;
@@ -200,18 +205,18 @@ class object_manager extends data_manager {
         $object = new Object();
         $fields = array();
         foreach ($record_set as $record) {
-            if( $object->getObjectID() < 0 ) {
-                $object->setObjectID( $record['ObjectID'] );
+            if ($object->getObjectID() < 0) {
+                $object->setObjectID($record['ObjectID']);
             }
-            if( $object->getObjectClassID() < 0 ) {
-                $object->setObjectClassID( $record['ObjectClassID'] );
+            if ($object->getObjectClassID() < 0) {
+                $object->setObjectClassID($record['ObjectClassID']);
             }
             $field = new stdClass();
             $field->FieldID = $record['FieldID'];
             $field->FieldValueID = $record['FieldValueID'];
             $field->FieldValue = $record['FieldValue'];
-            $field->SelectedFieldValue = (int)$record['SelectedFieldValue'];
-            array_push($fields , $field);
+            $field->SelectedFieldValue = (int) $record['SelectedFieldValue'];
+            array_push($fields, $field);
         }
         $object->setFieldValues($fields);
         ApplicationHook::log($this->db->last_query());
@@ -253,22 +258,46 @@ class object_manager extends data_manager {
         $object = new Object();
         $fields = array();
         foreach ($record_set as $record) {
-            if( $object->getObjectID() < 0 ) {
-                $object->setObjectID( $record['ObjectID'] );
+            if ($object->getObjectID() < 0) {
+                $object->setObjectID($record['ObjectID']);
             }
-            if( $object->getObjectClassID() < 0 ) {
-                $object->setObjectClassID( $record['ObjectClassID'] );
+            if ($object->getObjectClassID() < 0) {
+                $object->setObjectClassID($record['ObjectClassID']);
             }
             $field = new stdClass();
             $field->FieldID = $record['FieldID'];
             $field->FieldValueID = $record['FieldValueID'];
             $field->FieldValue = $record['FieldValue'];
-            $field->SelectedFieldValue = (int)$record['SelectedFieldValue'];
-            array_push($fields , $field);
+            $field->SelectedFieldValue = (int) $record['SelectedFieldValue'];
+            array_push($fields, $field);
         }
         $object->setFieldValues($fields);
         ApplicationHook::log($this->db->last_query());
         return $object;
     }
+
+    public function get_raw_data_objects($ObjectClassID) {
+        $sql = "SELECT objects.ObjectID, fieldvalues.FieldID, fieldvalues.FieldValue, fieldvalues.SelectedFieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID AND fieldvalues.FieldID != 0
+                WHERE objects.ObjectClassID = ?
+                ";
+        $query = $this->db->query($sql, array($ObjectClassID));
+        return $query->result();
+    }
+
+    public function isObjectExisted($id, $extAttrs = array()) {
+        $sql = "SELECT objects.ObjectID, fieldvalues.FieldID, fieldvalues.FieldValue, fieldvalues.SelectedFieldValue
+                FROM objects
+                INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID AND fieldvalues.FieldID != 0 AND fieldvalues.ObjectID = ?
+                ";
+        $query = $this->db->query($sql, array('ObjectID' => $id));
+        foreach ($query->result() as $row) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+
 }
+
 ?>

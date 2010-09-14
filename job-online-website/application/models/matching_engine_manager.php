@@ -62,8 +62,7 @@ class matching_engine_manager extends Model {
                 )
                 ) r                 
                 ";
-
-    protected $GET_FULL_RAW_FIELDS_OBJECT_SQL = "                      
+    protected $GET_FULL_RAW_FIELDS_OBJECT_SQL = "
                 SELECT objects.ObjectID, fields.FieldID, fields.FieldName, fieldvalues.FieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID
@@ -82,8 +81,8 @@ class matching_engine_manager extends Model {
         $this->CI->load->model('objectclass_manager');
 
 //        $sql = $this->GET_FULL_RAW_FIELDS_OBJECT_SQL . " WHERE objects.ObjectID = ? ";
-        $sql = $this->GET_FULL_FIELDS_OBJECT_SQL. " WHERE r.ObjectID = ? ";
-        $query = $this->db->query($sql, array($ObjectClassID,$ObjectClassID,$ObjectClassID,$ObjectClassID, $ObjectID));
+        $sql = $this->GET_FULL_FIELDS_OBJECT_SQL . " WHERE r.ObjectID = ? ";
+        $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectID));
         //ApplicationHook::logInfo($this->db->last_query());
 
         $record_set = $query->result_array();
@@ -116,21 +115,21 @@ class matching_engine_manager extends Model {
 //        $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID));
 
         $sql = $this->GET_FULL_FIELDS_OBJECT_SQL;
-        $query = $this->db->query($sql, array($ObjectClassID,$ObjectClassID,$ObjectClassID,$ObjectClassID));
+        $query = $this->db->query($sql, array($ObjectClassID, $ObjectClassID, $ObjectClassID, $ObjectClassID));
 
         $record_set = $query->result_array();
         $objects = array();
         $metadata_object = array();
         foreach ($record_set as $record) {
-            if( ! isset ($objects[$record['ObjectID']]) ) {
-                $objects[ $record['ObjectID'] ] = array();
-                $objects[ $record['ObjectID'] ]["fields"] = array();
+            if (!isset($objects[$record['ObjectID']])) {
+                $objects[$record['ObjectID']] = array();
+                $objects[$record['ObjectID']]["fields"] = array();
             }
             $metadata_object[$record['FieldID']] = $record['FieldName'];
 
-            $FieldValue =& $objects[$record['ObjectID']]["fields"][$record['FieldID']];
-            if( isset( $FieldValue ) ){
-                $FieldValue .= (" ".$record['FieldValue']);
+            $FieldValue = & $objects[$record['ObjectID']]["fields"][$record['FieldID']];
+            if (isset($FieldValue)) {
+                $FieldValue .= ( " " . $record['FieldValue']);
             } else {
                 $FieldValue = $record['FieldValue'];
             }
@@ -153,14 +152,14 @@ class matching_engine_manager extends Model {
         return $query->result();
     }
 
-     public function get_matched_class_structures($BaseClassID) {
+    public function get_matched_class_structures($BaseClassID) {
         $filter = array();
         $filter['BaseClassID'] = $BaseClassID;
         $this->db->select("matched_class_structure.MatchedClassID, objectclass.ObjectClassName, matched_class_structure.MatchedStructure");
         $this->db->from("matched_class_structure");
         $this->db->join("objectclass", "objectclass.ObjectClassID = matched_class_structure.MatchedClassID");
         $this->db->where("matched_class_structure.BaseClassID", $BaseClassID);
-        
+
         $query = $this->db->get();
         return $query->result();
     }

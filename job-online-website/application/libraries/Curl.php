@@ -1,7 +1,5 @@
 <?php
-
-if (!defined('BASEPATH'))
-    exit('No direct script access allowed');
+if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
  * Curl Class
@@ -387,7 +385,7 @@ class Curl {
 
         if ($info['http_code'] == 404) {
             $response = "";
-        } 
+        }
         return $response;
     }
 

@@ -27,7 +27,9 @@
        padding-right: 40px;
        color: blue;
     }
-
+    #total_filter_num_wrapper {
+        font-weight: bold;color: #2266BB;background-color: #FFFF66; margin: 5px;padding-left: 10px;
+    }
 </style>
 <?php if( ! isset ($in_search_mode) ) { ?>
     <?php
@@ -75,7 +77,6 @@
             window.location = "<?= site_url("user/public_object_controller/edit/")?>" + params;
         }
     }
-
 
     var pagination_config = null;
     <?php
@@ -125,15 +126,18 @@
         jQuery("#quick_filter_ok").click(function(){
             jQuery("div[id*='object_row_']").hide();
             var sfn = jQuery("#quick_filter_field_name option:selected").html();
-            var sfv = jQuery.trim(jQuery(jQuery("#quick_filter_field_value").val()).html());
+            var sfv = jQuery.trim(jQuery("#quick_filter_field_value").val());
+            var c = 0;
             jQuery("#page_content .field_name").each(function(){
                 var fn = jQuery(this).html();
                 var fv = jQuery(this).next().html();
-
                 if(fn.search(sfn) >= 0 && fv.search(sfv) >= 0) {
                     jQuery(this).parent().parent().show();
+                    c = c + 1;
                 }
             });
+            var text = c + ' ' + jQuery('#ObjectClassName').html();
+            jQuery("#total_filter_num").html(text).parent().show();
         });
         jQuery("#quick_filter_reset").click(function(){
              jQuery("div[id*='object_row_']").show();
@@ -166,11 +170,11 @@
 
 
 <div style="margin-bottom: 20px;">   
-    <h3 class="vietnamese_english"><?= $objectClass->getObjectClassName()  ?> </h3>
+    <h3 class="vietnamese_english" id="ObjectClassName" ><?= $objectClass->getObjectClassName()  ?> </h3>
     <b>
         <span class="vietnamese_english">
-            Tổng cộng <?= $total_records = count($objects) ?> records /
-            Display <?= $total_records = count($objects) ?> records
+            Tổng cộng: <?= $total_records = count($objects) ?>  /
+            Total: <?= $total_records = count($objects) ?> records
         </span>
         <br/>
         
@@ -182,6 +186,11 @@
         <input id="quick_filter_ok" type="button" value="Filter" />
         <input id="quick_filter_reset" type="button" value="Show All" />
     </div>
+    <div id="total_filter_num_wrapper" style="display: none;">
+        <span id="total_filter_num" ></span>
+        <span class="vietnamese_english"> được tìm thấy/found</span>
+    </div>
+    
 </div>
 
 

@@ -275,7 +275,7 @@ require_once 'macros.php';
                     query_fields.push(kv);
                 }
                 else {
-                    data[kv.name] = kv.value;
+                    data[kv.name] = jQuery.trim(kv.value);
                 }
             }
             data["query_fields"] = jQuery.toJSON( query_fields );
@@ -502,7 +502,7 @@ require_once 'macros.php';
                     query_fields.push(kv);
                 }
                 else {
-                    query_details[kv.name] = kv.value;
+                    query_details[kv.name] = jQuery.trim(kv.value);
                 }
             }
             query_details["query_fields"] = query_fields;

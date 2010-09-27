@@ -202,7 +202,10 @@
     <?php foreach ($objects as $objID => $fields ) { ?>
         <div class="context_menu_trigger focusable_text" id="object_row_<?= $objID ?>">
             <a name="<?php echo $objID; ?>"></a>
-             <div class="id">ID: <?php echo $objID; ?></div>
+             <div class="id">
+                 <span>ID: <?php echo $objID; ?></span>
+                 <span style="padding-left: 10px; "><?php action_url_a('user/public_object_controller/edit/'.$objID,"Edit"); ?></span>
+             </div>
             <?php
             foreach ($fields as $field ) {
                 if( isset ($field['FieldID'])) {

@@ -1,31 +1,34 @@
 <style type="text/css">
-    .context_menu_trigger span {
+    .object_holder span {
         min-width: 102px;
     }
-    .context_menu_trigger {
+    .object_holder {
         border-top: blue solid 1px;
         padding: 10px 10px 10px 50px;
     }
-    .context_menu_trigger .id{
+    .object_holder .id{
        color: blue;
        font-size: 16px;
        font-weight: bold;
        margin-left: -40px;
     }
-    .context_menu_trigger .field_name{
+    .object_holder .field_name{
        color:#1C94C4;
        font-size: 13px;
        font-weight: bold;
     }
-    .context_menu_trigger .field_value{
+    .object_holder .field_value{
        color:#000000;
        font-size: 15.5px;
        font-weight: bold;
     }
-    .context_menu_trigger .actions{     
+    .object_holder .actions{
        text-align: right;
        padding-right: 40px;
        color: blue;
+    }
+    .object_holder .actions a:HOVER{
+      font-weight: bold; color: red;
     }
     #total_filter_num_wrapper {
         font-weight: bold;color: #2266BB;background-color: #FFFF66; margin: 5px;padding-left: 10px;
@@ -40,43 +43,10 @@
     ?>
 <script type="text/javascript">
     jQuery(document).ready(function() {
-        initContextMenu();
         initPagination();
         setTimeout(populateQuickFilter, 1000);
         
     });
-    
-    function initContextMenu(){
-        var f = function(){
-            jQuery(this).contextMenu({ menu: "context_menu_ui", leftButton: true},contextMenuHandler);
-            jQuery(this).mouseover(function(){
-                // jQuery(this).css("background-color", "#FFFF99");
-            });
-            jQuery(this).click(function(){
-                jQuery(".context_menu_trigger").css("background-color", "#FFF");
-                jQuery(this).css("background-color", "#FFFF99");
-            });
-            jQuery(this).mouseout(function(){
-                // jQuery(this).css("background-color", "#FFF");
-            });
-        };
-        jQuery(".context_menu_trigger").each(f);
-    }
-    function contextMenuHandler(action, el, pos) {
-        var params = "";
-        if( action.indexOf("FormID_") == 0 ) {
-            params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("FormID_","");
-            window.location = "<?= site_url("user/public_object_controller/do_form")?>" + params;
-        }
-        else if( action.indexOf("FormID_") == 0 ) {
-            params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("FormID_","");
-            window.location = "<?= site_url("user/public_object_controller/do_form")?>" + params;
-        }
-        else if(action == "EditObject"){
-            params = "/" + jQuery(el).attr("id").replace("object_row_","");
-            window.location = "<?= site_url("user/public_object_controller/edit/")?>" + params;
-        }
-    }
 
     var pagination_config = null;
     <?php
@@ -145,26 +115,6 @@
         jQuery("#quick_filter_div").show();
     }
 </script>
-<ul id="context_menu_ui" class="contextMenu">
-    <li><a href="#EditObject" >@Action: Edit</a></li>
-<?php foreach ($objectClass->getUsableProcesses() as $idx => $p) {
-    if($idx == 0) continue;
-    ?>
-    <li>
-        <a href="#ProcessID_<?= $p->getProcessID() ?>">
-            @Process: <?php echo $p->getProcessName(); ?>
-        </a>
-    </li>
-
-    <?php foreach ($p->getUsableForms() as $form) { ?>
-    <li>
-        <a href="#FormID_<?= $form->getFormID() ?>">
-            &nbsp;&nbsp; #Form: <?php echo $form->getFormName(); ?>
-        </a>
-    </li>
-    <?php }
-} ?>
-</ul>
 
     <?php } ?>
 
@@ -200,11 +150,10 @@
 <br><br>
 
     <?php foreach ($objects as $objID => $fields ) { ?>
-        <div class="context_menu_trigger focusable_text" id="object_row_<?= $objID ?>">
+        <div class="object_holder focusable_text" id="object_row_<?= $objID ?>">
             <a name="<?php echo $objID; ?>"></a>
              <div class="id">
                  <span>ID: <?php echo $objID; ?></span>
-                 <span style="padding-left: 10px; "><?php action_url_a('user/public_object_controller/edit/'.$objID,"Edit"); ?></span>
              </div>
             <?php
             foreach ($fields as $field ) {
@@ -227,7 +176,9 @@
             }
             ?>
             <div class="actions" >
-
+               <?= anchor('user/public_object_controller/edit/'.$objID , 'Xem chi tiết/View Details', array('class'=>'vietnamese_english')) ?>
+                <br>
+               <?= anchor('admin/object_controller/delete/'.$objID."/".$objectClass->getObjectClassID() , 'Xoá/Delete', array('class' => 'confirmation vietnamese_english')) ?>
             </div>
         </div>
         <?php } ?>

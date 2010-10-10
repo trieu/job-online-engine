@@ -151,8 +151,8 @@ class object_manager extends data_manager {
         $arr_params = array($classID, $classID, $classID, $classID);
         if ($total_rs > 0) {
             $sql .= " LIMIT ?,? ";
-            array_push($arr_params, $startIndex);
-            array_push($arr_params, $total_rs);
+            array_push($arr_params, (int)$startIndex);
+            array_push($arr_params, (int)$total_rs);
         }
         $query = $this->db->query($sql, $arr_params);
         $record_set = $query->result_array();

@@ -40,7 +40,25 @@ if ( ! function_exists('xss_clean'))
 	function xss_clean($str, $is_image = FALSE)
 	{
 		$CI =& get_instance();
-		return $CI->input->xss_clean($str, $is_image);
+		return $CI->security->xss_clean($str, $is_image);
+	}
+}
+
+// ------------------------------------------------------------------------
+
+/**
+ * Sanitize Filename
+ *
+ * @access	public
+ * @param	string
+ * @return	string
+ */	
+if ( ! function_exists('sanitize_filename'))
+{
+	function sanitize_filename($filename)
+	{
+		$CI =& get_instance();
+		return $CI->security->sanitize_filename($filename);
 	}
 }
 
@@ -56,7 +74,7 @@ if ( ! function_exists('dohash'))
 {	
 	function dohash($str, $type = 'sha1')
 	{
-		return $this->do_hash($str, $type);
+		return do_hash($str, $type);
 	}
 }
 

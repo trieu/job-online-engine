@@ -97,7 +97,7 @@ if ( ! function_exists('ol'))
  * @param	string
  * @param	mixed
  * @param	mixed
- * @param	intiger
+ * @param	integer
  * @return	string
  */
 if ( ! function_exists('_list'))
@@ -197,6 +197,12 @@ if ( ! function_exists('img'))
 		if ( ! is_array($src) )
 		{
 			$src = array('src' => $src);
+		}
+
+		// If there is no alt attribute defined, set it to an empty string
+		if ( ! isset($src['alt']))
+		{
+			$src['alt'] = '';
 		}
 
 		$img = '<img';

@@ -431,7 +431,7 @@ if ( ! function_exists('auto_link'))
 /**
  * Prep URL
  *
- * Simply adds the http:// part if missing
+ * Simply adds the http:// part if no scheme is included
  *
  * @access	public
  * @param	string	the URL
@@ -446,7 +446,9 @@ if ( ! function_exists('prep_url'))
 			return '';
 		}
 
-		if (substr($str, 0, 7) != 'http://' && substr($str, 0, 8) != 'https://')
+		$url = parse_url($str);
+		
+		if ( ! $url OR ! isset($url['scheme']))
 		{
 			$str = 'http://'.$str;
 		}

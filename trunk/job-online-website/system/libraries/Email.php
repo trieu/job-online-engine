@@ -146,6 +146,8 @@ class CI_Email {
 		$this->_header_str	= "";
 		$this->_replyto_flag = FALSE;
 		$this->_recipients	= array();
+		$this->_cc_array	= array();
+		$this->_bcc_array	= array();
 		$this->_headers		= array();
 		$this->_debug_msg	= array();
 
@@ -1544,7 +1546,7 @@ class CI_Email {
 			// server probably has popen disabled, so nothing we can do to get a verbose error.
 			return FALSE;
 		}
-		
+
 		fputs($fp, $this->_header_str);
 		fputs($fp, $this->_finalbody);
 
@@ -1554,7 +1556,7 @@ class CI_Email {
 		{
 			$status = $status >> 8 & 0xFF;
 	    }
-	
+
 		if ($status != 0)
 		{
 			$this->_set_error_message('email_exit_status', $status);
@@ -1865,7 +1867,7 @@ class CI_Email {
 		elseif ($cip)		$this->_IP = $cip;
 		elseif ($fip)		$this->_IP = $fip;
 
-		if (strstr($this->_IP, ','))
+		if (strpos($this->_IP, ',') !== FALSE)
 		{
 			$x = explode(',', $this->_IP);
 			$this->_IP = end($x);

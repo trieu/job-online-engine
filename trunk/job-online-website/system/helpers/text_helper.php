@@ -87,7 +87,7 @@ if ( ! function_exists('character_limiter'))
 		{
 			return $str;
 		}
-
+									
 		$out = "";
 		foreach (explode(' ', trim($str)) as $val)
 		{
@@ -136,7 +136,7 @@ if ( ! function_exists('ascii_to_entities'))
 					$out  .= '&#'.array_shift($temp).';';
 					$count = 1;
 				}
-
+			
 				$out .= $str[$i];
 		   }
 		   else
@@ -248,7 +248,7 @@ if ( ! function_exists('word_censor'))
 		// \w, \b and a few others do not match on a unicode character
 		// set for performance reasons. As a result words like über
 		// will not match on a word boundary. Instead, we'll assume that
-		// a bad word will be bookended by any of these characters.
+		// a bad word will be bookeneded by any of these characters.
 		$delim = '[-_\'\"`(){}<>\[\]|!?@#%&,.:;^~*+=\/ 0-9\n\r\t]';
 
 		foreach ($censored as $badword)
@@ -352,6 +352,44 @@ if ( ! function_exists('highlight_phrase'))
 		return $str;
 	}
 }
+
+// ------------------------------------------------------------------------
+
+/**
+ * Convert Accented Foreign Characters to ASCII
+ *
+ * @access	public
+ * @param	string	the text string
+ * @return	string
+ */	
+if ( ! function_exists('convert_accented_characters'))
+{
+	function convert_accented_characters($match)
+	{
+		if ( ! file_exists(APPPATH.'config/foreign_chars'.EXT))
+		{
+			return $match;
+		}
+	
+		include APPPATH.'config/foreign_chars'.EXT;
+	
+		if ( ! isset($foreign_characters))
+		{
+			return $match;
+		}
+								
+		$ord = ord($match['1']);
+		
+		if (isset($foreign_characters[$ord]))
+		{
+			return $foreign_characters[$ord];
+		}
+		else
+		{
+			return $match['1'];
+		}
+	}
+}
 	
 // ------------------------------------------------------------------------
 
@@ -431,7 +469,7 @@ if ( ! function_exists('word_wrap'))
 			// word into smaller chunks so we'll add it back to our current line
 			if ($temp != '')
 			{
-				$output .= $temp . "\n" . $line; 
+				$output .= $temp."\n".$line; 
 			}
 			else
 			{
@@ -456,7 +494,49 @@ if ( ! function_exists('word_wrap'))
 		return $output;	
 	}
 }
+ 
+// ------------------------------------------------------------------------
 
+/**
+ * Ellipsize String
+ *
+ * This function will strip tags from a string, split it at its max_length and ellipsize
+ *
+ * @param 	string		string to ellipsize
+ * @param	integer		max length of string
+ * @param	mixed		int (1|0) or float, .5, .2, etc for position to split
+ * @param 	string		ellipsis ; Default '...'
+ * @return	string		ellipsized string
+ */
+if ( ! function_exists('ellipsize'))
+{
+	function ellipsize($str, $max_length, $position = 1, $ellipsis = '&hellip;')
+	{
+		// Strip tags
+		$str = trim(strip_tags($str));
+
+		// Is the string long enough to ellipsize?
+		if (strlen($str) <= $max_length)
+		{
+			return $str;
+		}
+
+		$beg = substr($str, 0, floor($max_length * $position));
+
+		$position = ($position > 1) ? 1 : $position;
+
+		if ($position === 1)
+		{
+			$end = substr($str, 0, -($max_length - strlen($beg)));
+		}
+		else
+		{
+			$end = substr($str, -($max_length - strlen($beg)));
+		}
+
+		return $beg.$ellipsis.$end;	
+	}
+}
 
 /* End of file text_helper.php */
 /* Location: ./system/helpers/text_helper.php */

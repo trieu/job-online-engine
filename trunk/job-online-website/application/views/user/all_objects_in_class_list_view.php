@@ -45,7 +45,7 @@
     jQuery(document).ready(function() {
         initPagination();
         setTimeout(populateQuickFilter, 1000);
-        
+        initConfirmation();
     });
 
     var pagination_config = null;
@@ -113,6 +113,19 @@
              jQuery("div[id*='object_row_']").show();
         });
         jQuery("#quick_filter_div").show();
+    }
+
+    function initConfirmation(){
+        var f = function(){
+            var href = jQuery(this).attr("href");
+            jQuery(this).attr("href","javascript:void(0)");
+            jQuery(this).click(function(){
+                if(confirm("Delete ?")){
+                    window.location = href;
+                }
+            });
+        };
+        jQuery("a.confirmation").each(f);
     }
 </script>
 

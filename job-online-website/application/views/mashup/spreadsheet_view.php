@@ -37,9 +37,9 @@ class SimpleCRUD {
     public function __construct($email, $password) {
         try {
             $client = Zend_Gdata_ClientLogin::getHttpClient($email, $password,
-                    Zend_Gdata_Spreadsheets::AUTH_SERVICE_NAME);
+                            Zend_Gdata_Spreadsheets::AUTH_SERVICE_NAME);
         } catch (Zend_Gdata_App_AuthException $ae) {
-            exit("Error: ". $ae->getMessage() ."\nCredentials provided were email: [$email] and password [$password].\n");
+            exit("Error: " . $ae->getMessage() . "\nCredentials provided were email: [$email] and password [$password].\n");
         }
 
         $this->gdClient = new Zend_Gdata_Spreadsheets($client);
@@ -78,7 +78,6 @@ class SimpleCRUD {
         $input = 0; //getInput("\nSelection");
         $currWkshtId = explode('/', $feed->entries[$input]->id->text);
         $this->currWkshtId = $currWkshtId[8];
-
     }
 
     /**
@@ -98,7 +97,7 @@ class SimpleCRUD {
             if (count($command) == 4) {
                 $this->cellsUpdateAction($command[1], $command[2], $command[3]);
             } elseif (count($command) > 4) {
-                $newValue = implode(' ', array_slice($command,3));
+                $newValue = implode(' ', array_slice($command, 3));
                 $this->cellsUpdateAction($command[1], $command[2], $newValue);
             } else {
                 $this->cellsUpdateAction($command[1], $command[2], '');
@@ -150,11 +149,11 @@ class SimpleCRUD {
      * @return void
      */
     public function promptForListAction() {
-        echo  "\n== Options ==\n".
-                "dump -- dump row information\n".
-                "insert {row_data} -- insert data in the next available cell in a given column (example: insert column_header=content)\n".
-                "update {row_index} {row_data} -- update data in the row provided (example: update row-number column-header=newdata\n".
-                "delete {row_index} -- delete a row\n\n";
+        echo "\n== Options ==\n" .
+        "dump -- dump row information\n" .
+        "insert {row_data} -- insert data in the next available cell in a given column (example: insert column_header=content)\n" .
+        "update {row_index} {row_data} -- update data in the row provided (example: update row-number column-header=newdata\n" .
+        "delete {row_index} -- delete a row\n\n";
 
         $input = getInput('Command');
         $command = explode(' ', $input);
@@ -200,7 +199,7 @@ class SimpleCRUD {
             }
         }
         $entry = $this->gdClient->updateCell($row, $col, $inputValue,
-                $this->currKey, $this->currWkshtId);
+                        $this->currKey, $this->currWkshtId);
         if ($entry instanceof Zend_Gdata_Spreadsheets_CellEntry) {
             echo "Success!\n";
         }
@@ -216,7 +215,7 @@ class SimpleCRUD {
         $query->setSpreadsheetKey($this->currKey);
         $query->setWorksheetId($this->currWkshtId);
         $this->listFeed = $this->gdClient->getListFeed($query);
-        print "entry id | row-content in column A | column-header: cell-content\n".
+        print "entry id | row-content in column A | column-header: cell-content\n" .
                 "Please note: The 'dump' command on the list feed only dumps data until the first blank row is encountered.\n\n";
 
         $this->printFeed($this->listFeed);
@@ -234,7 +233,7 @@ class SimpleCRUD {
         $entry = $this->gdClient->insertRow($rowArray, $this->currKey, $this->currWkshtId);
         if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
             foreach ($rowArray as $column_header => $value) {
-                echo "Success! Inserted '$value' in column '$column_header' at row ". substr($entry->getTitle()->getText(), 5) ."\n";
+                echo "Success! Inserted '$value' in column '$column_header' at row " . substr($entry->getTitle()->getText(), 5) . "\n";
             }
         }
     }
@@ -256,7 +255,6 @@ class SimpleCRUD {
         if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
             echo "Success!\n";
             $response = $entry->save();
-
         }
     }
 
@@ -297,14 +295,14 @@ class SimpleCRUD {
      */
     public function printFeed($feed) {
         $i = 0;
-        foreach($feed->entries as $entry) {
-            echo "<br/>id: ".$entry->id->text."<br/>";
+        foreach ($feed->entries as $entry) {
+            echo "<br/>id: " . $entry->id->text . "<br/>";
             if ($entry instanceof Zend_Gdata_Spreadsheets_CellEntry) {
-                print $entry->title->text .' '. $entry->content->text . "<br/>";
+                print $entry->title->text . ' ' . $entry->content->text . "<br/>";
             } else if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
-                print $i .' '. $entry->title->text .' | '. $entry->content->text . "<br/>";
+                print $i . ' ' . $entry->title->text . ' | ' . $entry->content->text . "<br/>";
             } else {
-                print $i .' '. $entry->title->text . "<br/>";
+                print $i . ' ' . $entry->title->text . "<br/>";
             }
             $i++;
             echo "<br/>";
@@ -335,7 +333,7 @@ class SimpleCRUD {
      * @return void
      */
     public function invalidCommandError($input) {
-        echo 'Invalid input: '.$input."\n";
+        echo 'Invalid input: ' . $input . "\n";
     }
 
     /**
@@ -348,11 +346,11 @@ class SimpleCRUD {
         $input = getInput('Select to use either the cell or the list feed [cells or list]');
 
         if ($input == 'cells') {
-            while(1) {
+            while (1) {
                 $this->promptForCellsAction();
             }
         } else if ($input == 'list') {
-            while(1) {
+            while (1) {
                 $this->promptForListAction();
             }
         } else {
@@ -372,17 +370,16 @@ class SimpleCRUD {
         // $this->promptForFeedtype();
     }
 
-
-    public function insertRowIntoWorkSheet($rowArray, $currKey, $currWkshtId ) {
+    public function insertRowIntoWorkSheet($rowArray, $currKey, $currWkshtId) {
         $entry = $this->gdClient->insertRow($rowArray, $currKey, $currWkshtId);
         if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
             foreach ($rowArray as $column_header => $value) {
-                echo "Success! Inserted '$value' in column '$column_header' at row ".substr($entry->getTitle()->getText(), 5) ."<br>";
+                echo "Success! Inserted '$value' in column '$column_header' at row " . substr($entry->getTitle()->getText(), 5) . "<br>";
             }
         }
     }
 
-    public function updateRowIntoWorkSheet($index, $rowArray, $currKey, $currWkshtId ) {
+    public function updateRowIntoWorkSheet($index, $rowArray, $currKey, $currWkshtId) {
         $query = new Zend_Gdata_Spreadsheets_ListQuery();
         $query->setSpreadsheetKey($currKey);
         $query->setWorksheetId($currWkshtId);
@@ -394,19 +391,17 @@ class SimpleCRUD {
             $response = $entry->save();
         }
     }
+
 }
-
-
 
 $email = "tantrieuf31.database@gmail.com";
 $pass = "Mycatisfat@31";
 
 //list all Spreadsheets
-
-//$sample = new SimpleCRUD($email, $pass);
-//$spreadsheets = $sample->getExistingSpreadsheets();
-//print "== Available Spreadsheets ==\n";
-//$sample->printFeed($spreadsheets);
+$sample = new SimpleCRUD($email, $pass);
+$spreadsheets = $sample->getExistingSpreadsheets();
+print "== Available Spreadsheets ==\n";
+$sample->printFeed($spreadsheets);
 //
 //
 //
@@ -415,12 +410,12 @@ $pass = "Mycatisfat@31";
 //
 ////echo $currentWorksheet->id->text;
 //
-////list all Worksheets in a Spreadsheet
-//$query = new Zend_Gdata_Spreadsheets_DocumentQuery();
-//$query->setSpreadsheetKey("tPF0KO8zz8gIB75IZB6fMcQ");
-//$worksheets = $sample->gdClient()->getWorksheetFeed($query);
-//print "<br>== Available Worksheets ==\n";
-//$sample->printFeed($worksheets);
+//list all Worksheets in a Spreadsheet
+$query = new Zend_Gdata_Spreadsheets_DocumentQuery();
+$query->setSpreadsheetKey("tPF0KO8zz8gIB75IZB6fMcQ");
+$worksheets = $sample->gdClient()->getWorksheetFeed($query);
+print "<br>== Available Worksheets ==\n";
+$sample->printFeed($worksheets);
 //
 ////list all data in a Worksheet
 //$query = new Zend_Gdata_Spreadsheets_ListQuery();
@@ -432,16 +427,13 @@ $pass = "Mycatisfat@31";
 //        "the first blank row is encountered.<br><br>";
 //$sample->printFeed($listFeed);
 //print "<br>";
-
 //insertRowIntoWorkSheet
 $rowArray = array();
-$rowArray["id"] = 3;
-$rowArray["name"] = "Trieu 2.2";
+$rowArray["id"] = 22;
+$rowArray["name"] = "Trieu tt";
 
 //$sample->insertRowIntoWorkSheet( $rowArray, "tPF0KO8zz8gIB75IZB6fMcQ", "od6");
 //$sample->updateRowIntoWorkSheet( 1 ,  $rowArray, "tPF0KO8zz8gIB75IZB6fMcQ", "od6");
-
-
 
 //echo $getRowCount1."<br>";
 //echo $getColumnCount1."<br>";
@@ -449,17 +441,18 @@ $rowArray["name"] = "Trieu 2.2";
 //echo $getColumnCount2."<br>";
 //echo $updateRowIntoWorkSheet."<br>";
 
-$i = 0;
-foreach($rows as $entry) {
-    echo ( "<br/>id: ".$entry->id->text."<br/>");
-    if ($entry instanceof Zend_Gdata_Spreadsheets_CellEntry) {
-        echo ($entry->title->text .' '. $entry->content->text . "<br/>");
-    } else if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
-        echo($i .' '. $entry->title->text .' | '. $entry->content->text . "<br/>");
-    } else {
-        echo( $i .' '. $entry->title->text . "<br/>");
+if (isset($rows)) {
+    $i = 0;
+    foreach ($rows as $entry) {
+        echo ( "<br/>id: " . $entry->id->text . "<br/>");
+        if ($entry instanceof Zend_Gdata_Spreadsheets_CellEntry) {
+            echo ($entry->title->text . ' ' . $entry->content->text . "<br/>");
+        } else if ($entry instanceof Zend_Gdata_Spreadsheets_ListEntry) {
+            echo($i . ' ' . $entry->title->text . ' | ' . $entry->content->text . "<br/>");
+        } else {
+            echo( $i . ' ' . $entry->title->text . "<br/>");
+        }
+        $i++;
     }
-    $i++;
 }
-
 ?>

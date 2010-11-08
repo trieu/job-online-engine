@@ -156,6 +156,12 @@ class SimpleCRUD {
         return $updatedPost;
     }
 
+    public function getThePost($postID) {
+        $query = new Zend_Gdata_Query('http://www.blogger.com/feeds/' . $this->blogID . '/posts/default/' . $postID);
+        $thePost = $this->gdClient->getEntry($query);
+        return $thePost;
+    }
+
     /**
      * This function uses query parameters to retrieve and print all posts
      * within a specified date range.
@@ -246,7 +252,7 @@ class SimpleCRUD {
     public function printFeed($feed) {
         $i = 0;
         foreach ($feed->entries as $entry) {
-            echo "\t" . $i . " | ". $entry->id->text ." | " . $entry->title->text . "<br>";
+            echo "\t" . $i . " | " . $entry->id->text . " | " . $entry->title->text . "<br>";
             $i++;
         }
     }
@@ -299,9 +305,13 @@ $pass = "Mycatisfat31";
 
 $sample = new SimpleCRUD($user, $pass);
 //$sample->run();
-$query = new Zend_Gdata_Query('http://www.blogger.com/feeds/default/blogs');
-$feed = $sample->gdClient->getFeed($query);
-$sample->printFeed($feed);
+//$query = new Zend_Gdata_Query('http://www.blogger.com/feeds/default/blogs');
+//$feed = $sample->gdClient->getFeed($query);
+//$sample->printFeed($feed);
 
 $sample->blogID = "1952681924276097625";
-$sample->printAllPosts();
+//$sample->printAllPosts();
+
+$thePost = $sample->getThePost('8344887181742703739');
+echo $thePost->title->text . '<BR>';
+echo $thePost->content->text . '<BR>';

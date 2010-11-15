@@ -51,6 +51,7 @@ class gdata extends Controller {
      */
     public function test_blogger() {
         $this->load->library('gdata_spreadsheet');
+        $this->load->library('AES');
         $data = array();
         $this->page_decorator->setPageTitle("Job Management System at DRD");
         $this->load->view("mashup/blogger_view", $data);

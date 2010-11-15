@@ -121,8 +121,12 @@ class SimpleCRUD {
     public function printAllPosts() {
         echo $this->blogID;
         $query = new Zend_Gdata_Query('http://www.blogger.com/feeds/' . $this->blogID . '/posts/default');
+        $query->setMaxResults(5);
+        $query->setStartIndex(0);
         $feed = $this->gdClient->getFeed($query);
+        echo '<br>getTotalResults: '.$feed->getTotalResults().'<br>';
         $this->printFeed($feed);
+       // $this->printFeed($feed->getNextFeed());
     }
 
     /**
@@ -300,18 +304,33 @@ class SimpleCRUD {
 
 }
 
-$user = "tantrieuf31@gmail.com";
-$pass = "Mycatisfat31";
+
+
+//$user = "tantrieuf31@gmail.com";
+//$pass = "Mycatisfat31";
+$user = "vieclam.drdvietnam@gmail.com";
+
+$pass = "Drdcenter@123456";
+$key = '123456';
+$pass = AesCtr::encrypt($pass,$key,256);
+echo $pass;
+$pass = AesCtr::decrypt($pass,$key,256);
+echo $pass;
 
 $sample = new SimpleCRUD($user, $pass);
-//$sample->run();
-//$query = new Zend_Gdata_Query('http://www.blogger.com/feeds/default/blogs');
-//$feed = $sample->gdClient->getFeed($query);
-//$sample->printFeed($feed);
+$query = new Zend_Gdata_Query('http://www.blogger.com/feeds/default/blogs');
+$feed = $sample->gdClient->getFeed($query);
+$sample->printFeed($feed);
 
-$sample->blogID = "1952681924276097625";
-//$sample->printAllPosts();
+$sample->blogID = "1672527029385884909";
+$sample->printAllPosts();
 
-$thePost = $sample->getThePost('8344887181742703739');
+$thePost = $sample->getThePost('790579276468646690');
 echo $thePost->title->text . '<BR>';
 echo $thePost->content->text . '<BR>';
+
+//$postID = $sample->createPost('profile 2', '<h1 class="title">test3</h1><br/><center class="attributes" >content</center>', TRUE);
+//
+//$thePost = $sample->getThePost($postID);
+//echo $thePost->title->text . '<BR>';
+//echo $thePost->content->text . '<BR>';

@@ -309,25 +309,25 @@ class SimpleCRUD {
 //$user = "tantrieuf31@gmail.com";
 //$pass = "Mycatisfat31";
 $user = "vieclam.drdvietnam@gmail.com";
-
 $pass = "Drdcenter@123456";
-$key = '123456';
-$pass = AesCtr::encrypt($pass,$key,256);
-echo $pass;
-$pass = AesCtr::decrypt($pass,$key,256);
-echo $pass;
 
-$sample = new SimpleCRUD($user, $pass);
-$query = new Zend_Gdata_Query('http://www.blogger.com/feeds/default/blogs');
-$feed = $sample->gdClient->getFeed($query);
-$sample->printFeed($feed);
+$pass = AesCtr::encrypt($pass,$user,256);
+echo $pass . '<BR>';
+$pass = AesCtr::decrypt($pass,$user,256);
+echo $pass . '<BR>';
 
-$sample->blogID = "1672527029385884909";
-$sample->printAllPosts();
 
-$thePost = $sample->getThePost('790579276468646690');
-echo $thePost->title->text . '<BR>';
-echo $thePost->content->text . '<BR>';
+//$sample = new SimpleCRUD($user, $pass);
+//$query = new Zend_Gdata_Query('http://www.blogger.com/feeds/default/blogs');
+//$feed = $sample->gdClient->getFeed($query);
+//$sample->printFeed($feed);
+//
+//$sample->blogID = "1672527029385884909";
+//$sample->printAllPosts();
+//
+//$thePost = $sample->getThePost('790579276468646690');
+//echo $thePost->title->text . '<BR>';
+//echo $thePost->content->text . '<BR>';
 
 //$postID = $sample->createPost('profile 2', '<h1 class="title">test3</h1><br/><center class="attributes" >content</center>', TRUE);
 //

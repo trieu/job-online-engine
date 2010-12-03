@@ -127,7 +127,7 @@ class search_manager extends Model {
         $sql = " SELECT DISTINCT ObjectID FROM fieldvalues WHERE ";
         if (strlen($FieldValue) > 0) {
             $sql .= " FieldID = $FieldID AND ";
-            if ($FieldType == "text" || $FieldType == "textarea") {
+            if ($FieldType == "INPUT:text" || $FieldType == "TEXTAREA:textarea") {
                 $FieldValue = "'%" . $FieldValue . "%'";
                 $sql .= " FieldValue LIKE " . $FieldValue;
             } else {
@@ -225,7 +225,7 @@ class search_manager extends Model {
         $finalSet = array();
         foreach ($query_fields as $kv) {
             $query_operator = $kv->operator;
-            if ($kv->type == "checkbox") {
+            if ($kv->type == "INPUT:checkbox") {
                 $query_operator = "OR";
             }
             $temSet = $this->do_query_on_single_field($kv->type, $kv->name, $kv->value);

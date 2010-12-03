@@ -5,6 +5,7 @@
  *
  * @property page_decorator $page_decorator
  * @property gdata_spreadsheet $gdata_spreadsheet
+ * @property cloud_storage_manager $cloud_storage_manager
  *
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
@@ -20,7 +21,7 @@ class gdata extends Controller {
     public function index() {
         $this->load->library('gdata_spreadsheet');
         $data = array();
-        $this->page_decorator->setPageTitle("Job Management System at DRD");
+        $this->page_decorator->setPageTitle("test_gdata_spreadsheet");
 
         $email = "tantrieuf31.database@gmail.com";
         $pass = "Mycatisfat@31";
@@ -50,10 +51,12 @@ class gdata extends Controller {
      * @Decorated
      */
     public function test_blogger() {
+        $this->page_decorator->setPageTitle("test_blogger");
+        //$this->load->model('cloud_storage_manager');
         $this->load->library('gdata_spreadsheet');
         $this->load->library('AES');
         $data = array();
-        $this->page_decorator->setPageTitle("Job Management System at DRD");
+       // $data['theAccount'] = $this->cloud_storage_manager->getDefaultAccount();
         $this->load->view("mashup/blogger_view", $data);
     }
 

@@ -12,7 +12,7 @@
             }
         ?>
             <div class="draggable focusable_text <?php echo $ext_css_class;?> " >
-                <div id="<?php echo Field::$HTML_DOM_ID_PREFIX.$field->getFieldID() ?>" title="<?php echo $field->getFieldName() ?>" >
+                <div id="panel_field_<?php echo $field->getFieldID() ?>" title="<?php echo $field->getFieldName() ?>" >
                     <?php
                         echo show_the_excerpt($field->getFieldName(), 12);
                     ?>

@@ -45,8 +45,8 @@ class admin_panel extends Controller {
         $forms = $this->forms_manager->find_by_filter($filter, $join_filter);
 
         $actions = '<div class="actions" >';
-        $actions .= anchor('admin/form_controller/form_details/[FormID]', 'Edit', array('title' => 'Edit Details'));
-        $actions .= (" | ".anchor('admin/form_controller/form_builder/[FormID]', 'Build form', array('title' => 'Build form')));
+        $actions .= anchor('admin/form_controller/form_details/[FormID]', lang('form_edit_details'));
+        $actions .= (" | ".anchor('admin/form_controller/form_builder/[FormID]', lang('form_view')));
         $actions .= "</div>";
         
         $data_table = $this->class_mapper->DataListToDataTable("Form",$forms, $actions);

@@ -35,4 +35,8 @@ $lang['register_new_jobseeker'] = "Đăng ký mới người tìm việc";
 //search view
 $lang['no_result_text'] = "Không có kết quản nào được tìm thấy!";
 $lang['result_number_label'] = "Số lượng kết quả tìm thấy: ";
+
+//form object
+$lang['form_edit_details'] = "Chỉnh sửa";
+$lang['form_view'] = "Giao diện form";
 ?>

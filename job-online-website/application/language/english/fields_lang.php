@@ -38,4 +38,7 @@ $lang['register_new_jobseeker'] = "Register new Job Seeker";
 $lang['no_result_text'] = "No results were found!";
 $lang['result_number_label'] = "Number of records found: ";
 
+//form object
+$lang['form_edit_details'] = "Edit Details";
+$lang['form_view'] = "Form View";
 ?>

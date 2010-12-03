@@ -96,6 +96,10 @@ class SimpleCRUD {
         $entry->title = $this->gdClient->newTitle(trim($title));
         $entry->content = $this->gdClient->newContent(trim($content));
         $entry->content->setType('text');
+        $entry->category = $this->gdClient->newContent(trim("cat1"));
+        $labelText = 'cat1';
+        $label = new Zend_Gdata_App_Extension_Category($labelText, 'http://www.blogger.com/atom/ns#');
+        $entry->setCategory(array(0 => $label));
         $uri = "http://www.blogger.com/feeds/" . $this->blogID . "/posts/default";
 
         if ($isDraft) {
@@ -316,20 +320,22 @@ echo $pass . '<BR>';
 $pass = AesCtr::decrypt($pass,$user,256);
 echo $pass . '<BR>';
 
+//print_r($theAccount);
 
-//$sample = new SimpleCRUD($user, $pass);
-//$query = new Zend_Gdata_Query('http://www.blogger.com/feeds/default/blogs');
-//$feed = $sample->gdClient->getFeed($query);
-//$sample->printFeed($feed);
+$sample = new SimpleCRUD($user, $pass);
+$query = new Zend_Gdata_Query('http://www.blogger.com/feeds/default/blogs');
+//$query = new Zend_Gdata_Query('http://www.blogger.com/feeds/1672527029385884909/posts/default?q="content"');
+$feed = $sample->gdClient->getFeed($query);
+$sample->printFeed($feed);
 //
-//$sample->blogID = "1672527029385884909";
-//$sample->printAllPosts();
+$sample->blogID = "1672527029385884909";
+$sample->printAllPosts();
 //
-//$thePost = $sample->getThePost('790579276468646690');
-//echo $thePost->title->text . '<BR>';
-//echo $thePost->content->text . '<BR>';
+$thePost = $sample->getThePost('5699956900736764221');
+echo $thePost->title->text . '<BR>';
+echo $thePost->content->text . '<BR>';
 
-//$postID = $sample->createPost('profile 2', '<h1 class="title">test3</h1><br/><center class="attributes" >content</center>', TRUE);
+//$postID = $sample->createPost('profile 5', '<h1 class="title">test5</h1><br/><center class="attributes" >content5</center>', TRUE);
 //
 //$thePost = $sample->getThePost($postID);
 //echo $thePost->title->text . '<BR>';

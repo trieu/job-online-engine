@@ -224,12 +224,12 @@ require_once 'macros.php';
 
     function selectSearchedField(fieldID,fieldtypeID, callbackAfterDone){
         if( jQuery("#statistics_mode_true:checked").length == 1 ) {
-             var field_content = jQuery("#field_" + fieldID).attr("title");
+             var field_content = jQuery("#panel_field_" + fieldID).attr("title");
              var html = "<div class='statistical_field_query' id='statistical_field_[fieldID]' fieldtypeid=[fieldtypeID]>" + field_content + "</div>";
              html = html.replace("[fieldID]", fieldID);
              html = html.replace("[fieldtypeID]", fieldtypeID);
              jQuery("#searched_field_form").append(html);
-             jQuery("#field_" + fieldID).hide();
+             jQuery("#panel_field_" + fieldID).hide();
         }
         else {
             if( jQuery("#searched_field_form").find("#field_"+fieldID).length > 0)
@@ -266,13 +266,22 @@ require_once 'macros.php';
             for(var i in formData){
                 var kv = formData[i];
                 if(kv.name.indexOf("field_") == 0){
-                    kv.type = jQuery("#query_builder_form").find("*[name='"+ kv.name +"'][value='"+ kv.value +"']").attr("type");
-                    kv.name = kv.name.replace("field_", "");
-                    if( jQuery("#operator_f_" + kv.name).length > 0 )
-                        kv.operator = jQuery("#operator_f_" + kv.name).val();
-                    else
-                        kv.operator = "";
-                    query_fields.push(kv);
+                    var node = jQuery("#"+kv.name)[0];//not checkbox
+                    if(node == null) {
+                        //try find option node by name & value
+                        console.log("input[name='"+kv.name+"'][value='"+kv.value+"']");
+                        node = jQuery("#query_builder_form").find("input[name='"+kv.name+"'][value='"+kv.value+"']")[0];
+                    }
+                    if(node != null) {
+                        kv.type = node.tagName + ':' + node.type;
+                        console.log(kv.type);
+                        kv.name = kv.name.replace("field_", "");
+                        if( jQuery("#operator_f_" + kv.name).length > 0 )
+                            kv.operator = jQuery("#operator_f_" + kv.name).val();
+                        else
+                            kv.operator = "";
+                        query_fields.push(kv);
+                    }
                 }
                 else {
                     data[kv.name] = jQuery.trim(kv.value);
@@ -493,13 +502,17 @@ require_once 'macros.php';
             for(var i in formData){
                 var kv = formData[i];
                 if(kv.name.indexOf("field_") == 0){
-                    kv.type = jQuery("#query_builder_form").find("*[name='"+ kv.name +"'][value='"+ kv.value +"']").attr("type");
-                    kv.name = kv.name.replace("field_", "");
-                    if( jQuery("#operator_f_" + kv.name).length > 0 )
-                        kv.operator = jQuery("#operator_f_" + kv.name).val();
-                    else
-                        kv.operator = "";
-                    query_fields.push(kv);
+                    var node = jQuery("#"+kv.name)[0];
+                    if(node != null){                                           
+                        kv.type = node.tagName + ':' + node.type;
+                        console.log(kv.type);
+                        kv.name = kv.name.replace("field_", "");
+                        if( jQuery("#operator_f_" + kv.name).length > 0 )
+                            kv.operator = jQuery("#operator_f_" + kv.name).val();
+                        else
+                            kv.operator = "";
+                        query_fields.push(kv);
+                    }
                 }
                 else {
                     query_details[kv.name] = jQuery.trim(kv.value);

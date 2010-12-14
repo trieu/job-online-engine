@@ -1,5 +1,7 @@
 <?php
+
 class DocComment {
+
     private static $classes = array();
     private static $methods = array();
     private static $fields = array();

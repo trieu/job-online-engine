@@ -1,3 +1,8 @@
+if(window.console == null) {
+    var f = function(){};
+    window.console = {log: f};
+}
+
 /**
   * wrapper jQuery.dialog box
   *

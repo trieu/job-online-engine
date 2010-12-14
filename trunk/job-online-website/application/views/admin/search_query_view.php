@@ -269,12 +269,12 @@ require_once 'macros.php';
                     var node = jQuery("#"+kv.name)[0];//not checkbox
                     if(node == null) {
                         //try find option node by name & value
-                        console.log("input[name='"+kv.name+"'][value='"+kv.value+"']");
+                       // console.log("input[name='"+kv.name+"'][value='"+kv.value+"']");
                         node = jQuery("#query_builder_form").find("input[name='"+kv.name+"'][value='"+kv.value+"']")[0];
                     }
                     if(node != null) {
                         kv.type = node.tagName + ':' + node.type;
-                        console.log(kv.type);
+                      //  console.log(kv.type);
                         kv.name = kv.name.replace("field_", "");
                         if( jQuery("#operator_f_" + kv.name).length > 0 )
                             kv.operator = jQuery("#operator_f_" + kv.name).val();

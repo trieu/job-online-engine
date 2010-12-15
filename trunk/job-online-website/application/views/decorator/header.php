@@ -75,7 +75,7 @@
                 </ul>
             </li>
             <li>
-                <a href="http://docs.google.com/View?id=dgsrc7qn_345j7f5smgf" target="_blank" title="Hướng dẫn sử dụng (User Guide) for DRD Admin" class="vietnamese_english" >Hướng dẫn sử dụng/User Guide</a>
+                <a href="<?php echo site_url("user/user_guide_controller") ?>" title="Hướng dẫn sử dụng (User Guide) for DRD Admin" class="vietnamese_english" >Hướng dẫn sử dụng/User Guide</a>
             </li>
             <li>
                 <a href="http://code.google.com/p/job-online-engine/issues/list" target="_blank" title="Submit your issues" class="vietnamese_english" >Thông báo lỗi/Submit issues</a>

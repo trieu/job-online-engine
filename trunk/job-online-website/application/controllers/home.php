@@ -40,6 +40,20 @@ class home extends Controller {
 
     }
 
+      /**
+     * @Decorated
+     */
+    public function intro_to_database() {
+        $this->page_decorator->setPageMetaTag("description", "Home page");
+        $this->page_decorator->setPageMetaTag("keywords", "DRD database page");
+        $this->page_decorator->setPageMetaTag("author", "Trieu Nguyen");
+        $this->page_decorator->setPageTitle("Job Management System at DRD");
+
+        $data = array();
+        $this->load->view("welcome_message",$data);
+
+    }
+
     public function clear_all_caches() {
         $this->db->cache_delete_all();
     }   

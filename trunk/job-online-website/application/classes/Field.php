@@ -141,6 +141,9 @@ class Field {
         else if($this->getFieldTypeID() == FieldType::$DATE_PICKER) {
             return renderDatepicker($id, $this->getFieldName(),$rules);
         }
+        else if($this->getFieldTypeID() == FieldType::$GOOGLE_DOCS) {
+            return renderGoogleDocs($id, $this->getFieldName(),$rules);
+        }
         return "<div>Undefined field</div>";
     }
 }

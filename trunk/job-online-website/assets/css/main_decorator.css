@@ -57,7 +57,7 @@ div.floating-menu {position:fixed;background:#fff4c8;border:1px solid #ffcc00;wi
 div.floating-menu h4 {margin: 3px 5px;}
 div.floating-menu ol {margin: 2px;}
 div.floating-menu a {display:block; margin: 0 8px; margin-right:1px;}
-div.floating-menu a:hover {border: 1px solid #f00;   background: #ff6; }
+div.floating-menu a:hover,div.floating-menu a.focuced  {border: 1px solid #f00;   background: #ff6; }
 #left_action_list { display: none; }
 
 input[type='text'], input[type='radio'], input[type='checkbox'] , textarea, select {

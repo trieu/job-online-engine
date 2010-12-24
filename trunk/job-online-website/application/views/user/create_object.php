@@ -214,7 +214,7 @@ legend {
              }
 
      function makeFormNavigation(){
-         var container = jQuery("#left_action_list");
+         var left_action_list = jQuery("#left_action_list");
          var olHtml = "<ol>";
          jQuery("#object_instance_form").find("a[name]").each(function(){
              var name = jQuery(this).html();
@@ -225,7 +225,9 @@ legend {
          });
          olHtml += '<li><a href="'+ location.href.split("#")[0] +'#submit_form" class="vietnamese_english">Lưu vào database / Save to database</a></li> ';
          olHtml += "</ol>";
-         container.html("<h4>Forms:</h4>" + olHtml).show();
+         left_action_list.html("<h4>Forms:</h4>" + olHtml).show();
+         left_action_list.find('a').click(function(){ $(this).addClass('focused'); });
+
          initTooltip(jQuery("#object_instance_form").find("input"));         
      };
 

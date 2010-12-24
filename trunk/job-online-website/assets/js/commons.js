@@ -236,4 +236,12 @@ jQuery(document).ready(function(){
             }
         };
     });
-};       
+};
+
+var setGoogleDocsFieldForNode = false;
+function setGoogleDocsField(doc_id) {
+    doc_id = doc_id.replace("#", "");
+    var url = "https://docs.google.com/document/pub?id=" + doc_id;
+    setGoogleDocsFieldForNode.val(url);
+    alert(doc_id);
+}

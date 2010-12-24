@@ -163,4 +163,21 @@ if ( ! function_exists('renderDatepicker') ) {
     }
 }
 
+if ( ! function_exists('renderGoogleDocs') ) {
+    function renderGoogleDocs($field_name, $field_label, $ValidationRules = "") {
+        $html = "";
+
+        $CI =& get_instance();
+
+        $data = array(
+            'field_name' => $field_name ,
+            'field_label' => $field_label ,
+            'rules'       => $ValidationRules
+        );
+
+        $html = $CI->load->view('form/field_type_templates/GoogleDocs.php', $data, true);
+        return $html;
+    }
+}
+
 ?>

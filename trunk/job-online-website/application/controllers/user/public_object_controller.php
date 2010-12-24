@@ -66,7 +66,7 @@ class public_object_controller extends Controller {
      * @Decorated
      * @Secured(role = "user")
      */
-    public function view( $objID ) {
+    public function object_details( $objID ) {
         $this->load->model("object_manager");
         $this->load->model("forms_manager");
         $this->load->model("objectclass_manager");
@@ -75,17 +75,14 @@ class public_object_controller extends Controller {
         $obj = $this->object_manager->getObjectInstance($objID);
         $classID = $obj->getObjectClassID();
         if($classID > 0) {
-            $object_class = $this->objectclass_manager->find_by_id($classID);
-            $data["object_class"] = $object_class;
+            $data = array();
+            $object_class = $this->objectclass_manager->find_by_id($classID);            
             $data["object"] = $obj;
             $data["formsOfObject"] = $this->forms_manager->getAllFormsOfObjectClass($classID);
-           
-            foreach ($object_class->getUsableProcesses() as $pro) {
-                $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
-                break;
-            }
+            $data["objectClass"] = $object_class;
+            $data["objects"] = $this->object_manager->getAllObjectsInClass($classID);
 
-            $this->load->view("user/object_primary_view",$data);
+            $this->load->view("user/object_details_view",$data);
         }
     }
 

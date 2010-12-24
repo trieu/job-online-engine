@@ -11,6 +11,7 @@ class FieldType {
     public static $MULTI_SELECT_BOX = 5;
     public static $RADIO_BUTTON = 6;
     public static $CHECK_BOX = 7;
+    public static $GOOGLE_DOCS = 8;
 
     private $FieldTypeID = -1;
     private $FieldTypeName = "";
@@ -41,9 +42,10 @@ class FieldType {
         $field_types[FieldType::$TEXT_AREA] = "Text Area";
         $field_types[FieldType::$DATE_PICKER] = "Date Picker";
         $field_types[FieldType::$SELECT_BOX] = "Select Box";
-        $field_types[FieldType::$MULTI_SELECT_BOX] = "Multi Select Box";
-        $field_types[FieldType::$CHECK_BOX] = "Check Box";
+        $field_types[FieldType::$MULTI_SELECT_BOX] = "Multi Select Box";        
         $field_types[FieldType::$RADIO_BUTTON] = "Radio Button";
+        $field_types[FieldType::$CHECK_BOX] = "Check Box";
+        $field_types[FieldType::$GOOGLE_DOCS] = "Google Documents";
               
         return $field_types;      
     }

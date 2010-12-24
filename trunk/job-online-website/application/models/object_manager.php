@@ -168,10 +168,6 @@ class object_manager extends data_manager {
         return $objects;
     }
 
-    function getFormID_Of_IndentityProcess($classID) {
-        
-    }
-
     /**
      *
      * @param int $objectID

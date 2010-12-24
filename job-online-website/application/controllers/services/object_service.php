@@ -17,7 +17,7 @@ class object_service extends Controller {
     }
 
     function index() {
-        phpinfo();
+        //phpinfo();
     }
 
     /**
@@ -25,11 +25,9 @@ class object_service extends Controller {
      */
     public function export_data($ObjectClassID = -1) {
         $data = array();
-
         $this->load->model("object_manager");
         $data = $this->object_manager->get_raw_data_objects($ObjectClassID);
         echo json_encode($data);
-        // $this->load->view("user/user_email_config", $data);
     }
 
     /**

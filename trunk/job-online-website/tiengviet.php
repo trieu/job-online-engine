@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('UTC');
 define('LANGUAGE_INDEX_PAGE', 'tiengviet.php');
 
 /*

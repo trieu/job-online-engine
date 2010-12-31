@@ -1,9 +1,9 @@
 <?php function renderAdminGroupOfActions($group_id, $group_name, $action_names, $isShow = TRUE) { ?>
     <div class="group_action">
-        <h3 onclick="jQuery('#<?= $group_id ?>').slideToggle('slow');">
-            <a href="javascript:void(0)" class="vietnamese_english" ><?= $group_name ?></a>
+        <h3 onclick="jQuery('#<?php echo $group_id ?>').slideToggle('slow');">
+            <a href="javascript:void(0)" class="vietnamese_english" ><?php echo $group_name ?></a>
         </h3>
-        <ul id="<?= $group_id ?>"  class="<?php if(!$isShow) echo "display_none"; ?>" >
+        <ul id="<?php echo $group_id ?>"  class="<?php if(!$isShow) echo "display_none"; ?>" >
             <?php foreach ($action_names as $action_name => $action_uri) {
                 echo '<li><a class="vietnamese_english focusable_text" href="'.site_url($action_uri).'">'.$action_name.'</a></li>';
             }?>

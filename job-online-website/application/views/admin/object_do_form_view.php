@@ -27,9 +27,9 @@ addScriptFile("js/jquery/jquery.field.min.js");
 </style>
 
 <fieldset class="input_info" id="object_instance_div"  >
-    <legend><?= $form->getFormName() ?></legend>
+    <legend><?php echo $form->getFormName() ?></legend>
     <div class="ajax_loader display_none" ></div>
-    <form id="object_instance_form" action="<?= site_url("admin/object_controller/save/".$classID) ?>" accept="utf-8" method="post">
+    <form id="object_instance_form" action="<?php echo site_url("admin/object_controller/save/".$classID) ?>" accept="utf-8" method="post">
         <?php
         if(isset ($cache) ) {
             echo html_entity_decode($cache->getCacheContent());
@@ -45,7 +45,7 @@ addScriptFile("js/jquery/jquery.field.min.js");
      var checkboxHashmap = {};
      function initFormData() {
          var object_field = {};
-         var ObjectID = <?= $objectID ?>;
+         var ObjectID = <?php echo $objectID ?>;
          <?php            
             if( isset ($object) ) {
                 echo " object_field = ".json_encode($object->getFieldValues()).";\n";                

@@ -5,7 +5,7 @@
         <?php foreach($page_decorator->getPageMetaTags() as $name => $content) { ?>
         <meta name="<?php echo $name;?>" content="<?php echo $content;?>" />
         <?php } ?>
-        <base href="<?= base_url()?>" />
+        <base href="<?php echo base_url()?>" />
         <title></title>
 
         <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url() ?>assets/css/style-general.css"/>
@@ -27,7 +27,7 @@
     </head>
     <body style="display: none;">
         <div>
-            <?= $page_content ?>
+            <?php echo $page_content ?>
         </div>        
         <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
         <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>

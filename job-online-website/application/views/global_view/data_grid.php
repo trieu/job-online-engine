@@ -82,7 +82,7 @@ if( isset ($description)) {
 
 <script type="text/javascript" >
 
-    var table_name = "<?= $table_name ?>";
+    var table_name = "<?php echo $table_name ?>";
     var data_editable_fields = null;
     var editable_type_fields = new Array();
     var pagination_config = null;

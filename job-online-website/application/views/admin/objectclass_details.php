@@ -54,7 +54,7 @@ echo renderInputField("AccessDataURI","AccessDataURI",$obj->getAccessDataURI(),"
 
 <div>
     <label for="Description">Description:</label>
-    <textarea id ="Description" name="Description" rows="4" cols="50"><?= $obj->getDescription() ?></textarea>
+    <textarea id ="Description" name="Description" rows="4" cols="50"><?php echo $obj->getDescription() ?></textarea>
 </div>
 
 <div id="data_suggestion_container">
@@ -104,7 +104,7 @@ echo form_fieldset_close();
 ?>
 
 <script type="text/javascript">
-    var id = <?=  $id ?>;
+    var id = <?php echo  $id ?>;
 
     function setIdentityProcess(){
         jQuery("#data_suggestion_container .token-input-list li").attr("title","");
@@ -140,7 +140,7 @@ echo form_fieldset_close();
             searchingText: "Searching...",
             method: "POST"
         });
-        jQuery("#data_suggestion_container").find(".token-input-list").prepend('<?= $tokens ?>');
+        jQuery("#data_suggestion_container").find(".token-input-list").prepend('<?php echo $tokens ?>');
         jQuery("#data_suggestion_container .token-input-delete-token").click(function(){ jQuery(this).parent().remove();} );
 
         var sortOpts = {

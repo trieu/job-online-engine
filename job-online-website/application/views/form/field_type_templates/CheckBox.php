@@ -1,12 +1,12 @@
-<div id="wrapper_<?= $field_name ?>" >
-    <p class="vietnamese_english" ><?= $description ?></p>
+<div id="wrapper_<?php echo $field_name ?>" >
+    <p class="vietnamese_english" ><?php echo $description ?></p>
     <?php
         foreach ($option_list as $key => $value) {
             $id = get_random_password();
      ?>
         <div class="checkbox_wrapper">
-            <input type="checkbox" id="<?= $id  ?>" name="<?= $field_name ?>" value="<?= $key ?>" class="<?= $rules ?>" />
-            <label for="<?= $id  ?>" class="vietnamese_english" ><?= $value  ?></label>           
+            <input type="checkbox" id="<?php echo $id  ?>" name="<?php echo $field_name ?>" value="<?php echo $key ?>" class="<?php echo $rules ?>" />
+            <label for="<?php echo $id  ?>" class="vietnamese_english" ><?php echo $value  ?></label>
         </div>
     <?php } ?>
 </div>

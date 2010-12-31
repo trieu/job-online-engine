@@ -50,7 +50,7 @@ echo renderInputField("FormName","FormName",$obj->getFormName(),"Form Name");
 
 <div>
     <label for="Description">Description:</label>
-    <textarea id ="Description" name="Description" rows="4" cols="50"><?= $obj->getDescription() ?></textarea>
+    <textarea id ="Description" name="Description" rows="4" cols="50"><?php echo $obj->getDescription() ?></textarea>
 </div>
 
 <input type="hidden" name=""/>
@@ -85,7 +85,7 @@ echo form_fieldset_close();
 ?>
 
 <script type="text/javascript">
-    var id = <?=  $id ?>;
+    var id = <?php echo  $id ?>;
 
     jQuery(document).ready(function(){
         if(id > 0){
@@ -111,7 +111,7 @@ echo form_fieldset_close();
             searchingText: "Searching...",
             method: "POST"
         });
-        jQuery("#data_suggestion_container").find(".token-input-list").prepend('<?= $tokens ?>');
+        jQuery("#data_suggestion_container").find(".token-input-list").prepend('<?php echo $tokens ?>');
         jQuery("#data_suggestion_container .token-input-delete-token").click(function(){ jQuery(this).parent().remove();} );
 
         var sortOpts = {
@@ -129,7 +129,7 @@ echo form_fieldset_close();
 
     function buildFormUI(){
         if(id > 0){
-            window.location = "<?= site_url('admin/form_controller/form_builder/'.$id)?>";
+            window.location = "<?php echo site_url('admin/form_controller/form_builder/'.$id)?>";
         }
     }
 </script>

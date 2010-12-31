@@ -4,7 +4,7 @@
 
 ?>
 
-<script language="JavaScript" src="<?= base_url()?>assets/js/jquery/jquery.jeditable.js"></script>
+<script language="JavaScript" src="<?php echo base_url()?>assets/js/jquery/jquery.jeditable.js"></script>
 <script type="text/javascript" language="JavaScript">
     jQuery(document).ready(function(){
         // jQuery("#ProcessID").parent().hide();

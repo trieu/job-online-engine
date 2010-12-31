@@ -1,4 +1,4 @@
-<h2><?= lang('home_page_heading') ?></h2>
+<h2><?php echo lang('home_page_heading') ?></h2>
 
 <div style="font-weight:bold; margin: 10px 0px;" class="menu_bar">
     <?php echo anchor('', lang('home_page')); ?>   |
@@ -23,9 +23,9 @@
     <div class="box access">
         <ul>
             <?php  if(LANGUAGE_INDEX_PAGE === "tiengviet.php") { ?>
-            <li class="accessLanguage">This page in <a hreflang="en" href="<?= base_url() ?>english.php">English</a></li>
+            <li class="accessLanguage">This page in <a hreflang="en" href="<?php echo base_url() ?>english.php">English</a></li>
             <?php } else if(LANGUAGE_INDEX_PAGE === "english.php") {?>
-            <li class="accessLanguage">Xem trang bằng <a hreflang="en" href="<?= base_url() ?>tiengviet.php">Tiếng Việt</a></li>
+            <li class="accessLanguage">Xem trang bằng <a hreflang="en" href="<?php echo base_url() ?>tiengviet.php">Tiếng Việt</a></li>
             <?php } ?>
             
             <li class="accessInfo"><a accesskey="0" href="http://drdvietnam.com/access">Hỗ trợ tiếp cận thông tin</a></li>

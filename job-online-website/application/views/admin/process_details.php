@@ -31,7 +31,7 @@ echo renderInputField("ProcessName","ProcessName",$obj->getProcessName(),"Proces
 
 <div>
     <label for="Description">Description:</label>
-    <textarea id ="Description" name="Description" rows="4" cols="50"><?= $obj->getDescription() ?></textarea>
+    <textarea id ="Description" name="Description" rows="4" cols="50"><?php echo $obj->getDescription() ?></textarea>
 </div>
 
 <?php
@@ -54,7 +54,7 @@ echo form_fieldset_close();
 
 
 <script type="text/javascript" >
-    var id = <?=  $id ?>;
+    var id = <?php echo  $id ?>;
 
     jQuery(document).ready(function(){
         if(id > 0){

@@ -36,7 +36,7 @@ echo renderInputField("FieldID","FieldID",$obj->getFieldID());
 echo renderSelectField("FieldTypeID", "FieldTypeID", $field_types, "Field Type");
 ?>
 
-<input type="hidden" name="FormID" value="<?= $FormID ?>" />
+<input type="hidden" name="FormID" value="<?php echo $FormID ?>" />
 
 <div>
     <input type="hidden" id="field_option_data" name="field_option_data" value="" />
@@ -46,10 +46,10 @@ echo renderSelectField("FieldTypeID", "FieldTypeID", $field_types, "Field Type")
     <ul id="field_option_data_ul" <?php if(!FieldType::isSelectableType($obj->getFieldTypeID())) { ?>style="display:none;"<?php }?> >        
         <?php foreach ($obj->getFieldOptions() as $arr){ ?>         
              <li>            
-                 <span id="field_option_<?= $arr['FieldOptionID'] ?>"><?= $arr['OptionName'] ?></span>
+                 <span id="field_option_<?php echo $arr['FieldOptionID'] ?>"><?php echo $arr['OptionName'] ?></span>
                  &nbsp;&nbsp;
-                 <a href="javascript:callEditFieldOptionBox('#field_option_<?= $arr['FieldOptionID'] ?>')" title="Edit option content">Edit</a>
-                 | <a href="javascript:callDeleteFieldOptionBox(<?= $arr['FieldOptionID'] ?>)" title="Remove option content">Remove</a>
+                 <a href="javascript:callEditFieldOptionBox('#field_option_<?php echo $arr['FieldOptionID'] ?>')" title="Edit option content">Edit</a>
+                 | <a href="javascript:callDeleteFieldOptionBox(<?php echo $arr['FieldOptionID'] ?>)" title="Remove option content">Remove</a>
              </li>
         <?php } ?>
         <li>...</li>
@@ -129,7 +129,7 @@ echo form_fieldset_close();
         if(val == null){
             alert("Please select a form for loading fields");
         }
-        var url = "<?= site_url("admin/search/populate_query_helper/false")?>";
+        var url = "<?php echo site_url("admin/search/populate_query_helper/false")?>";
         var filter =  {what: "field" , filterID: val};
         var handler =  function(text){
             var data = jQuery.secureEvalJSON( text );
@@ -166,12 +166,12 @@ echo form_fieldset_close();
         if(val == null){
             alert("Please select a FieldID ");
         }
-        var url = "<?= site_url("admin/search/populate_query_helper/false")?>";
+        var url = "<?php echo site_url("admin/search/populate_query_helper/false")?>";
         var filter =  {what: "field_option" , filterID: val};
         var handler =  function(text){
             var data = jQuery.secureEvalJSON( text );
             var html = "";
-            var FieldID = <?= $id ?>;
+            var FieldID = <?php echo $id ?>;
             var FieldOptionID = -1;
             for(var i in data.options){
                 field_option_data.push({'FieldOptionID':FieldOptionID,'FieldID':FieldID,'OptionName':data.options[i].options_label });
@@ -208,15 +208,15 @@ echo form_fieldset_close();
                 alert("Delete failed for FieldOptionID"+FieldOptionID);
             }
         };
-        var url = "<?= site_url("admin/field_controller/deleteOptionOfField")?>";
+        var url = "<?php echo site_url("admin/field_controller/deleteOptionOfField")?>";
         jQuery.post(url, {'FieldOptionID':FieldOptionID}, handler);
     }
 
     function isSelectableField(type_id){
-        var isSelectableField = type_id == <?= FieldType::$SELECT_BOX ?>;
-        isSelectableField = isSelectableField || type_id == <?= FieldType::$MULTI_SELECT_BOX ?>;
-        isSelectableField = isSelectableField || type_id == <?= FieldType::$CHECK_BOX ?>;
-        isSelectableField = isSelectableField || type_id == <?= FieldType::$RADIO_BUTTON ?>;
+        var isSelectableField = type_id == <?php echo FieldType::$SELECT_BOX ?>;
+        isSelectableField = isSelectableField || type_id == <?php echo FieldType::$MULTI_SELECT_BOX ?>;
+        isSelectableField = isSelectableField || type_id == <?php echo FieldType::$CHECK_BOX ?>;
+        isSelectableField = isSelectableField || type_id == <?php echo FieldType::$RADIO_BUTTON ?>;
         return isSelectableField;
     }
 
@@ -243,7 +243,7 @@ echo form_fieldset_close();
         else {
             var OptionName = Modalbox.contentSelector("textarea[name='OptionName']").val();
             Modalbox.contentSelector("textarea[name='OptionName']").val("");
-            var FieldID = <?= $id ?>;
+            var FieldID = <?php echo $id ?>;
             var FieldOptionID = -1;
             field_option_data.push({'FieldOptionID':FieldOptionID,'FieldID':FieldID,'OptionName':OptionName});
             jQuery("#field_option_data_ul").prepend("<li>"+ OptionName + "</li>");
@@ -253,13 +253,13 @@ echo form_fieldset_close();
         }
     }
 
-    var id = <?= $id ?>;
+    var id = <?php echo $id ?>;
 
     jQuery(document).ready(function(){
         if(id > 0){
             jQuery("#FieldID").val(id);
             jQuery("#FieldID").attr("readonly", "readonly");
-            jQuery("#FieldTypeID option[value='<?= $obj->getFieldTypeID() ?>']").attr("selected", "selected");
+            jQuery("#FieldTypeID option[value='<?php echo $obj->getFieldTypeID() ?>']").attr("selected", "selected");
         }
         else {
             jQuery("#FieldID").parent().hide();            

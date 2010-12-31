@@ -71,9 +71,9 @@
 
 
 <div style="margin-bottom: 20px;">   
-    <h3><?= $objectClass->getObjectClassName()  ?> </h3>    
+    <h3><?php echo $objectClass->getObjectClassName()  ?> </h3>
     <b>
-        Display <?= $total_records = count($objects) ?> records <br/>
+        Display <?php echo $total_records = count($objects) ?> records <br/>
        <?php echo anchor('user/public_object_controller/create_object/'.$objectClass->getObjectClassID(), "Đăng ký ". $objectClass->getObjectClassName() ." mới"); ?>
     </b>
 </div>
@@ -81,7 +81,7 @@
 
 <?php if($total_records > 0) {
     foreach ($objects as $objID => $fields ) { ?>
-        <div class="object_holder focusable_text" id="object_row_<?= $objID ?>">
+        <div class="object_holder focusable_text" id="object_row_<?php echo $objID ?>">
             <a name="<?php echo $objID; ?>"></a>
              <div class="id">ID: <?php echo $objID; ?></div>
                     <?php
@@ -105,9 +105,9 @@
                     }
                     ?>
             <div class="actions" >
-               <?= anchor('user/public_object_controller/edit/'.$objID , 'Xem chi tiết/View Details', array('class'=>'vietnamese_english')) ?>
+               <?php echo anchor('user/public_object_controller/edit/'.$objID , 'Xem chi tiết/View Details', array('class'=>'vietnamese_english')) ?>
                 <br>
-               <?= anchor('admin/object_controller/delete/'.$objID."/".$objectClass->getObjectClassID() , 'Xoá/Delete', array('class' => 'confirmation vietnamese_english')) ?>
+               <?php echo anchor('admin/object_controller/delete/'.$objID."/".$objectClass->getObjectClassID() , 'Xoá/Delete', array('class' => 'confirmation vietnamese_english')) ?>
             </div>
         </div>
       <?php }           

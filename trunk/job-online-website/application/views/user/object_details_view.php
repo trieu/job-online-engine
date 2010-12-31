@@ -36,7 +36,7 @@
 
 <?php foreach ($objects as $objID => $fields) {
  ?>
-    <div class="object_holder focusable_text" id="object_row_<?= $objID ?>">
+    <div class="object_holder focusable_text" id="object_row_<?php echo $objID ?>">
         <a name="<?php echo $objID; ?>"></a>
         <div class="id">
             <span>ID: <?php echo $objID; ?></span>

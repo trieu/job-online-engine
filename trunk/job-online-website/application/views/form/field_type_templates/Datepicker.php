@@ -1,8 +1,8 @@
-<div id="wrapper_<?= $field_name ?>" class="datapicker_wrapper">
-    <label for="<?= $field_name ?>" class="vietnamese_english" ><?= $field_label ?>:</label>
-    <input id="<?= $field_name ?>" name="<?= $field_name ?>" type="text" value="" class="<?= $rules ?>" />
+<div id="wrapper_<?php echo $field_name ?>" class="datapicker_wrapper">
+    <label for="<?php echo $field_name ?>" class="vietnamese_english" ><?php echo $field_label ?>:</label>
+    <input id="<?php echo $field_name ?>" name="<?php echo $field_name ?>" type="text" value="" class="<?php echo $rules ?>" />
     <!--SCRIPT
-        var <?= $field_name ?>_init = function(){
+        var <?php echo $field_name ?>_init = function(){
             var options = {autoSize: true , constrainInput: true };
             <?php  if(LANGUAGE_INDEX_PAGE == "tiengviet.php") { ?>
             options.dateFormat = 'dd/mm/yy';
@@ -13,8 +13,8 @@
             options.nextText = 'Tháng kế tiếp' ;
             options.prevText = 'Tháng trước' ;
             <? } ?>
-            jQuery("#<?= $field_name ?>").datepicker(options);
+            jQuery("#<?php echo $field_name ?>").datepicker(options);
         };
-        <?= $field_name ?>_init();
+        <?php echo $field_name ?>_init();
     -->
 </div>

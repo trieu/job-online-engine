@@ -95,7 +95,7 @@ require_once 'macros.php';
         //echo $the_query_details->query_details;
     }
     ?>
-    <form id="query_builder_form" action="<?= site_url("admin/search/do_search") ?>" accept="utf-8" method="post">
+    <form id="query_builder_form" action="<?php echo site_url("admin/search/do_search") ?>" accept="utf-8" method="post">
         <div class="query_question" >            
             <div>
                 <label for="ObjectClassID" class="vietnamese_english" >Đối tượng quản lý / Business Object: </label>
@@ -205,8 +205,8 @@ require_once 'macros.php';
             if(val == null){
                 alert("Please select a form for loading fields");
             }
-            var url = "<?= site_url("admin/search/populate_query_helper") ?>";
-            var filter =  {what: "<?= search::$FIELD_HINT ?>" , filterID: val};
+            var url = "<?php echo site_url("admin/search/populate_query_helper") ?>";
+            var filter =  {what: "<?php echo search::$FIELD_HINT ?>" , filterID: val};
             var handler =  function(html){
                 jQuery("#field_list_view .content").html( html );
 
@@ -234,7 +234,7 @@ require_once 'macros.php';
             else {
                 if( jQuery("#searched_field_form").find("#field_"+fieldID).length > 0)
                     return;
-                var uri = "<?= site_url("admin/field_controller/renderFieldUI") ?>/" + fieldID;
+                var uri = "<?php echo site_url("admin/field_controller/renderFieldUI") ?>/" + fieldID;
                 var callback = function(html){
                     if(jQuery("#searched_field_form").find("div").length > 0){
                         var operator = jQuery("#query_operator_tpl").html().replace("@=name@", "operator_f_"+ fieldID);
@@ -374,13 +374,13 @@ require_once 'macros.php';
                 jQuery("#field_list_view").find("table td .selectable_field").show();
                 jQuery("#question_holder_csv_export").hide();
                 jQuery("#query_builder_form").find("input[type='submit']").val("Do Statistics");
-                jQuery("#query_builder_form").attr("action","<?= site_url("admin/search/do_statistics") ?>");
+                jQuery("#query_builder_form").attr("action","<?php echo site_url("admin/search/do_statistics") ?>");
             }
             else {
                 jQuery("#field_list_view").find("table td .draggable").show();
                 jQuery("#question_holder_csv_export").show();
                 jQuery("#query_builder_form").find("input[type='submit']").val("Search");
-                jQuery("#query_builder_form").attr("action","<?= site_url("admin/search/do_search") ?>");
+                jQuery("#query_builder_form").attr("action","<?php echo site_url("admin/search/do_search") ?>");
             }
             jQuery("#searched_field_form").html("");
         }

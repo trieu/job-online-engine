@@ -137,8 +137,8 @@
     <h3 class="vietnamese_english" id="ObjectClassName" ><?php echo $objectClass->getObjectClassName(); ?> </h3>
     <b>
         <span class="vietnamese_english">
-            Tổng cộng: <?= $total_records ?>  /
-            Total: <?= $total_records ?> records
+            Tổng cộng: <?php echo $total_records ?>  /
+            Total: <?php echo $total_records ?> records
         </span>
         <br/>
         
@@ -164,7 +164,7 @@
 <br><br>
 
     <?php foreach ($objects as $objID => $fields ) { ?>
-        <div class="object_holder focusable_text" id="object_row_<?= $objID ?>">
+        <div class="object_holder focusable_text" id="object_row_<?php echo $objID ?>">
             <a name="<?php echo $objID; ?>"></a>
              <div class="id">
                  <span>ID: <?php echo $objID; ?></span>

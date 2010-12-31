@@ -54,10 +54,10 @@ addScriptFile("js/jquery/jquery.json.js");
     <input type="button" value="Reset" onclick="reset_build_the_form()" style="margin-left:7px;" />
 </div>
 <div id="droppable" >
-    <?= html_entity_decode($form_cache) ?>
+    <?php echo html_entity_decode($form_cache) ?>
 </div>
 <div style="float:right; width:186px;" >
-    <?= $palette_content ?>
+    <?php echo $palette_content ?>
 </div>
 
 <div id="generic_dialog" title="Dialog Title" style="display:none" ></div>
@@ -71,12 +71,12 @@ addScriptFile("js/jquery/jquery.json.js");
     function save_object_form(){
         var data = {};
         data["Fields_Form_JSON"] = jQuery.toJSON(FormBuilderScript.data_fields);        
-        data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
-        data["ObjectPK"] = <?= $form->getFormID();?>;
+        data["ObjectClass"] = "<?php echo Form::$HTML_DOM_ID_PREFIX ?>";
+        data["ObjectPK"] = <?php echo $form->getFormID();?>;
         data["CacheContent"] =  jQuery("#droppable").html();
         data["is_html_cache_changed"] = is_html_cache_changed;
 
-        var uri = "<?= site_url("admin/form_controller/saveFormBuilderResult") ?>";
+        var uri = "<?php echo site_url("admin/form_controller/saveFormBuilderResult") ?>";
         var callback =  function(id){
             var html = "";
             if(id > 0){
@@ -96,10 +96,10 @@ addScriptFile("js/jquery/jquery.json.js");
 
     function reset_build_the_form(){
         var data = {};        
-        data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
-        data["ObjectPK"] = <?= $form->getFormID(); ?>;
+        data["ObjectClass"] = "<?php echo Form::$HTML_DOM_ID_PREFIX ?>";
+        data["ObjectPK"] = <?php echo $form->getFormID(); ?>;
 
-        var uri = "<?= site_url("admin/form_controller/reset_build_the_form") ?>";
+        var uri = "<?php echo site_url("admin/form_controller/reset_build_the_form") ?>";
 
         var callback =  function(id){
             var html = "";
@@ -147,8 +147,8 @@ addScriptFile("js/jquery/jquery.json.js");
     var FormBuilderScript = new Object();
     FormBuilderScript.data_fields = [];
     FormBuilderScript.dropHandler = function(event, ui) {
-        var id = jQuery(ui.draggable).find("div[id*='<?= Field::$HTML_DOM_ID_PREFIX ?>']").attr("id").replace("<?= Field::$HTML_DOM_ID_PREFIX ?>","");
-        var uri = "<?= site_url("admin/admin_panel/renderFieldUI") ?>/" + id;
+        var id = jQuery(ui.draggable).find("div[id*='<?php echo Field::$HTML_DOM_ID_PREFIX ?>']").attr("id").replace("<?php echo Field::$HTML_DOM_ID_PREFIX ?>","");
+        var uri = "<?php echo site_url("admin/admin_panel/renderFieldUI") ?>/" + id;
 
         var callback = function(html){
             html = "<tr><td>"+html+"</td></tr>";
@@ -177,7 +177,7 @@ addScriptFile("js/jquery/jquery.json.js");
 
             var record = {};
             record["FieldID"] = new Number(id);
-            record["FormID"] = <?= $form->getFormID() ?>;
+            record["FormID"] = <?php echo $form->getFormID() ?>;
             FormBuilderScript.data_fields.push(record);
         };
         jQuery.get(uri,{}, callback );

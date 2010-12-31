@@ -50,7 +50,7 @@ foreach ($related_objects["processes"] as $proID => $proName) {
 <table border="0">
     <thead>
         <tr>
-            <th>Form: <?= $form->getFormName() ?></th>
+            <th>Form: <?php echo $form->getFormName() ?></th>
             <th>Fields in Form</th>
         </tr>
     </thead>
@@ -79,7 +79,7 @@ foreach ($related_objects["processes"] as $proID => $proName) {
             </td>
             <td width="20%" style="vertical-align: top">
                 <div id="list_field_form" >
-                    <?= $palette_content ?>
+                    <?php echo $palette_content ?>
                 </div>
             </td>
         </tr>
@@ -102,8 +102,8 @@ foreach ($related_objects["processes"] as $proID => $proName) {
         cleanFormGUIBeforeSubmit();
 
         var data = {};        
-        data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
-        data["ObjectPK"] = <?= $form->getFormID() ?>;
+        data["ObjectClass"] = "<?php echo Form::$HTML_DOM_ID_PREFIX ?>";
+        data["ObjectPK"] = <?php echo $form->getFormID() ?>;
         jQuery("#form_builder_container div[class='resizable ui-resizable']").each(function(){
             jQuery(this).removeAttr("class");
         });
@@ -119,7 +119,7 @@ foreach ($related_objects["processes"] as $proID => $proName) {
         });
         data["FieldOrderList"] = jQuery.toJSON(FieldOrderList);
 
-        var uri = "<?= site_url("admin/form_controller/saveFormBuilderResult") ?>";
+        var uri = "<?php echo site_url("admin/form_controller/saveFormBuilderResult") ?>";
         var callback =  function(id){
             var html = "";
             if(id > 0){
@@ -140,9 +140,9 @@ foreach ($related_objects["processes"] as $proID => $proName) {
 
     function reset_build_the_form(){
         var data = {};
-        data["ObjectClass"] = "<?= Form::$HTML_DOM_ID_PREFIX ?>";
-        data["ObjectPK"] = <?= $form->getFormID() ?>;
-        var uri = "<?= site_url("admin/form_controller/reset_build_the_form") ?>";
+        data["ObjectClass"] = "<?php echo Form::$HTML_DOM_ID_PREFIX ?>";
+        data["ObjectPK"] = <?php echo $form->getFormID() ?>;
+        var uri = "<?php echo site_url("admin/form_controller/reset_build_the_form") ?>";
 
         var callback =  function(id){
             var html = "";
@@ -163,9 +163,9 @@ foreach ($related_objects["processes"] as $proID => $proName) {
 
     var field_form_num = 0;
     function autoBuildForm(){
-        var uri = "<?= site_url("admin/field_controller/renderFieldUI") ?>/";
+        var uri = "<?php echo site_url("admin/field_controller/renderFieldUI") ?>/";
         field_form_num = jQuery("#form_builder_container > div").length;
-        var must_build = jQuery("#list_field_form div[id*='<?= Field::$HTML_DOM_ID_PREFIX ?>']").length;
+        var must_build = jQuery("#list_field_form div[id*='<?php echo Field::$HTML_DOM_ID_PREFIX ?>']").length;
 
         if(field_form_num == must_build) {
             //enough, do not poke server            
@@ -175,7 +175,7 @@ foreach ($related_objects["processes"] as $proID => $proName) {
         }
         else {
             var f = function(){
-                var id = jQuery(this).attr("id").replace("<?= Field::$HTML_DOM_ID_PREFIX ?>","");
+                var id = jQuery(this).attr("id").replace("<?php echo Field::$HTML_DOM_ID_PREFIX ?>","");
                 var callback = function(html){
                     html = "<div class='resizable'>" + html + "</div>";
                     var sc = findScriptInHTML(html);
@@ -194,7 +194,7 @@ foreach ($related_objects["processes"] as $proID => $proName) {
                 };
                 jQuery.get( uri + id ,{}, callback );
             };
-            jQuery("#list_field_form div[id*='<?= Field::$HTML_DOM_ID_PREFIX ?>']").each(f);
+            jQuery("#list_field_form div[id*='<?php echo Field::$HTML_DOM_ID_PREFIX ?>']").each(f);
         }
     }
 

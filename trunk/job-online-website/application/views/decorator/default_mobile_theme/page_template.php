@@ -6,7 +6,7 @@
         <?php foreach($page_decorator->getPageMetaTags() as $name => $content) { ?>
         <meta name="<?php echo $name;?>" content="<?php echo $content;?>" />
         <?php } ?>
-        <base href="<?= base_url()?>" />
+        <base href="<?php echo base_url()?>" />
         <title><?php echo $page_decorator->getPageTitle(); ?></title>     
     </head>
     <body>
@@ -14,7 +14,7 @@
             <?php echo $page_header ?>
         </div>
         <div>
-            <?= $page_content ?>
+            <?php echo $page_content ?>
         </div>
         <div >
             <?php echo $page_footer ?>

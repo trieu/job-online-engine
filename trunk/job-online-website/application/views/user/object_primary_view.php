@@ -55,7 +55,7 @@ $legend_text = "";
         <li>
             <a href="#object_info_tab_content" id="object_info_tab" >
                 <span class="vietnamese_english">Thông tin chi tiết:/Information Details:</span>
-                <span class="vietnamese_english"><?= $object_class->getObjectClassName() ?></span>
+                <span class="vietnamese_english"><?php echo $object_class->getObjectClassName() ?></span>
             </a>
         </li>
         <li>
@@ -76,11 +76,11 @@ $legend_text = "";
     </ul>
     <div id="object_info_tab_content">
         <div id="accordion">
-            <h3><a href="#"><?= $legend_text ?></a></h3>
+            <h3><a href="#"><?php echo $legend_text ?></a></h3>
             <div>
                 <div class="input_info" id="object_instance_div" >
                     <div class="ajax_loader display_none" ></div>
-                    <form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
+                    <form id="object_instance_form" action="<?php echo site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
                         <?php
                         if(isset ($objectCacheHTML['cacheContent'])) {
                             echo html_entity_decode($objectCacheHTML['cacheContent']);
@@ -102,7 +102,7 @@ $legend_text = "";
                 <?php foreach($formsOfObject as $form){?>
                 <li class="form_name">
                     <a class="iframe use_fancybox vietnamese_english" href="<?php echo site_url("user/public_object_controller/ajax_edit_form/".$object->getObjectClassID()."/".$object->getObjectID()."/".$form["FormID"]) ?> ">
-                    <?= $form["FormName"] ?>
+                    <?php echo $form["FormName"] ?>
                     </a>
                 </li>
                 <?php }?>
@@ -253,9 +253,9 @@ $legend_text = "";
          var matchedNode = jQuery("#matched_class_list").find("option:selected");
          var url = "<?php echo site_url("services/intelligent_search_service/search_from_matched_structure/") ?>";
          var data = {};
-         data.BaseClassID = <?= $object_class->getObjectClassID() ?>;
+         data.BaseClassID = <?php echo $object_class->getObjectClassID() ?>;
          data.MatchedClassID = matchedNode.attr("id").replace('MatchedClassID_', '');
-         data.ObjectID = <?= $object->getObjectID() ?>;
+         data.ObjectID = <?php echo $object->getObjectID() ?>;
          data.matchStructure = matchedNode.val();
          var callback = function(html){
             jQuery("#doAutomaticSearch_result").html(html);

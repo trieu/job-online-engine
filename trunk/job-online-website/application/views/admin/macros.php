@@ -16,16 +16,16 @@
 <textarea id="container_ui_box" cols="1" rows="1" style="display:none">
     <div class="container_ui_box" >
         <ul class="jquery_tab_holder"  >
-            <li><a href="#tabs-1"><?=$container_name?></a></li>
-            <li><a href="#tabs-2">Create new <?=$container_name?></a></li>
+            <li><a href="#tabs-1"><?php echo$container_name?></a></li>
+            <li><a href="#tabs-2">Create new <?php echo$container_name?></a></li>
         </ul>
         <div id="tabs-1">
             <div id="container_list" style="overflow-y:auto; height: 135px; margin-left: 15px; margin-bottom:5px;">
                     <?php foreach ($data_list as $key  => $val) { ?>
                 <div style="margin-bottom:5px">
-                    <input type="checkbox" id="element_<?= $key ?>" name="<?= $val ?>" onClick="container_ui_box.setSelectedRow(Modalbox.contentSelector('#element_<?= $key ?>'))" />
-                    <label for="element_<?= $key ?>" onClick="container_ui_box.setSelectedRow(Modalbox.contentSelector('#element_<?= $key ?>'))" >
-                                <?= $val ?>
+                    <input type="checkbox" id="element_<?php echo $key ?>" name="<?php echo $val ?>" onClick="container_ui_box.setSelectedRow(Modalbox.contentSelector('#element_<?php echo $key ?>'))" />
+                    <label for="element_<?php echo $key ?>" onClick="container_ui_box.setSelectedRow(Modalbox.contentSelector('#element_<?php echo $key ?>'))" >
+                                <?php echo $val ?>
                     </label>
                 </div>
                     <?php }	?>
@@ -59,7 +59,7 @@
     };
 
     container_ui_box.showBox = function(){        
-        Modalbox.show("#container_ui_box",{title:"<?=$container_name?>",height:430, width:600});
+        Modalbox.show("#container_ui_box",{title:"<?php echo$container_name?>",height:430, width:600});
         Modalbox.contentSelector(" > div").tabs();
     }
 
@@ -72,7 +72,7 @@ function jsMetaObjectScript() {?>
 
 <script type="text/javascript">
      function populateClasses(fn){
-        var url = "<?= site_url("admin/search/populate_query_helper")?>";
+        var url = "<?php echo site_url("admin/search/populate_query_helper")?>";
         var filter =  {what: "object_class"};
         var handler =  function(text){
             var data = jQuery.secureEvalJSON( text );
@@ -91,7 +91,7 @@ function jsMetaObjectScript() {?>
 
     function populateProcesses(fn){
         var val = jQuery("#ObjectClassID").val();
-        var url = "<?= site_url("admin/search/populate_query_helper")?>";
+        var url = "<?php echo site_url("admin/search/populate_query_helper")?>";
         var filter =  {what: "process" , filterID: val};
         var handler =  function(text){
             var data = jQuery.secureEvalJSON( text );
@@ -110,7 +110,7 @@ function jsMetaObjectScript() {?>
 
     function populateForms(fn){
         var val = jQuery("#ProcessID").val();
-        var url = "<?= site_url("admin/search/populate_query_helper")?>";
+        var url = "<?php echo site_url("admin/search/populate_query_helper")?>";
         var filter =  {what: "form" , filterID: val};
         var handler =  function(text){
             var data = jQuery.secureEvalJSON( text );

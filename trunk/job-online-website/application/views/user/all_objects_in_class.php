@@ -33,16 +33,16 @@
         function contextMenuHandler(action, el, pos) {
             var params = "";
             if( action.indexOf("ProcessID_") == 0 ) {
-               params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("ProcessID_","");
-               window.location = "<?= site_url("admin/object_controller/do_process")?>" + params;
+               params = "/" + <?php echo $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("ProcessID_","");
+               window.location = "<?php echo site_url("admin/object_controller/do_process")?>" + params;
             }
             else if( action.indexOf("FormID_") == 0 ) {
-               params = "/" + <?= $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("FormID_","");
-               window.location = "<?= site_url("user/public_object_controller/do_form")?>" + params;
+               params = "/" + <?php echo $objectClass->getObjectClassID() ?> + "/" + jQuery(el).attr("id").replace("object_row_","") + "/" + action.replace("FormID_","");
+               window.location = "<?php echo site_url("user/public_object_controller/do_form")?>" + params;
             }
             else if(action == "EditObject"){
                params = "/" + jQuery(el).attr("id").replace("object_row_","");
-               window.location = "<?= site_url("user/public_object_controller/edit/")?>" + params;
+               window.location = "<?php echo site_url("user/public_object_controller/edit/")?>" + params;
             }
         }
     </script>  
@@ -57,14 +57,14 @@
                 if($idx == 0) continue;
         ?>
             <li>
-                <a href="#ProcessID_<?= $p->getProcessID() ?>">
+                <a href="#ProcessID_<?php echo $p->getProcessID() ?>">
                    @Process: <?php echo $p->getProcessName(); ?>
                 </a>
             </li>
 
             <?php foreach ($p->getUsableForms() as $form) { ?>
                 <li>
-                   <a href="#FormID_<?= $form->getFormID() ?>">
+                   <a href="#FormID_<?php echo $form->getFormID() ?>">
                          &nbsp;&nbsp; #Form: <?php echo $form->getFormName(); ?>
                     </a>
                 </li>
@@ -76,9 +76,9 @@
 <?php } ?>
 
 <div>
-    <h3><?= $objectClass->getObjectClassName()  ?> </h3>    
+    <h3><?php echo $objectClass->getObjectClassName()  ?> </h3>
 </div>
-Display <?= $total_records = count($objects) ?> records
+Display <?php echo $total_records = count($objects) ?> records
 
 <?php if($total_records > 0) { ?>
 <table border="1" style="margin-right: 30px">
@@ -96,8 +96,8 @@ Display <?= $total_records = count($objects) ?> records
     </thead>
     <tbody>       
         <?php foreach ($objects as $objID => $data_map ) { ?>
-        <tr class="context_menu_trigger" id="object_row_<?= $objID ?>" >
-            <td><?= $objID ?></td>
+        <tr class="context_menu_trigger" id="object_row_<?php echo $objID ?>" >
+            <td><?php echo $objID ?></td>
             <?php
                 $fields = $data_map["fields"];
                 foreach ($metadata_object as $FieldID => $FieldName ) {
@@ -111,7 +111,7 @@ Display <?= $total_records = count($objects) ?> records
              ?>
             <td>
                 <div>
-                    <?= anchor('admin/object_controller/edit/'.$objID , 'View', array('title' => 'Edit')) ?>
+                    <?php echo anchor('admin/object_controller/edit/'.$objID , 'View', array('title' => 'Edit')) ?>
                 </div>
             </td>
         </tr>

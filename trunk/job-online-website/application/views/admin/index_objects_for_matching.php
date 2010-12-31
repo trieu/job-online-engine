@@ -137,7 +137,7 @@ require_once 'macros.php';
             jQuery("#index_all_objects_result").html(html);
             jQuery("#index_all_objects_working").hide();
         };
-        var url = "<?= site_url('admin/search_indexer/index_all_objects/') ?>";
+        var url = "<?php echo site_url('admin/search_indexer/index_all_objects/') ?>";
         var index_as_new = jQuery("input[name='index_as_new']:checked").val();
         url += ("/"+index_as_new);
         jQuery.get(url , {}, callback);
@@ -149,8 +149,8 @@ require_once 'macros.php';
         if(val == null){
             alert("Please select a form for loading fields");
         }
-        var url = "<?= site_url("admin/search/populate_query_helper") ?>";
-        var filter =  {what: "<?= search::$FIELD_HINT ?>" , filterID: val};
+        var url = "<?php echo site_url("admin/search/populate_query_helper") ?>";
+        var filter =  {what: "<?php echo search::$FIELD_HINT ?>" , filterID: val};
         var handler =  function(html){
             jQuery("#field_list_view .content").html( html );
             jQuery("#field_list_view .ajax_loader").hide();
@@ -265,7 +265,7 @@ require_once 'macros.php';
 
     function doSaveMatchedStructure() {
         var data = getMatchedStructure();
-        var url = "<?= site_url('admin/search_indexer/save_matched_class_structure/') ?>";
+        var url = "<?php echo site_url('admin/search_indexer/save_matched_class_structure/') ?>";
         if(jQuery("#BaseClassFields").attr("mode") == "update" && jQuery("#MatchedClassFields").attr("mode") == "update") {
             url += '/update';
         }
@@ -287,7 +287,7 @@ require_once 'macros.php';
     }
     
     function doLoadMatchedStructure() {
-        var url = "<?= site_url('admin/search_indexer/load_matched_class_structure/') ?>";
+        var url = "<?php echo site_url('admin/search_indexer/load_matched_class_structure/') ?>";
         var callback = function(json){
             var list = jQuery.evalJSON(json);
             if(list.length == 1){
@@ -297,7 +297,7 @@ require_once 'macros.php';
                     arr_ids.push(k);
                     arr_ids.push(MatchedStructure[k]);
                 }
-                var getFieldUrl = "<?= site_url('admin/field_controller/getFieldNamesByIDs/') ?>";
+                var getFieldUrl = "<?php echo site_url('admin/field_controller/getFieldNamesByIDs/') ?>";
                 var getFieldHandler = function(rs2){
                     var field_map = jQuery.evalJSON(rs2);
                     var Bnode = jQuery("#BaseClassFields");

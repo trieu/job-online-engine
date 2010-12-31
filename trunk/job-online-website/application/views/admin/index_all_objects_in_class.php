@@ -25,8 +25,8 @@
         </thead>
         <tbody>
             <?php foreach ($objects as $objID => $data_map ) { ?>
-            <tr id="object_row_<?= $objID ?>" >
-                <td><?= $objID ?></td>
+            <tr id="object_row_<?php echo $objID ?>" >
+                <td><?php echo $objID ?></td>
                 <?php
                     $LuceneDoc = new Zend_Search_Lucene_Document();
                     $LuceneDoc->addField(Zend_Search_Lucene_Field::Keyword('object_id', $objID) );
@@ -57,7 +57,7 @@
                  ?>
                 <td>
                     <div>
-                        <?= anchor('user/public_object_controller/view/'.$objID , 'View', array('title' => 'Edit')) ?>
+                        <?php echo anchor('user/public_object_controller/view/'.$objID , 'View', array('title' => 'Edit')) ?>
                     </div>
                 </td>
             </tr>

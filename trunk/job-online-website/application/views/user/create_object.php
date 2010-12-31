@@ -56,18 +56,18 @@ legend {
 }
 </style>
 
-<h3><?= $object_class->getObjectClassName() ?></h3>
+<h3><?php echo $object_class->getObjectClassName() ?></h3>
 
 <a name="top_of_form"></a>
 
-<form id="object_instance_form" action="<?= site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
+<form id="object_instance_form" action="<?php echo site_url("user/public_object_controller/save/".$object_class->getObjectClassID()) ?>" accept="utf-8" method="post">
     <div class="input_info" id="object_instance_div" >
         <div class="ajax_loader display_none" ></div>
             <?php foreach ($object_class->getUsableProcesses() as $pro) {                
                 if( strpos($pro->getDescription(), "#not_show_on_create#") === FALSE ){
                 ?>
                 <fieldset class="process_forms">
-                <legend><?= $pro->getProcessName() ?></legend>
+                <legend><?php echo $pro->getProcessName() ?></legend>
                 <div>
                     <?php
                     foreach ($objectHTMLCaches[$pro->getProcessID()] as $caches){                      

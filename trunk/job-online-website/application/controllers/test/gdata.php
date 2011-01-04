@@ -50,13 +50,23 @@ class gdata extends Controller {
     /**
      * @Decorated
      */
-    public function test_blogger() {
+    public function test_blogger($ajax = 'false') {
         $this->page_decorator->setPageTitle("test_blogger");
         //$this->load->model('cloud_storage_manager');
-        $this->load->library('gdata_spreadsheet');
+        $this->load->library('gdata_blogger_service');
         $this->load->library('AES');
+
+        $email = "vieclam.drdvietnam@gmail.com";
+        $password = "Drdcenter@123456";
+        $password = AesCtr::encrypt($password, $email, 256);
+        $password = AesCtr::decrypt($password, $email, 256);
+
+        $loginParams = array('email' => $email, 'password' => $password);
+
+
         $data = array();
-       // $data['theAccount'] = $this->cloud_storage_manager->getDefaultAccount();
+        $data['loginParams'] = $loginParams;
+        // $data['theAccount'] = $this->cloud_storage_manager->getDefaultAccount();
         $this->load->view("mashup/blogger_view", $data);
     }
 

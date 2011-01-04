@@ -1,20 +1,13 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-// Zend library include path
-set_include_path(get_include_path() . PATH_SEPARATOR . "$_SERVER[DOCUMENT_ROOT]/job-online-website/application/libraries");
-
-require_once 'Zend/Loader.php';
-Zend_Loader::loadClass('Zend_Gdata');
-Zend_Loader::loadClass('Zend_Gdata_ClientLogin');
+require_once 'gdata_ci_loader.php';
 Zend_Loader::loadClass('Zend_Gdata_Spreadsheets');
-Zend_Loader::loadClass('Zend_Gdata_App_AuthException');
-Zend_Loader::loadClass('Zend_Http_Client');
 
 /**
  * Simple library for Google Spreadsheet API
  * @author Trieu Nguyen (tantrieuf31@gmail.com)
  */
-class gdata_spreadsheet {
+class gdata_spreadsheet extends gdata_ci_loader {
 
     private $gdClient;
     private $currSpreadsheetId = '';
@@ -149,5 +142,3 @@ class gdata_spreadsheet {
         }
     }
 }
-
-?>

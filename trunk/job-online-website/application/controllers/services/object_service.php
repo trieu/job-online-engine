@@ -23,10 +23,10 @@ class object_service extends Controller {
     /**
      * 
      */
-    public function export_data($ObjectClassID = -1) {
+    public function export_data($ObjectClassID = -1, $filterByObjectId = -1) {
         $data = array();
         $this->load->model("object_manager");
-        $data = $this->object_manager->get_raw_data_objects($ObjectClassID);
+        $data = $this->object_manager->get_raw_data_objects($ObjectClassID, $filterByObjectId);
         echo json_encode($data);
     }
 

@@ -69,6 +69,8 @@ class Aes {
  for ($c = 0; $c < 4; $c++)
                 $s[$r][$c] = $t[$c];           // and copy back
 
+
+
         }          // note that this will work for Nb=4,5,6, but not 7,8 (always 4 for AES):
         return $s;  // see fp.gladman.plus.com/cryptography_technology/rijndael/aes.spec.311.pdf
     }

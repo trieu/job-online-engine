@@ -272,13 +272,18 @@ class object_manager extends data_manager {
         return $object;
     }
 
-    public function get_raw_data_objects($ObjectClassID) {
+    public function get_raw_data_objects($ObjectClassID, $filterByObjectId = -1) {
         $sql = "SELECT objects.ObjectID, fieldvalues.FieldID, fieldvalues.FieldValue, fieldvalues.SelectedFieldValue
                 FROM objects
                 INNER JOIN fieldvalues ON fieldvalues.ObjectID = objects.ObjectID AND fieldvalues.FieldID != 0
                 WHERE objects.ObjectClassID = ?
                 ";
-        $query = $this->db->query($sql, array($ObjectClassID));
+        if($filterByObjectId === -1){
+            $query = $this->db->query($sql, array($ObjectClassID));
+        } else {
+            $sql .= " AND objects.ObjectID = ? ";
+             $query = $this->db->query($sql, array($ObjectClassID, $filterByObjectId));
+        }
         return $query->result();
     }
 

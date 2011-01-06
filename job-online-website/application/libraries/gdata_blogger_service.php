@@ -81,16 +81,17 @@ class gdata_blogger_service extends gdata_ci_loader {
      * @param  boolean $isDraft Whether the post should be added as a draft or as a published post
      * @return string The newly created post's ID
      */
-    public function createPost($title, $content, $isDraft=False) {
+    public function createPost($title, $content, $isDraft=FALSE) {
         // We're using the magic factory method to create a Zend_Gdata_Entry.
         // http://framework.zend.com/manual/en/zend.gdata.html#zend.gdata.introdduction.magicfactory
         $entry = $this->gdClient->newEntry();
+        $labelText = 'object_values';
 
         $entry->title = $this->gdClient->newTitle(trim($title));
         $entry->content = $this->gdClient->newContent(trim($content));
         $entry->content->setType('text');
-        $entry->category = $this->gdClient->newContent(trim("cat1"));
-        $labelText = 'cat1';
+        $entry->category = $this->gdClient->newContent($labelText);
+        
         $label = new Zend_Gdata_App_Extension_Category($labelText, 'http://www.blogger.com/atom/ns#');
         $entry->setCategory(array(0 => $label));
         $uri = "http://www.blogger.com/feeds/" . $this->blogID . "/posts/default";

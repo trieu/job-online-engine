@@ -153,4 +153,3 @@ abstract class data_manager extends Model {
     }
 
 }
-?>

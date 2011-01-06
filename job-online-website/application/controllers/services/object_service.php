@@ -21,7 +21,7 @@ class object_service extends Controller {
     }
 
     /**
-     * 
+     * TEST http://localhost/job-online-website/index.php/services/object_service/export_data/1/106
      */
     public function export_data($ObjectClassID = -1, $filterByObjectId = -1) {
         $data = array();
@@ -31,7 +31,7 @@ class object_service extends Controller {
     }
 
     /**
-     * 
+     * @Secured(role = "Administrator")
      */
     public function import_data($ObjectClassID = -1, $justView = 'true') {
         $url1 = 'http://tantrieuf31.summerhost.info/job-database/index.php/services/object_service/export_data/' . $ObjectClassID;

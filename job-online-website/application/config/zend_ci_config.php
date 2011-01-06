@@ -11,4 +11,3 @@ $config['search_lucene_directory'] = "/job-online-website/lucene_dir/";
 
 /* End of file decorator.php */
 /* Location: ./application/config/decorator.php */
-?>

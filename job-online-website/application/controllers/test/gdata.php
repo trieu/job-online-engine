@@ -56,10 +56,12 @@ class gdata extends Controller {
         $this->load->library('gdata_blogger_service');
         $this->load->library('AES');
 
-        $email = "vieclam.drdvietnam@gmail.com";
-        $password = "Drdcenter@123456";
-        $password = AesCtr::encrypt($password, $email, 256);
+        $email = $this->config->item('google_email');
+        $password = $this->config->item('aes256_encrypted_password');
+      //  $password = AesCtr::encrypt($password, $email, 256);
+        
         $password = AesCtr::decrypt($password, $email, 256);
+        ApplicationHook::logInfo($password);
 
         $loginParams = array('email' => $email, 'password' => $password);
 

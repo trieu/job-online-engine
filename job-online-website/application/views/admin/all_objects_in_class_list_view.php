@@ -51,21 +51,8 @@
                     // jQuery(this).css("background-color", "#FFF");
                 });
             };
-            jQuery(".object_holder").each(f);
-            initConfirmation();
-        });
-        function initConfirmation(){
-            var f = function(){
-                var href = jQuery(this).attr("href");
-                jQuery(this).attr("href","javascript:void(0)");
-                jQuery(this).click(function(){
-                    if(confirm("Delete ?")){
-                        window.location = href;
-                    }
-                });
-            };
-            jQuery("a.confirmation").each(f);
-        }
+            jQuery(".object_holder").each(f);            
+        });        
     </script>
     <?php } ?>
 
@@ -108,6 +95,8 @@
                <?php echo anchor('user/public_object_controller/edit/'.$objID , 'Xem chi tiết/View Details', array('class'=>'vietnamese_english')) ?>
                 <br>
                <?php echo anchor('admin/object_controller/delete/'.$objID."/".$objectClass->getObjectClassID() , 'Xoá/Delete', array('class' => 'confirmation vietnamese_english')) ?>
+                <br>
+               <?php echo anchor('user/public_object_controller/moveObjectValuesToCloudDB/'.$objectClass->getObjectClassID()."/".$objID , 'Move to CloudDB', array('class' => 'confirmation vietnamese_english')) ?>
             </div>
         </div>
       <?php }           

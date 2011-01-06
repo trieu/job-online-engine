@@ -120,6 +120,3 @@ class process_manager extends data_manager {
         return $q->result_array();
     }
 }
-
-
-?>

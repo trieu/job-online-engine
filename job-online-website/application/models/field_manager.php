@@ -148,5 +148,3 @@ class field_manager extends data_manager {
     }
 
 }
-
-?>

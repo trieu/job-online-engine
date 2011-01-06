@@ -9,10 +9,12 @@
  * @property CI_DB_active_record $db *
  * @property field_manager $field_manager
  * @property object_manager $object_manager
+ * @property cloud_storage_manager $cloud_storage_manager
  *
  * @author Trieu Nguyen. Email: tantrieuf31@gmail.com
  */
 class public_object_controller extends Controller {
+
     public function __construct() {
         parent::__construct();
     }
@@ -21,17 +23,17 @@ class public_object_controller extends Controller {
      * @Decorated
      * @Secured(role = "user")
      */
-    public function create_object($classID ) {
+    public function create_object($classID) {
         $this->load->model("objectclass_manager");
         $this->load->model("process_manager");
-        if($classID > 0) {
+        if ($classID > 0) {
             $object_class = $this->objectclass_manager->find_by_id($classID);
             $data["object_class"] = $object_class;
             $data["objectHTMLCaches"] = array();
             foreach ($object_class->getUsableProcesses() as $pro) {
-                $data["objectHTMLCaches"][$pro->getProcessID()] = $this->process_manager->getProcessHTMLCaches( $pro->getProcessID() );
+                $data["objectHTMLCaches"][$pro->getProcessID()] = $this->process_manager->getProcessHTMLCaches($pro->getProcessID());
             }
-            $this->load->view("user/create_object",$data);
+            $this->load->view("user/create_object", $data);
         }
     }
 
@@ -39,7 +41,7 @@ class public_object_controller extends Controller {
      * @Decorated
      * @Secured(role = "user")
      */
-    public function edit( $objID ) {
+    public function edit($objID) {
         $this->load->model("object_manager");
         $this->load->model("forms_manager");
         $this->load->model("objectclass_manager");
@@ -47,18 +49,18 @@ class public_object_controller extends Controller {
 
         $obj = $this->object_manager->getObjectInstance($objID);
         $classID = $obj->getObjectClassID();
-        if($classID > 0) {
+        if ($classID > 0) {
             $object_class = $this->objectclass_manager->find_by_id($classID);
             $data["object_class"] = $object_class;
             $data["object"] = $obj;
             $data["formsOfObject"] = $this->forms_manager->getAllFormsOfObjectClass($classID);
-           
+
             foreach ($object_class->getUsableProcesses() as $pro) {
                 $data["objectCacheHTML"] = $this->process_manager->getIndentityProcessHTMLCache($pro->getProcessID());
                 break;
             }
 
-            $this->load->view("user/object_primary_view",$data);
+            $this->load->view("user/object_primary_view", $data);
         }
     }
 
@@ -66,7 +68,7 @@ class public_object_controller extends Controller {
      * @Decorated
      * @Secured(role = "user")
      */
-    public function object_details( $objID ) {
+    public function object_details($objID) {
         $this->load->model("object_manager");
         $this->load->model("forms_manager");
         $this->load->model("objectclass_manager");
@@ -74,15 +76,15 @@ class public_object_controller extends Controller {
 
         $obj = $this->object_manager->getObjectInstance($objID);
         $classID = $obj->getObjectClassID();
-        if($classID > 0) {
+        if ($classID > 0) {
             $data = array();
-            $object_class = $this->objectclass_manager->find_by_id($classID);            
+            $object_class = $this->objectclass_manager->find_by_id($classID);
             $data["object"] = $obj;
             $data["formsOfObject"] = $this->forms_manager->getAllFormsOfObjectClass($classID);
             $data["objectClass"] = $object_class;
             $data["objects"] = $this->object_manager->getAllObjectsInClass($classID);
 
-            $this->load->view("user/object_details_view",$data);
+            $this->load->view("user/object_details_view", $data);
         }
     }
 
@@ -90,7 +92,7 @@ class public_object_controller extends Controller {
      * @Decorated
      * @Secured(role = "user")
      */
-    public function do_form($classID, $ObjectID, $FormID ) {
+    public function do_form($classID, $ObjectID, $FormID) {
         $this->load->model("object_manager");
         $this->load->model("object_html_cache_manager");
         $this->load->model("forms_manager");
@@ -101,37 +103,36 @@ class public_object_controller extends Controller {
         $data["object"] = $this->object_manager->getObjectInstanceInForm($ObjectID, $FormID);
         $data["form"] = $this->forms_manager->find_by_id($FormID);
         $data["cache"] = $this->object_html_cache_manager->get_saved_cache_html(Form::$HTML_DOM_ID_PREFIX, $FormID);
-        $this->load->view("user/object_do_form_view",$data);
+        $this->load->view("user/object_do_form_view", $data);
     }
 
     /**
      * @AjaxAction
      * @Secured(role = "user")
      */
-    public function ajax_edit_form($classID, $ObjectID, $FormID ) {
+    public function ajax_edit_form($classID, $ObjectID, $FormID) {
         $this->do_form($classID, $ObjectID, $FormID);
     }
 
     /**
      * @Secured(role = "user")
      */
-    public function save($ObjectClassID , $ObjectID = -1 ) {
+    public function save($ObjectClassID, $ObjectID = -1) {
         $this->load->model("object_manager");
         $this->load->model("field_manager");
-        if($ObjectClassID > 0) {
+        if ($ObjectClassID > 0) {
             $obj = new Object();
             $obj->setObjectClassID($ObjectClassID);
             $obj->setObjectID($ObjectID);
-            $obj->setFieldValues( json_decode($this->input->post("FieldValues")) );
+            $obj->setFieldValues(json_decode($this->input->post("FieldValues")));
 
             $id = $this->object_manager->save($obj);
-            if($id > 0) {
+            if ($id > 0) {
                 $data = array();
                 $data["info_message"] = "Đã lưu dữ liệu/ Saved!";
-                $data["redirect_url"] = site_url("user/public_object_controller/list_all/".$ObjectClassID)."#".$id;
-                $this->load->view("global_view/simple_message_info",$data);
-            }
-            else {
+                $data["redirect_url"] = site_url("user/public_object_controller/list_all/" . $ObjectClassID) . "#" . $id;
+                $this->load->view("global_view/simple_message_info", $data);
+            } else {
                 echo "Insert new object failed!";
             }
         }
@@ -141,19 +142,18 @@ class public_object_controller extends Controller {
      * @Decorated
      * @Secured(role = "user")
      */
-    public function list_all($ObjectClassID ) {
+    public function list_all($ObjectClassID) {
         $this->load->model("object_manager");
         $this->load->model("objectclass_manager");
 
         $objectClass = $this->objectclass_manager->find_by_id($ObjectClassID);
 
-        if($objectClass != NULL) {
+        if ($objectClass != NULL) {
             $data = array();
             $data["objectClass"] = $objectClass;
             $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID());
-            $this->load->view("user/all_objects_in_class_list_view",$data);
-        }
-        else {
+            $this->load->view("user/all_objects_in_class_list_view", $data);
+        } else {
             throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);
         }
     }
@@ -162,42 +162,41 @@ class public_object_controller extends Controller {
      * @Decorated
      * @Secured(role = "user")
      */
-    public function list_objects( $AccessDataURI = '/', $startIndex = 0, $total_rs = 0 ) {
+    public function list_objects($AccessDataURI = '/', $startIndex = 0, $total_rs = 0) {
         $this->load->model("object_manager");
         $this->load->model("objectclass_manager");
 
         $objectClass = $this->objectclass_manager->find_by_uri($AccessDataURI);
 
-        if($objectClass != NULL) {
+        if ($objectClass != NULL) {
             $data = array();
             $data["objectClass"] = $objectClass;
             $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID(), $startIndex, $total_rs);
-            
+
             $config = array();
             $config['base_url'] = "";
             $config['total_rows'] = 100;
             $config['per_page'] = 1;
             $config['current_page'] = 1;
             $data["pagination_config"] = $config;
-        }
-        else {
+        } else {
             throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);
         }
 
-        $this->load->view("user/all_objects_in_class_list_view",$data);
+        $this->load->view("user/all_objects_in_class_list_view", $data);
     }
 
-     /**
+    /**
      * @Decorated
      * @Secured(role = "user")
      */
-    public function list_matched_objects_of( $AccessDataURI = '/') {
+    public function list_matched_objects_of($AccessDataURI = '/') {
         $this->load->model("object_manager");
         $this->load->model("objectclass_manager");
 
         $objectClass = $this->objectclass_manager->find_by_uri($AccessDataURI);
 
-        if($objectClass != NULL) {
+        if ($objectClass != NULL) {
             $data = array();
             $data["objectClass"] = $objectClass;
             $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID(), $startIndex, $total_rs);
@@ -208,12 +207,43 @@ class public_object_controller extends Controller {
             $config['per_page'] = 1;
             $config['current_page'] = 1;
             $data["pagination_config"] = $config;
-        }
-        else {
+        } else {
             throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);
         }
 
-        $this->load->view("user/all_objects_in_class_list_view",$data);
+        $this->load->view("user/all_objects_in_class_list_view", $data);
     }
+
+    /**
+     * @Decorated
+     * @Secured(role = "user")
+     *
+     * @param Long $ObjectClassID
+     * @param Long $filterByObjectId
+     */
+    public function moveObjectValuesToCloudDB($classID, $objId) {
+        $this->load->model("cloud_storage_manager");
+        $this->load->model("object_manager");
+
+        $objData = $this->object_manager->get_raw_data_objects($classID, $objId);
+        $json_text = json_encode($objData);
+
+        $bloggerService = $this->getBloggerService();
+        $docId = $bloggerService->createPost($objId, $json_text, TRUE);
+        echo $docId;
+    }
+
+    protected function getBloggerService() {
+        $this->load->library('gdata_blogger_service');
+        $this->load->library('AES');
+
+        $email = $this->config->item('google_email');
+        $password = $this->config->item('aes256_encrypted_password');
+        $password = AesCtr::decrypt($password, $email, 256);
+        $loginParams = array('email' => $email, 'password' => $password);
+        $bloggerService = gdata_blogger_service::getInstance($loginParams);
+        $bloggerService->blogID = $this->config->item('db_id');
+        return $bloggerService;
+    }
+
 }
-?>

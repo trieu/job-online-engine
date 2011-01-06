@@ -69,4 +69,3 @@ class field_value_manager extends data_manager {
     public function updateByField($id,$editable_field_name,$editable_field_value) {
     }
 }
-?>

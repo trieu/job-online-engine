@@ -36,6 +36,6 @@ class cloud_storage_manager extends Model {
         $this->db->insert($this->table_name, $data);
     }
 
-}
+    
 
-?>
+}

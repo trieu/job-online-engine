@@ -25,6 +25,8 @@ class object_controller extends admin_panel {
      * @Secured(role = "Administrator")
      */
     public function list_all($ObjectClassID ) {
+        $this->page_decorator->setPageTitle("List all business objects");
+        
         $this->load->model("object_manager");
         $this->load->model("objectclass_manager");
 

@@ -126,4 +126,3 @@ class forms_manager extends data_manager {
        return $query->result_array();
     }
 }
-?>

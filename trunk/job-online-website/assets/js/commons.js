@@ -245,3 +245,18 @@ function setGoogleDocsField(doc_id) {
     setGoogleDocsFieldForNode.val(url);
     alert(doc_id);
 }
+
+//set up confirmation alert for each link has class 'confirmation'
+jQuery(document).ready(function() {
+    var f = function(){
+        var href = jQuery(this).attr("href");
+        var text = jQuery(this).html() + " ?";
+        jQuery(this).attr("href","javascript:void(0)");
+        jQuery(this).click(function(){
+            if(confirm(text)){
+                window.location.href = href;
+            }
+        });
+    };
+    jQuery("a.confirmation").each(f);
+});

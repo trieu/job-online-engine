@@ -144,6 +144,3 @@ class objectclass_manager extends data_manager {
 
 
 }
-
-
-?>

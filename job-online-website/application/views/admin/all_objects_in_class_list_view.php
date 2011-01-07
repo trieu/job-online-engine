@@ -97,6 +97,9 @@
                <?php echo anchor('admin/object_controller/delete/'.$objID."/".$objectClass->getObjectClassID() , 'Xoá/Delete', array('class' => 'confirmation vietnamese_english')) ?>
                 <br>
                <?php echo anchor('user/public_object_controller/moveObjectValuesToCloudDB/'.$objectClass->getObjectClassID()."/".$objID , 'Move to CloudDB', array('class' => 'confirmation vietnamese_english')) ?>
+                <br>
+               <?php echo anchor('user/public_object_controller/viewObjectFromCloudDB/'.$objID , 'View it on CloudDB', array('class' => 'vietnamese_english')) ?>
+
             </div>
         </div>
       <?php }           

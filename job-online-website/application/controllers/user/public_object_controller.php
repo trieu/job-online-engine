@@ -19,6 +19,19 @@ class public_object_controller extends Controller {
         parent::__construct();
     }
 
+    protected function getBloggerService() {
+        $this->load->library('gdata_blogger_service');
+        $this->load->library('AES');
+
+        $email = $this->config->item('google_email');
+        $password = $this->config->item('aes256_encrypted_password');
+        $password = AesCtr::decrypt($password, $email, 256);
+        $loginParams = array('email' => $email, 'password' => $password);
+        $bloggerService = gdata_blogger_service::getInstance($loginParams);
+        $bloggerService->blogID = $this->config->item('db_id');
+        return $bloggerService;
+    }
+
     /**
      * @Decorated
      * @Secured(role = "user")
@@ -210,7 +223,6 @@ class public_object_controller extends Controller {
         } else {
             throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);
         }
-
         $this->load->view("user/all_objects_in_class_list_view", $data);
     }
 
@@ -229,33 +241,63 @@ class public_object_controller extends Controller {
         $json_text = json_encode($objData);
 
         $bloggerService = $this->getBloggerService();
-
-        $docId = $bloggerService->createPost($objId, $json_text, TRUE);
+        $categories = array("object_class_" . $classID);
+        $docId = $bloggerService->createPost($objId, $json_text, TRUE, $categories);
 
         $obj = new Object();
         $obj->setObjectClassID($classID);
         $obj->setObjectID($objId);
         $obj->setObjectRefKey($docId);
-        
+
         $id = $this->object_manager->save($obj);
-        if($id == $objId){
-            $this->output->set_output($docId);
+        if ($id == $objId) {
+            $this->output->set_output("Moved successfully with documentId: " . $docId);
         } else {
             $this->output->set_output("0");
         }
     }
 
-    protected function getBloggerService() {
-        $this->load->library('gdata_blogger_service');
-        $this->load->library('AES');
+    /**
+     * @Decorated
+     * @Secured(role = "user")
+     *
+     * @param Long $ObjectClassID
+     * @param Long $filterByObjectId
+     */
+    public function viewObjectFromCloudDB($objId) {
+        $this->page_decorator->setPageTitle("View data");
+        $this->load->model("cloud_storage_manager");
+        $this->load->model("object_manager");
 
-        $email = $this->config->item('google_email');
-        $password = $this->config->item('aes256_encrypted_password');
-        $password = AesCtr::decrypt($password, $email, 256);
-        $loginParams = array('email' => $email, 'password' => $password);
-        $bloggerService = gdata_blogger_service::getInstance($loginParams);
-        $bloggerService->blogID = $this->config->item('db_id');
-        return $bloggerService;
+        $bloggerService = $this->getBloggerService();
+        //  $query = new Zend_Gdata_Query('http://www.blogger.com/feeds/1672527029385884909/posts/default?q="content"');
+
+        $row = $this->object_manager->getDocIdAndClassIdOfObject($objId);
+
+        $data = array();
+        if ($row != NULL) {
+            $docId = $row->ObjectRefKey;
+            $classId = $row->ObjectClassID;
+
+            $thePost = $bloggerService->getThePost($docId);
+           // $jsonObjValues = json_decode($thePost->content->text);
+          //  $justLog = $thePost->title->text . '<BR>' . print_r($jsonObjValues, TRUE);
+          //  $this->output->set_output($jsonObjValues);
+            $data["jsonObjValues"] = $thePost->content->text;
+
+            $this->load->model("objectclass_manager");
+            $this->load->model("process_manager");
+            
+            $object_class = $this->objectclass_manager->find_by_id($classId);
+            $data["object_class"] = $object_class;
+            $data["objectHTMLCaches"] = array();
+            foreach ($object_class->getUsableProcesses() as $pro) {
+                $data["objectHTMLCaches"][$pro->getProcessID()] = $this->process_manager->getProcessHTMLCaches($pro->getProcessID());
+            }
+            $this->load->view("user/object_view", $data);
+        } else {
+            $this->output->set_output("Not found!");
+        }
     }
 
 }

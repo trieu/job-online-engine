@@ -103,17 +103,15 @@ legend {
     jQuery(document).ready(initFormData);
 
     var checkboxHashmap = {};
-    function initFormData(){        
-        makeFormNavigation();
-        var object_field = {};
-        var ObjectID = -1;
-        <?php
-        if( isset ($object) ) {
-            echo " object_field = ".json_encode($object->getFieldValues()).";\n";
-            echo " ObjectID = ".$object->getObjectID().";\n";
-        }
-        ?>
-                 if(ObjectID > 0){
+    function initFormData() {
+            makeFormNavigation();
+            var object_field = {};
+            var ObjectID = -1;
+                <?php if( isset ($object) ) {
+                    echo " object_field = ".json_encode($object->getFieldValues()).";\n";
+                    echo " ObjectID = ".$object->getObjectID().";\n";
+                } ?>
+                if(ObjectID > 0){
                      var actionUrl = jQuery("#object_instance_form").attr("action") + "/" + ObjectID;
                      jQuery("#object_instance_form").attr("action",actionUrl);
                      for(var id in object_field) {
@@ -150,8 +148,8 @@ legend {
                          }
                      };
                      jQuery("#object_instance_form *[name*='field_']").each(f);
-                 }
-                 else {
+                }
+                else {
                      var f = function(){
                          var n = jQuery(this).attr("name")+"FVID_0";
                          jQuery(this).attr("name",n);
@@ -282,4 +280,33 @@ legend {
         jQuery("#object_instance_form").validationEngine();
         makeEffectsForCheckboxAndRadio();
     });
+
+    function setDataWithMetaData() {
+        var jsonObjValues = <?php echo $jsonObjValues ?>;
+        console.log(jsonObjValues);
+        
+        var f = function(){
+            var FieldID = this.FieldID;
+            var FieldValue = this.FieldValue;
+
+            var fieldnode = $('#field_' + FieldID);
+            if(fieldnode.length == 1){
+                var type = fieldnode.attr('type');
+                var nodeName = fieldnode[0].nodeName;
+                if(type == "text" || nodeName == "TEXTAREA") {
+                    var html = ": <span>" + FieldValue + "<\/span>";
+                    fieldnode.hide().val(FieldValue);
+                    $("#wrapper_field_"+ FieldID).append(html);
+                } else if(nodeName == "SELECT"){
+                    var selectedOpNode = fieldnode.find("option[value='"+ FieldValue +"']");
+                    var html = ": <span>" + selectedOpNode.html() + "<\/span>";
+                    fieldnode.hide().val(FieldValue);
+                    $("#wrapper_field_"+ FieldID).append(html);
+                }
+            }
+        };
+        $(jsonObjValues).each(f);
+    }
+    $(setDataWithMetaData);
+
 </script>

@@ -293,7 +293,6 @@ class object_manager extends data_manager {
         if (count($IdentityFieldValues) == 0) {
             return FALSE;
         }
-
         $sql = "SELECT DISTINCT fieldvalues.ObjectID
                 FROM fieldvalues
                 WHERE fieldvalues.FieldID != 0 ";
@@ -314,6 +313,22 @@ class object_manager extends data_manager {
             return TRUE;
         }        
         return FALSE;
+    }
+
+    public function getDocIdAndClassIdOfObject($objId) {
+        $sql = "SELECT objects.ObjectRefKey, objects.ObjectClassID
+                FROM objects
+                WHERE objects.ObjectID = ? ";
+        $query = $this->db->query($sql, array($objId) );       
+        $rs = $query->result();
+        foreach ($rs as $row) {
+           $docId = $row->ObjectRefKey;
+           if($docId != NULL){
+                ApplicationHook::logInfo($this->db->last_query()." rs: ".$docId);
+                return $row;
+           }
+        }
+        return NULL;
     }
 
 }

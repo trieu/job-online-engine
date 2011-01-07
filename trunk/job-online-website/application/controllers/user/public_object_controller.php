@@ -229,8 +229,20 @@ class public_object_controller extends Controller {
         $json_text = json_encode($objData);
 
         $bloggerService = $this->getBloggerService();
+
         $docId = $bloggerService->createPost($objId, $json_text, TRUE);
-        echo $docId;
+
+        $obj = new Object();
+        $obj->setObjectClassID($classID);
+        $obj->setObjectID($objId);
+        $obj->setObjectRefKey($docId);
+        
+        $id = $this->object_manager->save($obj);
+        if($id == $objId){
+            $this->output->set_output($docId);
+        } else {
+            $this->output->set_output("0");
+        }
     }
 
     protected function getBloggerService() {

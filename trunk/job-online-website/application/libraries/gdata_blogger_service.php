@@ -85,15 +85,20 @@ class gdata_blogger_service extends gdata_ci_loader {
         // We're using the magic factory method to create a Zend_Gdata_Entry.
         // http://framework.zend.com/manual/en/zend.gdata.html#zend.gdata.introdduction.magicfactory
         $entry = $this->gdClient->newEntry();
-        $labelText = 'object_values';
+        
 
         $entry->title = $this->gdClient->newTitle(trim($title));
         $entry->content = $this->gdClient->newContent(trim($content));
         $entry->content->setType('text');
         //$entry->category = $this->gdClient->newContent($labelText);
-        
-        $label = new Zend_Gdata_App_Extension_Category($labelText, 'http://www.blogger.com/atom/ns#');
-        $entry->setCategory(array(0 => $label));
+
+        $categoryList = array();
+        foreach ($categories as $catName) {
+            $catObj = new Zend_Gdata_App_Extension_Category($catName, 'http://www.blogger.com/atom/ns#');
+            array_push($categoryList, $catObj);
+        }
+        $entry->setCategory($categoryList);
+
         $uri = "http://www.blogger.com/feeds/" . $this->blogID . "/posts/default";
 
         if ($isDraft) {

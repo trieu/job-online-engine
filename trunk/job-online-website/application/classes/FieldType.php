@@ -3,15 +3,19 @@
 
 
 class FieldType {
+
+    //the value's stored as text
     public static $TEXT_BOX = 1;
     public static $TEXT_AREA = 2;
     public static $DATE_PICKER = 3;
+    public static $GOOGLE_DOCS = 8;
 
+    //the value's stored as ref key to FieldOptions table
     public static $SELECT_BOX = 4;
     public static $MULTI_SELECT_BOX = 5;
     public static $RADIO_BUTTON = 6;
     public static $CHECK_BOX = 7;
-    public static $GOOGLE_DOCS = 8;
+    
 
     private $FieldTypeID = -1;
     private $FieldTypeName = "";

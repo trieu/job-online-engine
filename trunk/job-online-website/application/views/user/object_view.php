@@ -277,35 +277,46 @@ legend {
 
     var backURL = "";
     jQuery(document).ready(function() {
-        jQuery("#object_instance_form").validationEngine();
-        makeEffectsForCheckboxAndRadio();
+        jQuery("#object_instance_form").validationEngine();        
     });
 
     function setDataWithMetaData() {
         var jsonObjValues = <?php echo $jsonObjValues ?>;
-        console.log(jsonObjValues);
-        
+               
         var f = function(){
             var FieldID = this.FieldID;
             var FieldValue = this.FieldValue;
 
             var fieldnode = $('#field_' + FieldID);
-            if(fieldnode.length == 1){
-                var type = fieldnode.attr('type');
-                var nodeName = fieldnode[0].nodeName;
-                if(type == "text" || nodeName == "TEXTAREA") {
-                    var html = ": <span>" + FieldValue + "<\/span>";
-                    fieldnode.hide().val(FieldValue);
-                    $("#wrapper_field_"+ FieldID).append(html);
-                } else if(nodeName == "SELECT"){
-                    var selectedOpNode = fieldnode.find("option[value='"+ FieldValue +"']");
-                    var html = ": <span>" + selectedOpNode.html() + "<\/span>";
-                    fieldnode.hide().val(FieldValue);
-                    $("#wrapper_field_"+ FieldID).append(html);
+            var wrapperFieldnode = $("#wrapper_field_"+ FieldID);
+
+            if(wrapperFieldnode.length == 1) {
+                if(fieldnode.length == 1) {
+                    var type = fieldnode.attr('type');
+                    var nodeName = fieldnode[0].nodeName;                    
+                    if(type == "text" || nodeName == "TEXTAREA") {
+                        var html = "<span>: <b>" + FieldValue + "<\/b><\/span>";
+                        fieldnode.val(FieldValue);
+                        wrapperFieldnode.append(html);
+                    } else if(nodeName == "SELECT"){
+                        var selectedOpNode = fieldnode.find("option[value='"+ FieldValue +"']");
+                        var html = "<span>: <b>" + selectedOpNode.html() + "<\/b><\/span>";
+                        fieldnode.val(FieldValue);
+                        wrapperFieldnode.append(html);
+                    }
+                } else {                    
+                    var checkedNode = wrapperFieldnode.find("input[value='"+ FieldValue +"']");
+                    var theId = checkedNode.attr("checked", true).attr('id');
+                    var labelNode = wrapperFieldnode.find("label[for='"+ theId +"']");
+                    var forId = labelNode.show().attr('for');
+                    labelNode.attr('for', forId + '_viewmode');
                 }
             }
         };
-        $(jsonObjValues).each(f);
+        $("#object_instance_form").find("input, textarea, select, label").hide();
+        $(jsonObjValues).each(f);        
+        $("#object_instance_form").find("label[for^='field_']").show();
+
     }
     $(setDataWithMetaData);
 

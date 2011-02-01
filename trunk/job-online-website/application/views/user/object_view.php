@@ -275,11 +275,6 @@ legend {
         });
      }
 
-    var backURL = "";
-    jQuery(document).ready(function() {
-        jQuery("#object_instance_form").validationEngine();        
-    });
-
     function setDataWithMetaData() {
         var jsonObjValues = <?php echo $jsonObjValues ?>;
                
@@ -318,6 +313,11 @@ legend {
         $("#object_instance_form").find("label[for^='field_']").show();
 
     }
-    $(setDataWithMetaData);
-
+    
+    var backURL = "";
+    jQuery(document).ready(function() {
+        jQuery("#object_instance_form").validationEngine();
+        //makeEffectsForCheckboxAndRadio();
+        setDataWithMetaData();
+    });
 </script>

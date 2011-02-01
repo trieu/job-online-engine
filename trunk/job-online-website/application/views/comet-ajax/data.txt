@@ -1,1 +1,1 @@
-cool, message from Mozila Browser
+albumId              bigint(20) unsigned not null auto_increment,

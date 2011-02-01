@@ -25,7 +25,7 @@ class c_message_handler extends Controller {
     }
 
     public function get_messages() {
-        $filename  = 'system/application/views/comet-ajax/data.txt';       
+        $filename  = 'F:\job-online-engine\job-online-website\application\views\comet-ajax\data.txt';       
         $currentmodif = filemtime($filename);
         
         // return a json array
@@ -37,7 +37,7 @@ class c_message_handler extends Controller {
     }
 
     public function process_data() {
-        $filename  = 'system/application/views/comet-ajax/data.txt';
+        $filename  = 'F:\job-online-engine\job-online-website\application\views\comet-ajax\data.txt';
 
         // store new message in the file
         $msg = isset($_POST['msg']) ? $_POST['msg'] : '';

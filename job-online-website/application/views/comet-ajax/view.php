@@ -3,7 +3,7 @@
     <head>
         <title>Comet demo</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <script type="text/javascript" src="<?php echo base_url()?>assets/js/prototype.js"></script>
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/prototype/1.7.0.0/prototype.js"></script>
     </head>
     <body>
 
@@ -21,7 +21,7 @@
             Comet.prototype = {
 
                 timestamp: 0,
-                url: '<?php echo site_url("c_message_handler/process_data")?>',
+                url: window.location.href + '/process_data',
                 noerror: true,
 
                 initialize: function() { },

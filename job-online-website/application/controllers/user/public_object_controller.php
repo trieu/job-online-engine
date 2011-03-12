@@ -177,26 +177,30 @@ class public_object_controller extends Controller {
      */
     public function list_objects($AccessDataURI = '/', $startIndex = 0, $total_rs = 0) {
         $this->load->model("object_manager");
+        //$this->load->model("search_manager");
         $this->load->model("objectclass_manager");
 
-        $objectClass = $this->objectclass_manager->find_by_uri($AccessDataURI);
+        try {
+            $objectClass = $this->objectclass_manager->find_by_uri($AccessDataURI);
+            if ($objectClass != NULL) {
+                $data = array();
+                $data["objectClass"] = $objectClass;
+                $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID(), $startIndex, $total_rs);
+                //$data["objects"] = $this->search_manager->search_objects($objectClass->getObjectClassID(), array(), FALSE, -1, -1, TRUE);
 
-        if ($objectClass != NULL) {
-            $data = array();
-            $data["objectClass"] = $objectClass;
-            $data["objects"] = $this->object_manager->getAllObjectsInClass($objectClass->getObjectClassID(), $startIndex, $total_rs);
-
-            $config = array();
-            $config['base_url'] = "";
-            $config['total_rows'] = 100;
-            $config['per_page'] = 1;
-            $config['current_page'] = 1;
-            $data["pagination_config"] = $config;
-        } else {
-            throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);
-        }
-
-        $this->load->view("user/all_objects_in_class_list_view", $data);
+                $config = array();
+                $config['base_url'] = "";
+                $config['total_rows'] = 100;
+                $config['per_page'] = 1;
+                $config['current_page'] = 1;
+                $data["pagination_config"] = $config;
+                $this->load->view("user/all_objects_in_class_list_view", $data);
+            } else {
+                throw new RuntimeException("ObjectClass not found for ID: $ObjectClassID", 500);
+            }
+        } catch (Exception $exc) {
+            $this->output->set_output("<h1>The AccessDataURI is not found</h1>");
+        }        
     }
 
     /**
@@ -280,14 +284,14 @@ class public_object_controller extends Controller {
             $classId = $row->ObjectClassID;
 
             $thePost = $bloggerService->getThePost($docId);
-           // $jsonObjValues = json_decode($thePost->content->text);
-          //  $justLog = $thePost->title->text . '<BR>' . print_r($jsonObjValues, TRUE);
-          //  $this->output->set_output($jsonObjValues);
+            // $jsonObjValues = json_decode($thePost->content->text);
+            //  $justLog = $thePost->title->text . '<BR>' . print_r($jsonObjValues, TRUE);
+            //  $this->output->set_output($jsonObjValues);
             $data["jsonObjValues"] = $thePost->content->text;
 
             $this->load->model("objectclass_manager");
             $this->load->model("process_manager");
-            
+
             $object_class = $this->objectclass_manager->find_by_id($classId);
             $data["object_class"] = $object_class;
             $data["objectHTMLCaches"] = array();

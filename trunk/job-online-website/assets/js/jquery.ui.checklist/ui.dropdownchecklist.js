@@ -648,7 +648,7 @@
                         instance.dropWrapper.css({
                             position: 'absolute'
                             ,
-                            top: instance.controlWrapper.position().top + instance.controlWrapper.outerHeight() + "px"
+                            top: instance.controlWrapper.position().top + instance.controlWrapper.outerHeight()-4 + "px"
                             ,
                             left: instance.controlWrapper.position().left + "px"
                         });

@@ -86,13 +86,10 @@ if ( ! function_exists('renderTextArea') ) {
 if ( ! function_exists('renderSelectBox') ) {
     function renderSelectBox($field_name, $option_list = array(), $field_label = "", $isMultiple = false, $ValidationRules = "" ) {
         $html = "";
-
         if($field_label == "") {
             $field_label = $field_name;
         }
-
         $CI =& get_instance();
-
         $data = array(
             'field_name' => $field_name ,
             'option_list' => $option_list ,
@@ -100,12 +97,29 @@ if ( ! function_exists('renderSelectBox') ) {
             'isMultiple' => $isMultiple ,
             'rules'       => $ValidationRules
         );
-
         $html = $CI->load->view('form/field_type_templates/SelectBox.php', $data, true);
-
         return $html;
     }
 }
+
+if ( ! function_exists('renderDropDownCheckList') ) {
+    function renderDropDownCheckList($field_name, $option_list = array(), $field_label = "", $ValidationRules = "" ) {
+        $html = "";
+        if($field_label == "") {
+            $field_label = $field_name;
+        }
+        $CI =& get_instance();
+        $data = array(
+            'field_name' => $field_name ,
+            'option_list' => $option_list ,
+            'field_label' => $field_label ,            
+            'rules'       => $ValidationRules
+        );
+        $html = $CI->load->view('form/field_type_templates/DropDownCheckList.php', $data, true);
+        return $html;
+    }
+}
+
 
 if ( ! function_exists('renderCheckBoxs') ) {
     function renderCheckBoxs($field_name, $description, $option_list = array(), $ValidationRules = "") {

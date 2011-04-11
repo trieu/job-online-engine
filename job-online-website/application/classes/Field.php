@@ -130,7 +130,7 @@ class Field {
             return renderSelectBox($id, $this->getFieldOptionsAsArray(), $this->getFieldName(), FALSE,$rules);
         }
         else if($this->getFieldTypeID() == FieldType::$MULTI_SELECT_BOX) {
-            return renderSelectBox($id, $this->getFieldOptionsAsArray(), $this->getFieldName(), TRUE,$rules);
+            return renderDropDownCheckList($id, $this->getFieldOptionsAsArray(), $this->getFieldName(), $rules);
         }
         else if($this->getFieldTypeID() == FieldType::$CHECK_BOX) {
             return renderCheckBoxs($id, $this->getFieldName(),$this->getFieldOptionsAsArray(),$rules);

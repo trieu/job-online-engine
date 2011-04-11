@@ -172,30 +172,44 @@ legend {
                      var addedCheckBoxIds = {};
 
                      var hashmap = jQuery(this).serializeArray();
+                     var addedFields = {};
                      for(var i=0; i< hashmap.length; i++){
                          var toks3 = hashmap[i].name.split("FVID_");
-                         var record = {};
-                         record["FieldID"] =  new Number( toks3[0].replace("field_",""));
-                         record["FieldValueID"] =  new Number(toks3[1]);
-                         record["FieldValue"] = hashmap[i].value;
-                         record["SelectedFieldValue"] = false;
+                         if(toks3.length == 2){
+                             var fieldId = toks3[0].replace("field_","");
+                             if( ! addedFields[fieldId] ){
+                                 addedFields[fieldId] = i;
+                                 var record = {};
+                                 record["FieldID"] = new Number(fieldId);
+                                 record["FieldValueID"] =  new Number(toks3[1]);
+                                 record["FieldValue"] = hashmap[i].value;
+                                 record["SelectedFieldValue"] = false;
 
-                         var node = "input[type='checkbox'][name='" + hashmap[i].name + "']";
-                         if( jQuery(node).length > 0 ){
-                             record["SelectedFieldValue"] = jQuery(node).attr("checked");
-                             addedCheckBoxIds[jQuery(node).attr("id")] = true;
+                                 var node = "input[type='checkbox'][name='" + hashmap[i].name + "']";
+                                 if( jQuery(node).length > 0 ){
+                                     record["SelectedFieldValue"] = jQuery(node).attr("checked");
+                                     addedCheckBoxIds[jQuery(node).attr("id")] = true;
+                                 }
+                                 data["FieldValues"].push(record);
+                             } else {
+                                 var re = data["FieldValues"][addedFields[fieldId]];
+                                 re["FieldValue"] = re["FieldValue"] + ';' + hashmap[i].value;
+                                // console.log(re);
+
+                             }
                          }
-                         data["FieldValues"].push(record);
                      }
                      for(var id in checkboxHashmap){
                          if(id != null && addedCheckBoxIds[id] != true) {
                              var toks = jQuery("#" + id).attr("name").split("FVID_");
-                             var record = {};
-                             record["FieldID"] =  new Number( toks[0].replace("field_",""));
-                             record["FieldValueID"] =  new Number(toks[1]);
-                             record["FieldValue"] = jQuery("#" + id).val();
-                             record["SelectedFieldValue"] = jQuery("#" + id).attr("checked");
-                             data["FieldValues"].push(record);
+                             if(toks.length == 2){
+                                 var record = {};
+                                 record["FieldID"] =  new Number( toks[0].replace("field_",""));
+                                 record["FieldValueID"] =  new Number(toks[1]);
+                                 record["FieldValue"] = jQuery("#" + id).val();
+                                 record["SelectedFieldValue"] = jQuery("#" + id).attr("checked");
+                                 data["FieldValues"].push(record);
+                             }
                          }
                      }
                      data["FieldValues"] = jQuery.toJSON( data["FieldValues"] );
@@ -208,6 +222,10 @@ legend {
                      };
                      jQuery("#object_instance_div .ajax_loader").show();
                      jQuery("#object_instance_div form").hide();
+
+                     
+                     //console.log(data);
+                     //return false;
                      jQuery.post( jQuery(this).attr("action"), data, callback );
                      return false;
                  });

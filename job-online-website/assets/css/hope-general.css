@@ -1,7 +1,5 @@
 .topBanner {
-    /* margin: 10px 2% 10px 2%; */
-    margin: 0;
-    padding: 0;
+    margin: 0;    padding: 0;
 }
 .topBanner img {
     border: none;
@@ -85,10 +83,4 @@ table caption {
 }
 div.date {
     display: inline;
-}
-
-/* Forms */
-
-form * {
-    font-size: 100%;
 }

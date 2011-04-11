@@ -7,7 +7,7 @@
         <meta http-equiv="expires" content="<?php echo(ApplicationHook::getExpireTime(1))?>" />
 
         <?php foreach($page_decorator->getPageMetaTags() as $name => $content) { ?>
-        <meta name="<?php echo $name;?>" content="<?php echo $content;?>" />
+    <meta name="<?php echo $name;?>" content="<?php echo $content;?>" />
         <?php } ?>
 
         <title><?php echo $page_decorator->getPageTitle(); ?></title>
@@ -20,7 +20,7 @@
         <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url() ?>assets/css/main_decorator.css"/>
 
         <?php foreach($page_decorator->getCssFiles() as $id => $file) { ?>
-        <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url()."assets/".$file; ?>"/>
+    <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url()."assets/".$file; ?>"/>
         <?php } ?>
 
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery/jquery.min.js"></script>
@@ -36,8 +36,11 @@
         <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.bt/jquery.bt.min.js"></script>
         
         <?php foreach($page_decorator->getScriptFiles() as $id => $file) { ?>
-        <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
+    <script type="text/javascript" src="<?php echo base_url()."assets/".$file; ?>"></script>
         <?php } ?>
+
+        <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url() ?>assets/js/jquery.ui.checklist/ui.dropdownchecklist.css" />
+        <script type="text/javascript" src="<?php echo base_url()?>assets/js/jquery.ui.checklist/ui.dropdownchecklist.js" ></script>
     </head>
     <body style="display: none;">
         <div id="page_container">

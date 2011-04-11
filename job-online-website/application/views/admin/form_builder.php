@@ -3,6 +3,9 @@ addScriptFile("js/jquery.fancybox/jquery.fancybox.min.js");
 addCssFile("js/jquery.fancybox/jquery.fancybox.css");
 addScriptFile("js/jquery.tablednd/jquery.tablednd.js");
 addScriptFile("js/jquery/jquery.json.js");
+
+addCssFile("js/jquery.ui.checklist/ui.dropdownchecklist.css");
+addScriptFile("js/jquery.ui.checklist/ui.dropdownchecklist.js");
 ?>
 <style type="text/css" media="screen">
     .resizable {       
@@ -67,13 +70,13 @@ foreach ($related_objects["processes"] as $proID => $proName) {
                     </div>
                     <div style="margin-top: 10px;">
                         <label for="form_builder_script"><b>JavaScript Content</b></label>
-                        <textarea id="form_builder_script" cols="80" rows="20">
-                            <?php
-                                if(isset ($cache)){
-                                    echo ($cache->getJavascriptContent());
-                                }
-                            ?>
-                        </textarea>
+                        <?php
+                            echo '<textarea id="form_builder_script" cols="80" rows="20">';
+                            if(isset ($cache)){
+                                echo ($cache->getJavascriptContent());
+                            }
+                            echo '</textarea>';
+                        ?>              
                     </div>
                 </div>
             </td>
@@ -180,17 +183,18 @@ foreach ($related_objects["processes"] as $proID => $proName) {
                     html = "<div class='resizable'>" + html + "</div>";
                     var sc = findScriptInHTML(html);
                     if(sc != ""){
-                        jQuery("#form_builder_script").val(sc);
+                        var scBuilder = jQuery("#form_builder_script");
+                        sc += scBuilder.val();
+                        scBuilder.val(sc);
                         jQuery("#form_builder_container").append(html).append( makeScriptTag(sc) );
-                    }
-                    else {
+                    } else {
                         jQuery("#form_builder_container").append(html);
                     }
                     
                     field_form_num = field_form_num + 1;
                     if(field_form_num == must_build) {
                         initCustomeFormUIMode();
-                    }
+                    }                    
                 };
                 jQuery.get( uri + id ,{}, callback );
             };

@@ -179,7 +179,7 @@ $legend_text = "";
                 var node_address = "#object_instance_form *[name='field_" + object_field[id].FieldID +"']";
 
                 //hacking for checkbox
-                if( jQuery(node_address).attr("type") == "checkbox" ){
+                if( jQuery(node_address).attr("type") === "checkbox" ){
                     node_address += "[value='" + object_field[id].FieldValue + "']";
                     if(jQuery(node_address).length >0 ){
                         if(object_field[id].SelectedFieldValue == 1){
@@ -189,6 +189,8 @@ $legend_text = "";
                         var n = jQuery(node_address).attr("name") + "FVID_" + object_field[id].FieldValueID;
                         jQuery(node_address).attr("name",n);
                     }
+                } else if(jQuery(node_address).attr("dropdownchecklist") === "true") {
+                    
                 }
                 else {
                     jQuery(node_address).setValue( object_field[id].FieldValue );

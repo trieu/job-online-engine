@@ -36,7 +36,7 @@ $legend_text = "";
         padding: 17px;
     }
     #object_instance_div div {
-        margin-top: 5px;
+        margin-top: 3px;
     }
     #object_instance_div label {
         margin-right:5px;

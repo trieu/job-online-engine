@@ -9,7 +9,8 @@
     <!--SCRIPT
     jQuery(document).ready(function(){
         var f = function(){
-            jQuery("#<?php echo $field_name ?>").dropdownchecklist({icon: {}, width: 260, maxDropHeight: 220 });
+            var opts = {icon: {}, width: 260, maxDropHeight: 210};
+            jQuery("#<?php echo $field_name ?>").dropdownchecklist(opts);
         };
         setTimeout(f, 500);
     });

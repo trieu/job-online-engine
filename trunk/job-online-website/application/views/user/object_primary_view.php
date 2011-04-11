@@ -190,9 +190,13 @@ $legend_text = "";
                         jQuery(node_address).attr("name",n);
                     }
                 } else if(jQuery(node_address).attr("dropdownchecklist") === "true") {
-                    
-                }
-                else {
+                    var toks = object_field[id].FieldValue.split(';');
+                    var dropdown = jQuery(node_address);
+                    dropdown.find('option').removeAttr('selected');
+                    for(var i in toks){
+                        dropdown.find('option[value="'+ toks[i] +'"]').attr('selected', 'selected');
+                    }                    
+                } else {
                     jQuery(node_address).setValue( object_field[id].FieldValue );
                     var n = jQuery(node_address).attr("name") + "FVID_" + object_field[id].FieldValueID;
                     jQuery(node_address).attr("name",n);

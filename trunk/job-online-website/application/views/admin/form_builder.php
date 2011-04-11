@@ -98,6 +98,7 @@ foreach ($related_objects["processes"] as $proID => $proName) {
     function cleanFormGUIBeforeSubmit(){
         jQuery("#form_builder_container").find("input[type='text']").val("");
         jQuery(".hasDatepicker").removeClass("hasDatepicker");
+        jQuery("span.ui-dropdownchecklist").remove();
     }
 
     var is_html_cache_changed = false;
@@ -167,38 +168,38 @@ foreach ($related_objects["processes"] as $proID => $proName) {
     var field_form_num = 0;
     function autoBuildForm(){
         var uri = "<?php echo site_url("admin/field_controller/renderFieldUI") ?>/";
-        field_form_num = jQuery("#form_builder_container > div").length;
+        var form_builder_container = jQuery("#form_builder_container");
+        var form_builder_script = jQuery("#form_builder_script");
+        field_form_num = form_builder_container.find("> div").length;
         var must_build = jQuery("#list_field_form div[id*='<?php echo Field::$HTML_DOM_ID_PREFIX ?>']").length;
 
-        if(field_form_num == must_build) {
-            //enough, do not poke server            
-            var sc = jQuery("#form_builder_script").val();
-            jQuery("#form_builder_container").append( makeScriptTag(sc) );
+        if(field_form_num === must_build) {
+            //enough, do not poke server
             initCustomeFormUIMode();
-        }
-        else {
-            var f = function(){
-                var id = jQuery(this).attr("id").replace("<?php echo Field::$HTML_DOM_ID_PREFIX ?>","");
+            form_builder_container.append( makeScriptTag(form_builder_script.val()) );
+        }  else {
+            var f = function() {
+                var id = jQuery(this).attr("id").replace("<?php echo Field::$HTML_DOM_ID_PREFIX ?>","");                
                 var callback = function(html){
-                    html = "<div class='resizable'>" + html + "</div>";
                     var sc = findScriptInHTML(html);
-                    if(sc != ""){
-                        var scBuilder = jQuery("#form_builder_script");
-                        sc += scBuilder.val();
-                        scBuilder.val(sc);
-                        jQuery("#form_builder_container").append(html).append( makeScriptTag(sc) );
-                    } else {
-                        jQuery("#form_builder_container").append(html);
-                    }
-                    
+                    html = "<div class='resizable'>" + html.replace(sc, '') + "</div>";
+                    form_builder_container.append(html);
+
                     field_form_num = field_form_num + 1;
-                    if(field_form_num == must_build) {
+                    if(field_form_num === must_build) {
                         initCustomeFormUIMode();
-                    }                    
+                    }
+
+                    if(sc != "") {
+                        var newSc = sc + form_builder_script.val();
+                        form_builder_script.val(newSc);                        
+                        eval(sc, window);
+                    }                                    
                 };
                 jQuery.get( uri + id ,{}, callback );
             };
             jQuery("#list_field_form div[id*='<?php echo Field::$HTML_DOM_ID_PREFIX ?>']").each(f);
+            
         }
     }
 

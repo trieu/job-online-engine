@@ -61,8 +61,7 @@ addScriptFile("js/jquery/jquery.json.js");
 </div>
 
 <div id="generic_dialog" title="Dialog Title" style="display:none" ></div>
-<textarea id="save_form_dialog" name="" rows="4" cols="20" style="display:none" >
-</textarea>
+<textarea id="save_form_dialog" name="" rows="4" cols="20" style="display:none" ></textarea>
 
 <script type="text/javascript">
     var dialog = false;

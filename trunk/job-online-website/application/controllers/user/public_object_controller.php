@@ -50,6 +50,14 @@ class public_object_controller extends Controller {
         }
     }
 
+        /**
+     * @Decorated
+     * @Secured(role = "user")
+     */
+    public function view($objID) {
+        $this->edit($objID);
+    }
+
     /**
      * @Decorated
      * @Secured(role = "user")

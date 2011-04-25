@@ -38,7 +38,7 @@ class ApplicationHook {
             $this->CI = & get_instance();
             $this->beginRequest();
             if (ApplicationHook::$LOGIN_URL == "") {
-                ApplicationHook::$LOGIN_URL = base_url() . $this->CI->config->item('index_page') . '?c=welcome&m=login&url_redirect=';
+                ApplicationHook::$LOGIN_URL = site_url('user_account/login/').'?url_redirect=';
             }
         } catch (Exception $e) {
             echo "Page error:<br>";

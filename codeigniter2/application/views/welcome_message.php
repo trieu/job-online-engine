@@ -5,7 +5,6 @@
         <title>Welcome to CodeIgniter</title>
 
         <style type="text/css">
-
             body {
                 background-color: #fff;
                 margin: 40px;
@@ -13,13 +12,11 @@
                 font-size: 14px;
                 color: #4F5155;
             }
-
             a {
                 color: #003399;
                 background-color: transparent;
                 font-weight: normal;
             }
-
             h1 {
                 color: #444;
                 background-color: transparent;
@@ -29,7 +26,6 @@
                 margin: 24px 0 2px 0;
                 padding: 5px 0 6px 0;
             }
-
             code {
                 font-family: Monaco, Verdana, Sans-serif;
                 font-size: 12px;
@@ -40,13 +36,13 @@
                 margin: 14px 0 14px 0;
                 padding: 12px 10px 12px 10px;
             }
-
         </style>
-        <script src="http://static.banbe.net/plugins/js/fosp-all.js" type="text/javascript"></script>
+        
+
     </head>
     <body>
 
-        <h1>Welcome to CodeIgniter!</h1>
+        <h1>Welcome to CodeIgniter, test social plugin!</h1>
 
         <p>The page you are looking at is being generated dynamically by CodeIgniter.</p>
 
@@ -61,9 +57,73 @@
 
         <p><br />Page rendered in {elapsed_time} seconds</p>
 
-        <fo:sp-share-button href="http://vnexpress.net" display="block" ></fo:sp-share-button>    
-        <fo:sp-like href="http://vnexpress.net" title="VnExpress - tin tuc online" display="block" like_text="Like"></fo:sp-like>		
+        <script src="http://trieunt.st.ione.com:81/plugins/js/fosp-all.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            FOSP._config.baseUrl = "http://trieunt.ione.com";
+        </script>
 
+    <fo:sp-share-button href="http://vnexpress.net" display="block" ></fo:sp-share-button>    
+    <fo:sp-like href="http://vnexpress.net" title="VnExpress - tin tuc online" display="block" like_text="Like"></fo:sp-like>		
+
+
+    <div id="fb-root"></div>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script src="http://connect.facebook.net/en_US/all.js"></script>
+    <script>
+        FB.init({
+            appId  : '369633221982',
+            status : true, // check login status
+            cookie : true, // enable cookies to allow the server to access the session
+            xfbml  : true  // parse XFBML
+        });
+        FB.getLoginStatus(function(response) {            
+            if (response.session) {
+                // logged in and connected user, someone you know                
+                fb_login_status();                
+                var query = FB.Data.query('select name, uid, email from user where uid={0}', response.session.uid);
+                query.wait(function(rows) {                   
+                    $('#fb_user_name').html(rows[0].name + '; Email: ' + rows[0].email);
+                });
+            } else {
+                // no user session available, someone you dont know
+                fb_logout_status();
+            }
+            $('#fb_status').show();
+        });
+        FB.Event.subscribe('auth.sessionChange', function(response) {
+            if (response.session) {
+                // logged in and connected user, someone you know                
+                fb_login_status();                
+            } else {
+                // no user session available, someone you dont know
+                fb_logout_status();
+            }
+        });
+        
+        function fb_login_status(){
+            $('#fb_status_logout').show();
+            $('#fb_status_login').hide();
+        }
+        function fb_logout_status(){
+            $('#fb_status_login').show();
+            $('#fb_status_logout').hide();
+        }
+        function doFbLogout(){
+            FB.logout(function(response) { 
+                fb_logout_status(); 
+            });
+        }
+    </script>
+
+    <div id="fb_status" style="display: none;">
+        <div id="fb_status_login">
+            <fb:login-button show-faces="true" width="200" max-rows="1" perms="email"  ></fb:login-button>
+        </div>
+        <div id="fb_status_logout">
+            <div id="fb_user_name"></div>
+            <input type="button" value="FB Logout" onclick="doFbLogout()" />
+        </div>
+    </div>
 
 </body>
 </html>

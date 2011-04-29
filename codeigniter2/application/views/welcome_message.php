@@ -57,19 +57,12 @@
 
         <p><br />Page rendered in {elapsed_time} seconds</p>
 
-        <script src="http://trieunt.st.ione.com:81/plugins/js/fosp-all.js" type="text/javascript"></script>
-        <script type="text/javascript">
-            FOSP._config.baseUrl = "http://trieunt.ione.com";
-        </script>
-
-    <fo:sp-share-button href="http://vnexpress.net" display="block" ></fo:sp-share-button>    
-    <fo:sp-like href="http://vnexpress.net" title="VnExpress - tin tuc online" display="block" like_text="Like"></fo:sp-like>		
-
 
     <div id="fb-root"></div>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
     <script src="http://connect.facebook.net/en_US/all.js"></script>
     <script>
+
         FB.init({
             appId  : '369633221982',
             status : true, // check login status
@@ -78,41 +71,45 @@
         });
         FB.getLoginStatus(function(response) {            
             if (response.session) {
-                // logged in and connected user, someone you know                
-                fb_login_status();                
-                var query = FB.Data.query('select name, uid, email from user where uid={0}', response.session.uid);
-                query.wait(function(rows) {                   
-                    $('#fb_user_name').html(rows[0].name + '; Email: ' + rows[0].email);
-                });
+                // logged in and connected user, someone you know 
+                fb_login_status(response.session.uid); 				
             } else {
                 // no user session available, someone you dont know
                 fb_logout_status();
             }
-            $('#fb_status').show();
+			jQuery(document).ready(function(){
+				jQuery('#fb_status').show();
+			});		            
         });
         FB.Event.subscribe('auth.sessionChange', function(response) {
             if (response.session) {
                 // logged in and connected user, someone you know                
-                fb_login_status();                
+                fb_login_status(response.session.uid);                
             } else {
                 // no user session available, someone you dont know
                 fb_logout_status();
-            }
+            }				
         });
         
-        function fb_login_status(){
-            $('#fb_status_logout').show();
-            $('#fb_status_login').hide();
+        function fb_login_status(currentFbUserId){
+            jQuery('#fb_status_logout').show();
+            jQuery('#fb_status_login').hide();
+			var query = FB.Data.query('select name, uid, email from user where uid={0}', currentFbUserId);
+			query.wait(function(rows) {                   
+				jQuery('#fb_user_name').html(rows[0].name + '; Email: ' + rows[0].email);
+			});
         }
         function fb_logout_status(){
-            $('#fb_status_login').show();
-            $('#fb_status_logout').hide();
+            jQuery('#fb_status_login').show();
+            jQuery('#fb_status_logout').hide();
+			jQuery('#fb_user_name').html('');
         }
         function doFbLogout(){
             FB.logout(function(response) { 
                 fb_logout_status(); 
             });
         }
+		
     </script>
 
     <div id="fb_status" style="display: none;">

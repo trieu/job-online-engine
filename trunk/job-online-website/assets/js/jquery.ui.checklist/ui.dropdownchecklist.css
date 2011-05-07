@@ -4,6 +4,7 @@
 .ui-dropdownchecklist {
     font-size: medium;
     color: black;
+    cursor: pointer !important;
 }
 .ui-dropdownchecklist-selector {
     height: 20px;

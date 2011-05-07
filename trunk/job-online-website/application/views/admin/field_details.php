@@ -23,20 +23,30 @@ require_once "macros.php";
 addScriptFile("js/commons.js");
 addScriptFile("js/jquery/jquery.json.js");
 
-$obj = new Field();
-if(isset($obj_details)) {
-    $obj = $obj_details;
-}
+$obj = Field::init($obj_details);
 
 $attributes = array('id' => 'field_info', 'class' => 'input_info');
 echo form_fieldset('Field Information', $attributes);
 echo form_open(site_url($action_uri), 'id="field_details_form"');
 
 echo renderInputField("FieldID","FieldID",$obj->getFieldID());
+
+if(count($obj->getFormIDs()) > 0)
+{
+    foreach ($obj->getFormIDs() as $record)
+    {
+        echo renderInputField("FormID","FormID",$record->FormID,"In Form");
+    }
+}
+else
+{
+    echo '<input type="hidden" name="FormID" value="<?php echo $FormID ?>" />';
+}
+
 echo renderSelectField("FieldTypeID", "FieldTypeID", $field_types, "Field Type");
 ?>
 
-<input type="hidden" name="FormID" value="<?php echo $FormID ?>" />
+
 
 <div>
     <input type="hidden" id="field_option_data" name="field_option_data" value="" />
@@ -59,6 +69,7 @@ echo renderSelectField("FieldTypeID", "FieldTypeID", $field_types, "Field Type")
 <?php
 echo renderInputField("FieldName","FieldName",$obj->getFieldName());
 echo renderInputField("ValidationRules","ValidationRules",$obj->getValidationRules());
+
 echo form_submit('mysubmit', 'Submit');
 echo form_button("cancel", "Cancel", 'onclick="parent.jQuery.fancybox.close();"');
 echo form_button("CloneField", "Clone Field", 'onclick="cloneThisField();"');
@@ -265,7 +276,7 @@ echo form_fieldset_close();
             jQuery("#FieldID").parent().hide();            
         }
         jQuery("#ObjectID").parent().hide();
-        jQuery("#field_details_form").submit(function(){
+        jQuery("#field_details_form").submit(function(){           
             jQuery("#field_option_data_ul span[id*='field_option_']").each(
                 function(){
                     var OptionName = jQuery(this).html();

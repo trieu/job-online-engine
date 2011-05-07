@@ -53,7 +53,7 @@ class field_controller extends admin_panel {
     public function save() {
         $fieldID = $this->input->post("FieldID");
         $formID = $this->input->post("FormID");
-
+        
         $this->load->model("field_manager");
 
         $field = new Field();

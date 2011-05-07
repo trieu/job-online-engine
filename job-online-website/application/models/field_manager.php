@@ -21,12 +21,14 @@ class field_manager extends data_manager {
     public function find_by_id($id) {
         $filter = array("FieldID" => $id);
         $list = $this->find_by_filter($filter);
-        if (sizeof($list) == 1) {
+        if (sizeof($list) === 1) {
             $obj = $list[0];
             if (FieldType::isSelectableType($obj->getFieldTypeID())) {
                 $field_options = $this->db->get_where("fieldoptions", $filter)->result_array();
                 $obj->setFieldOptions($field_options);
             }
+            $FormIDs = $this->db->get_where("field_form", $filter)->result();
+            $obj->setFormIDs($FormIDs);
             return $obj;
         }
         return NULL;
@@ -39,6 +41,9 @@ class field_manager extends data_manager {
         if ($object->getFieldID() > 0) {
             $this->update($data_array);
             $id = $object->getFieldID();
+            if($id > 0){
+                $this->db->delete("field_form", array("FieldID" => $id));
+            }
         } else {
             $id = $this->insert($data_array);
         }
@@ -81,6 +86,12 @@ class field_manager extends data_manager {
         return -1;
     }
 
+    /**
+     *
+     * @param array() $filter
+     * @param array() $join_filter
+     * @return Field
+     */
     public function find_by_filter($filter = array(), $join_filter = array()) {
         return $this->select_db_helper($filter, $this->table_name, "Field", $join_filter);
     }

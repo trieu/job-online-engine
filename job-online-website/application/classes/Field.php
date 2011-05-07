@@ -1,40 +1,34 @@
 <?php
+
 require_once 'FieldType.php';
 
 class Field {
 
     public static $HTML_DOM_ID_PREFIX = "field_";
-
     /**
      * @EntityField( is_primary_key=TRUE )
      */
     private $FieldID;
-
     /**
      * @EntityField
      */
     private $FieldTypeID;
-
     /**
      * @EntityField
      */
     private $FieldName;
-
     /**
      * @EntityField
      */
     private $ValidationRules = "searchable";
-
     /**
      * @EntityField(is_db_field=FALSE)
      */
     private $FieldOptions = array();
-
     /**
      * @EntityField(is_db_field=FALSE)
      */
     private $FormIDs = array();
-
     /**
      * @EntityField(is_db_field=FALSE)
      */
@@ -43,6 +37,17 @@ class Field {
 
     public function __construct() {
         ;
+    }
+
+    /**
+     *
+     * @param Field $obj
+     * @return Field 
+     */
+    public static function init(Field $obj) {
+        if (isset($obj)) {
+            return $obj;
+        }
     }
 
     public function getFieldID() {
@@ -76,6 +81,7 @@ class Field {
     public function setValidationRules($ValidationRules) {
         $this->ValidationRules = $ValidationRules;
     }
+
     public function getFieldOptions() {
         return $this->FieldOptions;
     }
@@ -83,7 +89,7 @@ class Field {
     public function getFieldOptionsAsArray() {
         $arr = array();
         foreach ($this->getFieldOptions() as $record) {
-            $arr[ $record['FieldOptionID'] ] = $record['OptionName'];
+            $arr[$record['FieldOptionID']] = $record['OptionName'];
         }
         return $arr;
     }
@@ -101,8 +107,8 @@ class Field {
         $this->FormIDs = $FormIDs;
     }
 
-    public function addToForm($FormID) {       
-        array_push($this->FormIDs, (int)$FormID );
+    public function addToForm($FormID) {
+        array_push($this->FormIDs, (int) $FormID);
     }
 
     public function getOrderInForm() {
@@ -110,7 +116,7 @@ class Field {
     }
 
     public function setOrderInForm($OrderInForm) {
-        if($OrderInForm >= 0){
+        if ($OrderInForm >= 0) {
             $this->OrderInForm = $OrderInForm;
         }
     }
@@ -118,33 +124,28 @@ class Field {
     public function buildFieldUI() {
         $CI = &get_instance();
         $CI->load->helper("field_type");
-        $id =  Field::$HTML_DOM_ID_PREFIX . $this->getFieldID() ;
+        $id = Field::$HTML_DOM_ID_PREFIX . $this->getFieldID();
         $rules = $this->getValidationRules();
-        if($this->getFieldTypeID() == FieldType::$TEXT_BOX) {
-            return renderInputField($id,$id,"",$this->getFieldName(),$rules);
-        }
-        else if($this->getFieldTypeID() == FieldType::$TEXT_AREA) {
-            return renderTextArea($id, "", $this->getFieldName(),$rules);
-        }
-        else if($this->getFieldTypeID() == FieldType::$SELECT_BOX) {
-            return renderSelectBox($id, $this->getFieldOptionsAsArray(), $this->getFieldName(), FALSE,$rules);
-        }
-        else if($this->getFieldTypeID() == FieldType::$MULTI_SELECT_BOX) {
+        if ($this->getFieldTypeID() == FieldType::$TEXT_BOX) {
+            return renderInputField($id, $id, "", $this->getFieldName(), $rules);
+        } else if ($this->getFieldTypeID() == FieldType::$TEXT_AREA) {
+            return renderTextArea($id, "", $this->getFieldName(), $rules);
+        } else if ($this->getFieldTypeID() == FieldType::$SELECT_BOX) {
+            return renderSelectBox($id, $this->getFieldOptionsAsArray(), $this->getFieldName(), FALSE, $rules);
+        } else if ($this->getFieldTypeID() == FieldType::$MULTI_SELECT_BOX) {
             return renderDropDownCheckList($id, $this->getFieldOptionsAsArray(), $this->getFieldName(), $rules);
-        }
-        else if($this->getFieldTypeID() == FieldType::$CHECK_BOX) {
-            return renderCheckBoxs($id, $this->getFieldName(),$this->getFieldOptionsAsArray(),$rules);
-        }
-        else if($this->getFieldTypeID() == FieldType::$RADIO_BUTTON) {
-            return renderRadioButtons($id, $this->getFieldName(),$this->getFieldOptionsAsArray(),$rules);
-        }
-        else if($this->getFieldTypeID() == FieldType::$DATE_PICKER) {
-            return renderDatepicker($id, $this->getFieldName(),$rules);
-        }
-        else if($this->getFieldTypeID() == FieldType::$GOOGLE_DOCS) {
-            return renderGoogleDocs($id, $this->getFieldName(),$rules);
+        } else if ($this->getFieldTypeID() == FieldType::$CHECK_BOX) {
+            return renderCheckBoxs($id, $this->getFieldName(), $this->getFieldOptionsAsArray(), $rules);
+        } else if ($this->getFieldTypeID() == FieldType::$RADIO_BUTTON) {
+            return renderRadioButtons($id, $this->getFieldName(), $this->getFieldOptionsAsArray(), $rules);
+        } else if ($this->getFieldTypeID() == FieldType::$DATE_PICKER) {
+            return renderDatepicker($id, $this->getFieldName(), $rules);
+        } else if ($this->getFieldTypeID() == FieldType::$GOOGLE_DOCS) {
+            return renderGoogleDocs($id, $this->getFieldName(), $rules);
         }
         return "<div>Undefined field</div>";
     }
+
 }
+
 ?>

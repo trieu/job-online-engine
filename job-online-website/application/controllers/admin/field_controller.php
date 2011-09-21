@@ -33,8 +33,11 @@ class field_controller extends admin_panel {
         $data["FormID"] = $formID;
         if ($fieldID > 0) {
             $data["obj_details"] = $this->field_manager->find_by_id($fieldID);
-            $data["related_objects"] = array();
+        } else {
+            $data["obj_details"] = new Field();
+            
         }
+        $data["related_objects"] = array();
         $this->load->view("admin/field_details", $data);
     }
 

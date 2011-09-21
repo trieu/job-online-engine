@@ -32,6 +32,14 @@ class Welcome extends CI_Controller {
         
     }
 
+    /**
+     * @Decorated
+     * @Secured(role = "Administrator")
+     */
+    public function test_cross_domain() {
+
+    }
+
 }
 
 /* End of file welcome.php */

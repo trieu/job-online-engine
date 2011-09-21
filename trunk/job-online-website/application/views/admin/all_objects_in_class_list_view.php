@@ -52,7 +52,31 @@
                 });
             };
             jQuery(".object_holder").each(f);            
-        });        
+        });
+
+        var stopJob = false;
+        function moveAllToCloudDB(){
+            var jobCount = 0;
+            var actions = $("a[action*='moveObjectValuesToCloudDB']");
+            var jobTotal = actions.length;
+            
+            $("#jobTotal").html(jobTotal);
+            var f = function(){
+                var action = $(this).attr("action");
+                var f2 = function(){                    
+                    
+                        $.post(action, {}, function(data){
+                            if(data.indexOf("documentId")>0){
+                                $("#jobCount").html(++jobCount);                                
+                            }
+                            return false;
+                        });
+                    
+                };
+                setTimeout(f2, 800);
+            };
+            actions.each(f);
+        };
     </script>
     <?php } ?>
 
@@ -63,6 +87,12 @@
         Display <?php echo $total_records = count($objects) ?> records <br/>
        <?php echo anchor('user/public_object_controller/create_object/'.$objectClass->getObjectClassID(), "Đăng ký ". $objectClass->getObjectClassName() ." mới"); ?>
     </b>
+    <input type="button" value="Move all to cloud DB" onclick="moveAllToCloudDB()" />
+</div>
+<div style="margin-bottom: 20px;font-weight: bold" >
+    <span id="jobCount">0</span>
+    /
+    <span id="jobTotal">0</span>
 </div>
 
 

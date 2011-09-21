@@ -251,11 +251,12 @@ jQuery(document).ready(function() {
     var f = function(){
         var href = jQuery(this).attr("href");
         var text = jQuery(this).html() + " ?";
-        jQuery(this).attr("href","javascript:void(0)");
+        jQuery(this).attr("href","javascript:").attr("action",href);
         jQuery(this).click(function(){
             if(confirm(text)){
-                window.location.href = href;
+                window.location.href = href;                
             }
+            return false;
         });
     };
     jQuery("a.confirmation").each(f);

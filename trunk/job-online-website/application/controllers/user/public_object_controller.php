@@ -24,8 +24,8 @@ class public_object_controller extends Controller {
         $this->load->library('AES');
 
         $email = $this->config->item('google_email');
-        $password = $this->config->item('aes256_encrypted_password');
-        $password = AesCtr::decrypt($password, $email, 256);
+        $password = $this->config->item('aes256_encrypted_password');        
+        $password = AesCtr::decrypt($password, $email, 256);        
         $loginParams = array('email' => $email, 'password' => $password);
         $bloggerService = gdata_blogger_service::getInstance($loginParams);
         $bloggerService->blogID = $this->config->item('db_id');
@@ -239,7 +239,7 @@ class public_object_controller extends Controller {
     }
 
     /**
-     * @Decorated
+     * @AjaxAction
      * @Secured(role = "user")
      *
      * @param Long $ObjectClassID

@@ -38,7 +38,7 @@
             }
         </style>
         
-
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
     </head>
     <body>
 
@@ -58,8 +58,7 @@
         <p><br />Page rendered in {elapsed_time} seconds</p>
 
 
-    <div id="fb-root"></div>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <div id="fb-root"></div>    
     <script src="http://connect.facebook.net/en_US/all.js"></script>
     <script>
 

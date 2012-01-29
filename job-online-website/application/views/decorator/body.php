@@ -33,21 +33,24 @@
 
     <div style="margin-top: 50px">
         <i>
-            Hiện tai trang web database việc làm DRD được hỗ trợ tốt trên phiên bản mới nhất của trình duyện web
-            Mozila Firefox.
+            Hiện tai trang web database DRD được hỗ trợ tốt trên phiên bản mới nhất của trình duyện web
+            Mozila Firefox hoặc Google Chrome.
             Bạn có thể download ở đây:
         </i>
         <br>
-        <a target="_blank" href="http://www.mozilla.com/vi/" title="Download Latest Firefox Browser to your computer">
-            <b>
-                Download Firefox Browser
-            </b>
+        <a target="_blank" href="http://www.mozilla.com/vi/" title="Download Firefox Browser">
+            <b>Download Firefox Browser</b>
+        </a><br>
+        <a target="_blank" href="https://www.google.com/chrome/index.html?hl=vi" title="Download Google Chrome">
+            <b>Download Google Chrome Browser</b>
         </a>
     </div>
 </div>
 <script type="text/javascript">
     function isRunInFacebookSandbox(){
-        return <?php if(isset($_GET['fb_sig_in_iframe'])) echo 'true'; else echo 'false'; ?>;
+        return <?php if (isset($_GET['fb_sig_in_iframe']))
+    echo 'true'; else
+    echo 'false'; ?>;
     };
     jQuery(document).ready(function(){
         if(isRunInFacebookSandbox()) {
@@ -55,6 +58,3 @@
         }
     });
 </script>
-
-<script type="text/javascript" src="assets/js/fis-plugins/all.js"></script>
-<span class="fis-like"></span>

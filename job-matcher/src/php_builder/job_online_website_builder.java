@@ -180,8 +180,8 @@ public class job_online_website_builder {
         excludedFileList.add("config.php");
         excludedFileList.add("database.php");
 
-        String src = "/home/trieu/Projects/job-online-engine/job-online-website";
-        String des = "/home/trieu/Projects/job-online-engine/build";
+        String src = "F:\\job-online-engine\\job-online-website";
+        String des = "F:\\job-online-engine\\my-builds";
         try {
             log_content = new  StringBuilder();
             log_content.append("Build PHP from ").append(src).append(" to ").append(des).append("\n\n");

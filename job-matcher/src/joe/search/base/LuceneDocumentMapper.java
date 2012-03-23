@@ -4,11 +4,10 @@ import java.util.Map;
 import java.util.Set;
 
 import joe.search.model.ExternalItem;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-
-
 import joe.search.model.Item;
+
+import org.apache.lucene.document.Document;
+
 
 public class LuceneDocumentMapper extends IndexEngine{
 

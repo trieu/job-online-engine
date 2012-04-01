@@ -17,7 +17,14 @@ class SearchItem extends CI_Controller {
         $this->load->library('zend', 'Zend/Search/Lucene');
         $this->load->library('zend');
         $this->zend->load('Zend/Search/Lucene');
-        Zend_Search_Lucene::setDefaultSearchField('content');                
+        Zend_Search_Lucene::setDefaultSearchField('content');
+    }
+
+    public function did_you_mean() {
+        $var_1 = 'Eaihad';
+        $var_2 = 'Etihad';
+
+        echo levenshtein($var_1, $var_2) ;
     }
 
     public function query() {
@@ -26,11 +33,13 @@ class SearchItem extends CI_Controller {
             $query = new Zend_Search_Lucene_Search_Query_Boolean();
 
             $fieldName = 'content';
-            $fieldValue = 'etiha';
+            $fieldValue = 'vô lê của Van Basten';
 
 
             $subquery = Zend_Search_Lucene_Search_QueryParser::parse('+(' . $fieldValue . ')');
-           
+         
+          //  $subquery = self::makeFuzzyQuery($fieldValue, $fieldName);
+
             $query->addSubquery($subquery, true);
 
             $hits = $indexer->find($query);
@@ -43,7 +52,7 @@ class SearchItem extends CI_Controller {
                 $out .= 'content: ' . $hit->getDocument()->content . '<br />';
                 $out .= 'Score: ' . sprintf('%.2f', $hit->score) . '<br />';
             }
-            echo $query->htmlFragmentHighlightMatches($out, 'utf-8');
+            echo $out;
         } catch (Exception $e) {
             echo $e->getTraceAsString();
         }
@@ -52,7 +61,7 @@ class SearchItem extends CI_Controller {
     }
 
     public function indexdata() {
-        
+
         try {
 
             $indexer = $this->zend->get_Zend_Search_Lucene();
@@ -62,31 +71,31 @@ class SearchItem extends CI_Controller {
             $doc->addField(Zend_Search_Lucene_Field::Keyword('id', time()));
             $doc->addField(Zend_Search_Lucene_Field::text("content", $content, 'utf-8'));
             $indexer->addDocument($doc);
-            
+
             $content = 'Torres ghi bàn, Chelsea thắng ngọt ngào ';
             $doc = new Zend_Search_Lucene_Document();
             $doc->addField(Zend_Search_Lucene_Field::Keyword('id', time()));
             $doc->addField(Zend_Search_Lucene_Field::text("content", $content, 'utf-8'));
             $indexer->addDocument($doc);
-            
+
             $content = 'Ferguson: \'Tôi sẽ bảo Roy Keane xử lý Vieira\'';
             $doc = new Zend_Search_Lucene_Document();
             $doc->addField(Zend_Search_Lucene_Field::Keyword('id', time()));
             $doc->addField(Zend_Search_Lucene_Field::text("content", $content, 'utf-8'));
             $indexer->addDocument($doc);
-            
+
             $content = 'Benzema tái hiện cú vô lê kinh điển của Van Basten';
             $doc = new Zend_Search_Lucene_Document();
             $doc->addField(Zend_Search_Lucene_Field::Keyword('id', time()));
             $doc->addField(Zend_Search_Lucene_Field::text("content", $content, 'utf-8'));
             $indexer->addDocument($doc);
-            
+
             $content = 'Man City đứt mạch thắng tại Etihad';
             $doc = new Zend_Search_Lucene_Document();
             $doc->addField(Zend_Search_Lucene_Field::Keyword('id', time()));
             $doc->addField(Zend_Search_Lucene_Field::text("content", $content, 'utf-8'));
-            $indexer->addDocument($doc);          
-            
+            $indexer->addDocument($doc);
+
 
             $indexer->commit();
             $indexer->optimize();

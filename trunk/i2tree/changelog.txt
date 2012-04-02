@@ -1,0 +1,4 @@
+i2tree Alpha 1:
++ Zend Lucene Search
++ Decorator
++ Auth with role

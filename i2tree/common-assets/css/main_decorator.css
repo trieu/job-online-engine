@@ -1,0 +1,218 @@
+/* Main Page Layout and common classes */
+#page_container {
+    width: 98%; margin: 10px auto; background-color: #fff; color: #333;
+    line-height: 130%;
+}
+#page_top {    
+    background-color: white; border-bottom: 1px solid gray;
+    width: 100%; position: relative; float:left;
+}
+#page_top .page_logo {
+    float:left; position:relative; font-size: 20px; font-weight: bold;
+    height: 34px; width: 100%; padding-left: 10px; text-transform: uppercase;    
+}
+#page_top .page_logo a{
+    text-decoration: none;
+}
+#page_top .page_menu {
+    float:left; width: 100%; position: relative;
+}
+#page_body { clear: both; width: 100%; position: relative; }
+#page_leftnav {
+    float: left; width: 202px;  margin: 0; padding: 0.5em;
+}
+#page_content {
+    margin-left: 230px;   border-left: 1px solid gray;  padding: 1em;  min-height: 300px;
+}
+#page_footer {
+    clear: both; margin: 0; padding: .5em; color: #333; background-color: #ddd;
+    border-top: 1px solid gray;
+}
+#page_leftnav p { margin: 0 0 1em 0; }
+#page_content h2 { margin: 0 0 .5em 0; }
+.response_time {  font-weight:normal;   font-size:small; }
+.focusable_text{ color: #000000;  }
+.focusable_text:hover {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    background:#FFFF99 none repeat scroll 0 0;
+    text-decoration:none; width:auto;
+}
+.client_template {  display: none; }
+.ajax_loader {
+    background: transparent url(../images/ajax-loader.gif) no-repeat scroll center;
+    display: block; position:relative; width: 100%; padding-top: 100px;
+}
+.display_none { display:none; }
+.not_visible { visibility:hidden; }
+
+.processing_time { font-size: 11px; font-family: serif; padding:5px 15px 12px 0px; text-align: right;float: right;}
+.processing_time span {margin-left: 10px; text-indent: 3px;}
+.processing_time a {font-size: 13px; font-weight: bold; color: blue;text-decoration: none;}
+.processing_time a:hover {color: red;text-decoration: underline;}
+
+/* Floating-menu for form navigation */
+div.floating-menu {position:fixed;background:#fff4c8;border:1px solid #ffcc00;width:205px;z-index:1;}
+div.floating-menu h4 {margin: 3px 5px;}
+div.floating-menu ol {margin: 2px;}
+div.floating-menu a {display:block; margin: 0 8px; margin-right:1px;}
+div.floating-menu a:hover,div.floating-menu a.focuced  {border: 1px solid #f00;   background: #ff6; }
+#left_action_list { display: none; }
+
+input[type='text'], input[type='radio'], input[type='checkbox'] , textarea, select {
+    border: 1px solid #006; background: #fff;
+}
+input[type='text']:hover, input[type='radio']:hover, input[type='checkbox']:hover, textarea:hover, select:hover {
+    border: 1px solid #f00; background: #ffc;
+}
+input[type='button'], input[type='submit'] {
+    border: 1px solid #006; background: #ccf;
+    cursor:pointer; display:inline-block; font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+}
+input[type='button']:hover, input[type='submit']:hover {
+    border: 1px solid #f00; background: #eef; color: #f00;
+}
+
+/* main buttons for form actions */
+.button {
+    border: 1px solid #006; background: #ccf;
+    cursor:pointer; display:inline-block;
+    font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+    font-size:19px; font-weight:bold;
+    margin:0; outline:medium none;
+    padding:2px 8px; white-space:nowrap;
+}
+.button:hover {
+    border: 1px solid #f00; background: #eef; color: #f00;
+}
+center .button { margin: 10px 2px 20px 2px;}
+
+.editable_text {
+    border: 1px solid #FFF;
+    cursor:pointer; display:block;
+    font-family:'Lucida Grande',Tahoma,Verdana,Arial,sans-serif;
+    margin:0; outline:medium none;
+    padding:2px 8px;
+}
+.editable_text input,textarea{
+    background-color: #FFF!important;
+}
+.editable_text input:hover,textarea:hover{
+    background-color: #FFF!important;
+}
+.editable_text:hover {
+    border: 1px solid #f00; background: #eef; color: #f00;
+}
+
+/* Highlight invalid form fields. */
+.invalid {
+    background: red; color: white;
+}
+img[src='http://get-banner.lookup.co.cc/banner_img/cocc90_40b.gif'] {
+    display: none;
+}
+
+/* Left menu bar. */
+.group_action {width: 200px; border: 1px solid #ccc;  padding: 0px; margin: 0px;}
+.group_action h3 {
+    height: 30px;
+    font-weight: normal;
+    background-color: #555;
+    color: #fff;
+    padding: 3px 0px 0px 3px;
+    margin: 0px;
+}
+.group_action h3 a{
+    color:white!important;
+}
+.group_action ul, .group_action ul li {
+    padding: 3px;
+    margin: 0px;
+    list-style: none;
+}
+.group_action ul li {
+    height: 30px;
+    vertical-align: middle;
+}
+.group_action ul li a {
+    display: block; border-bottom: 1px dashed #eee; text-decoration: none;
+    font-weight: bold; white-space: nowrap;
+}
+
+.group_action {
+    width: 201px;
+    border: 1px solid #ccc;
+    padding: 0px;
+    margin: 0px;
+}
+.group_action h3 {
+    height: 30px;
+    font-weight: normal;
+    background-color: #555;
+    color: #fff;
+    padding: 3px 0px 0px 3px;
+    margin: 0px;
+
+}
+.group_action h3 a{
+    color:white!important;
+}
+.group_action ul, .group_action ul li {
+    padding: 3px;
+    margin: 0px;
+    list-style: none;
+}
+.group_action ul li {
+    height: 30px;
+    vertical-align: middle;
+}
+.group_action ul li a {
+    display: block;
+    border-bottom: 1px dashed #eee;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* General tags */
+body { 
+    background-color: white; 
+    color: black;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+a img { border: none; }
+pre {
+    white-space: pre;
+    font-family: monospace;
+}
+/* HR is only used to clear floats */
+hr {      
+    margin: 5px 0;
+}
+span.email {
+    font-style: italic;
+}
+ol li {
+    clear: both;
+    margin: 5px 0 0 5px;
+}
+input[type="textfield"], textarea {
+    width: 100%;
+}
+.info div {
+    display: inline;
+    padding: 3px;
+}
+fieldset {
+    border: none;
+}
+.item img {
+    border: none;
+    margin: 0 7px 3px 0;
+}
+table caption {
+    font-weight: bold;
+    margin: auto;
+}

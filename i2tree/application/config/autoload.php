@@ -52,7 +52,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-$autoload['libraries'] = array();
+$autoload['libraries'] = array('database', 'session', 'redux_auth', 'form_validation','email','page_decorator');
 
 
 /*
@@ -64,7 +64,7 @@ $autoload['libraries'] = array();
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array();
+$autoload['helper'] = array('url', 'form', 'html','language','page_decorator');
 
 
 /*
@@ -80,7 +80,7 @@ $autoload['helper'] = array();
 |
 */
 
-$autoload['config'] = array('zend_ci_config');
+$autoload['config'] = array('redux_auth', 'decorator','zend_ci_config');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array();
+$autoload['model'] = array('redux_auth_model');
 
 
 /* End of file autoload.php */

@@ -4,6 +4,7 @@ require_once 'annotations/annotations.php';
 require_once 'annotations/Secured.php';
 require_once 'annotations/AjaxAction.php';
 require_once 'annotations/Decorated.php';
+require_once 'annotations/Api.php';
 require_once 'annotations/DecoratedForMobile.php';
 require_once 'annotations/EntityField.php';
 
@@ -204,7 +205,7 @@ class ApplicationHook {
                         return;
                     }
                     $themeName = $this->getThemeNameFromActionController($reflection);
-                 
+
                     $this->setPageHeaderCached();
                     $data = $this->processFinalViewData();
 
@@ -220,7 +221,7 @@ class ApplicationHook {
                     $this->setPageHeaderCached();
                     $data = array(
                         'page_decorator' => $this->CI->page_decorator,
-                        'page_content' => trim($this->CI->output->get_output())
+                        'page_content' => ($this->CI->output->get_output())
                     );
                     echo $this->CI->load->view("decorator/ajax_page_template", $data, TRUE);
                     return;
@@ -228,9 +229,36 @@ class ApplicationHook {
                     $this->setPageHeaderCached();
                     $data = array(
                         'page_decorator' => $this->CI->page_decorator,
-                        'page_content' => trim($this->CI->output->get_output())
+                        'page_content' => ($this->CI->output->get_output())
                     );
                     echo $this->CI->load->view("decorator/default_mobile_theme/page_template", $data, TRUE);
+                    return;
+                } else if ($reflection->hasAnnotation('Api')) {
+                    header('Content-Type: application/json');
+
+                    //TODO
+
+                    $annotation = $reflection->getAnnotation('Api');
+                    if ($annotation->secured) {
+                        //validate OAuth 2.0 token
+                        $headers = getallheaders();
+                        if (!isset($headers['Authorization'])) {
+                            $http_code = 200;
+                            $output = json_encode(array("error" => TRUE, "message" => "No authorized access to this API"));
+                            
+                            header('HTTP/1.1: ' . $http_code);
+                            header('Status: ' . $http_code);
+                            header('Content-Length: ' . strlen($output));
+                            echo $output;
+                            return;
+                        }
+                    }
+                    $http_code = 200;
+                    $output = $this->CI->output->get_output();                    
+                    header('HTTP/1.1: ' . $http_code);
+                    header('Status: ' . $http_code);
+                    header('Content-Length: ' . strlen($output));
+                    echo $output;
                     return;
                 }
             }
@@ -305,7 +333,7 @@ class ApplicationHook {
             , 'login_name' => $login_name
         );
         $themeName = $this->getThemeNameFromActionController();
-        return trim($this->CI->load->view("decorator/themes/" . $themeName . "header", $data, TRUE));
+        return ($this->CI->load->view("decorator/themes/" . $themeName . "header", $data, TRUE));
     }
 
     protected function decorateLeftNavigation() {
@@ -319,10 +347,10 @@ class ApplicationHook {
                 'is_login' => TRUE
                 , 'first_name' => $first_name
             );
-            $loginBoxView = trim($this->CI->load->view("decorator/themes/" . $themeName . "left_navigation", $data, TRUE));
+            $loginBoxView = ($this->CI->load->view("decorator/themes/" . $themeName . "left_navigation", $data, TRUE));
 
             if ($this->is_in_admin_domain && $this->isGroupAdmin()) {
-                return $loginBoxView . "<hr>" . trim($this->CI->load->view("admin/" . $themeName . "left_menu_bar", NULL, TRUE));
+                return $loginBoxView . "<hr>" . ($this->CI->load->view("admin/" . $themeName . "left_menu_bar", NULL, TRUE));
             } else {
                 return $loginBoxView;
             }
@@ -331,17 +359,17 @@ class ApplicationHook {
             $data = array(
                 'is_login' => FALSE
             );
-            return trim($this->CI->load->view("decorator/themes/" . $themeName . "left_navigation", $data, TRUE));
+            return ($this->CI->load->view("decorator/themes/" . $themeName . "left_navigation", $data, TRUE));
         }
     }
 
     protected function decoratePageContent() {
-        return trim($this->CI->output->get_output());
+        return ($this->CI->output->get_output());
     }
 
     protected function decorateFooter() {
         $themeName = $this->getThemeNameFromActionController();
-        return trim($this->CI->load->view("decorator/themes/" . $themeName . "footer", '', TRUE));
+        return ($this->CI->load->view("decorator/themes/" . $themeName . "footer", '', TRUE));
     }
 
     protected function beginRequest() {

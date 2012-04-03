@@ -59,7 +59,7 @@ class ApplicationHook {
      *
      * @return boolean
      */
-    protected function isValidControllerRequest() {
+    protected function shouldApplyDecorator() {
         if (ApplicationHook::$CONTROLLERS_FOLDER_PATH === "") {
             ApplicationHook::$CONTROLLERS_FOLDER_PATH = $this->CI->config->item('controllers_directory');
         }
@@ -72,7 +72,13 @@ class ApplicationHook {
         $tokens = explode("/" . $index_page . "/", current_url());
         if (sizeof($tokens) >= 2) {
             $routeTokens = explode("/", $tokens[1]);
-            $routeTokensSize = sizeof($routeTokens);
+            
+            if( isset($routeTokens[0]) && strtolower($routeTokens[0]) === 'oauth' ){
+                //skip oauth case ?
+                return FALSE;
+            }
+            
+            $routeTokensSize = sizeof($routeTokens);            
             if ($routeTokensSize >= 2) {
                 $c = 0;
                 while (is_dir(ApplicationHook::$CONTROLLERS_FOLDER_PATH . $routeTokens[$c])) {
@@ -160,7 +166,7 @@ class ApplicationHook {
      */
     public function checkRole() {
         $this->setSiteLanguage();
-        if ($this->isValidControllerRequest()) {
+        if ($this->shouldApplyDecorator()) {
             $reflection = $this->getReflectedController();
             $this->is_logged_in = $this->CI->redux_auth->logged_in();
             if ($reflection != NULL) {
@@ -195,7 +201,7 @@ class ApplicationHook {
      *
      */
     public function decoratePage() {
-        if ($this->isValidControllerRequest()) {
+        if ($this->shouldApplyDecorator()) {
             $reflection = $this->getReflectedController();
             $this->is_logged_in = $this->CI->redux_auth->logged_in();
             if ($reflection != NULL) {

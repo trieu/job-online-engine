@@ -16,15 +16,35 @@ class sample_api extends CI_Controller {
         $this->output->set_output($output);
     }
 
+    private $sample_users = array(
+        3 => array('id' => 3, 'name' => 'Scotty', 'email' => 'example3@example.com', 'fact' => 'Is a Scott!', array('hobbies' => array('fartings', 'bikes'))),
+        4 => array('id' => 4, 'name' => 'Nguyễn Tấn Triều', 'email' => 'tantrieuf31@gmail.com', 'fact' => 'a software engineer')
+    );
+    
+    
+    //1: http://localhost/i2tree/index.php/oauth/index?client_id=hello-i2tree&redirect_uri=http://localhost/i2tree/index.php/unit-tests/&response_type=code&client_secret=e10adc3949ba59abbe56e057f20f883e&scope=user.details
+    
+    
+
+    /**
+     * @Api
+     */
+    public function classified_persons() {
+        $this->load->library('oauth_resource_server');
+        if (!$this->oauth_resource_server->has_scope(array('user.details'))) {
+            // Error logic here - "access token does not have correct permission to user this API method"
+            $this->output->set_output(json_encode(array('error_message' => 'access token does not have correct permission to user this API method')));
+            return;
+        }
+        $output = json_encode($this->sample_users);
+        $this->output->set_output($output);
+    }
+
     /**
      * @Api
      */
     public function persons() {
-        $users = array(
-            3 => array('id' => 3, 'name' => 'Scotty', 'email' => 'example3@example.com', 'fact' => 'Is a Scott!', array('hobbies' => array('fartings', 'bikes'))),
-            4 => array('id' => 4, 'name' => 'Nguyễn Tấn Triều', 'email' => 'tantrieuf31@gmail.com', 'fact' => 'a software engineer')
-        );
-        $output = json_encode($users);
+        $output = json_encode($this->sample_users);
         $this->output->set_output($output);
     }
 

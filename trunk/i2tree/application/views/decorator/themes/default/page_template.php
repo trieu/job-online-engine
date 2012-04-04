@@ -13,11 +13,11 @@
         <title><?php echo $page_decorator->getPageTitle(); ?></title>
         <base href="<?php echo base_url()?>" />
                 
-        <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url() ?>common-assets/css/main_decorator.css"/>
-        <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url() ?>common-assets/css/smoothness/jquery.ui.custom.css"/>
+        <link rel="stylesheet" href="<?php echo base_url() ?>common-assets/css/main_decorator.css"/>
+        <link rel="stylesheet" href="<?php echo base_url() ?>common-assets/css/smoothness/jquery.ui.custom.css"/>
         
         <?php foreach($page_decorator->getCssFiles() as $id => $file) { ?>
-        <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url()."common-assets/".$file; ?>"/>
+        <link rel="stylesheet" href="<?php echo base_url()."common-assets/".$file; ?>"/>
         <?php } ?>
 
         <script type="text/javascript" src="<?php echo base_url()?>common-assets/js/jquery/jquery.min.js"></script>
@@ -28,7 +28,7 @@
             var $PAGE_LANGUAGE_KEY = "<?php echo str_replace(EXT,"", LANGUAGE_INDEX_PAGE) ; ?>";
         </script>
 
-        <link type="text/css" media="screen" rel="stylesheet" href="<?php echo base_url() ?>common-assets/js/jquery.superfish/superfish.css"/>
+        <link rel="stylesheet" href="<?php echo base_url() ?>common-assets/js/jquery.superfish/superfish.css"/>
         <script type="text/javascript" src="<?php echo base_url()?>common-assets/js/jquery.superfish/superfish.js"></script>
         <script type="text/javascript" src="<?php echo base_url()?>common-assets/js/jquery.bt/jquery.bt.min.js"></script>
         

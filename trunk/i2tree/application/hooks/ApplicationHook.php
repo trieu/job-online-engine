@@ -72,13 +72,13 @@ class ApplicationHook {
         $tokens = explode("/" . $index_page . "/", current_url());
         if (sizeof($tokens) >= 2) {
             $routeTokens = explode("/", $tokens[1]);
-            
-            if( isset($routeTokens[0]) && strtolower($routeTokens[0]) === 'oauth' ){
+
+            if (isset($routeTokens[0]) && strtolower($routeTokens[0]) === 'oauth') {
                 //skip oauth case ?
                 return FALSE;
             }
-            
-            $routeTokensSize = sizeof($routeTokens);            
+
+            $routeTokensSize = sizeof($routeTokens);
             if ($routeTokensSize >= 2) {
                 $c = 0;
                 while (is_dir(ApplicationHook::$CONTROLLERS_FOLDER_PATH . $routeTokens[$c])) {
@@ -117,7 +117,7 @@ class ApplicationHook {
     }
 
     protected function shouldGoToAdminPanel($controllerClassName) {
-        if ($controllerClassName == "admin") {
+        if ($controllerClassName === "admin") {
             redirect("admin/admin_panel");
         }
     }
@@ -151,15 +151,6 @@ class ApplicationHook {
         return $this->reflectedController;
     }
 
-    public function setupTestDatabase() {
-        ApplicationHook::logInfo("Loading test_database");
-        if ($this->isTester()) {
-            $this->CI->load->database('test_database');
-            $this->CI->db->reconnect();
-            ApplicationHook::logInfo("Loaded test_database");
-        }
-    }
-
     /**
      * Check role of user, if no authentication, redirect to Login Page
      *
@@ -177,7 +168,6 @@ class ApplicationHook {
                     redirect(ApplicationHook::$LOGIN_URL . $this->controllerRequest);
                 }
             }
-            $this->setupTestDatabase();
         }
     }
 
@@ -237,7 +227,7 @@ class ApplicationHook {
                         'page_decorator' => $this->CI->page_decorator,
                         'page_content' => ($this->CI->output->get_output())
                     );
-                    echo $this->CI->load->view("decorator/default_mobile_theme/page_template", $data, TRUE);
+                    echo $this->CI->load->view("decorator/themes/mobile/page_template", $data, TRUE);
                     return;
                 } else if ($reflection->hasAnnotation('Api')) {
                     header('Content-Type: application/json');
@@ -251,7 +241,7 @@ class ApplicationHook {
                         if (!isset($headers['Authorization'])) {
                             $http_code = 200;
                             $output = json_encode(array("error" => TRUE, "message" => "No authorized access to this API"));
-                            
+
                             header('HTTP/1.1: ' . $http_code);
                             header('Status: ' . $http_code);
                             header('Content-Length: ' . strlen($output));
@@ -260,7 +250,7 @@ class ApplicationHook {
                         }
                     }
                     $http_code = 200;
-                    $output = $this->CI->output->get_output();                    
+                    $output = $this->CI->output->get_output();
                     header('HTTP/1.1: ' . $http_code);
                     header('Status: ' . $http_code);
                     header('Content-Length: ' . strlen($output));

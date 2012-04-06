@@ -1,4 +1,5 @@
 <?php
+ini_set('max_execution_time', 600); //600 seconds = 10 minutes
 date_default_timezone_set('UTC');
 define('LANGUAGE_INDEX_PAGE', 'english.php');
 

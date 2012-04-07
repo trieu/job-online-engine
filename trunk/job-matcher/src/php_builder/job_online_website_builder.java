@@ -172,16 +172,21 @@ public class job_online_website_builder {
 
         excludedDirList.add(".svn");
         excludedDirList.add("nbproject");
+        excludedDirList.add("db-sql");
+        excludedDirList.add("lucene_dir");
+        excludedDirList.add("system");        
        // excludedDirList.add("system");
       //  excludedDirList.add("ci_db_cache");
       //  excludedDirList.add("ci_db_cache");
 
         excludedFileList.add("Thumbs.db");
-        excludedFileList.add("config.php");
-        excludedFileList.add("database.php");
+        excludedFileList.add("changelog.txt");
+        excludedFileList.add("license.txt");
+        //excludedFileList.add("config.php");
+       // excludedFileList.add("database.php");
 
-        String src = "F:\\job-online-engine\\job-online-website";
-        String des = "F:\\job-online-engine\\my-builds";
+        String src = "D:/xampp/htdocs/job-online-engine/trunk/i2tree";
+        String des = "D:/researchs/builds/i2tree";
         try {
             log_content = new  StringBuilder();
             log_content.append("Build PHP from ").append(src).append(" to ").append(des).append("\n\n");

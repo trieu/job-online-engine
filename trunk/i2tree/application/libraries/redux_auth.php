@@ -162,7 +162,9 @@ class redux_auth {
                     'email'      => $email,
                     'activation' => $activation_code);
 
-            $message = $this->ci->load->view($email_folder.'activation', $data, true);
+            //TODO
+           // $message = $this->ci->load->view($email_folder.'activation', $data, true);
+            $message = 'Your activation code: '. $activation_code;
 
             $this->ci->email->clear();
             $this->ci->email->set_newline("\r\n");

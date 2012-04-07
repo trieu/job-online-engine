@@ -36,7 +36,7 @@
 
      <?php echo form_close(''); ?>
 
-     <div style="display: none;" >
+     <div  >
         <?php echo anchor('user_account/activate', 'Activate'); ?>
         <?php echo anchor('user_account/register', 'Register'); ?>
      </div>

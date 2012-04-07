@@ -47,7 +47,7 @@ $config['email_activation'] = true;
  * Folder where email templates are stored.
  * Default : redux_auth/
  **/
-$config['email_templates'] = 'redux_auth/';
+$config['email_templates'] = 'user_account/';
 
 /**
  * Salt Length

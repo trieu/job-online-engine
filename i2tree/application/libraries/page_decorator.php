@@ -34,14 +34,13 @@ class page_decorator {
         return $this->pageMetaTags;
     }
 
-    public function getPageTitle() {
-        $this->pageTitle = lang('home_page_heading') . " - " . $this->pageTitle;
-        return $this->pageTitle;
+    public function getPageTitle() {        
+        return lang('home_page_heading') . " - " . $this->pageTitle;;
     }
 
     public function setPageTitle($pageTitle) {
         $pageTitle = show_the_excerpt(trim($pageTitle), 12);
-        $this->pageTitle = ($pageTitle);
+        $this->pageTitle = $pageTitle;
     }
 
     public function getPageFooter() {

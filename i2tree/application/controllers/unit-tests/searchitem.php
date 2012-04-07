@@ -24,7 +24,7 @@ class SearchItem extends CI_Controller {
      * @Decorated
      */
     public function index() {
-        $this->output->set_output("'Zend/Search/Lucene'");
+        redirect('/unit-tests/searchitem/query');
     }
 
     public function did_you_mean() {
@@ -34,6 +34,9 @@ class SearchItem extends CI_Controller {
         echo levenshtein($var_1, $var_2);
     }
 
+    /**
+     * @Decorated
+     */
     public function query() {
         try {
             $indexer = $this->zend->get_Zend_Search_Lucene();
@@ -59,12 +62,12 @@ class SearchItem extends CI_Controller {
                 $out .= 'content: ' . $hit->getDocument()->content . '<br />';
                 $out .= 'Score: ' . sprintf('%.2f', $hit->score) . '<br />';
             }
-            echo $out;
+
+            $this->output->set_output($out);
+            return;
         } catch (Exception $e) {
             echo $e->getTraceAsString();
         }
-
-        echo "ok";
     }
 
     public function indexdata() {

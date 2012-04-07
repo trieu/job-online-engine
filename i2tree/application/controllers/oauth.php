@@ -21,6 +21,7 @@ class Oauth extends CI_Controller {
      */
     function __construct() {
         parent::__construct();
+
         $this->load->helper('url');
         $this->load->library('oauth_server');
 
@@ -273,10 +274,7 @@ class Oauth extends CI_Controller {
                     'client_name' => $client->name,
                     'scopes' => $scopes
                 );
-
-
                 $this->load->view('oauth/authorise', $vars);
-
 
                 break;
 

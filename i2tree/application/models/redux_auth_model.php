@@ -14,7 +14,7 @@ if (!defined('BASEPATH'))
 /**
  * redux_auth_model
  */
-class redux_auth_model extends CI_Model  {
+class redux_auth_model extends CI_Model {
 
     /**
      * Holds an array of tables used in
@@ -23,24 +23,28 @@ class redux_auth_model extends CI_Model  {
      * @var string
      * */
     public $tables = array();
+
     /**
      * activation code
      *
      * @var string
      * */
     public $activation_code;
+
     /**
      * forgotten password key
      *
      * @var string
      * */
     public $forgotten_password_code;
+
     /**
      * new password
      *
      * @var string
      * */
     public $new_password;
+
     /**
      * Identity
      *
@@ -103,9 +107,9 @@ class redux_auth_model extends CI_Model  {
         }
 
         $query = $this->db->select('password')
-                        ->where($identity_column, $identity)
-                        ->limit(1)
-                        ->get($users_table);
+                ->where($identity_column, $identity)
+                ->limit(1)
+                ->get($users_table);
 
         $result = $query->row();
 
@@ -154,9 +158,9 @@ class redux_auth_model extends CI_Model  {
         }
 
         $query = $this->db->select($identity_column)
-                        ->where('activation_code', $code)
-                        ->limit(1)
-                        ->get($users_table);
+                ->where('activation_code', $code)
+                ->limit(1)
+                ->get($users_table);
 
         $result = $query->row();
 
@@ -211,9 +215,9 @@ class redux_auth_model extends CI_Model  {
         }
 
         $query = $this->db->select('password')
-                        ->where($identity_column, $identity)
-                        ->limit(1)
-                        ->get($users_table);
+                ->where($identity_column, $identity)
+                ->limit(1)
+                ->get($users_table);
 
         $result = $query->row();
 
@@ -246,9 +250,9 @@ class redux_auth_model extends CI_Model  {
         }
 
         $query = $this->db->select('id')
-                        ->where('username', $username)
-                        ->limit(1)
-                        ->get($users_table);
+                ->where('username', $username)
+                ->limit(1)
+                ->get($users_table);
 
         if ($query->num_rows() == 1) {
             return true;
@@ -271,9 +275,9 @@ class redux_auth_model extends CI_Model  {
         }
 
         $query = $this->db->select('id')
-                        ->where('email', $email)
-                        ->limit(1)
-                        ->get($users_table);
+                ->where('email', $email)
+                ->limit(1)
+                ->get($users_table);
 
         if ($query->num_rows() == 1) {
             return true;
@@ -297,9 +301,9 @@ class redux_auth_model extends CI_Model  {
         }
 
         $query = $this->db->select('id')
-                        ->where($identity_column, $identity)
-                        ->limit(1)
-                        ->get($users_table);
+                ->where($identity_column, $identity)
+                ->limit(1)
+                ->get($users_table);
 
         if ($query->num_rows() == 1) {
             return true;
@@ -322,9 +326,9 @@ class redux_auth_model extends CI_Model  {
         }
 
         $query = $this->db->select('forgotten_password_code')
-                        ->where('email', $email)
-                        ->limit(1)
-                        ->get($users_table);
+                ->where('email', $email)
+                ->limit(1)
+                ->get($users_table);
 
         $result = $query->row();
 
@@ -360,9 +364,9 @@ class redux_auth_model extends CI_Model  {
         }
 
         $query = $this->db->select('id')
-                        ->where('forgotten_password_code', $code)
-                        ->limit(1)
-                        ->get($users_table);
+                ->where('forgotten_password_code', $code)
+                ->limit(1)
+                ->get($users_table);
 
         $result = $query->row();
 
@@ -522,7 +526,7 @@ class redux_auth_model extends CI_Model  {
 
         $this->db->where('user_id', $user_id);
         $this->db->update($meta_table, $data);
-        
+
         return ($this->db->affected_rows() > 0) ? true : false;
     }
 
@@ -541,9 +545,9 @@ class redux_auth_model extends CI_Model  {
         }
 
         $query = $this->db->select($identity_column . ', password, activation_code')
-                        ->where($identity_column, $identity)
-                        ->limit(1)
-                        ->get($users_table);
+                ->where($identity_column, $identity)
+                ->limit(1)
+                ->get($users_table);
 
         $result = $query->row();
 

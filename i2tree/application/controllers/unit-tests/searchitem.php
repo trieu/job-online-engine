@@ -20,11 +20,18 @@ class SearchItem extends CI_Controller {
         Zend_Search_Lucene::setDefaultSearchField('content');
     }
 
+    /**
+     * @Decorated
+     */
+    public function index() {
+        $this->output->set_output("'Zend/Search/Lucene'");
+    }
+
     public function did_you_mean() {
         $var_1 = 'Eaihad';
         $var_2 = 'Etihad';
 
-        echo levenshtein($var_1, $var_2) ;
+        echo levenshtein($var_1, $var_2);
     }
 
     public function query() {
@@ -37,8 +44,8 @@ class SearchItem extends CI_Controller {
 
 
             $subquery = Zend_Search_Lucene_Search_QueryParser::parse('+(' . $fieldValue . ')');
-         
-          //  $subquery = self::makeFuzzyQuery($fieldValue, $fieldName);
+
+            //  $subquery = self::makeFuzzyQuery($fieldValue, $fieldName);
 
             $query->addSubquery($subquery, true);
 

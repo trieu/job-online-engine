@@ -5,6 +5,10 @@ if (!defined('BASEPATH'))
 
 class Welcome extends CI_Controller {
 
+    function __construct() {
+        parent::__construct();
+    }
+
     /**
      * @Decorated
      */
@@ -18,14 +22,6 @@ class Welcome extends CI_Controller {
         $data = array();
         $this->load->view("welcome_message", $data);
     }
-
-    /**
-     * @Decorated
-     * @Secured(role = "Administrator")
-     */
-    public function test() {
-        $this->load->view('welcome_message');
-    }  
 
 }
 

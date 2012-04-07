@@ -175,13 +175,14 @@ img[src='http://get-banner.lookup.co.cc/banner_img/cocc90_40b.gif'] {
 }
 
 /* General tags */
-body { 
-    background-color: white; 
-    color: black;
-    font-family: Arial, sans-serif;
-    margin: 0;
+body {   
     padding: 0;
+    background-color: #fff;
+    margin: 10px;
+    font: 13px/20px normal Helvetica, Arial, sans-serif;
+    color: #4F5155;
 }
+
 a img { border: none; }
 pre {
     white-space: pre;

@@ -10,6 +10,17 @@ class MobileWeb extends CI_Controller {
     }
 
     /**
+     * @Decorated(themeName = "appstore")
+     */
+    public function appstore() {
+        //$this->load->view('welcome_message');
+        $this->page_decorator->setPageMetaTag("description", "i2tree framework");
+        $this->page_decorator->setPageTitle("Mobile App");
+
+        $this->output->set_output("I'm appstore");
+    }
+
+    /**
      * @DecoratedForMobile
      */
     public function index() {

@@ -11,6 +11,6 @@ require_once(dirname(__FILE__).'/annotations.php');
  * @Target("method")
  */
 class Decorated extends Annotation {
-    public $themeName = FALSE;
+    public $themeName = 'default';
 }
 ?>

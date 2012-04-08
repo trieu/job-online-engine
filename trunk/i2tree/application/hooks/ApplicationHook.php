@@ -127,11 +127,7 @@ class ApplicationHook {
             $reflection = $this->getReflectedController();
         }
         $themeName = $reflection->getAnnotation('Decorated')->themeName;
-        if ($themeName === FALSE) {
-            $themeName = "default/";
-        } else {
-            $themeName .= "/";
-        }
+        $themeName .= "/";
         return $themeName;
     }
 
@@ -204,14 +200,7 @@ class ApplicationHook {
 
                     $this->setPageHeaderCached();
                     $data = $this->processFinalViewData();
-
-                    if ($this->isGroupUser()) {
-                        echo ( $this->CI->load->view("decorator/themes/" . $themeName . "page_template", $data, TRUE) );
-                    } else if ($this->isGroupAdmin() && $this->is_in_admin_domain) {
-                        echo ( $this->CI->load->view("decorator/themes/" . $themeName . "admin_page_template", $data, TRUE) );
-                    } else {
-                        echo ( $this->CI->load->view("decorator/themes/" . $themeName . "page_template", $data, TRUE) );
-                    }
+                    echo ( $this->CI->load->view("decorator/themes/" . $themeName . "page_template", $data, TRUE) );
                     return;
                 } else if ($reflection->hasAnnotation('AjaxAction')) {
                     $this->setPageHeaderCached();
@@ -289,11 +278,11 @@ class ApplicationHook {
         $this->user_profile = $this->CI->redux_auth->profile();
         $page_content = $this->decoratePageContent();
         $data = array(
-            'page_decorator' => $this->CI->page_decorator,
             'page_header' => $this->decorateHeader(),
             'left_navigation' => $this->decorateLeftNavigation(),
-            'page_content' => $page_content,
-            'page_footer' => $this->decorateFooter()
+            'page_footer' => $this->decorateFooter(),
+            'page_decorator' => $this->CI->page_decorator,
+            'page_content' => $page_content
         );
         $data['controller'] = $this->controllerName . "/" . $this->controllerMethod;
         $data['page_respone_time'] = $this->endAndGetResponseTime();
@@ -312,60 +301,72 @@ class ApplicationHook {
     }
 
     protected function decorateHeader() {
-        $first_name = "Guest";
-        $login_name = $first_name;
-        if ($this->user_profile) {
-            $first_name = $this->user_profile->first_name;
+        try {
+            $first_name = "Guest";
             $login_name = $first_name;
-            $max_in_first_name = 15;
-            if (strlen($login_name) > $max_in_first_name) {
-                $login_name = substr($login_name, 0, $max_in_first_name);
+            if ($this->user_profile) {
+                $first_name = $this->user_profile->first_name;
+                $login_name = $first_name;
+                $max_in_first_name = 15;
+                if (strlen($login_name) > $max_in_first_name) {
+                    $login_name = substr($login_name, 0, $max_in_first_name);
+                }
             }
+            $data = array(
+                'is_login' => $this->is_logged_in
+                , 'isGroupAdmin' => $this->isGroupAdmin()
+                , 'first_name' => $first_name
+                , 'login_name' => $login_name
+            );
+            $themeName = $this->getThemeNameFromActionController();
+            return ($this->CI->load->view("decorator/themes/" . $themeName . "header", $data, TRUE));
+        } catch (Exception $exc) {
+            return '';
         }
-        $data = array(
-            'is_login' => $this->is_logged_in
-            , 'isGroupAdmin' => $this->isGroupAdmin()
-            , 'first_name' => $first_name
-            , 'login_name' => $login_name
-        );
-        $themeName = $this->getThemeNameFromActionController();
-        return ($this->CI->load->view("decorator/themes/" . $themeName . "header", $data, TRUE));
     }
 
     protected function decorateLeftNavigation() {
-        $themeName = $this->getThemeNameFromActionController();
-        if ($this->is_logged_in) {
-            $first_name = "Unknown";
-            if ($this->user_profile) {
-                $first_name = $this->user_profile->first_name;
-            }
-            $data = array(
-                'is_login' => TRUE
-                , 'first_name' => $first_name
-            );
-            $loginBoxView = ($this->CI->load->view("decorator/themes/" . $themeName . "left_navigation", $data, TRUE));
+        try {
+            $themeName = $this->getThemeNameFromActionController();
+            if ($this->is_logged_in) {
+                $first_name = "Unknown";
+                if ($this->user_profile) {
+                    $first_name = $this->user_profile->first_name;
+                }
+                $data = array(
+                    'is_login' => TRUE
+                    , 'first_name' => $first_name
+                );
+                $loginBoxView = ($this->CI->load->view("decorator/themes/" . $themeName . "left_navigation", $data, TRUE));
 
-            if ($this->is_in_admin_domain && $this->isGroupAdmin()) {
-                return $loginBoxView . "<hr>" . ($this->CI->load->view("admin/" . $themeName . "left_menu_bar", NULL, TRUE));
+                if ($this->is_in_admin_domain && $this->isGroupAdmin()) {
+                    return $loginBoxView . "<hr>" . ($this->CI->load->view("admin/" . $themeName . "left_menu_bar", NULL, TRUE));
+                } else {
+                    return $loginBoxView;
+                }
             } else {
-                return $loginBoxView;
+                //FIXME
+                $data = array(
+                    'is_login' => FALSE
+                );
+                return ($this->CI->load->view("decorator/themes/" . $themeName . "left_navigation", $data, TRUE));
             }
-        } else {
-            //FIXME
-            $data = array(
-                'is_login' => FALSE
-            );
-            return ($this->CI->load->view("decorator/themes/" . $themeName . "left_navigation", $data, TRUE));
+        } catch (Exception $exc) {
+            return '';
         }
     }
 
     protected function decoratePageContent() {
-        return ($this->CI->output->get_output());
+        return $this->CI->output->get_output();
     }
 
     protected function decorateFooter() {
-        $themeName = $this->getThemeNameFromActionController();
-        return ($this->CI->load->view("decorator/themes/" . $themeName . "footer", '', TRUE));
+        try {
+            $themeName = $this->getThemeNameFromActionController();
+            return ($this->CI->load->view("decorator/themes/" . $themeName . "footer", '', TRUE));
+        } catch (Exception $exc) {
+            return '';
+        }
     }
 
     protected function beginRequest() {

@@ -9,10 +9,6 @@ class crawler_api extends CI_Controller {
         parent::__construct();
     }
 
-    private $sample_users = array(
-        3 => array('id' => 3, 'name' => 'Scotty', 'email' => 'example3@example.com', 'fact' => 'Is a Scott!', array('hobbies' => array('fartings', 'bikes'))),
-        4 => array('id' => 4, 'name' => 'Nguyễn Tấn Triều', 'email' => 'tantrieuf31@gmail.com', 'fact' => 'a software engineer')
-    );
     static $PREFIX_JS_DATA = 'setDataCallback(';
     static $SUFFIX_JS_DATA = ');;';
 
@@ -62,8 +58,7 @@ class crawler_api extends CI_Controller {
             }
         }
 
-        $output = json_encode($status);
-        $this->output->set_output($data);
+        $this->output->set_output(json_encode($status));
     }
 
 }

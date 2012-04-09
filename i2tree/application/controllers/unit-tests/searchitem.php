@@ -71,7 +71,6 @@ class SearchItem extends CI_Controller {
     }
 
     public function indexdata() {
-
         try {
 
             $indexer = $this->zend->get_Zend_Search_Lucene();

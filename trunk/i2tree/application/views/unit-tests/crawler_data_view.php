@@ -1,4 +1,4 @@
-<a id="data_url" href="#"></a>
+<a id="data_url" href="#" target="_blank" ></a>
 <div id="data_view" style="display: none;"></div>
 
 <script type="text/javascript" >

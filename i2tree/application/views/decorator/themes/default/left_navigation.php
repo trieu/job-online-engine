@@ -42,7 +42,7 @@ function renderUserGroupOfActions($group_id, $group_name, $action_names, $isShow
 
         <?php echo form_close(''); ?>
 
-    <div  >
+    <div style="display: none;" >
     <?php echo anchor('user_account/activate', 'Activate'); ?>
     <?php echo anchor('user_account/register', 'Register'); ?>
     </div>

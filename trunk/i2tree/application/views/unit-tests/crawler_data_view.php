@@ -4,8 +4,7 @@
 <script type="text/javascript" >
     var setDataCallback = function(data) {
         jQuery('#data_url').html(data.url).attr('href',data.url);       
-        jQuery('#data_view').html(data.content);       
-        console.log("setDataCallback: "  );
+        jQuery('#data_view').html(data.content);
     };
     
     jQuery.cachedScript = function(url, options) {

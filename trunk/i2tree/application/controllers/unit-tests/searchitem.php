@@ -43,7 +43,7 @@ class SearchItem extends CI_Controller {
             $query = new Zend_Search_Lucene_Search_Query_Boolean();
 
             $fieldName = 'content';
-            $fieldValue = 'vô lê của Van Basten';
+            $fieldValue = $this->input->get('q');
 
 
             $subquery = Zend_Search_Lucene_Search_QueryParser::parse('+(' . $fieldValue . ')');
@@ -59,8 +59,8 @@ class SearchItem extends CI_Controller {
 
             foreach ($hits as $hit) {
                 $out .= '<br /><b>id: ' . $hit->getDocument()->id . '</b><br />';
-                $out .= 'content: ' . $hit->getDocument()->content . '<br />';
-                $out .= 'Score: ' . sprintf('%.2f', $hit->score) . '<br />';
+                // $out .= 'content: ' . $hit->getDocument()->content . '<br />';
+                $out .= 'Score: ' . sprintf('%.6f', $hit->score) . '<br />';
             }
 
             $this->output->set_output($out);

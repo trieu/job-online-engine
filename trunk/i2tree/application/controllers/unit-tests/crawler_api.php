@@ -7,6 +7,10 @@ class crawler_api extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->library('zend', 'Zend/Search/Lucene');
+        $this->load->library('zend');
+        $this->zend->load('Zend/Search/Lucene');
+        Zend_Search_Lucene::setDefaultSearchField('content');
     }
 
     static $PREFIX_JS_DATA = 'setDataCallback(';
@@ -53,12 +57,30 @@ class crawler_api extends CI_Controller {
         if (is_string($content)) {
             $arr_data = array("content" => $content, "url" => $url);
             $data = self::$PREFIX_JS_DATA . ' ' . json_encode($arr_data) . ' ' . self::$SUFFIX_JS_DATA;
-            if (write_file('./js-data/123.js', $data)) {
+            $id = $this->getId();
+            if (write_file('./js-data/' . $id . '.js', $data)) {
+
+
+                $indexer = $this->zend->get_Zend_Search_Lucene();
+                $doc = new Zend_Search_Lucene_Document();
+                $doc->addField(Zend_Search_Lucene_Field::Keyword('id', $id));
+                $doc->addField(Zend_Search_Lucene_Field::Keyword('userid', '1'));
+                $doc->addField(Zend_Search_Lucene_Field::UnStored("content", $content, 'utf-8'));
+                $indexer->addDocument($doc);
+                $indexer->commit();
+                $indexer->optimize();
+
                 $status = array("status" => "ok");
             }
         }
 
         $this->output->set_output(json_encode($status));
+    }
+
+    // seed with microseconds
+    private function getId() {
+        $toks = explode(' ', microtime());
+        return (float) $toks[0] + (float) $toks[1];
     }
 
 }

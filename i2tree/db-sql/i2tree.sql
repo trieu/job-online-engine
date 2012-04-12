@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `applications` (
   `notes` tinytext,
   PRIMARY KEY (`id`),
   UNIQUE KEY `client_id` (`client_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+) AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table i2tree.applications: ~1 rows (approximately)
 DELETE FROM `applications`;
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `name` varchar(20) CHARACTER SET utf8 NOT NULL,
   `description` varchar(100) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table i2tree.groups: ~3 rows (approximately)
 DELETE FROM `groups`;
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `meta` (
   `last_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `ext_info` text COLLATE utf8_unicode_ci,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+)  AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table i2tree.meta: ~2 rows (approximately)
 DELETE FROM `meta`;
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `oauth_sessions` (
   PRIMARY KEY (`id`),
   KEY `client_id` (`client_id`),
   CONSTRAINT `oauth_sessions_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `applications` (`client_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+)AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table i2tree.oauth_sessions: ~1 rows (approximately)
 DELETE FROM `oauth_sessions`;
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `oauth_session_scopes` (
   KEY `access_token` (`access_token`),
   CONSTRAINT `oauth_session_scopes_ibfk_1` FOREIGN KEY (`scope`) REFERENCES `scopes` (`scope`),
   CONSTRAINT `oauth_session_scopes_ibfk_2` FOREIGN KEY (`session_id`) REFERENCES `oauth_sessions` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table i2tree.oauth_session_scopes: ~1 rows (approximately)
 DELETE FROM `oauth_session_scopes`;
@@ -133,7 +133,7 @@ CREATE TABLE IF NOT EXISTS `scopes` (
   `description` varchar(100) DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `scope` (`scope`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- Dumping data for table i2tree.scopes: ~1 rows (approximately)
 DELETE FROM `scopes`;
@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
   `user_data` text COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table i2tree.sessions: ~0 rows (approximately)
 DELETE FROM `sessions`;
@@ -173,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `forgotten_password_code` varchar(40) CHARACTER SET utf8 NOT NULL DEFAULT '0',
   `data_of_birth` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table i2tree.users: ~2 rows (approximately)
 DELETE FROM `users`;
